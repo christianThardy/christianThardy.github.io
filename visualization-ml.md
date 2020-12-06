@@ -18,7 +18,7 @@ The role of visualization in data science can be a very broad topic[<a href="htt
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286427-7a484980-37b8-11eb-9450-98fba3bb3833.jpg" width="445" height="360">
+<img src = "https://user-images.githubusercontent.com/29679899/101286427-7a484980-37b8-11eb-9450-98fba3bb3833.jpg" width="445px">
 
 <br/>
 
@@ -26,7 +26,7 @@ The role of visualization in data science can be a very broad topic[<a href="htt
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286464-aa8fe800-37b8-11eb-945a-9b417f28d3c1.jpg" width="445" height="360">
+<img src = "https://user-images.githubusercontent.com/29679899/101286464-aa8fe800-37b8-11eb-945a-9b417f28d3c1.jpg" width="445px">
 
 <br/>
 
@@ -34,7 +34,7 @@ But I find that in a machine learning research environment, plotting something l
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286407-597ff400-37b8-11eb-88f3-3606642eddf3.jpg" width="600" height="360">
+<img src = "https://user-images.githubusercontent.com/29679899/101286407-597ff400-37b8-11eb-88f3-3606642eddf3.jpg" width="600px">
 
 <br/>
 
@@ -43,7 +43,7 @@ But I find that in a machine learning research environment, plotting something l
 <br/>
 
 <p align="center">
-  <img src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/topology_2D-2D_train.gif" width="345" height="370">
+  <img src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/topology_2D-2D_train.gif" width="345px">
 </p>
 
 <br/>
@@ -56,7 +56,7 @@ For example, let's look to the major branch of mathematics known as topology. It
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286901-36a30f00-37bb-11eb-92af-825516fae8c6.jpg" width="600" height="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101286901-36a30f00-37bb-11eb-92af-825516fae8c6.jpg" width="600px">
 
 <br/>
 
@@ -64,7 +64,7 @@ For example, let's look to the major branch of mathematics known as topology. It
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287051-fc863d00-37bb-11eb-95e9-5ac908399094.gif" width="500" height="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101287051-fc863d00-37bb-11eb-95e9-5ac908399094.gif" width="500px">
 
 <br/>
 
@@ -84,7 +84,7 @@ A number of popular illustrations regarding this process denotes a mountain (par
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287186-b7163f80-37bc-11eb-843e-7c7f8b140e2a.PNG" width="400" height="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101287186-b7163f80-37bc-11eb-843e-7c7f8b140e2a.PNG" width="400px">
 
 <br/>
 
@@ -92,7 +92,7 @@ The illustration of gradient descent is important to us because of the parallel 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="600" height="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="600px">
 
 <br/>
 
