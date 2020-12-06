@@ -1,10 +1,11 @@
 theme: jekyll-theme-minimal
 title: artifacts
 description: thoughts, ideas and new things I've learned
-logo: "/assets/loading.gif"
 show_downloads: False
 navigation:
   - title: Home
     url: /
   - title: Deep learning can solve non-trivial problems in nlp
     url: setup
+  - title: Things I wish I knew about spark
+    url: things-I-wish-I-knew
