@@ -2,7 +2,7 @@
 
 Deep learning is thought of as the ability of a class of algorithms to learn a hierarchical set of representations from lots of data, which means it can learn low, mid and high level features. You specify the input/output and your networks optimization algorithm updates the weights that determine how each input feature will affect the output prediction. 
 
-<img src = "https://user-images.githubusercontent.com/29679899/101258199-ef4f4c80-36ee-11eb-9720-28d24f1b7d16.png" width="455" height="350">
+<img src = "https://user-images.githubusercontent.com/29679899/101258199-ef4f4c80-36ee-11eb-9720-28d24f1b7d16.png" width="455px">
 
 These updates are analogous to a programmer coding a bunch of rules to solve a problem, but with deep learning, sometimes you can end up with code better than what any programmer could write.
 
@@ -20,7 +20,7 @@ We can rely on 3 strengths of applying deep learning to this problem space.
 
 Let’s say the network probably looks at the character level of words...
 
-<img src = "https://user-images.githubusercontent.com/29679899/101260507-8d96de80-36fe-11eb-835f-d2eb04caff8e.jpg" width="645" height="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101260507-8d96de80-36fe-11eb-835f-d2eb04caff8e.jpg" width="645px">
 
 ...before looking at whole words...
 
@@ -101,18 +101,18 @@ Because of them we can train a deeper network and the learning gradient has a sh
 
 The resCNN solves this problem by adding skip connections which take the activations from early layers, skips a couple and then feeds them to layers that are deeper in the network. By doing this you can effectively train deeper networks and learn better features.
 
-<img src = "https://user-images.githubusercontent.com/29679899/101259991-ae5d3500-36fa-11eb-91fa-a09c9d04034a.png" width="545" height="360">
+<img src = "https://user-images.githubusercontent.com/29679899/101259991-ae5d3500-36fa-11eb-91fa-a09c9d04034a.png" width="545px">
 
 Activation functions are necessary to squish the input received from the previous hidden layer down into a small range of values. Without this, we would not be able to learn non-linear relationships. They elongate and squash the layers in space... 
 
 <p align="center">
-  <img src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/1layer.gif" width="345" height="370">
+  <img src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/1layer.gif" width="345px">
 </p>
 
 ...which is the layer trying to approximate the distribution of the input data's topological properties... 
 
 <p align="center">
-  <img src="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif" width="345" height="370">
+  <img src="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif" width="345px">
 </p>
 
 ...and without skip connections, it's harder for the deeper layers to learn from linear activation functions during gradient descent.
