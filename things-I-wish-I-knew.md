@@ -1,4 +1,4 @@
-# Things I wish I knew about aws glue, spark and distributed systems
+# things I wish I knew about aws glue, spark and distributed systems
 
 From November 2019 to July 2020 I was working with a subscription based e-learning platform. With our subscription metrics on the rise, we needed new internal processes to keep up with the wealth of information we had on hand and were accumulating every day. This translated to reporting options that would allow management to have more autonomy in mining the data themselves to support their initiatives so that our engineering team could focus on collecting cleaner data, and the principles, processes and techniques required to change the fundamental structure of our data driven initiatives. 
 
