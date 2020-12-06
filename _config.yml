@@ -3,17 +3,17 @@ title: artifacts
 description: thoughts, ideas and new things I've learned
 show_downloads: False
 navigation:
-  - title: Home
+  - title: home
     url: /
-  - title: Deep learning can solve non-trivial problems in nlp
+  - title: deep learning can solve non-trivial problems in nlp
     url: setup
-  - title: Things I wish I knew about aws glue, spark and distributed systems
+  - title: things I wish I knew about aws glue, spark and distributed systems
     url: things-I-wish-I-knew
-  - title: Millennial noir
+  - title: millennial noir
     url: millennial-noir
-  - title: Finding similarities between friends using shallow & deep nlp
+  - title: finding similarities between friends using shallow & deep nlp
     url: finding-similarities-between-friends
-  - title: A convnet trying to learn rotational relationships
+  - title: a convnet trying to learn rotational relationships
     url: a-convnet-trying
-  - title: Visualizations & machine learning
+  - title: visualizations & machine learning
     url: visualizations-ml
