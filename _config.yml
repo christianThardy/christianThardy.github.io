@@ -5,6 +5,6 @@ description: thoughts, ideas and new things I've learned
 show_downloads: False
 navigation:
   - title: Home
-    url: 
+    url: /
   - title: Deep learning can solve non-trivial problems in nlp
     url: setup
