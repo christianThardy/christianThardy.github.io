@@ -1,7 +1,8 @@
 theme: jekyll-theme-minimal
-title: GitHub pages template
-description: A simple template based on minimal jekyll theme
-show_downloads: True
+logo: "/assets/loading.gif"
+title: artifacts
+description: thoughts, ideas and new things I've learned
+show_downloads: False
 navigation:
   - title: Home
     url: /
