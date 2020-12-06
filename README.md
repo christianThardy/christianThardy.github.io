@@ -1,1 +1,3 @@
-When I have something fresh in my mind, blogging helps me learn the concept just a little better :)
+## Artifacts: a blog
+
+When I have something fresh in my mind, blogging about it helps me learn the concept just a little better 😊
