@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
-logo: "/assets/loading.gif"
 title: artifacts
+logo: "/assets/loading.gif"
 description: thoughts, ideas and new things I've learned
 show_downloads: False
 navigation:
