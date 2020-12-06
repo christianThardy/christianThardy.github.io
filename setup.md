@@ -112,7 +112,7 @@ Activation functions are necessary to squish the input received from the previou
 ...which is the layer trying to approximate the distribution of the input data's topological properties... 
 
 <p align="center">
-  <img src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/topology_2D-2D_train.gif" width="345" height="370">
+  <img src="http://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif" width="345" height="370">
 </p>
 
 ...and without skip connections, it's harder for the deeper layers to learn from linear activation functions during gradient descent.
