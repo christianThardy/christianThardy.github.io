@@ -16,10 +16,4 @@ navigation:
   - title: a convnet trying to learn rotational relationships
     url: a-convnet-trying
   - title: visualizations & machine learning
-    url: visualizations-ml
-    
-twitter:
-  id: 'hollyhval'
-  href: 'https://www.twitter.com/'
-  title: 'Twitter'
-  fa-icon: 'fa-twitter-square'
+    url: visualization-ml
