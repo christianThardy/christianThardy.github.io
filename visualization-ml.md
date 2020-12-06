@@ -34,7 +34,7 @@ But I find that in a machine learning research environment, plotting something l
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286407-597ff400-37b8-11eb-88f3-3606642eddf3.jpg" width="600px">
+<img src = "https://user-images.githubusercontent.com/29679899/101286407-597ff400-37b8-11eb-88f3-3606642eddf3.jpg" width="445px">
 
 <br/>
 
@@ -56,7 +56,7 @@ For example, let's look to the major branch of mathematics known as topology. It
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101286901-36a30f00-37bb-11eb-92af-825516fae8c6.jpg" width="600px">
+<img src = "https://user-images.githubusercontent.com/29679899/101286901-36a30f00-37bb-11eb-92af-825516fae8c6.jpg" width="445px">
 
 <br/>
 
@@ -64,7 +64,7 @@ For example, let's look to the major branch of mathematics known as topology. It
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287051-fc863d00-37bb-11eb-95e9-5ac908399094.gif" width="500px">
+<img src = "https://user-images.githubusercontent.com/29679899/101287051-fc863d00-37bb-11eb-95e9-5ac908399094.gif" width="445px">
 
 <br/>
 
@@ -84,7 +84,7 @@ A number of popular illustrations regarding this process denotes a mountain (par
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287186-b7163f80-37bc-11eb-843e-7c7f8b140e2a.PNG" width="400px">
+<img src = "https://user-images.githubusercontent.com/29679899/101287186-b7163f80-37bc-11eb-843e-7c7f8b140e2a.PNG" width="350px">
 
 <br/>
 
@@ -92,7 +92,7 @@ The illustration of gradient descent is important to us because of the parallel 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="600px">
+<img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="500px">
 
 <br/>
 
