@@ -7,7 +7,7 @@ navigation:
     url: /
   - title: Deep learning can solve non-trivial problems in nlp
     url: setup
-  - title: Things I wish I knew about aws, spark and distributed systems
+  - title: Things I wish I knew about aws glue, spark and distributed systems
     url: things-I-wish-I-knew
   - title: Millennial noir
     url: millennial-noir
