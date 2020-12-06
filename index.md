@@ -4,12 +4,12 @@ layout: default
 ![loading](https://user-images.githubusercontent.com/29679899/101273462-95d53500-3763-11eb-8e60-f4ae1ac667d1.gif)
 <!-- display the social media buttons in README -->
 
-[![alt text][1.1]][1]
-[![alt text][2.1]][2]
-[![alt text][3.1]][3]
-[![alt text][4.1]][4]
-[![alt text][5.1]][5]
-[![alt text][6.1]][6]
+[![alt text][1.2]][1]
+[![alt text][2.2]][2]
+[![alt text][3.2]][3]
+[![alt text][4.2]][4]
+[![alt text][5.2]][5]
+[![alt text][6.2]][6]
 
 
 <!-- links to social media icons -->
@@ -22,6 +22,14 @@ layout: default
 [4.1]: http://i.imgur.com/K2eLVPp.png (soundcloud icon with padding)
 [5.1]: http://i.imgur.com/K2eLVPp.png (soundcloud icon with padding)
 [6.1]: http://i.imgur.com/FmiRizP.png (youtube icon with padding)
+
+<!-- icons without padding -->
+[1.2]: http://i.imgur.com/MBpTmib.png (github icon without padding) 
+[2.2]: http://i.imgur.com/gPtDT24.png (twitter icon without padding) 
+[3.2]: http://i.imgur.com/DYEQR1h.png (linkedin icon without padding)  
+[4.2]: http://i.imgur.com/tSiu5uK.png (soundcloud icon without padding)  
+[5.2]: http://i.imgur.com/tSiu5uK.png (soundcloud icon without padding)
+[6.2]: http://i.imgur.com/M53f65R.png (youtube icon without padding) 
 
 
 <!-- links to social media accounts -->
