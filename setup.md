@@ -131,6 +131,8 @@ During the first step of learning, to give the network a representation of the t
 
 This allows us to learn about the input distribution of the incoming sentence from a set of compressed sentences (to maintain network efficiency) and allows the buffer and stack to interact with each other and efficiently check whether a token is a member of its respective set, as the final layer in the resCNN makes its prediction of the state of the input sequence operations. The lower the dimensionality of our inputs, the less memory we use because parsing web-scale text is computationally taxing and the network can make faster decisions. This representation is also easily reversible, so the output vectors can be mapped to their original tokens at prediction time.
 
+<br/>
+
 ### References
 
 Neural architectures for named entity recognition
