@@ -69,7 +69,7 @@ So we start with an empty stack, all words from the sentence are on the buffer a
 
 <img width="280" alt="stackbuffer" src="https://user-images.githubusercontent.com/29679899/101259265-ced6c080-36f5-11eb-9db5-81f6137b1bbb.PNG">
 
-During this collection and parsing of the text, the resCNN is making the decision of which named entity label to assign to which words or if a label should be assigned to any particular word at all. 
+During this collection and parsing of the text, something’s called a resCNN is making the decision of which named entity label to assign to which words or if a label should be assigned to any particular word at all. 
 
 <img width="321" alt="stackbuffer2" src="https://user-images.githubusercontent.com/29679899/101259759-d77cc600-36f8-11eb-99c0-30bd1b467ef7.PNG">
 
