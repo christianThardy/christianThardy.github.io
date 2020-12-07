@@ -246,6 +246,8 @@ plt.show()
 
 In the order from greatest to least, `bt_1` has the most frequent occurrences, `bt_2` has the second most frequent occurrences, `bt_3` and `bt_4` have about the same as each other, etc.
 
+<br/>
+
 ```python
 bt_1 = 80,000
 
@@ -836,6 +838,8 @@ total: 118 sentences primarily made up of prepositions and nouns
 
 The parts of speech used in the corpus are obviously varying for each user, denoting 6 more possible features that we can use, bringing our final total number of handcrafted features for each user to 11:
 
+<br/>
+
 ```python
 number of words in text
 characters and special characters in the text
@@ -849,6 +853,7 @@ verbs
 personal & possessive pronouns 
 existential words 
 ```
+
 <br/>
 
 # 3. cleaning & refining the sample
