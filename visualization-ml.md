@@ -100,7 +100,7 @@ These philosophical, yet mildly shallow implications even ring true for the hair
 
 As I try to organize some of my high level thoughts on the role that  visualization plays in understanding how computers learn, one thing is certain. The rich connection between distilling data into something useful and trying to understand the abstractions of learning machines is something that will continually spark my enthusiasm for artificial intelligence. 
 
-Things like neural ordinary differential equations, algorithm development, optimization, statistical methods, machine learning interpretability, and safety are some of the topics at the forefront of researchers minds today, and tied to the mathematics and theory of every paper will be a <a href="https://i.imgur.com/2pyn9sU.png" title="ODE Solvers as machine learning optimizers" rel="nofollow">map</a> leading us from the abstract to something that we can understand.
+Things like neural ordinary differential equations, optimization algorithm development, statistical learning methods, machine learning interpretability, and safety are some of the topics at the forefront of researchers minds today, and tied to the mathematics and theory of every paper will be a <a href="https://i.imgur.com/2pyn9sU.png" title="ODE Solvers as machine learning optimizers" rel="nofollow">map</a> leading us from the abstract to something that we can understand.
 
 <br/>
 
