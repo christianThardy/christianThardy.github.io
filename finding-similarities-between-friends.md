@@ -824,3 +824,23 @@ total: 118 sentences primarily made up of prepositions and nouns
 <br/>
 
 ...a rather naive pattern at this point because all four of them share similar parts of speech, but based on this simple intuition, we may be able to reinforce these part of speech priors and weigh them against sentiment in some meaningful way during topic modeling.
+
+The parts of speech used in the corpus are obviously varying for each user, denoting 6 more possible features that we can use, bringing our final total number of handcrafted features for each user to 11:
+
+```python
+
+number of words in text
+characters and special characters in the text
+stop words
+upper case words
+title case words
+nouns 
+prepositional phrases 
+adjectives 
+verbs 
+personal & possessive pronouns 
+existential words 
+```
+<br/>
+
+# 3. cleaning & refining the sample
