@@ -88,7 +88,7 @@ A number of popular illustrations regarding this process denotes a mountain (par
 
 <br/>
 
-The illustration of gradient descent is important to us because of the parallel drawn from its physical representation and it allows us to gain insight into the idea without the frame of conjecture. This simple pose allows the intuition for gradient descent to take <a href="http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html" title="Alec Radford's blog" rel="nofollow">many</a> forms:
+This illustration of gradient descent is important to us because of the parallel drawn from its physical representation and it allows us to gain insight into the idea without the frame of conjecture. This simple pose allows the intuition for gradient descent to take <a href="http://www.denizyuret.com/2015/03/alec-radfords-animations-for.html" title="Alec Radford's blog" rel="nofollow">many</a> forms:
 
 <br/>
 
