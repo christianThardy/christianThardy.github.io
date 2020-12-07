@@ -584,8 +584,8 @@ plt.show()
 
 ```
 
-<img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600">
-<img src = "https://user-images.githubusercontent.com/29679899/101381508-d2e51880-3884-11eb-8f52-cccf32cd373a.PNG" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600px">
+<img src = "https://user-images.githubusercontent.com/29679899/101381508-d2e51880-3884-11eb-8f52-cccf32cd373a.PNG" width="500px">
 
 <br/>
 
@@ -625,7 +625,7 @@ I'll use a series of violin plots to visualize the distribution of each feature 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101383779-8c44ed80-3887-11eb-9834-39dea1bd4bf1.png" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101383779-8c44ed80-3887-11eb-9834-39dea1bd4bf1.png" width="300px">
 
 <br/>
 
@@ -681,7 +681,7 @@ dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) fo
 
 ```
 
-<img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500px">
 
 <br/>
 
@@ -691,7 +691,7 @@ We can also see how different bt_13 is from the rest of the users. This is very 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101384959-2194b180-3889-11eb-8c8a-c09cf4dcc0d8.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101384959-2194b180-3889-11eb-8c8a-c09cf4dcc0d8.png" width="500px">
 
 <br/>
 
@@ -699,7 +699,7 @@ The number of unique words in each users corpus appears to be reasonably distrib
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101385192-6fa9b500-3889-11eb-8b90-d88853d1022b.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101385192-6fa9b500-3889-11eb-8b90-d88853d1022b.png" width="500px">
 
 <br/>
 
@@ -707,7 +707,7 @@ Another basic feature we could extract is the number of characters used per user
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386029-93212f80-388a-11eb-8afb-3a5d098eae3f.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101386029-93212f80-388a-11eb-8afb-3a5d098eae3f.png" width="500px">
 
 <br/>
 
@@ -719,7 +719,7 @@ Notice how `bt_13`'s interquartile range is over stretched...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101385935-738a0700-388a-11eb-9c95-b45d8e683de1.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101385935-738a0700-388a-11eb-9c95-b45d8e683de1.png" width="500px">
 
 <br/>
 
@@ -729,7 +729,7 @@ Albeit the variance is not as great as the number of words in each users corpus,
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386222-df6c6f80-388a-11eb-94c5-43050de3db69.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101386222-df6c6f80-388a-11eb-94c5-43050de3db69.png" width="500px">
 
 <br/>
 
@@ -737,7 +737,7 @@ Albeit the variance is not as great as the number of words in each users corpus,
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386351-117dd180-388b-11eb-9746-cba28abb1aaa.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101386351-117dd180-388b-11eb-9746-cba28abb1aaa.png" width="500px">
 
 <br/>
 
@@ -745,7 +745,7 @@ The variance of upper case words by each user is promising.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386610-67527980-388b-11eb-86a9-c744e871ffa9.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101386610-67527980-388b-11eb-86a9-c744e871ffa9.png" width="500px">
 
 <br/>
 
@@ -753,7 +753,7 @@ The variance of upper case words by each user is promising.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386744-9b2d9f00-388b-11eb-9593-964237e5fdfc.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101386744-9b2d9f00-388b-11eb-9593-964237e5fdfc.png" width="500px">
 
 The long tail on the upper quartile is a measure of the data’s spread or the number of values that the feature possesses, and the spread of `bt_2`'s text covers a wide range. When you have a shape as squished as `bt_2`, it represents a non-symmetric distribution and we must asses the characteristics of its shape in comparison to other possible features to determine how useful the feature.
 
@@ -769,7 +769,7 @@ Another relevant feature produced by the number of title case words.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387175-155e2380-388c-11eb-88d7-3d8181a5dc94.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101387175-155e2380-388c-11eb-88d7-3d8181a5dc94.png" width="500px">
 
 <br/>
 
@@ -777,7 +777,7 @@ Lastly, the average length of words produces nothing relevant.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387305-43436800-388c-11eb-9247-f2aab2d53519.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101387305-43436800-388c-11eb-9247-f2aab2d53519.png" width="500px">
 
 <br/>
 
@@ -789,7 +789,7 @@ To illustrate this example, let's turn our attention to the parts of speech...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387676-c9f84500-388c-11eb-8f23-764b9e67c035.png" width="400">
+<img src = "https://user-images.githubusercontent.com/29679899/101387676-c9f84500-388c-11eb-8f23-764b9e67c035.png" width="400px">
 
 <br/>
 
@@ -797,8 +797,8 @@ To illustrate this example, let's turn our attention to the parts of speech...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387946-396e3480-388d-11eb-96c9-6bd58e72ef42.png" width="400">
-<img src = "https://user-images.githubusercontent.com/29679899/101388090-7b977600-388d-11eb-8132-9a73c2e89a61.png" width="600">
+<img src = "https://user-images.githubusercontent.com/29679899/101387946-396e3480-388d-11eb-96c9-6bd58e72ef42.png" width="400px">
+<img src = "https://user-images.githubusercontent.com/29679899/101388090-7b977600-388d-11eb-8132-9a73c2e89a61.png" width="600px">
 
 ```python
 1st sentence character count: 19 
@@ -812,8 +812,8 @@ total: 57 sentences primarily made up of adjectives and verbs
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101388350-d16c1e00-388d-11eb-9488-b1b9bc7c65ae.png" width="680">
-<img src = "https://user-images.githubusercontent.com/29679899/101388381-ddf07680-388d-11eb-8de2-bbfb7d2b54b8.png" width="400">
+<img src = "https://user-images.githubusercontent.com/29679899/101388350-d16c1e00-388d-11eb-9488-b1b9bc7c65ae.png" width="680px">
+<img src = "https://user-images.githubusercontent.com/29679899/101388381-ddf07680-388d-11eb-8de2-bbfb7d2b54b8.png" width="400px">
 
 ```python
 1st sentence character count: 92 
