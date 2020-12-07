@@ -133,6 +133,7 @@ In the gif above all the information we need is nested within div tags. A div ta
 
 ```python
 # dependencies
+
 import bs4
 import csv
 import urllib
@@ -159,6 +160,7 @@ Earlier I mentioned how `BeautifulSoup` can define methods for searching through
 
 ```python
 # names of users 
+
 d = csv.writer(open('bt_name_data_R.csv', 'w'))
 d.writerow('Name')
 data_name = soup.find_all('div', class_ = '_3-96 _2pio _2lek _2lel')
@@ -167,6 +169,7 @@ for data_name in data_name:
     d.writerow(names)
     
 # users dates & times 
+
 d = csv.writer(open('bt_date_data_R.csv', 'w'))
 d.writerow(['Date & Time'])
 data_date_time = soup.find_all('div', class_ = '_3-94 _2lem')
@@ -175,6 +178,7 @@ for data_date_time in data_date_time:
     d.writerow(dates_times)
     
 # users messages 
+
 d = csv.writer(open('bt_message_data.csv', 'w'))
 d.writerow(['Message'])
 data_message = soup.find_all('div', class_ = '_3-96 _2let')
@@ -189,6 +193,7 @@ Datasets are like a good satirical bildungsroman[<a href="https://en.wikipedia.o
 
 ```python
 # dependencies
+
 import pandas as pd
 import string
 import matplotlib.pyplot as plt
@@ -208,7 +213,9 @@ During this initial exploration, we'll want to isolate and remove a significant 
 
 ```python
 # data
+
 dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna('')
+
 # shape of data
 print("Training Data Shape : ", dataset.shape)
 ```
@@ -223,6 +230,7 @@ Since each users response in the app is dictated by the amount of times they sen
 
 ```python
 # number of occurances for each user
+
 names = dataset['Name'].value_counts()
 plt.figure(figsize=(12,4)) # 36,16 # 12,4
 sns.barplot(names.index, names.values, alpha=0.8, color=color[1])
@@ -502,7 +510,9 @@ Given that I would like a fast, inexpensive and easy technique, I will randomly 
 
 ```python
 # sample: bt_4
+
 bt_4 = pd.read_csv('bt_4.csv').fillna('')
+
 # shape of data
 print('bt_4 data shape: ', bt_4.shape)
 ```
@@ -517,6 +527,7 @@ The first part of the code is used to clean the text by lemmatizing the words an
 
 ```python
 # create function to clean up text by removing personal pronouns, stopwords and punctuation
+
 import spacy
 nlp = spacy.load('en_core_web_sm')
 punctuations = string.punctuation
@@ -541,11 +552,15 @@ The next few lines of code will obtain all the words from `bt_4`'s message featu
 
 ```python
 # collect all text associated to bt_4
+
 bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
+
 # clean bt_4 text
 bt_4_clean = cleanup_text(bt_4_text)
 bt_4_clean = ' '.join(bt_4_clean).split()
+
 # remove words with 's
+
 bt_4_clean = [word for word in bt_4_clean if word != '\'s']
 # count all unique words
 bt_4_counts = Counter(bt_4_clean)
@@ -557,6 +572,7 @@ After the text has been preprocessed, the 30 most frequently occurring words for
 
 ```python
 # plot 30 most commonly occuring words
+
 plt.figure(figsize=(20, 12))
 sns.barplot(x=bt_4_common_words, y=bt_4_common_counts)
 plt.title('Most Common Words used by bt_4')
@@ -622,6 +638,7 @@ Executing this code let's us visualize each users distribution.
 
 ```python
 # dependencies
+
 import warnings
 warnings.filterwarnings('ignore')
 import pandas as pd
