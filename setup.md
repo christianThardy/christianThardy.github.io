@@ -16,7 +16,7 @@ We can rely on 3 strengths of applying deep learning to this problem space.
 
 3. Deep neural named entity recognition models can be trained in an end-to-end paradigm by way of gradient descent. This allows us to design NER systems from complex annotation policies.
 
-### Theory
+### theory
 
 Let’s say the network probably looks at the character level of words...
 
@@ -49,7 +49,7 @@ But are building neural networks as easy as adding more layers to the network?
 
 More layers do allow the network to learn more fine grained features, but in reality training gets worse, not better when you stack lots of layers, making it harder for the network to choose parameters from the feature space.
 
-### Application
+### application
 
 The best approach to this would be to use a network architecture that can take advantage of having many layers and not be affected by the vanishing gradients during gradient descent as the network gets deeper.
 
