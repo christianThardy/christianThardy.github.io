@@ -10,7 +10,7 @@ I will define the noun reality with two separate connotations, physical reality 
 
 By using the adjective physical I mean the reality that you and I inhabit. The same reality that physicists try to describe using mathematics. 
 
-Then we have the adjective artificial which will be referred to in its ordinary sense, ''Made or produced by human beings rather than occurring naturally, especially as a copy of something natural".
+Then we have the adjective artificial which will be referred to in its ordinary sense, *"Made or produced by human beings rather than occurring naturally, especially as a copy of something natural"*.
 
 The connotations between the physical and artificial states ring true in the world of machine learning optimization, in the sense that the physical and artificial realities coexist. 
 
