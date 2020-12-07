@@ -314,13 +314,13 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101367590-4fbbc680-3874-11eb-837d-ab01bf52b6fa.png" width="100">
+<img src = "https://user-images.githubusercontent.com/29679899/101367590-4fbbc680-3874-11eb-837d-ab01bf52b6fa.png" width="100px">
 
 ...is the most common term in the corpus and so on....
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368167-d375b300-3874-11eb-99a3-cae01229101a.png" width="60">
+<img src = "https://user-images.githubusercontent.com/29679899/101368167-d375b300-3874-11eb-99a3-cae01229101a.png" width="60px">
 
 <br/>
 
@@ -328,7 +328,7 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368525-3f581b80-3875-11eb-8c1a-32b1ef8baf8f.png" width="100">
+<img src = "https://user-images.githubusercontent.com/29679899/101368525-3f581b80-3875-11eb-8c1a-32b1ef8baf8f.png" width="100px">
 
 <br/>
 
@@ -336,7 +336,7 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368724-7a5a4f00-3875-11eb-9339-3ded6943743a.png" width="100">
+<img src = "https://user-images.githubusercontent.com/29679899/101368724-7a5a4f00-3875-11eb-9339-3ded6943743a.png" width="100px">
 
 <br/>
 
@@ -344,7 +344,7 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368966-c60cf880-3875-11eb-8413-6626f85e8021.png" width="200">
+<img src = "https://user-images.githubusercontent.com/29679899/101368966-c60cf880-3875-11eb-8413-6626f85e8021.png" width="200px">
 
 <br/>
 
@@ -352,7 +352,7 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101369163-fb194b00-3875-11eb-8db1-7e86199b59df.png" width="60">
+<img src = "https://user-images.githubusercontent.com/29679899/101369163-fb194b00-3875-11eb-8db1-7e86199b59df.png" width="60px">
 
 <br/>
 
@@ -372,7 +372,7 @@ The Pareto distribution embodies a useful power law. The spread of the distribut
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370076-091b9b80-3877-11eb-9310-11f57cf2fc70.png" width="200">
+<img src = "https://user-images.githubusercontent.com/29679899/101370076-091b9b80-3877-11eb-9310-11f57cf2fc70.png" width="200px">
 
 <br/>
 
@@ -380,7 +380,7 @@ The Pareto distribution embodies a useful power law. The spread of the distribut
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370324-5c8de980-3877-11eb-9c0a-cc1106355a10.png" width="150">
+<img src = "https://user-images.githubusercontent.com/29679899/101370324-5c8de980-3877-11eb-9c0a-cc1106355a10.png" width="150px">
 
 <br/>
 
@@ -388,7 +388,7 @@ The value of this reliability function is initially 1 and decreases to 0 as x in
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370569-a545a280-3877-11eb-91af-e2a17d5aa6a3.png" width="155">
+<img src = "https://user-images.githubusercontent.com/29679899/101370569-a545a280-3877-11eb-91af-e2a17d5aa6a3.png" width="155px">
 
 <br/>
 
@@ -396,7 +396,7 @@ The value of this reliability function is initially 1 and decreases to 0 as x in
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370742-de7e1280-3877-11eb-9ca3-f3ed60bb1673.png" width="155">
+<img src = "https://user-images.githubusercontent.com/29679899/101370742-de7e1280-3877-11eb-9ca3-f3ed60bb1673.png" width="155px">
 
 <br/>
 
@@ -404,7 +404,7 @@ Normally we would be interested in b > 1 which is required for the fixed mean va
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370928-2735cb80-3878-11eb-8826-a844770065a2.png" width="130">
+<img src = "https://user-images.githubusercontent.com/29679899/101370928-2735cb80-3878-11eb-8826-a844770065a2.png" width="130px">
 
 <br/>
 
@@ -412,7 +412,7 @@ Normally we would be interested in b > 1 which is required for the fixed mean va
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371252-85fb4500-3878-11eb-820a-383388f83efc.png" width="200">
+<img src = "https://user-images.githubusercontent.com/29679899/101371252-85fb4500-3878-11eb-820a-383388f83efc.png" width="200px">
 
 <br/>
 
@@ -420,7 +420,7 @@ It's not obvious, but there's a similarity with Zipf's law. Both functions decre
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371475-cc50a400-3878-11eb-9ac8-d724cd1be94a.png" width="230">
+<img src = "https://user-images.githubusercontent.com/29679899/101371475-cc50a400-3878-11eb-9ac8-d724cd1be94a.png" width="230px">
 
 <br/>
 
@@ -428,7 +428,7 @@ where:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371670-03bf5080-3879-11eb-9cc8-8e85c0a44fe1.PNG" width="240">
+<img src = "https://user-images.githubusercontent.com/29679899/101371670-03bf5080-3879-11eb-9cc8-8e85c0a44fe1.PNG" width="240px">
 
 <br/>
 
@@ -450,7 +450,7 @@ A formal summarization states:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101372078-7cbea800-3879-11eb-90d5-7d8022ca151b.png" width="180">
+<img src = "https://user-images.githubusercontent.com/29679899/101372078-7cbea800-3879-11eb-90d5-7d8022ca151b.png" width="180px">
 
 <br/>
 
@@ -460,7 +460,7 @@ The collective number of occurrences of each user in the dataset appears synonym
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101372605-1423fb00-387a-11eb-8421-f6f2ef1d9502.png" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101372605-1423fb00-387a-11eb-8421-f6f2ef1d9502.png" width="500px">
 
 <br/>
 
@@ -478,8 +478,349 @@ For example, the frequency of this audio filter effect...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101373723-47b35500-387b-11eb-8eb0-596a2aedc490.PNG" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101373723-47b35500-387b-11eb-8eb0-596a2aedc490.PNG" width="300px">
 
 <br/>
 
-...which are represented by an exponential difference and its using this difference to scoop all of the low frequencies out of the sound so that only the highest frequencies remain...
+...which are represented by an exponential difference and its using this difference to scoop all of the low frequencies out of the sound so that only the highest frequencies remain.
+
+This is interesting because if sound were measured linearly, the fader in the gif above would have a range of 1 to 1,135,910 notches next to it instead of 1 to 10, which would be ridiculous. By using a logarithmic unit, we can represent the range of 1 to 1,135,910 with only 10 notches next to the fader. So logarithms allow us to compare super large numbers with super small numbers.
+
+The logarithm is also used to illustrate word frequency because exponential power laws occur naturally to frequency responses on Earth between many phenomena, which is obvious when plotted on a log-log graph. The `blues_traveler_2000` logarithmic plot from above says that each unit of distance from the lower left is 10 times the value of the previous unit. So the distance from 0 to 1 will appear the same as the distance between 1 and 10, which will appear the same as between 10 and 100 and then again between 100 and 1000. This type of scale will de-emphasize the total contrast in frequency among the most frequent words and sort out the nuanced differences among the infrequent words. 
+
+We can also think of the logarithm of a number as how many bits we need to represent it. A single bit has two states, 0 and 1. Thus to represent two states we need a single bit, so:
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101379621-784abd00-3882-11eb-896d-7bfd50029d1b.png" width="200px">
+
+<br/>
+
+To represent four states, we can use 00, 05, 10 and 15. That's two bits, so:
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101379839-bfd14900-3882-11eb-8f2c-93bd78e96956.png" width="200px">
+<img src = "https://user-images.githubusercontent.com/29679899/101380020-fb6c1300-3882-11eb-8bd3-677d383f0e2d.PNG" width="340px">
+
+<br/>
+
+# Sampling
+
+Processing large streams of text data for a dataset made up of 300k documents can be computationally expensive, so we're going to pick a random user, and distill their text into a state where it becomes easier to perform iterative preprocessing. Normally something like this would require the sample is a representative of the distribution that governs the data.
+
+The possibility of using a sophisticated method of sampling is always present. We could use rejection sampling, systematic sampling or simple random sampling, but the odds of the semantic similarity of each users text being exactly the same is a naive assumption. I'm certain that each user's words, besides the commonality of lexical words are unique and do not need to be representative of the entire population. 
+
+Given that I would like a fast, inexpensive and easy technique, I will randomly use `bt_4` as my initial sample as `bt_4` appears to be the perfect size. Not too big, not too small...
+
+```python
+
+# sample: bt_4
+bt_4 = pd.read_csv('bt_4.csv').fillna('')
+# shape of data
+print('bt_4 data shape: ', bt_4.shape)
+
+```
+
+## `bt_4 data shape:  (38954, 4)`
+
+<br/>
+
+For this initial text preprocessing phase I'll use the spacy (NLP python library) pipeline feature to process 500 samples of `bt_4`'s text at a time to grab the sample word vectors and format them into numpy arrays. 
+
+The first part of the code is used to clean the text by lemmatizing the words and removing personal pronouns,--in `spacy` the lemmatized string of personal pronouns is `'-PRON-'` --stop words and punctuations. We'll dive deeper into the granular intricacies of text preprocessing later on, so for the sake of brevity let's dive into the code. 
+
+```python
+
+# create function to clean up text by removing personal pronouns, stopwords and punctuation
+import spacy
+nlp = spacy.load('en_core_web_sm')
+punctuations = string.punctuation
+def cleanup_text(docs, logging=False):
+    texts = []
+    counter = 1
+    for doc in docs:
+        if counter % 1000 == 0 and logging:
+            print("Processed %d out of %d documents." % (counter, len(docs)))
+        counter += 1
+        doc = nlp(doc, disable=['parser', 'ner'])
+        tokens = [tok.lemma_.lower().strip() for tok in doc if tok.lemma_ != '-PRON-']
+        tokens = [tok for tok in tokens if tok not in stopwords and tok not in punctuations]
+        tokens = ' '.join(tokens)
+        tokens = re.sub("(^|\W)\d+($|\W)", " ", tokens)
+        tokens = re.sub('[^A-Za-z0-9]+', '', tokens)
+        texts.append(tokens)
+    return pd.Series(texts)
+
+```
+
+The next few lines of code will obtain all the words from `bt_4`'s message feature and put them in a list. Then the text will be cleaned using the `clean_text` function, which will remove common stop words, punctuation and make all words lowercase. Next, all of the 's will be removed because `spacy` doesn't remove this contraction when lemmatizing words. Lastly the count occurrences of all words are gathered.
+
+```python
+
+# collect all text associated to bt_4
+bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
+# clean bt_4 text
+bt_4_clean = cleanup_text(bt_4_text)
+bt_4_clean = ' '.join(bt_4_clean).split()
+# remove words with 's
+bt_4_clean = [word for word in bt_4_clean if word != '\'s']
+# count all unique words
+bt_4_counts = Counter(bt_4_clean)
+bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
+bt_4_common_counts = [word[1] for word in bt_4_counts.most_common(30)]
+
+```
+
+After the text has been preprocessed, the 30 most frequently occurring words for `bt_4` are visualized using `matplotlib` and `seaborn`.
+
+```python
+
+# plot 30 most commonly occuring words
+plt.figure(figsize=(20, 12))
+sns.barplot(x=bt_4_common_words, y=bt_4_common_counts)
+plt.title('Most Common Words used by bt_4')
+plt.show()
+
+```
+
+<img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600">
+<img src = "https://user-images.githubusercontent.com/29679899/101381508-d2e51880-3884-11eb-8f52-cccf32cd373a.PNG" width="500">
+
+<br/>
+
+Normally it's said that in the English language, the word *'the'* represented in any given medium (New York Times bestseller, an ancient script or a random newspaper article) will have about 6% the frequency of anything you will ever say, read or write, and we can say the same for `bt_4`'s use of the verb `lol`. Thanks to our stop words from `spacy` we were able to reduce the dimensions of words down from what would be considered globally common to something that's more locally common to this user and perhaps every user. The plot makes it pretty clear that certain dialectal language is abundant on social media platforms.  
+
+So if the greatest frequency of words in `bt_4`'s sample are words that provide a shallow connection to ideas, but lack much of anything that can be revealed in terms of meaning for this sample, how can we successfully reduce the noise in this corpus down to something that can give us insight into what `bt_4` actually talks about, given that the core meaning of `bt_4`'s words are contained within information that would appear to be rare within the context of her corpus? I believe that we'll need to preprocess this sample even further and even create a custom list of stop words to reveal `bt_4`'s most infrequent words.
+
+<br/>
+
+# feature extraction
+
+Whether we use shallow or deep methods, most of the learning tasks in this post can be boiled down to supervised learning. It requires us to define what the important concepts are for the problem and label those concepts to the data. In order to understand what feature extraction is, let's illustrate an example.
+
+When looking at dates and times, they can be modeled using the exponential families, much like words and since the exponential distribution[7] is especially useful for describing events that occur randomly, we can use it to model the elapsed time between the occurrence of overlapping messages from a given user at any point in time. Let's think of these points in time as events.
+
+A non-overlapping event could include the time between a user's response to the group, or the amount of responses at one time etc. This is to say that the distribution is able to describe the time--a continuous or discrete variable depending on our goal--between events that occur continuously and independently at a constant average rate. So theoretically, time could be an important factor in the response rate of each user. 
+
+If extracting time into a feature is our goal, we can start to think of time spent between users conversing as an event. Then we can ask ourselves questions like... 
+
+*At a high level, how long are events?*
+
+*What is the general duration of events when there is a sparsity of users?*
+
+*Are there patterns regarding the duration of events when certain users are present?*
+
+Given this inference we can convert dates and times into a useable format by transforming them into numeric and categorical features. If we break them down we'll end up with something like: `Jul-28-2018:09:32`.
+
+We can break the time-stamps down further by saying month: `July, day: 28, year: 2018, hour: 9, minutes: 30, seconds: 2`.
+
+This provides 6 features that we can use to model our inference. If we wanted to treat these features as categorical, we could end up with even more features. For example, suppose we one-hot encode the observation of any given time in our hour variable. That would give us a total of 24 more features we could use. So based on these features we can use time to model any of the three questions from above.
+
+<br/>
+
+# feature selection:
+
+I'll use a series of violin plots to visualize the distribution of each feature for every user, but before we dive in let's try to understand violin plots.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101383779-8c44ed80-3887-11eb-9834-39dea1bd4bf1.png" width="300">
+
+<br/>
+
+The shape of this particular plot represents a bimodal distribution and estimates the kernel density function of its given observation. The function's shape is created by something called nonparametric(kernel) density estimators, or KDEs, which smooth the observations probabilities. The outer shape of the plot graphically highlights the mode and symmetry of the data's distributional qualities[8].
+
+Violin plots are useful to us because they they visually show us the most important numerical signals of each sample in the data. I like using violin plots over traditional, static box and whisker plots because they capture the data's distribution in a dynamic way. 
+
+<br/>
+
+![2020-12-07](https://user-images.githubusercontent.com/29679899/101383346-01fc8980-3887-11eb-9a18-7fa13b23a202.gif)
+
+<br/>
+
+Executing this code let's us visualize each users distribution.
+
+```python
+
+# dependencies
+import warnings
+warnings.filterwarnings('ignore')
+import pandas as pd
+import string
+import numpy as np
+from nltk.corpus import stopwords
+
+# data
+dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna('nan')
+stopwords = stopwords.words('english') 
+
+# number of words in the text 
+dataset["num_words"] = dataset["Message"].apply(lambda x: len(str(x).split()))
+
+# number of unique words in the text 
+dataset["num_unique_words"] = dataset["Message"].apply(lambda x: len(set(str(x).split())))
+
+# number of characters in the text 
+dataset["num_chars"] = dataset["Message"].apply(lambda x: len(str(x)))
+
+# number of stopwords in the text 
+dataset["num_stopwords"] = dataset["Message"].apply(lambda x: len([w for w in str(x).lower().split() if w in stopwords]))
+
+# number of punctuations in the text 
+dataset["num_punctuations"] =dataset['Message'].apply(lambda x: len([c for c in str(x) if c in string.punctuation]))
+
+# number of upper case words in the text 
+dataset["num_words_upper"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.isupper()]))
+
+# number of title case words in the text 
+dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.istitle()]))
+
+# average length of the words in the text 
+dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
+
+```
+
+<img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500">
+
+<br/>
+
+With the values of each feature defined on the y axis, we can see that this feature is not distributed normally. Notice how varied the number of words are per user. Given the varying number of word counts per users corpora, this feature could provide a learning algorithm with useful information to differentiate one user from another.
+
+We can also see how different bt_13 is from the rest of the users. This is very important because we can compare the frequency of features for each user against other users, in turn allowing us to determine the significance of each feature by user and vice versa.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101384959-2194b180-3889-11eb-8c8a-c09cf4dcc0d8.png" width="500">
+
+<br/>
+
+The number of unique words in each users corpus appears to be reasonably distributed, minus `bt_11`, `bt_12`, and `bt_13`.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101385192-6fa9b500-3889-11eb-8b90-d88853d1022b.png" width="500">
+
+<br/>
+
+Another basic feature we could extract is the number of characters used per users message. This feature is pretty even, minus 4 users. Notice the interquartile range of `bt_9` and how it's slightly higher than every other user...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101386029-93212f80-388a-11eb-8afb-3a5d098eae3f.png" width="500">
+
+<br/>
+
+...and showing a really fat head and tail on its lower quartile. The interquartile range is used to find the difference between the middle of the first half of the observations and the middle of the second half of observations, so its a measure of spread or how far apart the data points are.
+
+If we're taking social media conventions into account based on our second observation of Zipf's law, we can infer from `bt_9`'s character count that he produces more characters in his documents than any other user. Highlighting that `bt_9` is a more conventional communicator i.e. `bt_9`'s text is less prone to typical social media conventions. Looking over each users IQR...there's a slight variation of the mean in every single observation denoting another possible feature. 
+
+Notice how `bt_13`'s interquartile range is over stretched... 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101385935-738a0700-388a-11eb-9c95-b45d8e683de1.png" width="500">
+
+<br/>
+
+...even representing negative values. The estimation of the KDE is influenced by the sample size. Furthermore, violins with a relatively small sample size almost always appear misleadingly smooth, thus indicating `bt_13` as having the lowest occurring value in the corpus and can be treated as an outlier.
+
+Albeit the variance is not as great as the number of words in each users corpus, the number of stop words by user might be a good feature.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101386222-df6c6f80-388a-11eb-94c5-43050de3db69.png" width="500">
+
+<br/>
+
+5 out of 8 users have varying degrees in their usage of punctuation. This may be a relevant feature, but I'm not convinced. 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101386351-117dd180-388b-11eb-9746-cba28abb1aaa.png" width="500">
+
+<br/>
+
+The variance of upper case words by each user is promising. 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101386610-67527980-388b-11eb-86a9-c744e871ffa9.png" width="500">
+
+<br/>
+
+`bt_2` looks drastically different from the rest of the users, so let's take a closer look...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101386744-9b2d9f00-388b-11eb-9593-964237e5fdfc.png" width="500">
+
+The long tail on the upper quartile is a measure of the data’s spread or the number of values that the feature possesses, and the spread of `bt_2`'s text covers a wide range. When you have a shape as squished as `bt_2`, it represents a non-symmetric distribution and we must asses the characteristics of its shape in comparison to other possible features to determine how useful the feature.
+
+To consider the skewness of `bt_2`, closely observe the value of the lower quartile in comparison to the upper quartile. A good portion of observations are compressed to the 0 - 0.45 range. We can infer that anything less than 4 1/2 *IQR below Q3 appears to be an outlier*. So the majority of `bt_2`'s upper case words lie in the 3rd and 4th quartile range with the outliers of lower case words residing in the 1st and 2nd quartile ranges. 
+
+The lower quartile has between 1 and 6 varying sizes of peaks, indicating a non-symmetrical multimodal distribution, so `bt_2` has multiple modes (distinct peaks or local maxima) in the probability density function. `bt_2` could be multimodal for a number of reasons. There could be patterns or the user may have a preference toward using upper case words, which in the context of social media is the equivalent of shouting.
+
+This could also be a sign of an overlapping distribution, which means a more distinct pattern could lie within this feature, leading me to believe that the signal needs to be further deconstructed. For example, words that are not actually uppercase could somehow be leaking into words that are uppercase creating a noisy feature. 
+
+With all of this in mind its easy to assume that most if not all of the data is multimodal, so it's hard to say whether or not any features extracted from the users will be good, "off the shelf" predictors. We can explore the user features in a higher dimensional space to explore this assumption.
+
+Another relevant feature produced by the number of title case words.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101387175-155e2380-388c-11eb-88d7-3d8181a5dc94.png" width="500">
+
+<br/>
+
+Lastly, the average length of words produces nothing relevant.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101387305-43436800-388c-11eb-9247-f2aab2d53519.png" width="500">
+
+<br/>
+
+There's absolutely no way we can talk about feature extraction without acknowledging sentiment. The main reason sentiment analysis is so difficult is that words often take different meaning depending on the domain in which they are being used. This is why out-of-the-box analysis tools to categorize sentiment across many domains do not exist.
+
+Be that as it may, my basic intuitions regarding this dataset dictate that funny, negative and sarcastic sentiment contains slightly more words than positive sentiment. But in the same breath, various forms of a single word will be associated with varying sentiment and not all words are used in their literal context. 
+
+To illustrate this example, let's turn our attention to the parts of speech... 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101387676-c9f84500-388c-11eb-8f23-764b9e67c035.png" width="400">
+
+<br/>
+
+...used in a few text examples derived from varying points in the corpus. Notice how the tagged parts of speech are similar in these two sentences...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101387946-396e3480-388d-11eb-96c9-6bd58e72ef42.png" width="400">
+<img src = "https://user-images.githubusercontent.com/29679899/101388090-7b977600-388d-11eb-8132-9a73c2e89a61.png" width="600">
+
+```python
+1st sentence character count: 19 
+2nd sentence character count: 38
+total: 57 sentences primarily made up of adjectives and verbs
+```
+
+<br/>
+
+...and these two sentences also share their own similar sentiment pattern...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101388350-d16c1e00-388d-11eb-9488-b1b9bc7c65ae.png" width="680">
+<img src = "https://user-images.githubusercontent.com/29679899/101388381-ddf07680-388d-11eb-8de2-bbfb7d2b54b8.png" width="400">
+
+```python
+1st sentence character count: 92 
+2nd sentence character count: 26
+total: 118 sentences primarily made up of prepositions and nouns
+```
+
+<br/>
+
+...a rather naive pattern at this point because all four of them share similar parts of speech, but based on this simple intuition, we may be able to reinforce these part of speech priors and weigh them against sentiment in some meaningful way during topic modeling.
