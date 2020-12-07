@@ -96,7 +96,7 @@ This illustration of gradient descent is important to us because of the parallel
 
 <br/>
 
-These philosophical, yet mildly shallow implications even ring true for the hairy ball theorem[<a href="https://youtu.be/B4UGZEjG02s" title="The hairy ball theorem" rel="nofollow">'</a>].
+These philosophical implications even ring true for the hairy ball theorem[<a href="https://youtu.be/B4UGZEjG02s" title="The hairy ball theorem" rel="nofollow">'</a>].
 
 As I try to organize some of my high level thoughts on the role that  visualization plays in understanding how computers learn, one thing is certain. The rich connection between distilling data into something useful and trying to understand the abstractions of learning machines is something that will continually spark my enthusiasm for artificial intelligence. 
 
