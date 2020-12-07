@@ -14,13 +14,13 @@ The design was simple...
 
 ...but we ran into a few challenges that were pretty common that could trip up anyone attempting to take on such an ambitious task. It was my first time playing in the AWS sandbox, and there were many moments to learn.
 
-## AWS Glue is not a one size fits all solution 
+## aWS glue is not a one size fits all solution 
 
 Glue is managed in Apache Spark, and it's not a fully mature ETL framework like Pentaho or Talend. There is a limit to the scalability of AWS Glue unless you're defining your logic in something more functional like pure Spark or Scala rather than Glue specific syntax, which is what we needed to do.
 
 Glue also has issues its not entirely upfront about, such as their code structures needing to be organized in specific ways. There are soft limits on running concurrent jobs. It does not support reading/writing multiple dataframes in parallel from different data sources which means structuring the ETL for star schemas is not manageable in a meaningful way that allows for seamless workflow orchestration. In the end, we pivoted our design and just went with a flattened schema.
 
-## For file formatting, always use parquet over csv
+## for file formatting, always use parquet over csv
 
 To build scalable data pipelines, we need to switch from using local files, like CSVs, to distributed data sources, such as Parquet files on S3. We were loading tables from an OLTP database, which is a row store, to Redshift, which is a columnar database, so we needed the data to represent this optimization.
 
@@ -44,7 +44,7 @@ After investigating the source code, I figured out that one of the functions run
 
 At that point the problem was as easy as removing the MD5 function so the modulus could just run on the key we were partitioning on and after that our jobs were able to run in a half hour with a lot less overhead.
 
-## Partition on evenly distributed fields
+## partition on evenly distributed fields
 
 A Spark application is executed in 3 steps:
 
@@ -56,14 +56,14 @@ A Spark application is executed in 3 steps:
 
 Shuffle boundaries are important because they dictate how the data between workers are transported across a Spark clusters network. They basically redistribute data so it can be grouped differently across partitions. This operation is VERY expensive so its important that you partition your data based on an evenly distributed column like an id or key so the amount of data across your clusters are balanced. Be wary if you're working with funky UUID columns that overly represent particular values.
 
-## Always tune your number of partitions
+## always tune your number of partitions
 
 The number by which you partition your data will always be unique to your datasets. There is no one size fits all and for our use case we were only dealing with millions of comparisons so between 120 and 144 partitions got our larger jobs done. We also saw savings in cost by dynamically changing our workers and cores during job runs.
 
-## Visualizing the movement of your data will save you time
+## visualizing the movement of your data will save you time
 
 Not only will it save you time, but it will save you money and help you optimize your jobs. Diagnostic visualizations will give you insight into why jobs are failing, you can see how your data is distributed across your executors, how your data is moving, the shuffle of your partitions, and the cpu load between your driver and executors.
 
-## Conclusion
+## conclusion
 
 I honestly wish I had some of the insight here when I was asking myself, *"What am I doing wrong?"* or *"How can I make this run more efficiently"*. It reminds me of that saying, *"Experience is something you don't get until just after you need it"*. Regardless, the experience was great and we were able to deliver. While data engineering is sort of an under appreciated layer in the data science stack, I think businesses are realizing that without the correct plumbing they'll quickly find themselves in a classic garbage in garbage out scenario. 
