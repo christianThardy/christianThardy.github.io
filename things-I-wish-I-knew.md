@@ -14,7 +14,7 @@ The design was simple...
 
 ...but we ran into a few challenges that were pretty common that could trip up anyone attempting to take on such an ambitious task. It was my first time playing in the AWS sandbox, and there were many moments to learn.
 
-## aWS glue is not a one size fits all solution 
+## aws glue is not a one size fits all solution 
 
 Glue is managed in Apache Spark, and it's not a fully mature ETL framework like Pentaho or Talend. There is a limit to the scalability of AWS Glue unless you're defining your logic in something more functional like pure Spark or Scala rather than Glue specific syntax, which is what we needed to do.
 
