@@ -186,6 +186,7 @@ for data_message in data_message:
     messages = data_message.get('_3-96 _2let')
     d.writerow([messages])
 ```
+<br/>
 
 # 2. initial data exploration 
 
@@ -508,6 +509,8 @@ The possibility of using a sophisticated method of sampling is always present. W
 
 Given that I would like a fast, inexpensive and easy technique, I will randomly use `bt_4` as my initial sample as `bt_4` appears to be the perfect size. Not too big, not too small...
 
+<br/>
+
 ```python
 # sample: bt_4
 
@@ -524,6 +527,8 @@ print('bt_4 data shape: ', bt_4.shape)
 For this initial text preprocessing phase I'll use the spacy (NLP python library) pipeline feature to process 500 samples of `bt_4`'s text at a time to grab the sample word vectors and format them into numpy arrays. 
 
 The first part of the code is used to clean the text by lemmatizing the words and removing personal pronouns,--in `spacy` the lemmatized string of personal pronouns is `'-PRON-'` --stop words and punctuations. We'll dive deeper into the granular intricacies of text preprocessing later on, so for the sake of brevity let's dive into the code. 
+
+<br/>
 
 ```python
 # create function to clean up text by removing personal pronouns, stopwords and punctuation
@@ -548,7 +553,11 @@ def cleanup_text(docs, logging=False):
     return pd.Series(texts)
 ```
 
+<br/>
+
 The next few lines of code will obtain all the words from `bt_4`'s message feature and put them in a list. Then the text will be cleaned using the `clean_text` function, which will remove common stop words, punctuation and make all words lowercase. Next, all of the 's will be removed because `spacy` doesn't remove this contraction when lemmatizing words. Lastly the count occurrences of all words are gathered.
+
+<br/>
 
 ```python
 # collect all text associated to bt_4
@@ -568,7 +577,11 @@ bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
 bt_4_common_counts = [word[1] for word in bt_4_counts.most_common(30)]
 ```
 
+<br/>
+
 After the text has been preprocessed, the 30 most frequently occurring words for `bt_4` are visualized using `matplotlib` and `seaborn`.
+
+<br/>
 
 ```python
 # plot 30 most commonly occuring words
@@ -635,6 +648,8 @@ Violin plots are useful to us because they they visually show us the most import
 <br/>
 
 Executing this code let's us visualize each users distribution.
+
+<br/>
 
 ```python
 # dependencies
