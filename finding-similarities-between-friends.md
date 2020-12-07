@@ -132,7 +132,6 @@ Web pages are nice when you're browsing the internet, but analyzing the text wou
 In the gif above all the information we need is nested within div tags. A div tag is simply a container that encloses page elements in an html file and divides the html file into sections. What we're interested in is what's inside the div containers. Specifically the user names, which are in the `"_3-96 _2pio _2lek _2lel"` div class, their messages are in the `"_3-96 _2let"` div class and the date & time is in the `"_3-94 _2lem"` div class. The div classes--which is where your distinctive markers will usually reside--within the nested div tags contain unique identifiers that will allow us to extract all the div containers that have class attribute `"_3-96 _2pio _2lek _2lel"`, `"_3-96 _2let"` or `"_3-94 _2lem"`. We can scrape each users text, dates and times from this web page, because each piece of information is nested within a particular variable. To scrape the text, we will use a common parsing module called BeautifulSoup.
 
 ```python
-
 # dependencies
 import bs4
 import csv
@@ -140,7 +139,6 @@ import urllib
 import pandas as pd
 from bs4 import BeautifulSoup
 from urllib.request import Request
-
 ```
 
 In the figure above, the `bs4` element will represent a `BeautifulSoup` variable, which will represent the entire html document. More importantly, its a tag object that represents any number of methods that will allow you to replace strings with other strings, define methods for navigating and looking through parse trees etc. 
@@ -148,12 +146,10 @@ In the figure above, the `bs4` element will represent a `BeautifulSoup` variable
 `urllib.request` is an element that defines a set of functions and classes that will open the URL location of the html file. More specifically, the `Request` method allows vanilla HTTP requests to execute, alleviating the need to encode parameters (it has a built in JSON decoder) and it simply takes a dictionary as an argument. This method will make importing the raw html file into the script very easy. Python will then read the contents of the `bt_message_data` variable as a large string that `BeautifulSoup` will process and the `csv` element will export the processed text into a tabular format.
 
 ```python
-
 bt_message_data = urllib.request.urlopen('file:///Users/christianth/Downloads/facebook-christianhardy1023%20(1)/messages/bluestraveler2000_6dec36cd06/message.html', timeout=1)
 
 bt = bt_message_data.read()
 soup = bs4.BeautifulSoup(bt, 'html.parser') 
-
 ```
 <img src="https://user-images.githubusercontent.com/29679899/101291640-509f1a80-37d8-11eb-927f-3f6207fd270b.PNG" width="450px">
 
@@ -162,7 +158,6 @@ Now that the scraping environment is set up, we can begin the process of extract
 Earlier I mentioned how `BeautifulSoup` can define methods for searching through parse trees for specific pieces of data. The `data_name`, `data_date_time` and `data_message` variables contain the soup which is appended to the `find_all()` method. By passing the specified div classes as arguments to `find_all()`, it is now possible to extract the `name`, `message` and `date/time` features from the html soup. Calling the `writerow()` function within a for loop will iterate each observation for a given user over the entirety of the html document and simultaneously write each observation to the CSV file created by `csv.writer()`.
 
 ```python
-
 # names of users 
 d = csv.writer(open('bt_name_data_R.csv', 'w'))
 d.writerow('Name')
@@ -186,7 +181,6 @@ data_message = soup.find_all('div', class_ = '_3-96 _2let')
 for data_message in data_message:
     messages = data_message.get('_3-96 _2let')
     d.writerow([messages])
-
 ```
 
 # 2. initial data exploration 
@@ -194,7 +188,6 @@ for data_message in data_message:
 Datasets are like a good satirical bildungsroman[<a href="https://en.wikipedia.org/wiki/Bildungsroman" title="What is a bildungsroman" rel="nofollow">'</a>]. They will give you many ambiguous ideas, and sometimes they will even have an interesting story to tell. Exploring your data is a very important pillar of data analysis, because it gives a sense of what can be done with it and what may be possible. The first few reduction methods in this post will attempt to deconstruct the signal in our dataset into a set of features that will help our algorithms learn something meaningful. The only way you can handcraft good features for your data is by visualizing it, and after extracting the text from the html file and exporting everything into a nice tabular format, our first visualization is just a matter of several dependencies and less than 10 lines of code.
 
 ```python
-
 # dependencies
 import pandas as pd
 import string
@@ -205,7 +198,6 @@ from nltk.corpus import stopwords
 import re
 stopwords = stopwords.words('english')
 color = sns.color_palette()
-
 ```
 
 `pandas` will allow the text to be read into python, and allow easy handling of various data structures, as well as providing a few other tools for data manipulation. `string` is a built-in python class that gives us the ability to do complex variable substitutions and value formatting.  `matplotlib` is a popular visualization tool that's built on the `numpy` and `scipy` frameworks and is capable of simple 2D plots with limited 3D support. We'll also use `seaborn`, a visualization library based on `matplotlib`. For our use case it explicitly supports relational, and categorical related visualizations as well as an API that supports distributions.  
@@ -215,12 +207,10 @@ The `collections` module can implement unique container datatypes that give us o
 During this initial exploration, we'll want to isolate and remove a significant portion of frequently used common words that have little contextual meaning on their own. To do this we'll need the `stopwords` object. Stop words can include words like `'the, and, in, of, to'` etc. These frequent, grammatical filler words play an important role in grammar. For instance, when predicting which word should come next in a sequence of words for a natural language generation or understanding task, but this part of the analysis is not complex enough to warrant that level of minuet understanding. 
 
 ```python
-
 # data
 dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna('')
 # shape of data
 print("Training Data Shape : ", dataset.shape)
-
 ```
 
 `pd.read_csv` is a function in `pandas` that allows data to pass into python, but unlike python's native `.read()` function, we can perform containerization operations that are exclusive and specific to the pandas library. `pd.read_csv` is contained within the dataset variable which is then used to determine the shape of the data using the .shape function. After executing these two lines of code, a `pandas` matrix is returned. A matrix in pandas is synonymous with arrays in python. Arrays are data structures that can hold any rendition of data in a structured way, and a matrix is simply a two-dimensional data structure where numbers are arranged into rows and columns. The returned integer tells us that there are 302,731 rows, within the table and 4 columns in a 2-dimensional state. 
@@ -232,7 +222,6 @@ Since each users response in the app is dictated by the amount of times they sen
 `sns.barplot` supports the input data from `.index`, which specifies where the index values begin, and we use this to access the `pandas` data frame within the names variable, and `.values` allows the index values to be displayed. alpha specifies a semi-translucent tone to the bar plot and color simply returns a color for the bars. `plt.xlabel` and plt.ylabel applies a label to the `x/y` axis and `plt.show()` allows us to visualize the 6 lines of code.
 
 ```python
-
 # number of occurances for each user
 names = dataset['Name'].value_counts()
 plt.figure(figsize=(12,4)) # 36,16 # 12,4
@@ -240,7 +229,6 @@ sns.barplot(names.index, names.values, alpha=0.8, color=color[1])
 plt.ylabel('Number of Occurrences', fontsize=12)
 plt.xlabel('User Name', fontsize=12)
 plt.show()
-
 ```
 
 <img src = "https://user-images.githubusercontent.com/29679899/101365465-d4f1ac00-3871-11eb-8d89-fc8f2a8e3155.png" width="700px">
@@ -250,7 +238,6 @@ plt.show()
 In the order from greatest to least, `bt_1` has the most frequent occurrences, `bt_2` has the second most frequent occurrences, `bt_3` and `bt_4` have about the same as each other, etc.
 
 ```python
-
 bt_1 = 80,000
 
 bt_2 = 60,000
@@ -514,12 +501,10 @@ The possibility of using a sophisticated method of sampling is always present. W
 Given that I would like a fast, inexpensive and easy technique, I will randomly use `bt_4` as my initial sample as `bt_4` appears to be the perfect size. Not too big, not too small...
 
 ```python
-
 # sample: bt_4
 bt_4 = pd.read_csv('bt_4.csv').fillna('')
 # shape of data
 print('bt_4 data shape: ', bt_4.shape)
-
 ```
 
 ## `bt_4 data shape:  (38954, 4)`
@@ -531,7 +516,6 @@ For this initial text preprocessing phase I'll use the spacy (NLP python library
 The first part of the code is used to clean the text by lemmatizing the words and removing personal pronouns,--in `spacy` the lemmatized string of personal pronouns is `'-PRON-'` --stop words and punctuations. We'll dive deeper into the granular intricacies of text preprocessing later on, so for the sake of brevity let's dive into the code. 
 
 ```python
-
 # create function to clean up text by removing personal pronouns, stopwords and punctuation
 import spacy
 nlp = spacy.load('en_core_web_sm')
@@ -551,13 +535,11 @@ def cleanup_text(docs, logging=False):
         tokens = re.sub('[^A-Za-z0-9]+', '', tokens)
         texts.append(tokens)
     return pd.Series(texts)
-
 ```
 
 The next few lines of code will obtain all the words from `bt_4`'s message feature and put them in a list. Then the text will be cleaned using the `clean_text` function, which will remove common stop words, punctuation and make all words lowercase. Next, all of the 's will be removed because `spacy` doesn't remove this contraction when lemmatizing words. Lastly the count occurrences of all words are gathered.
 
 ```python
-
 # collect all text associated to bt_4
 bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
 # clean bt_4 text
@@ -569,19 +551,16 @@ bt_4_clean = [word for word in bt_4_clean if word != '\'s']
 bt_4_counts = Counter(bt_4_clean)
 bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
 bt_4_common_counts = [word[1] for word in bt_4_counts.most_common(30)]
-
 ```
 
 After the text has been preprocessed, the 30 most frequently occurring words for `bt_4` are visualized using `matplotlib` and `seaborn`.
 
 ```python
-
 # plot 30 most commonly occuring words
 plt.figure(figsize=(20, 12))
 sns.barplot(x=bt_4_common_words, y=bt_4_common_counts)
 plt.title('Most Common Words used by bt_4')
 plt.show()
-
 ```
 
 <img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600px">
@@ -642,7 +621,6 @@ Violin plots are useful to us because they they visually show us the most import
 Executing this code let's us visualize each users distribution.
 
 ```python
-
 # dependencies
 import warnings
 warnings.filterwarnings('ignore')
@@ -678,7 +656,6 @@ dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in 
 
 # average length of the words in the text 
 dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
-
 ```
 
 <img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500px">
@@ -828,7 +805,6 @@ total: 118 sentences primarily made up of prepositions and nouns
 The parts of speech used in the corpus are obviously varying for each user, denoting 6 more possible features that we can use, bringing our final total number of handcrafted features for each user to 11:
 
 ```python
-
 number of words in text
 characters and special characters in the text
 stop words
