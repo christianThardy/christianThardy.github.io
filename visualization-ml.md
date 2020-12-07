@@ -76,7 +76,7 @@ As illustrated in the gif above, topology applied to data and neural networks is
 
 Given the connection between data, neural networks and topology, visualizations like the gif above open a door in helping us to understand what a neural network is really doing when its trying to approximate a representation. This helps to deepen our intuition regarding feature spaces, high/low dimensional qualities of data and latent structures in large datasets[<a href="https://www2.math.upenn.edu/~ghrist/preprints/nieuwarchief.pdf" title="Homology research paper" rel="nofollow">4</a>]. 
 
-In the absence of a visualization or intuitive illustration, describing something like gradient descent['] would be tricky. As its visual, physical representation are just real numbers starting with some very high value and descending through time until it reaches some optimal value...
+In the absence of a visualization or intuitive illustration, describing something like gradient descent would be tricky. As its visual, physical representation are just real numbers starting with some very high value and descending through time until it reaches some optimal value...
 
 ![giphy](https://user-images.githubusercontent.com/29679899/101287170-9ea62500-37bc-11eb-89dc-9a7aa19de85c.gif)
 
