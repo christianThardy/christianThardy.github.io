@@ -907,23 +907,19 @@ for i in range(0, 38954):
 Or regex, is basically a specialized text based programming language native to python that allows you to define text patterns. With this pattern you can use regex commands to find or find and replace text. Simply put, you can define instructions for the set of possible strings that you want to match, and you can change them by deconstructing them in various ways. 
  
 In this alphanumeric example, the first visual field is a representation of the regular expression and will show us how a pattern is processed by the regex language. The first text field represents the regex that we will write and the second text field represents the text that we would like to match, and will be manipulated by the regex in the first text field.
-
 <br/>
 
 <img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650">
 
 <br/>
-
-The caret symbol in the first line of the first text field will match the beginning of the expression [^a-z] to whatever it is that we want to specify, which are the letters A through Z. We're explicitly telling regex that if all of the characters in the sentence that we want to match in the third box fall under a pattern of being the first lowercase word in a sentence and contains the letters A through Z, that a successful match on the target text has been made. 
+The caret symbol in the first line of the first text field will match the beginning of the expression `[^a-z]` to whatever it is that we want to specify, which are the letters A through Z. We're explicitly telling regex that if all of the characters in the sentence that we want to match in the third box fall under a pattern of being the first lowercase word in a sentence and contains the letters A through Z, that a successful match on the target text has been made. 
 
 After regex matches our argument to the target text, I'll place a pipe symbol `'|'` after the first expression and define a second argument `[_A-Z]` that will match Unicode word characters; this includes most characters that can be part of a word in any language, as well as numbers and the underscore symbol. Another pipe symbol is used and the last expression `[0-9]` matches any Unicode decimal digit, which there is clearly a digit in our sentence. The regex matches the targeted digit concluding our search pattern definitions. 
- 
 <br/>
 
 <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
 
 <br/> 
- 
 The pattern of the regular expression as seen in the example are used to specify a set of strings that match our text preprocessing requirements and all three patterns match all of the characters within the target string, which tells us that all three or a variation of each expression can be used when cleaning `bt_4`'s text of unicode characters, numbers, emoji, punctuation and capitalization. 
 
 <br/>
