@@ -864,8 +864,7 @@ In this section, `bt_4` will undergo further preprocessing to reduce her corpus 
 The dependencies for this section will include a few that we're familiar with like, `numpy` and `pandas`. Then we have `re`, `PorterStemmer` (removes morphological affixes) and the stopwords module from `nltk`, python's custom `stopwords` list, and another `STOPWORDS` list from the `gensim` module. The combined strength of our new stop word lists contains 3x the common filler words used in the list from the previous sampling section.  
 
 ```python
-# Cleaning/refining the sample
-
+# dependencies
 import pandas as pd
 dataset = pd.read_csv('bt_4.csv').fillna('')
 
@@ -885,6 +884,8 @@ Another stop word list was included inside of the extra_stopwords variable (whic
 
 To initiate the second phase of text preprocessing, we need a `for` loop to iterate over all of the remaining words in `bt_4`'s corpus. Before we write the loop, the corpus variable needs to be established so that at the end of the loop, all of the cleaned text can be appended to the new corpus list. To initialize the `for` loop iterations, the range of the loop will be equivalent to the number of observations within `bt_4`'s corpus `(0, 38954)`. When looking at the previous code examples, while you may be aware of what regex (regular expression) commands may look like `(re)`, lets dive deeper into what they are and how they're helping us preprocess `bt_4`'s text. 
 
+<br/>
+
 ```python
 corpus = []
 for i in range(0, 38954):
@@ -899,6 +900,7 @@ for i in range(0, 38954):
     clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
     corpus.append(clean_text) 
 ```
+<br/>
 
 # regular expressions
  
@@ -914,7 +916,7 @@ In this alphanumeric example, the first visual field is a representation of the 
 
 The caret symbol in the first line of the first text field will match the beginning of the expression [^a-z] to whatever it is that we want to specify, which are the letters A through Z. We're explicitly telling regex that if all of the characters in the sentence that we want to match in the third box fall under a pattern of being the first lowercase word in a sentence and contains the letters A through Z, that a successful match on the target text has been made. 
 
-After regex matches our argument to the target text, I'll place a pipe symbol '|' after the first expression and define a second argument `[_A-Z]` that will match Unicode word characters; this includes most characters that can be part of a word in any language, as well as numbers and the underscore symbol. Another pipe symbol is used and the last expression `[0-9]` matches any Unicode decimal digit, which there is clearly a digit in our sentence. The regex matches the targeted digit concluding our search pattern definitions. 
+After regex matches our argument to the target text, I'll place a pipe symbol `'|'` after the first expression and define a second argument `[_A-Z]` that will match Unicode word characters; this includes most characters that can be part of a word in any language, as well as numbers and the underscore symbol. Another pipe symbol is used and the last expression `[0-9]` matches any Unicode decimal digit, which there is clearly a digit in our sentence. The regex matches the targeted digit concluding our search pattern definitions. 
  
 <br/>
 
