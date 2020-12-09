@@ -134,6 +134,8 @@ In the gif above all the information we need is nested within div tags. A div ta
 ```python
 # dependencies
 
+import warnings
+warnings.filterwarnings('ignore')
 import bs4
 import csv
 import urllib
@@ -195,7 +197,6 @@ Datasets are like a good satirical bildungsroman[<a href="https://en.wikipedia.o
 ```python
 # dependencies
 
-import pandas as pd
 import string
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -516,7 +517,7 @@ Given that I would like a fast, inexpensive and easy technique, I will randomly 
 ```python
 # sample: bt_4
 
-bt_4 = pd.read_csv('bt_4.csv').fillna('')
+bt_4 = dataset['Name'] == 'bt_4'
 
 # shape of data
 print('bt_4 data shape: ', bt_4.shape)
@@ -538,6 +539,7 @@ The first part of the code is used to clean the text by lemmatizing the words an
 import spacy
 nlp = spacy.load('en_core_web_sm')
 punctuations = string.punctuation
+
 def cleanup_text(docs, logging=False):
     texts = []
     counter = 1
@@ -656,15 +658,7 @@ Executing this code let's us visualize each users distribution.
 ```python
 # dependencies
 
-import warnings
-warnings.filterwarnings('ignore')
-import pandas as pd
-import string
 import numpy as np
-from nltk.corpus import stopwords
-
-# data
-dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna('nan')
 stopwords = stopwords.words('english') 
 
 # number of words in the text 
@@ -865,19 +859,17 @@ The dependencies for this section will include a few that we're familiar with li
 
 ```python
 # dependencies
-import pandas as pd
-dataset = pd.read_csv('bt_4.csv').fillna('')
 
 extra_stopwords = []
 bt_4_additional_stopwords = extra_stopwords
 
-import re
 import nltk
 import gensim
-from nltk.corpus import stopwords
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer 
 from gensim.parsing.preprocessing import STOPWORDS
+
+bt_4_dataset = pd.read_csv('bt_4.csv').fillna('')
 ```
 
 Another stop word list was included inside of the extra_stopwords variable (which will remain unseen), which contains a custom list that takes a lot of dialectal social media language into account that is specific to each user. So words like `bcuz, www, cuz, kno, nah, tht, woof, tho, irl` etc. will be excluded.  
@@ -889,7 +881,7 @@ To initiate the second phase of text preprocessing, we need a `for` loop to iter
 ```python
 corpus = []
 for i in range(0, 38954):
-    clean_text = re.sub('[^a-zA-Z]', ' ', str(dataset['Message'][i]))
+    clean_text = re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
     corpus.append(clean_text) 
 ```
 
@@ -929,7 +921,7 @@ The pattern of the regular expression as seen in the example are used to specify
 To illustrate how each cleaning technique works, at random we'll sample the 1000th document from `bt_4`'s corpus. 
 
 ```python
-clean_text = dataset['Message'][1000]
+clean_text = bt_4_text[1000]
 ```
 ## `Goddamn season 2 of Queer Eye`
 <br/>
@@ -943,7 +935,7 @@ The first parameter of the sub function will specify what we don't want removed 
 When we remove characters from the 'Message' feature vector, the two characters that are at the left and right of the character being removed will end up sticking together and possibly form a nonsensical compound word. So we'll input `' '` as another parameter for the sub function to replace the character that's being removed, by another character which will be represented by a space. 
 
 ```python
-clean_text = re.sub('[^a-zA-Z]', ' ', str(dataset['Message'][i]))
+clean_text = re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
 ```
 ## `Goddamn season  of Queer Eye`
 
