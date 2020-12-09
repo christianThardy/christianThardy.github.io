@@ -83,7 +83,7 @@ Words can also be moved from the buffer directly into the output stack when the 
 
 So we `SHIFT` once and `[Christian]` moves from the buffer to the stack. We `SHIFT` again and `[Hardy]` joins `[Christian]` on the stack as `[Christian, Hardy]`. The `REDUCE` operation is then used to put `[Christian Hardy]` on the `OUTPUT` stack and adds the label PERSON as `[(Christian Hardy)-PER]`.
 
-<img width="716" alt="parser" src="https://user-images.githubusercontent.com/29679899/101257477-bcf11f80-36ed-11eb-9a0a-05c26a264ce4.PNG">
+<img width="785" alt="1" src="https://user-images.githubusercontent.com/29679899/101699922-26549380-3a4a-11eb-99f9-3f68a1497186.PNG">
 
 Spacy bakes in a way for the algorithms to say some actions are valid and some are invalid, which is useful because if we show the algorithm training examples that we do not want tagged, the final model will not make predictions on words it's not sure about. 
 
