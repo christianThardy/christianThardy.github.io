@@ -155,7 +155,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-This helps take into account the ordering of words, which plays a big part in helping computers to understand language.
+This helps take into account the ordering of words, which plays a big part in helping computers to understand the syntax and semantics of human language.
 
 So if we train a state-based system on a piece of text like this...
 
