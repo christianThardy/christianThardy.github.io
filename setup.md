@@ -135,7 +135,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101639556-72c5b200-39fd-11eb-9655-9d9c8cfd30f0.PNG" width="600">
+<img src = "https://user-images.githubusercontent.com/29679899/101639556-72c5b200-39fd-11eb-9655-9d9c8cfd30f0.PNG" width="600px">
 
 <br/>
 
@@ -143,7 +143,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101631355-3476c580-39f2-11eb-85c9-ec6dd8ce6910.PNG" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101631355-3476c580-39f2-11eb-85c9-ec6dd8ce6910.PNG" width="300px">
 
 <br/>
 
@@ -151,7 +151,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101631390-40628780-39f2-11eb-905b-866ad4d95e85.PNG" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101631390-40628780-39f2-11eb-905b-866ad4d95e85.PNG" width="300px">
 
 <br/>
 
@@ -161,7 +161,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500">
+<img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500px">
 
 <br/>
 
@@ -169,7 +169,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101629780-da750080-39ef-11eb-9561-f546d369439c.PNG" width="590">
+<img src = "https://user-images.githubusercontent.com/29679899/101629780-da750080-39ef-11eb-9561-f546d369439c.PNG" width="600px">
 
 <br/>
 
@@ -177,7 +177,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101645923-e8814c00-3a04-11eb-903e-f1c43ef50256.png" width="1700">
+<img src = "https://user-images.githubusercontent.com/29679899/101670348-0a88c780-3a21-11eb-9345-46e29ac7a6f4.png" width="6000px">
 
 <br/>
 
