@@ -165,7 +165,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-...it's able to recognize the statistical distributions of `Christian` and `Karen` are very similar. The same can be said with `Belgrade` and `Valencia`. 
+...it's able to recognize the statistical distributions of `Christian` and `Karen` are very similar. The same can be said with `Belgrade` and `Valencia`... 
 
 <br/>
 
@@ -173,7 +173,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-The same can be said for any name, location, object or just about anything we would like. The take away here is that we can say that certain things are related and we can  process them in similar ways to derive meaning, and that's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define our view of text or the world.
+...and for any name, location, object or just about anything we would like. The takeaway here is that we can say that certain things are related and we can  process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define our view of text or the world.
 
 So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. 
 
