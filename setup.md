@@ -143,7 +143,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101628342-a8629f00-39ed-11eb-8e20-e6fd26e0e638.PNG" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101631355-3476c580-39f2-11eb-85c9-ec6dd8ce6910.PNG" width="300">
 
 <br/>
 
@@ -151,7 +151,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101628404-c4fed700-39ed-11eb-8a47-a70cdcf92afd.PNG" width="300">
+<img src = "https://user-images.githubusercontent.com/29679899/101631390-40628780-39f2-11eb-905b-866ad4d95e85.PNG" width="300">
 
 <br/>
 
