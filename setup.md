@@ -165,7 +165,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-...it's able to recognize the statistical distributions of `Christian` and `Karen` are very similar. Same with `Belgrade` and `Valencia`. 
+...it's able to recognize the statistical distributions of `Christian` and `Karen` are very similar. The same can be said with `Belgrade` and `Valencia`. 
 
 <br/>
 
