@@ -882,7 +882,7 @@ from gensim.parsing.preprocessing import STOPWORDS
 
 Another stop word list was included inside of the extra_stopwords variable (which will remain unseen), which contains a custom list that takes a lot of dialectal social media language into account that is specific to each user. So words like `bcuz, www, cuz, kno, nah, tht, woof, tho, irl` etc. will be excluded.  
 
-To initiate the second phase of text preprocessing, we need a `for` loop to iterate over all of the remaining words in `bt_4`'s corpus. Before we write the loop, the corpus variable needs to be established so that at the end of the loop, all of the cleaned text can be appended to the new corpus list. To initialize the `for` loop iterations, the range of the loop will be equivalent to the number of observations within `bt_4`'s corpus `(0, 38954)`. When looking at the previous code examples, while you may be aware of what regex (regular expression) commands may look like `(re)`, lets dive deeper into what they are and how they're helping us preprocess `bt_4`'s text. 
+To initiate the second phase of text preprocessing, we need a `for` loop to iterate over all of the remaining words in `bt_4`'s corpus. Before we write the loop, the corpus variable needs to be established so that at the end of the loop, all of the cleaned text can be appended to the new corpus list. To initialize the `for` loop iterations, the range of the loop will be equivalent to the number of observations within `bt_4`'s corpus `(0, 38954)`. 
 
 <br/>
 
@@ -890,16 +890,13 @@ To initiate the second phase of text preprocessing, we need a `for` loop to iter
 corpus = []
 for i in range(0, 38954):
     clean_text = re.sub('[^a-zA-Z]', ' ', str(dataset['Message'][i]))
-    clean_text = clean_text.lower()
-    clean_text = clean_text.split()
-    # text stemming & stop word removal
-    ps = PorterStemmer() 
-    clean_text = [ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
-    clean_text = [word for word in clean_text if not word in set(get_stop_words('english'))]
-    clean_text = [word for word in clean_text if word not in STOPWORDS]
-    clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
     corpus.append(clean_text) 
 ```
+
+<br/>
+
+When looking at the previous code examples, while you may be aware of what regex (regular expression) commands may look like `(re)`, lets dive deeper into what they are and how they're helping us preprocess `bt_4`'s text. 
+
 <br/>
 
 # regular expressions
@@ -907,11 +904,13 @@ for i in range(0, 38954):
 Or regex, is basically a specialized text based programming language native to python that allows you to define text patterns. With this pattern you can use regex commands to find or find and replace text. Simply put, you can define instructions for the set of possible strings that you want to match, and you can change them by deconstructing them in various ways. 
  
 In this alphanumeric example, the first visual field is a representation of the regular expression and will show us how a pattern is processed by the regex language. The first text field represents the regex that we will write and the second text field represents the text that we would like to match, and will be manipulated by the regex in the first text field.
+
 <br/>
 
 <img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650">
 
 <br/>
+
 The caret symbol in the first line of the first text field will match the beginning of the expression `[^a-z]` to whatever it is that we want to specify, which are the letters A through Z. We're explicitly telling regex that if all of the characters in the sentence that we want to match in the third box fall under a pattern of being the first lowercase word in a sentence and contains the letters A through Z, that a successful match on the target text has been made. 
 
 After regex matches our argument to the target text, I'll place a pipe symbol `'|'` after the first expression and define a second argument `[_A-Z]` that will match Unicode word characters; this includes most characters that can be part of a word in any language, as well as numbers and the underscore symbol. Another pipe symbol is used and the last expression `[0-9]` matches any Unicode decimal digit, which there is clearly a digit in our sentence. The regex matches the targeted digit concluding our search pattern definitions. 
@@ -920,6 +919,7 @@ After regex matches our argument to the target text, I'll place a pipe symbol `'
 <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
 
 <br/> 
+
 The pattern of the regular expression as seen in the example are used to specify a set of strings that match our text preprocessing requirements and all three patterns match all of the characters within the target string, which tells us that all three or a variation of each expression can be used when cleaning `bt_4`'s text of unicode characters, numbers, emoji, punctuation and capitalization. 
 
 <br/>
