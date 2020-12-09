@@ -159,6 +159,8 @@ This helps take into account the ordering of words, which plays a big part in he
 
 So if we train a state-based system on a piece of text like this...
 
+<br/>
+
 <img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500">
 
 <br/>
