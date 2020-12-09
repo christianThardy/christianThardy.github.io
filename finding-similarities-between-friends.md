@@ -925,3 +925,48 @@ The pattern of the regular expression as seen in the example are used to specify
 <br/>
 
 # cleaning the sample
+
+To illustrate how each cleaning technique works, at random we'll sample the 1000th document from `bt_4`'s corpus. 
+
+```python
+clean_text = dataset['Message'][1000]
+```
+## `Goddamn season 2 of Queer Eye`
+<br/>
+
+The `re.sub` method contained within the first `clean_text` variable of our upcoming for loop will eliminate all characters in `bt_4`'s messages except for letters.
+
+This means we'll be removing numbers, punctuation, emoji and keeping all letters from `A - Z`. It's debatable whether removing the punctuation in our text will increase or decrease positive affects from learning, but as this analysis is broadly exploratory, I do not think keeping the punctuation is necessary. 
+
+The first parameter of the sub function will specify what we don't want removed from the text, so all characters from `A - Z`. This is done by placing all characters from A to Z in upper and lowercase format inside of the regular expression: `'[^a-zA-Z]'`. `bt_4`'s messages will be another parameter for the function to specify to the regex where we want the characters from A to Z to remain.
+ 
+When we remove characters from the 'Message' feature vector, the two characters that are at the left and right of the character being removed will end up sticking together and possibly form a nonsensical compound word. So we'll input `' '` as another parameter for the sub function to replace the character that's being removed, by another character which will be represented by a space. 
+
+```python
+clean_text = re.sub('[^a-zA-Z]', ' ', str(dataset['Message'][i]))
+```
+## `Goddamn season  of Queer Eye`
+
+<br/>
+
+For the next step of the cleaning process we will lowercase all of the letters in each document of the corpus. We'll simply take the `clean_text` variable and on the other side of the equal operator call the same variable but add the `.lower()` method to the variable which takes a copy of a string as input and returns all lowercase strings.
+
+```python
+clean_text = clean_text.lower()
+```
+## `goddamn season  of queer eye`
+
+<br/>
+
+Next, we need to transform the output `'goddamn season  of queer eye'` so that its not represented as a sentence. Why would we want it to be anything other than a sentence? Each individual sentence within the corpus is composed of something called a token. Tokens are individualized representations of each word in the sentence. So each word in the sentence will stand on its own, but remain in the same sequence.
+ 
+Tokens are not word agnostic, they can include punctuation, emoji's, and ASCII characters. If some individual component of the document is important and can be a contributor to parsing the text, then we will use that component as a token, which leads us to the process of tokenization. When you have a document that you want to build as a bag-of-words model, its necessary to split each sentence up into a list of words which makes it easier for the model to process. In python this is done with the `.split()` method which we'll attach to the `clean_text` variable. 
+
+```python
+clean_text = clean_text.split()
+```
+## `['goddamn', 'season', 'of', 'queer', 'eye']`
+
+<br/>
+
+The `clean_text` variable is now a list of 5 elements, each element being an individual word or token that makes up this document. We can now create a series of for loops for our imported and custom stop words to go through the different words of `bt_4`'s list of tokens and remove the irrelevant words. This will help us retain only words that contribute to a sense of meaning within the sentence.
