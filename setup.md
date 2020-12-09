@@ -131,6 +131,65 @@ During the first step of learning, to give the network a representation of the t
 
 This allows us to learn about the input distribution of the incoming sentence from a set of compressed sentences (to maintain network efficiency) and allows the buffer and stack to interact with each other and efficiently check whether a token is a member of its respective set, as the final layer in the resCNN makes its prediction of the state of the input sequence operations. The lower the dimensionality of our inputs, the less memory we use because parsing web-scale text is computationally taxing and the network can make faster decisions. This representation is also easily reversible, so the output vectors can be mapped to their original tokens at prediction time.
 
+So, Bloom embeddings are prefered here because they give us a very basic data shape that we can manipulate very easily using similarity operations that let us easily feed our labled input forward through a neural network as a dense embedding where it becomes a vector that represents the sentence...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101628080-49048f00-39ed-11eb-9ba7-96ea791079cc.PNG" width="600">
+
+<br/>
+
+...where a sequence of sentences would hold multiple meanings...
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101628342-a8629f00-39ed-11eb-8e20-e6fd26e0e638.PNG" width="300">
+
+<br/>
+
+...and a final matrix representation would let us learn the meaning of sentences in context.
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101628404-c4fed700-39ed-11eb-8a47-a70cdcf92afd.PNG" width="300">
+
+<br/>
+
+This helps take into account the ordering of words, which plays a big part in helping computers to understand language.
+
+So if we train a state-based system on a piece of text like this...
+
+<img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500">
+
+<br/>
+
+...it's able to recognize the statistical distributions of `Christian` and `Karen` are very similar. Same with `Belgrade` and `Valencia`. 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101629780-da750080-39ef-11eb-9561-f546d369439c.PNG" width="500">
+
+<br/>
+
+The same can be said for any name, location, object or just about anything we would like. The take away here is that we can say that certain things are related and we can now process them in similar ways to derive meaning, and that's a very useful type of knowledge to have because we don't have to fully rely on expert systems to define our view of text or the world.
+
+So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. 
+
+```python
+features = doc2array([NORM, PREFIX, SUFFIX, SHAPE])
+norm = get_col(0) >> HashEmbed(128, 7500)
+prefix = get_col(1) >> HashEmbed(128, 7500)
+suffix = get_col(2) >> HashEmbed(128, 7500)
+shape = get_col(3) >> HashEmbed(128, 7500)
+
+embed_word = (
+  (norm | prefix | suffix | shape)
+  >> Maxout(128, pieces = 3)
+)
+```
+
+The key takeaway is that the majority of words in our text are going to end up with unique representations so the model is always able to learn new words in our vocabulary.
+
 <br/>
 
 ### References
@@ -140,3 +199,5 @@ Neural architectures for named entity recognition
 A survey on deep learning for named entity recognition
 
 Complex linguistic features for text classification: a comprehensive study
+
+Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models
