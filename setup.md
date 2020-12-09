@@ -177,7 +177,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101670348-0a88c780-3a21-11eb-9345-46e29ac7a6f4.png" width="6000px">
+<img src = "https://user-images.githubusercontent.com/29679899/101682721-fc8f7280-3a31-11eb-867c-58e3c33049bf.png" width="6000px">
 
 <br/>
 
