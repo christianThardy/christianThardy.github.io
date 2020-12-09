@@ -173,7 +173,15 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-...and for any name, location, object or just about anything we would like. The takeaway here is that we can say that certain things are related and we can  process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define a computer's view of text or the world.
+...and for any name, location, object or just about anything we would like. 
+
+<br/>
+
+<img src = "https://user-images.githubusercontent.com/29679899/101645923-e8814c00-3a04-11eb-903e-f1c43ef50256.png" width="1000">
+
+<br/>
+
+The takeaway here is that we can say that certain things are related and we can  process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define a computer's view of text or the world.
 
 So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. 
 
