@@ -135,7 +135,7 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101628080-49048f00-39ed-11eb-9ba7-96ea791079cc.PNG" width="600">
+<img src = "https://user-images.githubusercontent.com/29679899/101639556-72c5b200-39fd-11eb-9655-9d9c8cfd30f0.PNG" width="600">
 
 <br/>
 
