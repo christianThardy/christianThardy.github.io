@@ -868,8 +868,6 @@ import gensim
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer 
 from gensim.parsing.preprocessing import STOPWORDS
-
-bt_4_dataset = pd.read_csv('bt_4.csv').fillna('')
 ```
 
 Another stop word list was included inside of the extra_stopwords variable (which will remain unseen), which contains a custom list that takes a lot of dialectal social media language into account that is specific to each user. So words like `bcuz, www, cuz, kno, nah, tht, woof, tho, irl` etc. will be excluded.  
