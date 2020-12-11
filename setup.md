@@ -262,7 +262,13 @@ while not state.is_finished:
   state = action(state)
 ```
 
-When we put some of this logic together, the final actions of assigning the appropriate label is executed and when the best valid action is performed, the state-machine will go back to the next state and then proceed forward in the loop. A tensor embeds the words in the document which is fed to a cnn to consider the context of sentences, the state is initialized and we then step through the actions of the state-machine to get the probability of an action and penalize the validity of an action given the state
+When we put some of this logic together, the final actions of assigning the appropriate label is executed and when the best valid action is performed, the state-machine will go back to the next state and then proceed forward in the loop. A tensor embeds the words in the document which is fed to a cnn to consider the context of sentences, the state is initialized and we then step through the actions of the state-machine to get the probability of an action and penalize the validity of an action given the state.
+
+<br/>
+
+<p align="center">
+  <b><img src = "https://user-images.githubusercontent.com/29679899/101865085-52077480-3b43-11eb-9b27-297060c2e69f.jpg" width="400"></b><br>
+</p>
 
 <br/>
 
