@@ -135,7 +135,7 @@ Maybe we need a better optimization algorithm?
 
 In any case, we can explore this with a sensitivity analysis and look at gradient descent's effect on the input space to maybe interpret what's happening with the data as it goes through deeper layers. In any case, skip connections help give us an advantage. 
 
-During the first step of learning, to give the network a representation of the text so it can learn about its structure, we use dense Bloom embeddings to represent words in context to other words, because the distribution of target words or phrases that we would like to tag are highly dependent on the company they keep. 
+Words are highly dependent on the company they keep, so when they're represented as Bloom embeddings the distribution of the target words or phrases that we would like to tag can be learned in context during the first step of learning. 
 
 This allows us to learn about the input distribution of the incoming sentence from a set of compressed sentences (to maintain network efficiency) and allows the buffer and stack to interact with each other and efficiently check whether a token is a member of its respective set, as the final layer in the resCNN makes its prediction of the state of the input sequence operations. The lower the dimensionality of our inputs, the less memory we use because parsing web-scale text is computationally taxing and the network can make faster decisions. This representation is also easily reversible, so the output vectors can be mapped to their original tokens at prediction time.
 
@@ -199,9 +199,11 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-The takeaway here is that we can say that certain things are related and we can  process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define a computer's view of text or the world.
+The takeaway here is that we can say that certain things are related and we can process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define a computer's view of text or the world.
 
-So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. The feature object extracts four attributes from each token in a document that gives us a fuzzy, zoomed out shape of words to which the layer can learn, each column is then embedded into a table using the hashing trick to map the labeled input, which allows each word to have a very distinct representation. This embedding strategy is great because its computationally inexpensive and you can end up training your task with very few rows. As little as 400 would start to produce good results. Each of the four features output a vector, they are combined into another function which outputs a vector that is the concatenation of each of their pieces, which are then fed forward to a multi-layer perceptron of one hidden layer and a `Maxout` activation function.
+So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code will allow us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. 
+
+The feature object extracts four attributes from each token in a document that gives us a fuzzy, zoomed out shape of words to which the layer can learn, each column is then embedded into a table using the hashing trick to map the labeled input, which allows each word to have a very distinct representation. This embedding strategy is great because its computationally inexpensive and you can end up training your task with very few rows. As little as 400 would start to produce good results. Each of the four features output a vector, they are combined into another function which outputs a vector that is the concatenation of each of their pieces, which are then fed forward to a multi-layer perceptron of one hidden layer and a `Maxout` activation function.
 
 ```python
 features = doc2array([NORM, PREFIX, SUFFIX, SHAPE])
@@ -216,7 +218,7 @@ embed_word = (
 )
 ```
 
-The key takeaway is that the majority of words in our text are going to end up with unique representations so the model is always able to learn new words in our vocabulary.
+The key takeaway is that the majority of words in our text are going to end up with unique representations, so the model is always able to learn new words in our vocabulary.
 
 During the second step, we encode sentences from the data as token features in the shape of vectors, which represent the tokens in context. Now we can learn that phrases have different meanings, even if those phrases are processed into separate tokens. We can think of this as each vector being encoded with information from the surrounding context of other vectors.
 
