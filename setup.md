@@ -262,7 +262,7 @@ while not state.is_finished:
   state = action(state)
 ```
 
-When we put some of this logic together, the final actions of assigning the appropriate label is executed and when the best valid action is performed, the state-machine will go back to the next state and then proceed forward in the loop. A tensor embeds the words in the document which is fed to a cnn to consider the context of sentences, the state is initialized and we then step through the actions of the state-machine to get the probability of an action and penalize the validity of an action given the state.
+When we put some of this logic together, the final actions of assigning the appropriate label is executed and when the best valid action is performed, the state-machine will go back to the next state and then proceed forward in the loop. A tensor embeds the words in the document which is fed to a cnn to consider the context of sentences, the state is initialized and we then step through the actions of the state-machine to get the probability of an action and penalize the validity of an action given the state. So basically what I'm saying is:
 
 <br/>
 
@@ -272,7 +272,7 @@ When we put some of this logic together, the final actions of assigning the appr
 
 <br/>
 
-Algorithms are very cool, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps as a data scientist. 
+They're very cool and all, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps as a data scientist. 
 
 Architectures and methods will continually change, but understanding the business requirements will always be in fashion. Breaking the problem down into small simple tasks, where you understand the meaning of your entities, therefore understand the objectives of the output so you can perform experiments as quickly as possible will always be the best first step.
 
