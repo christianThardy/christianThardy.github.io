@@ -183,7 +183,7 @@ So if we train a state-based system on a piece of text like this...
 
 The takeaway here is that we can say that certain things are related and we can  process them in similar ways to derive meaning. That's a very useful type of knowledge to have because we don't have to fully rely on expert/symbolic systems to define a computer's view of text or the world.
 
-So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. 
+So instead of having a fixed view of an embedding table and saying that all words outside of the table share a single out-of-vocabulary vector, this snippet of code allows us to mod the words into the table so we have some long hash string and lots of words will end up with the same vector representation. The feature object extracts four attributes from each token in a document that gives us a fuzzy, zoomed out shape of words to which the layer can learn, each column is then embedded into a table using the hashing trick to map the labeled input, which allows each word to have a very distinct representation. This embedding strategy is great because its computationally inexpensive and you can end up training your task with very few rows. As little as 400 would start to produce good results. Each of the four features output a vector, they are combined into another function which outputs a vector that is the concatenation of each of their pieces, which are then fed forward to a multi-layer perceptron of one hidden layer and a `Maxout` activation function.
 
 ```python
 features = doc2array([NORM, PREFIX, SUFFIX, SHAPE])
@@ -199,6 +199,86 @@ embed_word = (
 ```
 
 The key takeaway is that the majority of words in our text are going to end up with unique representations so the model is always able to learn new words in our vocabulary.
+
+During the second step, we encode sentences from the data as token features in the shape of vectors, which represent the tokens in context. Now we can learn that phrases have different meanings, even if those phrases are processed into separate tokens. We can think of this as each vector being encoded with information from the surrounding context of other vectors.
+
+So we end up with word representations that are specific to the types of problems that we're dealing with. The resCNN does this by creating a window around either side of our words to extract them. The most important part here is the trigram layer, which takes a window on either side of the word, concatenates them together so that if we end up with something like 128 dimensions on either side of the word, we'll end up with 384 dimensions for each word. 
+
+From there, a multilayer perceptron with a `Maxout` activation is used to take that input representation and map it back to 128 dimensions. So we're mixing the information from the two words on either side of our target word to produce an output vector that is of the same dimensionality. So we relearn what this word means based on the company of words it keeps on either side.  
+
+```python
+trigram_cnn = (
+  ExtractWindow(nW = 1) >> Maxout(128, pieces = 3)
+)
+```
+
+When we stack 4 of these residual layers, we end up with 4 representations of vectors that are sensitive to the context of the words on either side of the target word.
+
+So in the first layer we're sensitive to 1 word on either side, in the second layer we're sensitive to 2 words on either side, in the third layer we're sensitive to 3 words on either side and finally in layer 4 we're able to look at 4 words on either side of all words. The residual connection has an interesting effect in that the output space from each connection is likely to be similar to the output space of the input. So the spacy input vector isn't changing that much which helps the network keep the context of the words as structured as the original input while trying to learn its context. 
+
+```python
+encode_context = (
+  embed_word
+  >> Residual(trigram_cnn)
+  >> Residual(trigram_cnn)
+  >> Residual(trigram_cnn)
+  >> Residual(trigram_cnn)
+)
+```
+
+In the third step, the network needs to learn what to pay attention to. It's not like the attention we're all used to from transformer heads, it's more like a summarization of the inputs by taking one vector per word...
+
+<br/>
+
+<img width="2000" alt="4" src="https://user-images.githubusercontent.com/29679899/101861514-39e12680-3b3e-11eb-8f1b-b42820e5963e.PNG">
+
+<br/>
+
+...and calculating a vector based on the surroundings of that target word or the weighted summary of each vector calculated in context. 
+
+This is basically manual feature extraction, but can be understood in the same way. So you take the first word immediately before the buffer, the word immediately after it then we take the vector assigned to the first word of the previous entity, the last word of the previous entity and the last word of the entity before that to manually start our feature extraction. By doing it this way we can come up with an arbitrary number of feature functions to parse text through the stack and buffer to come up with elegant ways to find the entities for our problem.
+
+```python
+state2vec = (
+  tensor[state.buffer(0)]
+  | tensor[state.buffer(-1)]
+  | tensor[state.buffer(1)]
+  | tensor[state.buffer(0)]
+  | tensor[state.buffer(-1)]
+  | tensor[state.buffer(1)]
+) >> Maxout(128)
+```
+
+Because labels are the opium of any supervised machine learning workflow, the network will learn how to predict the labels of the target based on a simple multi-layer perceptron step. It is here that the network acts as the controller of a state-like machine to make the predictions of the transition-based parser, taking the first word from the buffer, the word immediately before it, after it, the first word of the previous entity and the last word of the previous entity. After the features have been calculated for the state, we can look arbitrarily far back into the text so it doesn't matter if the previous entity that was assigned was 100 or 1,000 words back, we can still condition on those probabilities. 
+
+```python
+tensor = trigram_cnn(embed_word(doc))
+state_weights = state2vec(tensor)
+state = initialize_state(doc)
+while not state.is_finished:
+  features = get_features(state, state_weights)
+  probs = mlp(features)
+  action = (probs * valid_actions(state)). argmax()
+  state = action(state)
+```
+
+When we put some of this logic together, the final actions of assigning the appropriate label is executed and when the best valid action is performed, the state-machine will go back to the next state and then proceed forward in the loop. A tensor embeds the words in the document which is fed to a cnn to consider the context of sentences, the state is initialized and we then step through the actions of the state-machine to get the probability of an action and penalize the validity of an action given the state
+
+<br/>
+
+Algorithms are very cool, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps as a data scientist. 
+
+Architectures and methods will continually change, but understanding the business requirements will always be in fashion. Breaking the problem down into small simple tasks, where you understand the meaning of your entities, therefore understand the objectives of the output so you can perform experiments as quickly as possible will always be the best first step.
+
+For example, if you're trying to distinguish between two entities that are ambiguous by nature and it’s even hard for humans to tell the difference between them, a lot of thought would need to go into how you're making the distinctions between the two categories based on how they will be used downstream and building a dataset that accounts for the concept regarding these entities would be necessary.
+
+In my experience, pretraining the embedding layer may help to determine what your model will be capable of. Fine-tuning the pretrained text on the entities to be used helps a little bit, but ultimately sourcing more data will give you a very big win. 
+
+In theory we can take advantage of all the encoded features in unlabeled text so that we're not limited to just the text that we have annotated, but in practice I have yet to see success with this, as instead I've seen massive overfitting to the training data.
+
+Doing well on the training set is also a prerequisite to doing well on an evaluation set or test set, because if the model cannot learn during training it will not produce anything that you can use on an evaluation set or otherwise. So good performance on the training set is a good first step to developing something useful.
+
+Resources to train these models can also present potential bottlenecks, because deep learning is a data intensive and computationally expensive process. Under the right conditions you can do a lot with a little, but this always depends on your problem. 
 
 <br/>
 
