@@ -1011,9 +1011,7 @@ After regex matches our argument to the target text, I'll place a pipe symbol `'
 <p align="center">
     <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
 </p>
-
 <br/> 
-
 The pattern of the regular expression as seen in the example are used to specify a set of strings that match our text preprocessing requirements and all three patterns match all of the characters within the target string, which tells us that all three or a variation of each expression can be used when cleaning `bt_4`'s text of unicode characters, numbers, emoji, punctuation and capitalization. 
 
 <br/>
