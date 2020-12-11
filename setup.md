@@ -32,7 +32,7 @@ Let’s say the network probably looks at the character level of words...
 
 Theoretically, many layers should enrich the levels of the features.
 
-In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistics features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. Most linguists would be up in arms over this (because it breaks their entire universe), but I am prepared to assert that this is not the case in the field and these features are not enough on their own to help computers with meaning representation. 
+In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. Most linguists would be up in arms over this (because it breaks their entire universe), but I am prepared to assert that this is not the case in the field and these features are not enough on their own to help computers with meaning representation. 
 
 The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine.
 
@@ -81,7 +81,7 @@ During this collection and parsing of the text, something called a resCNN is mak
   <b><img width="321" alt="stackbuffer2" src="https://user-images.githubusercontent.com/29679899/101259759-d77cc600-36f8-11eb-99c0-30bd1b467ef7.PNG"></b><br>
 </p>
 
-When assigning and fixing the label to a token, the resCNN incrementally parses the input with bloom embeddings and defines a probability distribution over each action given the current contents of the stack, buffer, output and the history of each action taken to predict the sequence of actions the 3 operations should take to parse the input sentence.
+When assigning and fixing the label to a token, the resCNN incrementally parses the input with Bloom embeddings and defines a probability distribution over each action given the current contents of the stack, buffer, output and the history of each action taken to predict the sequence of actions the 3 operations should take to parse the input sentence.
 
 When a token or collection of tokens from a sentence in the buffer are moved to the stack, the resCNN will decide if these tokens belong to a particular entity during the `REDUCE` step, from which the tokens are popped from the top of the stack onto the `OUTPUT` stack and given an entity label.
 
