@@ -88,10 +88,8 @@ Given the connection between data, neural networks and topology, visualizations 
 
 In the absence of a visualization or intuitive illustration, describing something like gradient descent would be tricky. As its visual, physical representation are just real numbers starting with some very high value and descending through time until it reaches some optimal value...
 
-![giphy](https://user-images.githubusercontent.com/29679899/101287170-9ea62500-37bc-11eb-89dc-9a7aa19de85c.gif)
-
 <p align="center">
-  <b><img src = "https://user-images.githubusercontent.com/29679899/101287170-9ea62500-37bc-11eb-89dc-9a7aa19de85c.gif" width="500"></b><br>
+  <b><img src = "https://user-images.githubusercontent.com/29679899/101287170-9ea62500-37bc-11eb-89dc-9a7aa19de85c.gif" width="480"></b><br>
 </p>
 
 A number of popular illustrations regarding this process denotes a mountain (parameter space) by which someone (a gradient) must descend (find the location in the parameter space where the badness of fit is minimized and the goodness of fit is maximized) and the time it takes her to get to the bottom (where the function fits the data best). 
