@@ -562,8 +562,11 @@ To represent four states, we can use 00, 05, 10 and 15. That's two bits, so:
 
 <p align="center">
     <img src = "https://user-images.githubusercontent.com/29679899/101379839-bfd14900-3882-11eb-8f2c-93bd78e96956.png" width="200px">
-    <img src = "https://user-images.githubusercontent.com/29679899/101380020-fb6c1300-3882-11eb-8bd3-677d383f0e2d.PNG" width="340px">
 </p>
+
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101380020-fb6c1300-3882-11eb-8bd3-677d383f0e2d.PNG" width="340px">
+</p>  
 
 <br/>
 
