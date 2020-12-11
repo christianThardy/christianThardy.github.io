@@ -30,7 +30,9 @@ Natural language processing is a sub-field of artificial intelligence...
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101290745-2f3b3000-37d2-11eb-813f-8cf472ba58dd.PNG" width="500px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101290745-2f3b3000-37d2-11eb-813f-8cf472ba58dd.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -38,7 +40,9 @@ Natural language processing is a sub-field of artificial intelligence...
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101290912-ff405c80-37d2-11eb-91e0-071835432ba9.PNG" width="500px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101290912-ff405c80-37d2-11eb-91e0-071835432ba9.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -56,7 +60,9 @@ This method is far from perfect and it ignores some of the most fundamental idea
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101291038-f00dde80-37d3-11eb-8532-cdf158534cac.png" width="500px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101291038-f00dde80-37d3-11eb-8532-cdf158534cac.png" width="500px">
+</p>
 
 <br/>
 
@@ -68,7 +74,9 @@ To simplify how the LM behind this dependency parser focuses on the relationship
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101291138-94902080-37d4-11eb-82a6-6b13efc3bb51.PNG" width="500px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101291138-94902080-37d4-11eb-82a6-6b13efc3bb51.PNG" width="500px">
+</p>
 
 
 <br/>
@@ -101,7 +109,9 @@ The text that I will be using came from Facebook.
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101291371-3feda500-37d6-11eb-900d-e9fc26c08faa.PNG" width="500px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101291371-3feda500-37d6-11eb-900d-e9fc26c08faa.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -109,7 +119,9 @@ After Facebook authorized the download, I was able to go through most of the dat
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101291409-82af7d00-37d6-11eb-95b3-d58f9fbde990.PNG" width="200px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101291409-82af7d00-37d6-11eb-95b3-d58f9fbde990.PNG" width="200px">
+</p>
 
 <br/>
 
@@ -117,7 +129,9 @@ All of the messages for my intended corpus are now accessible through a nice lit
 
 <br/>
 
-<img src="https://user-images.githubusercontent.com/29679899/101291432-aa064a00-37d6-11eb-9dc3-1283d94e85bc.PNG" width="500px">
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/29679899/101291432-aa064a00-37d6-11eb-9dc3-1283d94e85bc.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -125,7 +139,9 @@ Web pages are nice when you're browsing the internet, but analyzing the text wou
 
 <br/>
 
-![giphy](https://user-images.githubusercontent.com/29679899/101291471-02d5e280-37d7-11eb-934b-bb7e9c56d99b.gif)
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101291471-02d5e280-37d7-11eb-934b-bb7e9c56d99b.gif" width="500px">
+</p>
 
 <br/>
 
@@ -154,7 +170,9 @@ bt_message_data = urllib.request.urlopen('file:///Users/christianth/Downloads/fa
 bt = bt_message_data.read()
 soup = bs4.BeautifulSoup(bt, 'html.parser') 
 ```
-<img src="https://user-images.githubusercontent.com/29679899/101291640-509f1a80-37d8-11eb-927f-3f6207fd270b.PNG" width="450px">
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/29679899/101291640-509f1a80-37d8-11eb-927f-3f6207fd270b.PNG" width="450px">
+</p>
 
 Now that the scraping environment is set up, we can begin the process of extracting the information. The `csv.writer()` module will convert the user text into delimited strings that will be stored inside a CSV file. In order to analyze the text further it needs to be in a format that the model can understand, which means we'll need to store the user names, messages and date/time text in a table, so the `writer()` function will create an object suitable for writing the data to our file. To iterate the text over the rows of the CSV file, we need to place the strings `Name`, `Date` & `Time` and `Message` inside the `writerow()` function as arguments, which will give each respective feature it's own label and will represent the column for each features instance in the CSV file. 
 
@@ -240,8 +258,9 @@ plt.ylabel('Number of Occurrences', fontsize=12)
 plt.xlabel('User Name', fontsize=12)
 plt.show()
 ```
-
-<img src = "https://user-images.githubusercontent.com/29679899/101365465-d4f1ac00-3871-11eb-8d89-fc8f2a8e3155.png" width="700px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101365465-d4f1ac00-3871-11eb-8d89-fc8f2a8e3155.png" width="700px">
+</p>
 
 <br/>
 
@@ -287,7 +306,9 @@ Notice how the tail decay in the plot above starts to fatten and get heavier aro
 
 We can define PLs as a relationship between two things. A respective change in one thing results in a proportional respective change in the other thing, and they're both independent of size. More simply, they imply that a small number of events, or in our case words for each user are frequent (common words), while a large number of words are infrequent (rare words).
 
-<img src = "https://user-images.githubusercontent.com/29679899/101366130-93adcc00-3872-11eb-9cf1-31fc223640ce.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101366130-93adcc00-3872-11eb-9cf1-31fc223640ce.png" width="500px">
+</p>
 
 <br/>
 
@@ -295,7 +316,9 @@ A power law distribution has the form:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101367106-c5736280-3873-11eb-90cd-29db53738d66.PNG" width="550px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101367106-c5736280-3873-11eb-90cd-29db53738d66.PNG" width="550px">
+</p>
 
 <br/>
 
@@ -313,13 +336,17 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101367590-4fbbc680-3874-11eb-837d-ab01bf52b6fa.png" width="100px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101367590-4fbbc680-3874-11eb-837d-ab01bf52b6fa.png" width="100px">
+</p>
 
 ...is the most common term in the corpus and so on....
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368167-d375b300-3874-11eb-99a3-cae01229101a.png" width="60px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101368167-d375b300-3874-11eb-99a3-cae01229101a.png" width="60px">
+</p>
 
 <br/>
 
@@ -327,7 +354,9 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368525-3f581b80-3875-11eb-8c1a-32b1ef8baf8f.png" width="100px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101368525-3f581b80-3875-11eb-8c1a-32b1ef8baf8f.png" width="100px">
+</p>
 
 <br/>
 
@@ -335,7 +364,9 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368724-7a5a4f00-3875-11eb-9339-3ded6943743a.png" width="100px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101368724-7a5a4f00-3875-11eb-9339-3ded6943743a.png" width="100px">
+</p>
 
 <br/>
 
@@ -343,7 +374,9 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101368966-c60cf880-3875-11eb-8413-6626f85e8021.png" width="200px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101368966-c60cf880-3875-11eb-8413-6626f85e8021.png" width="200px">
+</p>
 
 <br/>
 
@@ -351,7 +384,9 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101369163-fb194b00-3875-11eb-8db1-7e86199b59df.png" width="60px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101369163-fb194b00-3875-11eb-8db1-7e86199b59df.png" width="60px">
+</p>
 
 <br/>
 
@@ -371,7 +406,9 @@ The Pareto distribution embodies a useful power law. The spread of the distribut
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370076-091b9b80-3877-11eb-9310-11f57cf2fc70.png" width="200px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101370076-091b9b80-3877-11eb-9310-11f57cf2fc70.png" width="200px">
+</p>
 
 <br/>
 
@@ -379,7 +416,9 @@ The Pareto distribution embodies a useful power law. The spread of the distribut
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370324-5c8de980-3877-11eb-9c0a-cc1106355a10.png" width="150px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101370324-5c8de980-3877-11eb-9c0a-cc1106355a10.png" width="150px">
+</p>
 
 <br/>
 
@@ -387,7 +426,9 @@ The value of this reliability function is initially 1 and decreases to 0 as x in
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370569-a545a280-3877-11eb-91af-e2a17d5aa6a3.png" width="155px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101370569-a545a280-3877-11eb-91af-e2a17d5aa6a3.png" width="155px">
+</p>
 
 <br/>
 
@@ -395,7 +436,9 @@ The value of this reliability function is initially 1 and decreases to 0 as x in
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370742-de7e1280-3877-11eb-9ca3-f3ed60bb1673.png" width="155px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101370742-de7e1280-3877-11eb-9ca3-f3ed60bb1673.png" width="155px">
+</p>
 
 <br/>
 
@@ -403,7 +446,9 @@ Normally we would be interested in b > 1 which is required for the fixed mean va
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101370928-2735cb80-3878-11eb-8826-a844770065a2.png" width="130px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101370928-2735cb80-3878-11eb-8826-a844770065a2.png" width="130px">
+</p>
 
 <br/>
 
@@ -411,7 +456,9 @@ Normally we would be interested in b > 1 which is required for the fixed mean va
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371252-85fb4500-3878-11eb-820a-383388f83efc.png" width="200px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101371252-85fb4500-3878-11eb-820a-383388f83efc.png" width="200px">
+</p>
 
 <br/>
 
@@ -419,7 +466,9 @@ It's not obvious, but there's a similarity with Zipf's law. Both functions decre
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371475-cc50a400-3878-11eb-9ac8-d724cd1be94a.png" width="230px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101371475-cc50a400-3878-11eb-9ac8-d724cd1be94a.png" width="230px">
+</p>
 
 <br/>
 
@@ -427,7 +476,9 @@ where:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101371670-03bf5080-3879-11eb-9cc8-8e85c0a44fe1.PNG" width="240px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101371670-03bf5080-3879-11eb-9cc8-8e85c0a44fe1.PNG" width="240px">
+</p>
 
 <br/>
 
@@ -449,7 +500,9 @@ A formal summarization states:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101372078-7cbea800-3879-11eb-90d5-7d8022ca151b.png" width="180px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101372078-7cbea800-3879-11eb-90d5-7d8022ca151b.png" width="180px">
+</p>
 
 <br/>
 
@@ -459,7 +512,9 @@ The collective number of occurrences of each user in the dataset appears synonym
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101372605-1423fb00-387a-11eb-8421-f6f2ef1d9502.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101372605-1423fb00-387a-11eb-8421-f6f2ef1d9502.png" width="500px">
+</p>
 
 <br/>
 
@@ -469,7 +524,9 @@ For example, the frequency of this audio filter effect...
 
 <br/>
 
-![giphy](https://user-images.githubusercontent.com/29679899/101372870-55b4a600-387a-11eb-832d-ddd1a7855946.gif)
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101372870-55b4a600-387a-11eb-832d-ddd1a7855946.gif" width="500px">
+</p>
 
 <br/>
 
@@ -477,7 +534,9 @@ For example, the frequency of this audio filter effect...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101373723-47b35500-387b-11eb-8eb0-596a2aedc490.PNG" width="300px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101373723-47b35500-387b-11eb-8eb0-596a2aedc490.PNG" width="300px">
+</p>
 
 <br/>
 
@@ -491,7 +550,9 @@ We can also think of the logarithm of a number as how many bits we need to repre
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101379621-784abd00-3882-11eb-896d-7bfd50029d1b.png" width="200px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101379621-784abd00-3882-11eb-896d-7bfd50029d1b.png" width="200px">
+</p>
 
 <br/>
 
@@ -499,8 +560,10 @@ To represent four states, we can use 00, 05, 10 and 15. That's two bits, so:
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101379839-bfd14900-3882-11eb-8f2c-93bd78e96956.png" width="200px">
-<img src = "https://user-images.githubusercontent.com/29679899/101380020-fb6c1300-3882-11eb-8bd3-677d383f0e2d.PNG" width="340px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101379839-bfd14900-3882-11eb-8f2c-93bd78e96956.png" width="200px">
+    <img src = "https://user-images.githubusercontent.com/29679899/101380020-fb6c1300-3882-11eb-8bd3-677d383f0e2d.PNG" width="340px">
+</p>
 
 <br/>
 
@@ -596,8 +659,10 @@ plt.title('Most Common Words used by bt_4')
 plt.show()
 ```
 
-<img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600px">
-<img src = "https://user-images.githubusercontent.com/29679899/101381508-d2e51880-3884-11eb-8f52-cccf32cd373a.PNG" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101381350-a4673d80-3884-11eb-8fc3-34363c72e294.png" width="600px">
+    <img src = "https://user-images.githubusercontent.com/29679899/101381508-d2e51880-3884-11eb-8f52-cccf32cd373a.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -637,7 +702,9 @@ I'll use a series of violin plots to visualize the distribution of each feature 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101383779-8c44ed80-3887-11eb-9834-39dea1bd4bf1.png" width="300px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101383779-8c44ed80-3887-11eb-9834-39dea1bd4bf1.png" width="300px">
+</p>
 
 <br/>
 
@@ -647,7 +714,9 @@ Violin plots are useful to us because they they visually show us the most import
 
 <br/>
 
-![2020-12-07](https://user-images.githubusercontent.com/29679899/101383346-01fc8980-3887-11eb-9a18-7fa13b23a202.gif)
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101383346-01fc8980-3887-11eb-9a18-7fa13b23a202.gif" width="625px">
+</p>
 
 <br/>
 
@@ -686,7 +755,9 @@ dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in 
 dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
 ```
 
-<img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500px">
+</p>
 
 <br/>
 
@@ -696,7 +767,9 @@ We can also see how different bt_13 is from the rest of the users. This is very 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101384959-2194b180-3889-11eb-8c8a-c09cf4dcc0d8.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101384959-2194b180-3889-11eb-8c8a-c09cf4dcc0d8.png" width="500px">
+</p>
 
 <br/>
 
@@ -704,7 +777,9 @@ The number of unique words in each users corpus appears to be reasonably distrib
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101385192-6fa9b500-3889-11eb-8b90-d88853d1022b.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101385192-6fa9b500-3889-11eb-8b90-d88853d1022b.png" width="500px">
+</p>
 
 <br/>
 
@@ -712,7 +787,9 @@ Another basic feature we could extract is the number of characters used per user
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386029-93212f80-388a-11eb-8afb-3a5d098eae3f.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101386029-93212f80-388a-11eb-8afb-3a5d098eae3f.png" width="500px">
+</p>
 
 <br/>
 
@@ -724,7 +801,9 @@ Notice how `bt_13`'s interquartile range is over stretched...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101385935-738a0700-388a-11eb-9c95-b45d8e683de1.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101385935-738a0700-388a-11eb-9c95-b45d8e683de1.png" width="500px">
+</p>
 
 <br/>
 
@@ -734,7 +813,9 @@ Albeit the variance is not as great as the number of words in each users corpus,
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386222-df6c6f80-388a-11eb-94c5-43050de3db69.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101386222-df6c6f80-388a-11eb-94c5-43050de3db69.png" width="500px">
+</p>
 
 <br/>
 
@@ -742,7 +823,9 @@ Albeit the variance is not as great as the number of words in each users corpus,
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386351-117dd180-388b-11eb-9746-cba28abb1aaa.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101386351-117dd180-388b-11eb-9746-cba28abb1aaa.png" width="500px">
+</p>
 
 <br/>
 
@@ -750,7 +833,9 @@ The variance of upper case words by each user is promising.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386610-67527980-388b-11eb-86a9-c744e871ffa9.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101386610-67527980-388b-11eb-86a9-c744e871ffa9.png" width="500px">
+</p>
 
 <br/>
 
@@ -758,7 +843,9 @@ The variance of upper case words by each user is promising.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101386744-9b2d9f00-388b-11eb-9593-964237e5fdfc.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101386744-9b2d9f00-388b-11eb-9593-964237e5fdfc.png" width="500px">
+</p>
 
 The long tail on the upper quartile is a measure of the data’s spread or the number of values that the feature possesses, and the spread of `bt_2`'s text covers a wide range. When you have a shape as squished as `bt_2`, it represents a non-symmetric distribution and we must asses the characteristics of its shape in comparison to other possible features to determine how useful the feature.
 
@@ -774,7 +861,9 @@ Another relevant feature produced by the number of title case words.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387175-155e2380-388c-11eb-88d7-3d8181a5dc94.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101387175-155e2380-388c-11eb-88d7-3d8181a5dc94.png" width="500px">
+</p>
 
 <br/>
 
@@ -782,7 +871,9 @@ Lastly, the average length of words produces nothing relevant.
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387305-43436800-388c-11eb-9247-f2aab2d53519.png" width="500px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101387305-43436800-388c-11eb-9247-f2aab2d53519.png" width="500px">
+</p>
 
 <br/>
 
@@ -794,7 +885,9 @@ To illustrate this example, let's turn our attention to the parts of speech...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387676-c9f84500-388c-11eb-8f23-764b9e67c035.png" width="400px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101387676-c9f84500-388c-11eb-8f23-764b9e67c035.png" width="400px">
+</p>
 
 <br/>
 
@@ -802,8 +895,10 @@ To illustrate this example, let's turn our attention to the parts of speech...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101387946-396e3480-388d-11eb-96c9-6bd58e72ef42.png" width="400px">
-<img src = "https://user-images.githubusercontent.com/29679899/101388090-7b977600-388d-11eb-8132-9a73c2e89a61.png" width="600px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101387946-396e3480-388d-11eb-96c9-6bd58e72ef42.png" width="400px">
+    <img src = "https://user-images.githubusercontent.com/29679899/101388090-7b977600-388d-11eb-8132-9a73c2e89a61.png" width="600px">
+</p>
 
 ```python
 1st sentence character count: 19 
@@ -817,8 +912,10 @@ total: 57 sentences primarily made up of adjectives and verbs
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101388350-d16c1e00-388d-11eb-9488-b1b9bc7c65ae.png" width="680px">
-<img src = "https://user-images.githubusercontent.com/29679899/101388381-ddf07680-388d-11eb-8de2-bbfb7d2b54b8.png" width="400px">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101388350-d16c1e00-388d-11eb-9488-b1b9bc7c65ae.png" width="680px">
+    <img src = "https://user-images.githubusercontent.com/29679899/101388381-ddf07680-388d-11eb-8de2-bbfb7d2b54b8.png" width="400px">
+</p>
 
 ```python
 1st sentence character count: 92 
@@ -897,7 +994,9 @@ In this alphanumeric example, the first visual field is a representation of the 
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650">
+</p>
 
 <br/>
 
@@ -906,7 +1005,9 @@ The caret symbol in the first line of the first text field will match the beginn
 After regex matches our argument to the target text, I'll place a pipe symbol `'|'` after the first expression and define a second argument `[_A-Z]` that will match Unicode word characters; this includes most characters that can be part of a word in any language, as well as numbers and the underscore symbol. Another pipe symbol is used and the last expression `[0-9]` matches any Unicode decimal digit, which there is clearly a digit in our sentence. The regex matches the targeted digit concluding our search pattern definitions. 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
+</p>
 
 <br/> 
 
