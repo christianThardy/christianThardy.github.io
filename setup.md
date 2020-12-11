@@ -290,7 +290,7 @@ When we put some of this logic together, the final actions of assigning the appr
 
 <br/>
 
-They're very cool and all, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps as a data scientist. 
+They're very cool and all, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps of solving the problem. 
 
 Architectures and methods will continually change, but understanding the business requirements will always be in fashion. Breaking the problem down into small simple tasks, where you understand the meaning of your entities, therefore understand the objectives of the output so you can perform experiments as quickly as possible will always be the best first step.
 
