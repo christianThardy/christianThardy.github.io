@@ -978,7 +978,11 @@ clean_text = [word for word in clean_text if word not in STOPWORDS]
 clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
 ```
 
+<br/>
+
 With our example illustrated, now we can put everything into a nice `for` loop that will iterate over every document in the corpus. 
+
+<br/>
 
 ```python
 corpus = []
@@ -994,6 +998,8 @@ for i in range(0, 38954):
     clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
     corpus.append(clean_text) 
 ```
+
+<br/>
 
 The `corpus` is initialized as an empty list `[]`, the `i` after `for` will be the index going through all of the documents in the `'Message'` feature vector. Next the `range` will be specified for all of the values that `i` is going to take, so from from `0` to `38,954` will be indexed by `i` and is going to `.lower()`, `.split()`, `PorterStemmer()` the text and remove the stop words for each document in the dataset. Lastly the new corpus will be appended to the original empty corpus list. 
 
