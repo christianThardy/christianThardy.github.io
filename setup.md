@@ -2,7 +2,9 @@
 
 Deep learning is thought of as the ability of a class of algorithms to learn a hierarchical set of representations from lots of data, which means it can learn low, mid and high level features. You specify the input/output and your networks optimization algorithm updates the weights that determine how each input feature will affect the output prediction. 
 
-<img src = "https://user-images.githubusercontent.com/29679899/101258199-ef4f4c80-36ee-11eb-9720-28d24f1b7d16.png" width="455px">
+<p align="center">
+  <b><img src = "https://user-images.githubusercontent.com/29679899/101258199-ef4f4c80-36ee-11eb-9720-28d24f1b7d16.png" width="455px"></b><br>
+</p>
 
 These updates are analogous to a programmer coding a bunch of rules to solve a problem, but with deep learning, sometimes you can end up with code better than what any programmer could write.
 
@@ -61,17 +63,23 @@ This transition-based state-machine takes a page from the dependency parsing com
 
 This “state machine”...
 
-<img width="579" alt="algorithm" src="https://user-images.githubusercontent.com/29679899/101258880-730b3800-36f3-11eb-8b9c-2cfcd41c3911.PNG">
+<p align="center">
+  <b><img width="579" alt="algorithm" src="https://user-images.githubusercontent.com/29679899/101258880-730b3800-36f3-11eb-8b9c-2cfcd41c3911.PNG"></b><br>
+</p>
 
 ...uses 3 stack data structures (one called the buffer(also sometimes called queue). Items from the buffer go to the stack, and from the stack to the output to move (`SHIFT`) the first word in a sentence from the head of the buffer (contains words to be processed) to the stack (where the words will be further processed). 
 
 So we start with an empty stack, all words from the sentence are on the buffer and we have no entities affixed to the words.
 
-<img width="280" alt="stackbuffer" src="https://user-images.githubusercontent.com/29679899/101259265-ced6c080-36f5-11eb-9db5-81f6137b1bbb.PNG">
+<p align="center">
+  <b><img width="280" alt="stackbuffer" src="https://user-images.githubusercontent.com/29679899/101259265-ced6c080-36f5-11eb-9db5-81f6137b1bbb.PNG"></b><br>
+</p>
 
 During this collection and parsing of the text, something called a resCNN is making the decision of which named entity label to assign to which words or if a label should be assigned to any particular word at all. 
 
-<img width="321" alt="stackbuffer2" src="https://user-images.githubusercontent.com/29679899/101259759-d77cc600-36f8-11eb-99c0-30bd1b467ef7.PNG">
+<p align="center">
+  <b><img width="321" alt="stackbuffer2" src="https://user-images.githubusercontent.com/29679899/101259759-d77cc600-36f8-11eb-99c0-30bd1b467ef7.PNG"></b><br>
+</p>
 
 When assigning and fixing the label to a token, the resCNN incrementally parses the input with bloom embeddings and defines a probability distribution over each action given the current contents of the stack, buffer, output and the history of each action taken to predict the sequence of actions the 3 operations should take to parse the input sentence.
 
@@ -135,7 +143,9 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101639556-72c5b200-39fd-11eb-9655-9d9c8cfd30f0.PNG" width="600px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101639556-72c5b200-39fd-11eb-9655-9d9c8cfd30f0.PNG" width="600px">
+</p>
 
 <br/>
 
@@ -143,7 +153,9 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101631355-3476c580-39f2-11eb-85c9-ec6dd8ce6910.PNG" width="300px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101631355-3476c580-39f2-11eb-85c9-ec6dd8ce6910.PNG" width="300px">
+</p>
 
 <br/>
 
@@ -151,7 +163,9 @@ So, Bloom embeddings are prefered here because they give us a very basic data sh
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101631390-40628780-39f2-11eb-905b-866ad4d95e85.PNG" width="300px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101631390-40628780-39f2-11eb-905b-866ad4d95e85.PNG" width="300px">
+</p>
 
 <br/>
 
@@ -161,7 +175,9 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101629620-a1d52700-39ef-11eb-91e3-1db7393e3940.PNG" width="500px">
+</p>
 
 <br/>
 
@@ -169,7 +185,9 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-<img src = "https://user-images.githubusercontent.com/29679899/101629780-da750080-39ef-11eb-9561-f546d369439c.PNG" width="600px">
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/101629780-da750080-39ef-11eb-9561-f546d369439c.PNG" width="600px">
+</p>
 
 <br/>
 
