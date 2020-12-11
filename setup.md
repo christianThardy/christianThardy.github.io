@@ -290,13 +290,13 @@ When we put some of this logic together, the final actions of assigning the appr
 
 <br/>
 
-They're very cool and all, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps of solving the problem. 
+They're very cool and all, but trying to bake the assumptions about the problem into the training data as much as possible is one of the most important steps of solving the problem, because architectures and methods will continually change, but understanding the business requirements will always be in fashion. 
 
-Architectures and methods will continually change, but understanding the business requirements will always be in fashion. Breaking the problem down into small simple tasks, where you understand the meaning of your entities, therefore understand the objectives of the output so you can perform experiments as quickly as possible will always be the best first step.
+Breaking the problem down into small simple tasks, where you understand the meaning of your entities, therefore understand the objectives of the output so you can perform experiments as quickly as possible will always be the best first step.
 
-For example, if you're trying to distinguish between two entities that are ambiguous by nature and it’s even hard for humans to tell the difference between them, a lot of thought would need to go into how you're making the distinctions between the two categories based on how they will be used downstream and building a dataset that accounts for the concept regarding these entities would be necessary.
+For example, if you're trying to distinguish between two entities that are ambiguous by nature and it’s even hard for humans to tell the difference between them, a lot of thought would need to go into how you're making the distinctions between the two categories based on how they will be used downstream and building a dataset that accounts for these concepts would be necessary.
 
-In my experience, pretraining the embedding layer may help to determine what your model will be capable of. Fine-tuning the pretrained text on the entities to be used helps a little bit, but ultimately sourcing more data will give you a very big win. 
+Also in my experience, pretraining the embedding layer may help to determine what your model will be capable of. Fine-tuning the pretrained text on the entities to be used helps a little bit, but ultimately sourcing more data will give you a very big win. 
 
 In theory we can take advantage of all the encoded features in unlabeled text so that we're not limited to just the text that we have annotated, but in practice I have yet to see success with this, as instead I've seen massive overfitting to the training data.
 
