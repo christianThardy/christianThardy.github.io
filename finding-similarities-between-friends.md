@@ -960,3 +960,43 @@ clean_text = clean_text.split()
 <br/>
 
 The `clean_text` variable is now a list of 5 elements, each element being an individual word or token that makes up this document. We can now create a series of for loops for our imported and custom stop words to go through the different words of `bt_4`'s list of tokens and remove the irrelevant words. This will help us retain only words that contribute to a sense of meaning within the sentence.
+
+Reducing the tokens morphological variation gives the models process of learning a certain edge. Simply, morphology is the structure of a word whether it has an upper case at the beginning of the word, what affixes it has--ing, ed--past, present and future tenses etc. A given words morphology can be reduced by lower casing all of the words, which is necessary because we do not want the capitalization of a given word to matter, so that easier matching between words is possible. They can also be reduced by removing affixes from words and transforming the word into its base word or stem.
+ 
+Stemming involves transforming words like remembered, remembering, remembrance into just the word remember so that if a document has a word that is important but not in the morphological construct that its presented in, it still counts. A similar concept to stemming is lemmatization. Previously mentioned in the sampling section, lemmas are used to understand the semantics of a word to find the pure root of a word rather than just removing a words tense. Lemmatization is a more computationally expensive method than stemming and due to my limited compute power, I will stick with stemming for now. We will add stemming to our main `for` loop using the `PorterStemmer()` method called from the `ps` variable and this will add stemming to all of the (words) in the message feature vector. 
+
+```python
+ps = PorterStemmer()
+```
+
+When constructing the stop word for loops, we'll need to go through each word in every document and look for all stop words which we've indicated in the `stopwords`, `get_stop_words`, `STOPWORDS` and `bt_4_additional_stopwords` variables. Each individual token in the `clean_text` variable will be included in a list `[word for word in clean_text]` function and the stop word conditions inside each stop words list will remove all of the words in the nested `clean_text` variable after the `if not` statement is called.
+
+```python
+clean_text = [ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
+clean_text = [word for word in clean_text if not word in set(get_stop_words('english'))]
+clean_text = [word for word in clean_text if word not in STOPWORDS]
+clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
+```
+
+With our example illustrated, now we can put everything into a nice `for` loop that will iterate over every document in the corpus. 
+
+```python
+corpus = []
+for i in range(0, 38954):
+    clean_text = re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
+    clean_text = clean_text.lower()
+    clean_text = clean_text.split()
+    # text stemming & stop word removal
+    ps = PorterStemmer() 
+    clean_text = [ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
+    clean_text = [word for word in clean_text if not word in set(get_stop_words('english'))]
+    clean_text = [word for word in clean_text if word not in STOPWORDS]
+    clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
+    corpus.append(clean_text) 
+```
+
+The `corpus` is initialized as an empty list `[]`, the `i` after `for` will be the index going through all of the documents in the `'Message'` feature vector. Next the `range` will be specified for all of the values that `i` is going to take, so from from `0` to `38,954` will be indexed by `i` and is going to `.lower()`, `.split()`, `PorterStemmer()` the text and remove the stop words for each document in the dataset. Lastly the new corpus will be appended to the original empty corpus list. 
+
+<br/>
+
+# word2vec
