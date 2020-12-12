@@ -298,9 +298,9 @@ Breaking the problem down into small simple tasks, where you understand the mean
 
 For example, if you're trying to distinguish between two entities that are ambiguous by nature and it’s even hard for humans to tell the difference between them, a lot of thought would need to go into how you're making the distinctions between the two categories based on how they will be used downstream and building a dataset that accounts for these concepts would be necessary.
 
-Also in my experience, pretraining the embedding layer may help to determine what your model will be capable of. Fine-tuning the pretrained text on the entities to be used helps a little bit, but ultimately sourcing more data will give you a very big win. 
+In theory we can take advantage of all the encoded features in unlabeled text so that we're not limited to just the text that we have annotated, but in practice I have yet to see success with this, I've mostly seen massive overfitting to the training data.
 
-In theory we can take advantage of all the encoded features in unlabeled text so that we're not limited to just the text that we have annotated, but in practice I have yet to see success with this, as instead I've seen massive overfitting to the training data.
+In my experience, pretraining the embedding layer may help to determine what your model will be capable of. Fine-tuning the pretrained text on the entities to be used helps a little bit, but ultimately sourcing more data will give you a very big win. 
 
 Doing well on the training set is also a prerequisite to doing well on an evaluation set or test set, because if the model cannot learn during training it will not produce anything that you can use on an evaluation set or otherwise. So good performance on the training set is a good first step to developing something useful.
 
