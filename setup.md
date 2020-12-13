@@ -32,7 +32,7 @@ Let’s say the network probably looks at the character level of words...
 
 Theoretically, many layers should enrich the levels of the features.
 
-In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. Most linguists would be up in arms over this (because it breaks their entire universe), but I am prepared to assert that this is not the case in the field and these features are not enough on their own to help computers with meaning representation. 
+In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. Most linguists would be up in arms over this, but I am prepared to assert that in the field, these features are not enough on their own to help computers with meaning representation. 
 
 The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine.
 
