@@ -43,7 +43,7 @@ Maybe simple linguistic feature sets can be used for very simple use-cases or to
 I think it would be fair to say that a method that can generalize and be penalized when it gets things wrong would actually be a better way to frame the problem. The ideal approach would be to integrate symbolic and connectionist views of the world, but the one that lacks biological rigor cannot survive without the other.
 
 But it makes sense to me why this view of the world was so popular. There’s a continuing bias towards computers needing to be 100% correct all the time because classical computer science is a discrete math and by that logic everything needs to be 100% correct to function.
-Trying to come up with a rule for everything falls in line with how we think about computer science and its obsessive compulsive nature of trying to account for every single detail of a program within a set of convergence bounds.   
+Trying to come up with a rule for everything falls in line with how we think about computer science and its obsessive nature of trying to account for every single detail of a program within a set of convergence bounds.   
 
 When it comes to applying machine learning to complex problems, there’s usually nothing exact about complex things and we need to consider that we want to automate processes that are often nuanced. So some problems need generalization, which makes a 100% rules based view of the world economically unfeasible and is probably why projects like the Semantic Web cannot secure funding.
 
