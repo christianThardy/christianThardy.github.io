@@ -1114,7 +1114,7 @@ For as smart as computers seem, the easiest way to understand what they do is to
  
 Symbolic expressions are what we see when we look at words. The idea that our thoughts are made up of a symbolic language, just because that's what we see, say and imagine is naive[9] because as you read my words right now, photons analogous with the patterns of each letter travel through your retina, setting off electrical cues that travel along the thread of an axon, which releases chemicals into the synapses of neurons, which travels to other neurons. This sounds like a series of abstractions following a complex sequence, and maybe such a thing can be described or recreated with the help of mathematics. So in order for computers to understand language, maybe we can transform our words into a numerical representation. 
  
-Learning continuous characterizations of words has a deep history in natural language processing (Rumelhart et al., 1988), but we need a way to represent words in such a way that they carry semantic meaning. 
+Learning continuous characterizations of words has a deep history in natural language processing (*Rumelhart et al., 1988*), but we need a way to represent words in such a way that they carry semantic meaning. 
 
 For example if the cat name `cobra` is word number 5,391 in a corpus, you can represent the name cobra as the number 1 inside of a vector in the 5,391st position of the vector. With 0 outside of the vector being the notation that denotes the vector as an nth dimensional embedding. So we're representing words inside of a vector with a few thousand dimensions.
 
