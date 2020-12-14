@@ -1109,3 +1109,47 @@ The `corpus` is initialized as an empty list `[]`, the `i` after `for` will be t
 <br/>
 
 # word2vec
+
+For as smart as computers seem, the easiest way to understand what they do is to become as stupid as they are. This is a bit tongue in cheek, but when comparing how a 2 year old can comprehend and understand language and the tremendous effort that scientists and engineers must go through so that a machine can do the same is pretty astonishing. When a 2 year old is learning to speak and recognize letters, she's learning what are called symbolic expressions.
+ 
+Symbolic expressions are what we see when we look at words. The idea that our thoughts are made up of a symbolic language, just because that's what we see, say and imagine is naive[9] because as you read my words right now, photons analogous with the patterns of each letter travel through your retina, setting off electrical cues that travel along the thread of an axon, which releases chemicals into the synapses of neurons, which travels to other neurons. This sounds like a series of abstractions following a complex sequence, and maybe such a thing can be described or recreated with the help of mathematics. So in order for computers to understand language, maybe we can transform our words into a numerical representation. 
+ 
+Learning continuous characterizations of words has a deep history in natural language processing (Rumelhart et al., 1988), but we need a way to represent words in such a way that they carry semantic meaning. 
+
+For example if the cat name cobra is word number 5,391 in a corpus, you can represent the name cobra as the number 1 inside of a vector in the 5,391st position of the vector. With 0 outside of the vector being the notation that denotes the vector as an nth dimensional embedding. So we're representing words inside of a vector with a few thousand dimensions.
+
+<br/>
+
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142727-e36f3300-3e30-11eb-8df7-f1738b305ab1.png" width = "80">
+</p>
+
+<br/>
+
+Cobra is just a single vector so let's create a series of vectors. We'll represent the cat name baby cat as the number 1 in a vector as the 9,853rd word...
+
+<br/>
+
+<p align="center">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142867-16192b80-3e31-11eb-8cea-c94c1e7ea74d.png" width = "100">
+</p>
+
+...and so on...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102143097-7019f100-3e31-11eb-8122-5a4c4ece709a.png" width="80">
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src = "https://user-images.githubusercontent.com/29679899/102143025-511b5f00-3e31-11eb-8ca2-9842b8508f60.png" width="80">
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src = "https://user-images.githubusercontent.com/29679899/102143062-63959880-3e31-11eb-84e2-b341995173de.png" width="200">
+</p>
+
+<br/>
+
+One of the drawbacks of representing words this way is that it treats each word as an entity of itself and it doesn't allow the model to easily discern words. 
+
+If the model's seen the sentence *"cobra is licking her fur"*, even if its learned that the most probable outcome of *cobra licking* is *her fur*, if you give the model another sentence *"baby cat is licking her fur"*, as far as its concerned the relationship between `cobra` and `baby cat` is no closer semantically regarding the relationship between `basil`, `dolly` and `colin powell chain`. 
+
+Its not easy for the model to generalize that *licking* and *fur* are common words when used in relation to *cats* and that the possibility of *baby cat licking her fur* is also just as likely as *cobra licking her fur*.The reason this happens is because the inner product between any two vectors is 0 which means the Euclidean distance between any pair of vectors is the same. 
