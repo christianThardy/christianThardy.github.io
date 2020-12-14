@@ -1116,7 +1116,7 @@ Symbolic expressions are what we see when we look at words. The idea that our th
  
 Learning continuous characterizations of words has a deep history in natural language processing (Rumelhart et al., 1988), but we need a way to represent words in such a way that they carry semantic meaning. 
 
-For example if the cat name cobra is word number 5,391 in a corpus, you can represent the name cobra as the number 1 inside of a vector in the 5,391st position of the vector. With 0 outside of the vector being the notation that denotes the vector as an nth dimensional embedding. So we're representing words inside of a vector with a few thousand dimensions.
+For example if the cat name `cobra` is word number 5,391 in a corpus, you can represent the name cobra as the number 1 inside of a vector in the 5,391st position of the vector. With 0 outside of the vector being the notation that denotes the vector as an nth dimensional embedding. So we're representing words inside of a vector with a few thousand dimensions.
 
 <br/>
 
@@ -1126,7 +1126,7 @@ For example if the cat name cobra is word number 5,391 in a corpus, you can repr
 
 <br/>
 
-Cobra is just a single vector so let's create a series of vectors. We'll represent the cat name baby cat as the number 1 in a vector as the 9,853rd word...
+`cobra` is just a single vector so let's create a series of vectors. We'll represent the cat name `baby cat` as the number 1 in a vector as the 9,853rd word...
 
 <br/>
 
