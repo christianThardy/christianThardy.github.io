@@ -998,7 +998,7 @@ In this alphanumeric example, the first visual field is a representation of the 
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650">
+    <img src = "https://user-images.githubusercontent.com/29679899/101543670-88da6080-3972-11eb-85dd-814c1b1cbab8.png" width="650px">
 </p>
 
 <br/>
@@ -1009,7 +1009,7 @@ After regex matches our argument to the target text, I'll place a pipe symbol `'
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450">
+    <img src = "https://user-images.githubusercontent.com/29679899/101543887-e078cc00-3972-11eb-9db0-e842c118de4d.png" width="450px">
 </p>
 <br/> 
 The pattern of the regular expression as seen in the example are used to specify a set of strings that match our text preprocessing requirements and all three patterns match all of the characters within the target string, which tells us that all three or a variation of each expression can be used when cleaning `bt_4`'s text of unicode characters, numbers, emoji, punctuation and capitalization. 
@@ -1121,7 +1121,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/102142727-e36f3300-3e30-11eb-8df7-f1738b305ab1.png" width = "80">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142727-e36f3300-3e30-11eb-8df7-f1738b305ab1.png" width = "80px">
 </p>
 
 <br/>
@@ -1131,7 +1131,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/102142867-16192b80-3e31-11eb-8cea-c94c1e7ea74d.png" width = "100">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142867-16192b80-3e31-11eb-8cea-c94c1e7ea74d.png" width = "100px">
 </p>
 
 ...and so on...
@@ -1139,7 +1139,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102160615-c6982700-3e53-11eb-954e-d5b8e7bf0327.png" width="700">
+  <img src = "https://user-images.githubusercontent.com/29679899/102160615-c6982700-3e53-11eb-954e-d5b8e7bf0327.png" width="700px">
 </p>
 
 <br/>
