@@ -1121,7 +1121,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/102142727-e36f3300-3e30-11eb-8df7-f1738b305ab1.png" width = "80px">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142727-e36f3300-3e30-11eb-8df7-f1738b305ab1.png" width = "70px">
 </p>
 
 <br/>
@@ -1131,7 +1131,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-    <img src = "https://user-images.githubusercontent.com/29679899/102142867-16192b80-3e31-11eb-8cea-c94c1e7ea74d.png" width = "100px">
+    <img src = "https://user-images.githubusercontent.com/29679899/102142867-16192b80-3e31-11eb-8cea-c94c1e7ea74d.png" width = "80px">
 </p>
 
 ...and so on...
