@@ -1139,11 +1139,7 @@ For example if the cat name `cobra` is word number 5,391 in a corpus, you can re
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102143097-7019f100-3e31-11eb-8122-5a4c4ece709a.png" width="80">
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <img src = "https://user-images.githubusercontent.com/29679899/102143025-511b5f00-3e31-11eb-8ca2-9842b8508f60.png" width="80">
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <img src = "https://user-images.githubusercontent.com/29679899/102143062-63959880-3e31-11eb-84e2-b341995173de.png" width="200">
+  <img src = "https://user-images.githubusercontent.com/29679899/102160615-c6982700-3e53-11eb-954e-d5b8e7bf0327.png" width="700">
 </p>
 
 <br/>
