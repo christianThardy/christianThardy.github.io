@@ -1149,3 +1149,121 @@ One of the drawbacks of representing words this way is that it treats each word 
 If the model's seen the sentence *"cobra is licking her fur"*, even if its learned that the most probable outcome of *cobra licking* is *her fur*, if you give the model another sentence *"baby cat is licking her fur"*, as far as its concerned the relationship between `cobra` and `baby cat` is no closer semantically regarding the relationship between `dolly`, `basil` and `colin powell chain`. 
 
 Its not easy for the model to generalize that *licking* and *fur* are common words when used in relation to *cats* and that the possibility of *baby cat licking her fur* is also just as likely as *cobra licking her fur*.The reason this happens is because the inner product between any two vectors is 0 which means the Euclidean distance between any pair of vectors is the same. 
+
+Instead of doing things this way, we can represent all of our words as an embedding matrix. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102289172-06224a00-3f0c-11eb-9b49-5479109ad20e.png" width="800px">
+</p>
+
+<br/>
+
+For every cats name we can learn a set of features and values per feature. For example we can denote the cleanliness for each cat between the values -1 for very dirty and 1 and very clean, with other values deviating from either number to provide contrast to each cats cleanliness. Age can be represented in a way that says each cat is neither young nor old and simply give them a value that lets us look at each cats age as a structured continuous variable. The cats gender can be simple binary values, 0 for male 1 for female.
+
+Lets say for the sake of illustration our total number of features ends up being 100 which includes information like the cats domestic breed and whether or not they have short or long fur etc. C at the bottom of each vector allows us to take the list of numbers from each column that now represents the cat names as 300-dimensional vectors.
+
+If we use this representation to represent the cats cobra and baby cat in the sentence, notice how we can now say that each cat is similar or dissimilar in some way. Their values will be different but a lot of features for each cat have some level of similarity. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102289481-c9a31e00-3f0c-11eb-9040-ea7e4836dd0f.gif" width="675px">
+</p>
+
+<br/>
+
+This increases the odds of the model generalizing that its just as likely or unlikely for colin powell chain to be as dirty as baby cat or cobra. 
+
+This simple example does a lot to illustrate the intuition behind word representations but we can't expect the text in our dataset to be so structured. To get ahead of this we can learn target/context pairs. Let's take the sentence from our previous example:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102289656-31596900-3f0d-11eb-9d14-94c2ab440f87.png" width="275px">
+</p>
+
+<br/>
+ 
+The name cobra is the target word and licking her fur is the context.
+
+To learn an embedding for a sentence, it needs to be arranged in a way that derives context from the words on the left and right of the center word in the sentence. To solve this, we will train a word2vec model and we will only make use of its hidden layer weights, which are represented as an embedding matrix of the words based on their context in the sentence and then use gradient descent by way of backpropagation to correct its loss.
+
+There are 2 types of context prediction methods. You can pick a word at random and try to predict the left and right adjacent words. So we have the sentence, *"That phat cat dolly sat on the mat"*, in order to predict all the words that surround `dolly` using the word2vec architecture, we can define a continuous bag of words or a skip gram model.
+
+If we're at the word `dolly` in our window, we'll need to look at `'The phat cat _______ sat on the mat'`, as our input and try to predict the missing word `dolly` as the output. This is called a continuous bag of words (CBOW), and its non-linear hidden layer is eliminated and the computed weights are divided among every word in the sentence. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102290040-2a7f2600-3f0e-11eb-8a15-8e8eb5c371e6.png" width="450px">
+</p>
+
+<br/>
+
+To predict the current word based on the context, every word in the sentence gets estimated into identical spots and their vectors are averaged. Also the past input data does not affect the projection of the weights and it can even use words from a future sequence. Its training complexity is:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102290482-21428900-3f0f-11eb-973c-1ee7abd6667c.png" width="450px">
+</p>
+
+<br/>
+
+We can also use each word as an input to a log-bilinear classifier with a continuous projection layer and predict words within a certain range before and after the current word[10], resulting in a continuous skip gram model:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102291029-32d86080-3f10-11eb-8d70-a2ff26ae08da.png" width="450px">
+</p>
+
+<br/>
+
+The skip-gram predicts the surrounding words given the current word. The training complexity of this architecture is proportional to... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102290818-cb221580-3f0f-11eb-8894-5e1d6ba84440.png" width="450px">
+</p>
+
+<br/>
+
+...where `C` is the maximum distance of the words. If we choose `C = 7`, for each training word we will select randomly a number `R` in range `< 1;C >` and then use `R` words from the historical context and `R` words from the future of the current word as correct labels. This will require us to do `R x 2` word classifications, with the current word as input and each of the `R + R` words as output. In this experiment the maximum distance of words or window that we'll use is `C = 7`[11].
+ 
+Both methods undergo backpropagating the loss function over and over again on the architecture until a table of word embeddings are accumulated. A loss function being a specific group of instructions that basically asks the network, *"Hold on a minute, what's the cost of this gradient computed by the weights of our forward pass? If the cost value does not meet our desired threshold, we need to send the weights back through the skip-gram algorithm to learn better"*. Without the loss function there's nothing to inform the network how wrong it is. When this process is complete we end up with an embedding matrix. Every word is a row, every column is some nebulous embedding dimension and each word in space holds significance.
+
+The skip-gram method will end up looking something like this: 
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102291589-6ff12280-3f11-11eb-8af5-79954ab4193c.png" width="700px">
+</p>
+
+<br/>
+ 
+ `wt` representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
+ 
+ <br/>
+ 
+ <p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102291741-bfcfe980-3f11-11eb-9344-99e7e11a7e86.png" width="200px">
+</p>
+ 
+ <br/>
+ 
+ ...we'll get a representation of the center word. Our matrices denoted by...
+ 
+ <br/>
+ 
+  <p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102291841-f4dc3c00-3f11-11eb-91be-6b86c2f3d838.png" width="80px">
+</p>
+ 
+ <br/>
+ 
+...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply `Wwt` by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
