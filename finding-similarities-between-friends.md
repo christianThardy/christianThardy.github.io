@@ -1267,3 +1267,77 @@ The skip-gram method will end up looking something like this:
  <br/>
  
 ...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply `Wwt` by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
+
+But it can also return a ground truth for the context word denoted by the prediction vectors. So if the ground truth prediction in `Wt-1` is represented by a `1` in the right most vector that we'll say is the word `phat`, and a probability estimate of `0.1` is given to that word which could be the basis for a poor prediction which would predicate some loss in the model because our input center word is the word `dolly`.
+ 
+As an aside, the softmax function...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102418764-624ca300-3fcc-11eb-8efa-9f1ee13a5c65.png" width="500px">
+  <img src = "https://user-images.githubusercontent.com/29679899/102418950-c4a5a380-3fcc-11eb-823c-176c502e6898.gif" width="600px">
+</p>
+
+<br/>
+
+...simply interprets the dot product vectors as a probabilistic representation by squishing arbitrary real values derived from the matrix `[M]` into natural values. Arbitrary denoting various values assigned from `[M]` but remain unaffected by the changes in values from the softmax function. 
+
+Whichever method is used, the word embeddings will be able to predict a given word based on its neighbors within a sentence. To reiterate, the algorithm has internal embedding vectors for words, and when the algorithm is training its trying to predict which words are occurring based on the internal embeddings of the algorithm and context of a given sentence. It's basically taking the hidden layer weight matrix and building a lookup table of words as they relate to each other.
+
+Earlier we defined an embedding matrix example comprised of cats, but let's generalize the idea a bit. `bt_4`'s corpus has roughly 30,000 words and we would like to learn an embedding matrix `N` which will be a 100-dimensional by 30,000-dimensional matrix.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419343-8e1c5880-3fcd-11eb-92b7-8ec324245d22.gif" width="500px">
+</p>
+
+<br/>
+
+The columns for the matrix will be the different embeddings for the 30,000 different words in the corpus. Let's say the word `licking` is the 5,527th vector in the 30,000 word corpus. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419652-392d1200-3fce-11eb-9cf9-cc1a1ae7ad73.png" width="200px">
+</p>
+
+<br/>
+
+The notation `05527` indicates a sparse vector with the number 1 in position 5,527 which is also a 30,000th-dimensional vector as tall as our original matrix above is wide. 
+
+If the embedding matrix is signified by `N`, you can take `N` and multiply it by the 30,000th-dimensional vector... 
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419835-a3de4d80-3fce-11eb-8492-6bc18dfb7326.png" width="200px">
+</p>
+
+<br/> 
+ 
+ ...and it will become a 100-dimensional vector. So N is `(100, 30k)` and O is `(30k, 1)` so the inner product will be a 300-dimensional vector by `1`. To compute the first point of this vector, you would multiply the first row of the matrix `N` with the vector `05527`. You end up with a lot of 0's multiplied by each other because of the sparsity of the vector, but when you finally get to the 1 in the 5,527th place, you end up with the first point of our `(300, 1)` vector which would be the word `licking`. 
+
+Our next point mat is multiplied by the `(300, 1)` vector following the same order of operations as `licking` and the process is repeated for every word. Then we get our first embedding. We can think of this process as:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419973-f881c880-3fce-11eb-9add-b371856977be.png" width="350px">
+</p>
+
+<br/> 
+ 
+So we're training the predictive model on the corpus, but more importantly we're making use of the internal structure, or the embedding vectors inside the model which represent the words in the sentence. By comparing these embedding vectors using linear algebra, the algorithm will be able to derive context between words that show up in specific contexts over and over again.
+
+The goal of using word2vec will be to learn the embedding matrix `N` by initializing `N` randomly and using gradient descent to learn all of the parameters of the given matrix. Training the word2vec model is simple. We'll call the `Word2Vec` module from the `gensim.models` class. The `bp2Vec` variable contains our module and several parameters that will define our model. The sentences iterable represents a list of lists of tokens, and size defines the dimensionality of the word vectors.
+
+```python
+from gensim.models import Word2Vec
+bt2Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, workers = 8,
+                  sg = 0, iter = 30, alpha = 0.020)
+bt2Vec = bt2Vec.wv
+```
+
+`size` reduces the large dimensional vectors down to smaller vectors, which is the same as saying the number of dimensions of the word vectors will have some `n` number of columns, and `n` is going to be the amount of generalization that you want to reduce the word vectors down to. Word vectors/embeddings with smaller dimensions means more general but less accurate word representations and high dimensional word vectors/embeddings means less general but more accurate and potentially overfit. This parameter will require a bit of tweaking.
