@@ -1181,7 +1181,7 @@ This simple example does a lot to illustrate the intuition behind word represent
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102289656-31596900-3f0d-11eb-9d14-94c2ab440f87.png" width="275px">
+  <img src = "https://user-images.githubusercontent.com/29679899/102289656-31596900-3f0d-11eb-9d14-94c2ab440f87.png" width="265px">
 </p>
 
 <br/>
