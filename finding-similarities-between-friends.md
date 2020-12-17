@@ -1246,7 +1246,7 @@ The skip-gram method will end up looking something like this:
 
 <br/>
  
-<code>W<sub>t</sub></code>representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
+<code>W<sub>t</sub></code> representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
  
  <br/>
  
@@ -1266,7 +1266,7 @@ The skip-gram method will end up looking something like this:
  
  <br/>
  
-...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply `Wwt` <code>W<sub>w<sub>t</code> by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
+...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply <code>W<sub>w<sub>t</code> by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
 
 But it can also return a ground truth for the context word denoted by the prediction vectors. So if the ground truth prediction in <code>W<sub>t-1</sub></code> is represented by a `1` in the right most vector that we'll say is the word `phat`, and a probability estimate of `0.1` is given to that word which could be the basis for a poor prediction which would predicate some loss in the model because our input center word is the word `dolly`.
  
@@ -1335,8 +1335,8 @@ The goal of using word2vec will be to learn the embedding matrix `N` by initiali
 
 ```python
 from gensim.models import Word2Vec
-bt2Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, workers = 8,
-                  sg = 0, iter = 30, alpha = 0.020)
+bt2Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, 
+                  workers = 8, sg = 0, iter = 30, alpha = 0.020)
 bt2Vec = bt2Vec.wv
 ```
 
