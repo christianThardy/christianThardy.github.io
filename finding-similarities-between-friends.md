@@ -1246,7 +1246,7 @@ The skip-gram method will end up looking something like this:
 
 <br/>
  
-<code>W<sub>t</sub></code> representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
+<code>w<sub>t</sub></code> representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
  
  <br/>
  
