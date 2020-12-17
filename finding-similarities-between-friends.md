@@ -1335,6 +1335,7 @@ The goal of using word2vec will be to learn the embedding matrix `N` by initiali
 
 ```python
 from gensim.models import Word2Vec
+
 bt2Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, 
                   workers = 8, sg = 0, iter = 30, alpha = 0.020)
 bt2Vec = bt2Vec.wv
