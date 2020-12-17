@@ -766,7 +766,7 @@ dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) fo
 
 With the values of each feature defined on the y axis, we can see that this feature is not distributed normally. Notice how varied the number of words are per user. Given the varying number of word counts per users corpora, this feature could provide a learning algorithm with useful information to differentiate one user from another.
 
-We can also see how different bt_13 is from the rest of the users. This is very important because we can compare the frequency of features for each user against other users, in turn allowing us to determine the significance of each feature by user and vice versa.
+We can also see how different `bt_13` is from the rest of the users. This is very important because we can compare the frequency of features for each user against other users, in turn allowing us to determine the significance of each feature by user and vice versa.
 
 <br/>
 
@@ -1160,9 +1160,9 @@ Instead of doing things this way, we can represent all of our words as an embedd
 
 <br/>
 
-For every cats name we can learn a set of features and values per feature. For example we can denote the cleanliness for each cat between the values -1 for very dirty and 1 and very clean, with other values deviating from either number to provide contrast to each cats cleanliness. Age can be represented in a way that says each cat is neither young nor old and simply give them a value that lets us look at each cats age as a structured continuous variable. The cats gender can be simple binary values, 0 for male 1 for female.
+For every cats name we can learn a set of features and values per feature. For example we can denote the cleanliness for each cat between the values `-1` for very dirty and 1 and very clean, with other values deviating from either number to provide contrast to each cats cleanliness. Age can be represented in a way that says each cat is neither young nor old and simply give them a value that lets us look at each cats age as a structured continuous variable. The cats gender can be simple binary values, `0` for male `1` for female.
 
-Lets say for the sake of illustration our total number of features ends up being 100 which includes information like the cats domestic breed and whether or not they have short or long fur etc. C at the bottom of each vector allows us to take the list of numbers from each column that now represents the cat names as 300-dimensional vectors.
+Lets say for the sake of illustration our total number of features ends up being `100` which includes information like the cats domestic breed and whether or not they have short or long fur etc. `C` at the bottom of each vector allows us to take the list of numbers from each column that now represents the cat names as 300-dimensional vectors.
 
 If we use this representation to represent the cats cobra and baby cat in the sentence, notice how we can now say that each cat is similar or dissimilar in some way. Their values will be different but a lot of features for each cat have some level of similarity. 
 
@@ -1246,7 +1246,7 @@ The skip-gram method will end up looking something like this:
 
 <br/>
  
- `wt` representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
+<code>W<sub>t</sub></code>representing the center word `dolly` inside of a sparse vector, and `W` is a matrix representation of the center words. If we multiply the vector by the matrix...
  
  <br/>
  
@@ -1266,9 +1266,9 @@ The skip-gram method will end up looking something like this:
  
  <br/>
  
-...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply `Wwt` by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
+...are the same matrix for each position and store the representations of the context words. For each position in the context denoted by the six vectors on the right, we will multiply `Wwt` <code>W<sub>w<sub>t</code> by the matrices and end up with the dot product of the center word with each context word. We will then use the softmax function on the dot products to generate a probability distribution which will enable us to predict the probability of each word appearing in the context given that the target word is the center word.
 
-But it can also return a ground truth for the context word denoted by the prediction vectors. So if the ground truth prediction in `Wt-1` is represented by a `1` in the right most vector that we'll say is the word `phat`, and a probability estimate of `0.1` is given to that word which could be the basis for a poor prediction which would predicate some loss in the model because our input center word is the word `dolly`.
+But it can also return a ground truth for the context word denoted by the prediction vectors. So if the ground truth prediction in <code>W<sub>t-1</sub></code> is represented by a `1` in the right most vector that we'll say is the word `phat`, and a probability estimate of `0.1` is given to that word which could be the basis for a poor prediction which would predicate some loss in the model because our input center word is the word `dolly`.
  
 As an aside, the softmax function...
 
@@ -1305,7 +1305,7 @@ The columns for the matrix will be the different embeddings for the 30,000 diffe
 
 <br/>
 
-The notation `05527` indicates a sparse vector with the number 1 in position 5,527 which is also a 30,000th-dimensional vector as tall as our original matrix above is wide. 
+The notation <code>0<sub>5527</sub></code> indicates a sparse vector with the number 1 in position 5,527 which is also a 30,000th-dimensional vector as tall as our original matrix above is wide. 
 
 If the embedding matrix is signified by `N`, you can take `N` and multiply it by the 30,000th-dimensional vector... 
  
@@ -1317,7 +1317,7 @@ If the embedding matrix is signified by `N`, you can take `N` and multiply it by
 
 <br/> 
  
- ...and it will become a 100-dimensional vector. So N is `(100, 30k)` and O is `(30k, 1)` so the inner product will be a 300-dimensional vector by `1`. To compute the first point of this vector, you would multiply the first row of the matrix `N` with the vector `05527`. You end up with a lot of 0's multiplied by each other because of the sparsity of the vector, but when you finally get to the 1 in the 5,527th place, you end up with the first point of our `(300, 1)` vector which would be the word `licking`. 
+ ...and it will become a 100-dimensional vector. So N is `(100, 30k)` and O is `(30k, 1)` so the inner product will be a 300-dimensional vector by `1`. To compute the first point of this vector, you would multiply the first row of the matrix `N` with the vector <code>0<sub>5527</sub></code>. You end up with a lot of 0's multiplied by each other because of the sparsity of the vector, but when you finally get to the 1 in the 5,527th place, you end up with the first point of our `(300, 1)` vector which would be the word `licking`. 
 
 Our next point mat is multiplied by the `(300, 1)` vector following the same order of operations as `licking` and the process is repeated for every word. Then we get our first embedding. We can think of this process as:
 
