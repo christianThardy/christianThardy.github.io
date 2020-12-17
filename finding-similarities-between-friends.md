@@ -1300,7 +1300,7 @@ The columns for the matrix will be the different embeddings for the 30,000 diffe
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102419652-392d1200-3fce-11eb-9cf9-cc1a1ae7ad73.png" width="200px">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419652-392d1200-3fce-11eb-9cf9-cc1a1ae7ad73.png" width="180px">
 </p>
 
 <br/>
@@ -1324,7 +1324,7 @@ Our next point mat is multiplied by the `(300, 1)` vector following the same ord
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102419973-f881c880-3fce-11eb-9add-b371856977be.png" width="350px">
+  <img src = "https://user-images.githubusercontent.com/29679899/102419973-f881c880-3fce-11eb-9add-b371856977be.png" width="300px">
 </p>
 
 <br/> 
