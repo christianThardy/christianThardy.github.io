@@ -20,7 +20,9 @@ We can rely on 3 strengths of applying deep learning to this problem space.
 
 ## theory
 
-Let’s say the network probably looks at the character level of words...
+Theoretically, many layers should enrich the levels of the features.
+
+In the shallow layers of the network, it probably looks at the character level of words...
 
 <img src = "https://user-images.githubusercontent.com/29679899/101260507-8d96de80-36fe-11eb-835f-d2eb04caff8e.jpg" width="645px">
 
@@ -28,7 +30,7 @@ Let’s say the network probably looks at the character level of words...
 
 ![SpaCy%20sentence%20for%20blog](https://user-images.githubusercontent.com/29679899/101266353-1a03ca00-371c-11eb-8483-2e775ec92c22.png)
 
-...and arriving at the deepest layer to learn the most distant relationships between the parts-of-speech and the dependency relationships between words and phrases. Theoretically, many layers should enrich the levels of the features.
+...and arriving at the deepest layer to learn the most distant relationships between the parts-of-speech and the dependency relationships between words and phrases. 
 
 In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. 
 
