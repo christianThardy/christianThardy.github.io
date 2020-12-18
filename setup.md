@@ -51,7 +51,7 @@ Trying to come up with a rule for everything falls in line with how we think abo
 
 When it comes to applying machine learning to complex problems, there’s usually nothing exact about complex things and we need to consider that we want to automate processes that are often nuanced. So some problems need generalization, which makes a 100% rules based view of the world economically unfeasible and is probably why projects like the Semantic Web cannot secure funding.
 
-But are building neural networks as easy as adding more layers to the network?
+But I digress, are building neural networks as easy as adding more layers to the network?
 
 More layers do allow the network to learn more fine grained features, but in reality training gets worse, not better when you stack lots of layers, making it harder for the network to choose parameters from the feature space.
 
