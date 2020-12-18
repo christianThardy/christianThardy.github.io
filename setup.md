@@ -32,7 +32,15 @@ Let’s say the network probably looks at the character level of words...
 
 Theoretically, many layers should enrich the levels of the features.
 
-In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. Most linguists would be up in arms over this, but I am prepared to assert that in the field, these features are not enough on their own to help computers with meaning representation. 
+In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. 
+
+It's easy to say that language models are simply mimicking what they see and that to achieve full natural language understanding they need a deeper understanding of the underlying mechanisms behind language. For the most part this *seems* like criticism for the sake of criticism. I agree that we need a more granular understanding of compositionality to effectively use machines to parse text the way we do, but science takes time. 
+
+Traditionally(about <a href="https://en.wikipedia.org/wiki/Linguistics#History" title="wikipedia" rel="nofollow">3,000</a> years), the scope about how human brains compute during the processing and understanding of language has been pretty limited to humans, and this view of the world when applied to machines has been largely confined to abstract theoretical concepts. Developing applications that facilitate language interfacing via meaning representation is fairly recent(about <a href="https://en.wikipedia.org/wiki/Natural_language_processing#:~:text=Natural%20language%20processing%20has%20its%20roots%20in%20the%201950s." title="wikipedia" rel="nofollow">70</a> years) and it is a hard task. 
+
+In any case, a future where computers achieve a human-level of understanding of the fundamental principles and properties that make up language and cognition will likely be realized through a pragmatic, rather than a theoretical perspective of how the world works.
+
+Most linguists would be up in arms over this(because it breaks their entire universe), but I am prepared to assert that in the field, simple linguistic features are not enough on their own to help computers with meaning representation. 
 
 The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine.
 
