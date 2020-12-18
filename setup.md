@@ -281,6 +281,7 @@ Because labels are the opium of any supervised machine learning workflow, the ne
 tensor = trigram_cnn(embed_word(doc))
 state_weights = state2vec(tensor)
 state = initialize_state(doc)
+
 while not state.is_finished:
   features = get_features(state, state_weights)
   probs = mlp(features)
