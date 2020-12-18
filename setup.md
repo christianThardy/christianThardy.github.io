@@ -28,9 +28,7 @@ Let’s say the network probably looks at the character level of words...
 
 ![SpaCy%20sentence%20for%20blog](https://user-images.githubusercontent.com/29679899/101266353-1a03ca00-371c-11eb-8483-2e775ec92c22.png)
 
-...and arriving at the deepest layer to learn the most distant relationships between the parts-of-speech and the dependency relationships between words and phrases.
-
-Theoretically, many layers should enrich the levels of the features.
+...and arriving at the deepest layer to learn the most distant relationships between the parts-of-speech and the dependency relationships between words and phrases. Theoretically, many layers should enrich the levels of the features.
 
 In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. 
 
@@ -42,9 +40,7 @@ In any case, a future where computers achieve a human-level of understanding of 
 
 Most linguists would be up in arms over this(because it breaks their entire universe), but I am prepared to assert that in the field, simple linguistic features are not enough on their own to help computers with meaning representation. 
 
-The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine.
-
-This turns out to not be the case, as it's more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
+The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine. But this turns out to not be the case, as it's more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
 
 Maybe simple linguistic feature sets can be used for very simple use-cases or to optimize some process downstream, but semantics are hard which makes it difficult to reduce the problem to a limited feature set. For example, in more conventional NLP problems, if you're topic modelling you have an overall unambiguous theme, like Apple computers, then you look for all sentiment or mentions or entities relating to this one theme. But if you're working with a wide range of terms that represent themes from a wide range of classes, this makes it hard to pin down uniformity across tasks like keyword extraction using conventional methods. 
 
