@@ -8,7 +8,7 @@ Deep learning is thought of as the ability of a class of algorithms to learn a h
 
 These updates are analogous to a programmer coding a bunch of rules to solve a problem, but with deep learning, sometimes you can end up with code better than what any programmer could write.
 
-We can narrow this down with something more tangible, so let’s use named entity recognition as an example.
+We can narrow this down with something more tangible, so let’s use named entity recognition by way of language models as an example.
 
 We can rely on 3 strengths of applying deep learning to this problem space. 
 
@@ -32,7 +32,7 @@ Let’s say the network probably looks at the character level of words...
 
 In a way, deep learning goes against the intuition that linguistics gives us. That complex linguistic features like parts-of-speech and dependencies should be all we need to parse and extract the differences between concepts in text and language to learn complicated contextual information. 
 
-It's easy to say that language models are simply mimicking what they see and that to achieve full natural language understanding they need a deeper understanding of the underlying mechanisms behind language. For the most part this *seems* like criticism for the sake of criticism. I agree that we need a more granular understanding of compositionality to effectively use machines to parse text the way we do, but science takes time. 
+It's easy to say that language models are simply mimicking what they see and that to achieve full natural language understanding they need a deeper understanding of the underlying mechanisms behind language. For the most part this *seems* like criticism for the sake of criticism. You know, the kind of hand-waving that doesn't move anything forward? I agree that we need a more granular understanding of compositionality to effectively use machines to parse text the way we humans do, but science takes time. 
 
 Traditionally(about <a href="https://en.wikipedia.org/wiki/Linguistics#History" title="wikipedia" rel="nofollow">3,000</a> years), the scope about how human brains compute during the processing and understanding of language has been pretty limited to humans, and this view of the world when applied to machines has been largely confined to abstract theoretical concepts. Developing applications that facilitate language interfacing via meaning representation is fairly recent(about <a href="https://en.wikipedia.org/wiki/Natural_language_processing#:~:text=Natural%20language%20processing%20has%20its%20roots%20in%20the%201950s." title="wikipedia" rel="nofollow">70</a> years) and it is a hard task. 
 
@@ -40,7 +40,7 @@ In any case, a future where computers achieve a human-level of understanding of 
 
 Most linguists would be up in arms over this(because it breaks their entire universe), but I am prepared to assert that in the field, simple linguistic features are not enough on their own to help computers with meaning representation. 
 
-The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine. But this turns out to not be the case, as it's more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
+The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s. That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine. But this turns out to not be the case, as it’s more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
 
 Maybe simple linguistic feature sets can be used for very simple use-cases or to optimize some process downstream, but semantics are hard which makes it difficult to reduce the problem to a limited feature set. For example, in more conventional NLP problems, if you're topic modelling you have an overall unambiguous theme, like Apple computers, then you look for all sentiment or mentions or entities relating to this one theme. But if you're working with a wide range of terms that represent themes from a wide range of classes, this makes it hard to pin down uniformity across tasks like keyword extraction using conventional methods. 
 
