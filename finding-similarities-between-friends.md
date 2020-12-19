@@ -1342,3 +1342,78 @@ bt2Vec = bt2Vec.wv
 ```
 
 `size` reduces the large dimensional vectors down to smaller vectors, which is the same as saying the number of dimensions of the word vectors will have some `n` number of columns, and `n` is going to be the amount of generalization that you want to reduce the word vectors down to. Word vectors/embeddings with smaller dimensions means more general but less accurate word representations and high dimensional word vectors/embeddings means less general but more accurate and potentially overfit. This parameter will require a bit of tweaking.
+
+To better understand what's happening, imagine a set of words in Euclidean space represented as points--dots all over the place in 3D--that are stored in vectors in a high dimensional space. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697341-133c8300-4203-11eb-85dc-909936d64271.gif" width="500px">
+</p>
+
+<br/>
+
+`window` will represent the max distance between the current and predicted word within a sentence as they occupy this space. This is important because looking at words to the left and right of a word enables us to identify documents based on their auxiliary semantic features. 
+
+We'll also throw away 80% of the dots by getting rid of stop words using the `min_count` parameter which ignores all words with a total frequency lower than `4`. Now we can find the best match of all those vectors that remain after getting rid of the words or documents that do not match or carry latent meaning.
+ 
+`workers` simply optimizes the speed in which the algorithm trains. `sg` defines the training algorithm as a CBOW or skip gram model, which is another parameter we'll tweak. `iter` controls the number of epochs over the corpus, where 1 epoch is equal to one full training cycle on the training data and we will set the algorithm at `iter = 30`. The learning rate `alpha` controls the convergence of the loss function to its minimum and will be set to `0.020`. 
+
+The loss function being optimized in word2vec is negative sampling or NEG. NEG is defined by an objective that is used to replace every...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697616-3405d800-4205-11eb-9b1e-85e447b0913f.png" width="80px">
+</p>
+
+<br/>
+ 
+...term in the skip gram objective[12]. So the task is to distinguish the target word...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697660-821adb80-4205-11eb-84df-2ff22bd073e2.png" width="90px">
+</p>
+
+<br/>
+
+ ... which draws from the noise distribution...
+ 
+ <br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697673-98c13280-4205-11eb-9e8c-ee5470023d95.png" width="140px">
+</p>
+
+<br/>
+ 
+...using logistic regression... 
+
+ <br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697686-b2627a00-4205-11eb-9327-8bb6c2306091.png" width="700px">
+</p>
+
+<br/>
+
+ 
+...where there are `k` negative samples for each data sample.
+ 
+<code>Q<sub>θ</sub>(D=1|w,h)</code> is a binary logistic regression probability under the model of seeing the word w in the context h in the dataset D, calculated in terms of the learned embedding vectors theta.
+
+Using logistic regression, the objective is able to tell the difference between a small percentage of the high probabilities to real words and low probabilities to noise words that word2vec assigns. We use such a small percentage because of the sheer amount of our training samples and we need lots of training samples because of the large weight matrices computed by the word2vec model. Large training samples and large weight matrices results in lots of computation which slows down the training speed. We obtain fast training from `NEG` because computing the loss scales only when the number of noise words that you determine `k` are not all of the words in the lexicon of real words `V`, so negative sampling basically boils the loss function down to a classification task, sifting through real words and noise words until it can learn the differences between them.
+ 
+There are a handful of similarity metrics that can be used for word2vec vectors to determine how similar two data points are, but we will use the cosine similarity. This can be thought of as the angle between vectors:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697598-f4d78700-4204-11eb-837c-40fb733f52df.gif" width="550px">
+</p>
+
+<br/>
+
+I like to think of the cosine similarity as *"Do these observations have the same vibe?"* or *"are these things semantically similar?"*. Even if two documents have the same vibe or semantic meaning, their distance in physical space would be drastically different if their semantic difference is similar. So the cosine similarity is the same because the angle between your query and the documents are the same for each case, but their physical distance is very large, which is why we wouldn't use Euclidean distance here. 
