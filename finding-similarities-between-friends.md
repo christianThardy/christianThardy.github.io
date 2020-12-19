@@ -1402,7 +1402,7 @@ The loss function being optimized in word2vec is negative sampling or NEG. NEG i
  
 ...where there are `k` negative samples for each data sample.
  
-<code>Q<sub>θ</sub>(D=1|w<sub>t</sub></sub>,h)</code> is a binary logistic regression probability under the model of seeing the word w in the context h in the dataset D, calculated in terms of the learned embedding vectors theta.
+<code>Q<sub>θ</sub>(D=1|w<sub>t</sub>,h)</code> is a binary logistic regression probability under the model of seeing the word w in the context h in the dataset D, calculated in terms of the learned embedding vectors theta.
 
 Using logistic regression, the objective is able to tell the difference between a small percentage of the high probabilities to real words and low probabilities to noise words that word2vec assigns. We use such a small percentage because of the sheer amount of our training samples and we need lots of training samples because of the large weight matrices computed by the word2vec model. Large training samples and large weight matrices results in lots of computation which slows down the training speed. We obtain fast training from `NEG` because computing the loss scales only when the number of noise words that you determine `k` are not all of the words in the lexicon of real words `V`, so negative sampling basically boils the loss function down to a classification task, sifting through real words and noise words until it can learn the differences between them.
  
