@@ -42,7 +42,7 @@ In any case, a future where computers achieve a human-level of understanding of 
 
 Most linguists would be up in arms over this, and fair enough, it breaks their entire universe. But I am prepared to assert that in the field, simple linguistic features are not enough on their own to help computers with meaning representation. 
 
-The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s(<a href="https://user-images.githubusercontent.com/29679899/102622891-aac0a980-410f-11eb-8e4f-82e44234aa5f.PNG" title="Written by Eugene Garfield in 1990 for The Scientist magazine" rel="nofollow">what a surprise, science moves slowly</a>). That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine. But this turns out to not be the case, as it’s more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
+The line of thinking that they are is similar to what symbolic expressions were in AI from the mid-1950s to the late-1980s(<a href="https://user-images.githubusercontent.com/29679899/102622891-aac0a980-410f-11eb-8e4f-82e44234aa5f.PNG" title="Written by Eugene Garfield in 1990 for The Scientist magazine" rel="nofollow">what a surprise, science moves slowly!</a>). That cognition is symbolic, and our thoughts are symbolic just because that's what we see, say and imagine. But this turns out to not be the case, as it’s more likely that thoughts are a series of abstractions that follow complex sequences in a process that we cannot yet formally explain with strong mathematical intuitions.
 
 Maybe simple linguistic feature sets can be used for very simple use-cases or to optimize some process downstream, but semantics are hard which makes it difficult to reduce the problem to a limited feature set. For example, in more conventional NLP problems, if you're topic modelling you have an overall unambiguous theme, like the technology company Apple, then you look for all sentiment or mentions or entities relating to this one theme. But if you're working with a wide range of terms that represent themes from a wide range of classes, this makes it hard to pin down uniformity across tasks like keyword extraction using conventional methods. 
 
@@ -275,13 +275,12 @@ state2vec = (
 ) >> Maxout(128)
 ```
 
-Because labels are the opium of any supervised machine learning workflow, the network will learn how to predict the labels of the target based on a simple multi-layer perceptron step. It is here that the network acts as the controller of a state-like machine to make the predictions of the transition-based parser, taking the first word from the buffer, the word immediately before it, after it, the first word of the previous entity and the last word of the previous entity. After the features have been calculated for the state, we can look arbitrarily far back into the text so it doesn't matter if the previous entity that was assigned was 100 or 1,000 words back, we can still condition on those probabilities. 
+The network will learn how to predict the labels of the target based on a simple multi-layer perceptron step. It is here that the network acts as the controller of a state-like machine to make the predictions of the transition-based parser, taking the first word from the buffer, the word immediately before it, after it, the first word of the previous entity and the last word of the previous entity. After the features have been calculated for the state, we can look arbitrarily far back into the text so it doesn't matter if the previous entity that was assigned was 100 or 1,000 words back, we can still condition on those probabilities. 
 
 ```python
 tensor = trigram_cnn(embed_word(doc))
 state_weights = state2vec(tensor)
 state = initialize_state(doc)
-
 while not state.is_finished:
   features = get_features(state, state_weights)
   probs = mlp(features)
