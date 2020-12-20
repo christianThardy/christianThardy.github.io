@@ -283,7 +283,7 @@ state = initialize_state(doc)
 while not state.is_finished:
   features = get_features(state, state_weights)
   probs = mlp(features)
-  action = (probs * valid_actions(state)). argmax()
+  action = (probs * valid_actions(state)).argmax()
   state = action(state)
 ```
 
