@@ -1417,3 +1417,70 @@ There are a handful of similarity metrics that can be used for word2vec vectors 
 <br/>
 
 I like to think of the cosine similarity as *"Do these observations have the same vibe?"* or *"are these things semantically similar?"*. Even if two documents have the same vibe or semantic meaning, their distance in physical space would be drastically different if their semantic difference is similar. So the cosine similarity is the same because the angle between your query and the documents are the same for each case, but their physical distance is very large, which is why we wouldn't use Euclidean distance here. 
+
+After training the skip-gram model, we can look up words that are similar to other words in the corpus with the `most_similar` function, which returns the top 10 most similar words. 
+
+<br/>
+
+```python
+bt2Vec.wv.most_similar('cool')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102835710-7c6bf400-43c5-11eb-9d39-4ff2ae41a72a.PNG" width="300px">
+</p>
+
+<br>
+
+The scale of 1% to 100% next to each word represent the cosine similarity being least or most similar to the original query in the `most_similar` function.
+ 
+The word `cool` can represent a state of being, aesthetic appeal, a behavioral characteristic, or can be used in non-commital phrases. So it makes sense that `cool` is highly similar to words like `nice`, `wow`, `ok`, `chill`, `sweet` and `good` which are words commonly used in the same context.  
+ 
+One of the useful things about similarity is that you can follow hierarchies of words until you reach a theme or possible topic. For example...
+
+<br/>
+
+```python
+bt2Vec.wv.most_similar('failure')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102839844-77ac3d80-43cf-11eb-9001-07ef1c0623ec.PNG" width="300px">
+</p>
+
+```python
+bt2Vec.wv.most_similar('anxiety')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102839972-be019c80-43cf-11eb-88b8-ac89cf24823a.PNG" width="300px">
+</p>
+
+```python
+bt2Vec.wv.most_similar('curse')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102840070-f012fe80-43cf-11eb-8673-4dae78726bbf.PNG" width="300px">
+</p>
+
+```python
+bt2Vec.wv.most_similar('smartest')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102840173-3bc5a800-43d0-11eb-967f-b27ad1bd00f9.PNG" width="300px">
+</p>
+
+```python
+bt2Vec.wv.most_similar('insane')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102840210-57c94980-43d0-11eb-85d3-8fdec63bb33f.PNG" width="300px">
+</p>
+
+```python
+bt2Vec.wv.most_similar('loser')
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102840249-6adc1980-43d0-11eb-81a2-a385af89e84b.PNG" width="300px">
+</p>
+
+<br/>
+
+...with the cosine distance of each randomly chosen word staying close to 100%. We can assume that the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption, but if we could divide `bt_4`'s text into topics, maybe we could gain a broader understanding of `bt_4`. 
