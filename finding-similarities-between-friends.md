@@ -1488,7 +1488,7 @@ bt2Vec.wv.most_similar('loser')
 In order to represent the text using Euclidean distance in higher dimensions, let's consider the previous shape of `bt_4`'s data. A `38954,4` array. After removing common words, the array's size was reduced to:
 
 ```python
-len(corpus)
+print('bt_4 corpus length:', len(corpus))
 ```
 # `31413`
 
