@@ -1490,7 +1490,7 @@ In order to represent the text using Euclidean distance in higher dimensions, le
 ```python
 print('bt_4 corpus length:', len(corpus))
 ```
-# `bt_4 corpus length:31413`
+# `bt_4 corpus length: 31413`
 
 Each token in the corpus can be thought of as an array of text, with each discrete symbol corresponding to an embedding vector inside the model. The embeddings are contained by one-dimensional vectors, with each vector corresponding to a word in the vocabulary. Each word is mapped to vectors of real numbers, so that's 31,413 tokens and each one will contain several of their own embeddings and is expressed as the sequence in which the word occurs, but as a vector. 
  
