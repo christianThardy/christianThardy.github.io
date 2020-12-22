@@ -1336,9 +1336,9 @@ The goal of using word2vec will be to learn the embedding matrix `N` by initiali
 ```python
 from gensim.models import Word2Vec
 
-bt2Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, 
+bt4Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, 
                   workers = 8, sg = 0, iter = 30, alpha = 0.020)
-bt2Vec = bt2Vec.wv
+bt4Vec = bt4Vec.wv
 ```
 
 `size` reduces the large dimensional vectors down to smaller vectors, which is the same as saying the number of dimensions of the word vectors will have some `n` number of columns, and `n` is going to be the amount of generalization that you want to reduce the word vectors down to. Word vectors/embeddings with smaller dimensions means more general but less accurate word representations and high dimensional word vectors/embeddings means less general but more accurate and potentially overfit. This parameter will require a bit of tweaking.
@@ -1423,7 +1423,7 @@ After training the skip-gram model, we can look up words that are similar to oth
 <br/>
 
 ```python
-bt2Vec.wv.most_similar('cool')
+bt4Vec.wv.most_similar('cool')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102835710-7c6bf400-43c5-11eb-9d39-4ff2ae41a72a.PNG" width="300px">
@@ -1440,42 +1440,42 @@ One of the useful things about similarity is that you can follow hierarchies of 
 <br/>
 
 ```python
-bt2Vec.wv.most_similar('failure')
+bt4Vec.wv.most_similar('failure')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102839844-77ac3d80-43cf-11eb-9001-07ef1c0623ec.PNG" width="300px">
 </p>
 
 ```python
-bt2Vec.wv.most_similar('anxiety')
+bt4Vec.wv.most_similar('anxiety')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102839972-be019c80-43cf-11eb-88b8-ac89cf24823a.PNG" width="300px">
 </p>
 
 ```python
-bt2Vec.wv.most_similar('curse')
+bt4Vec.wv.most_similar('curse')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102840070-f012fe80-43cf-11eb-8673-4dae78726bbf.PNG" width="300px">
 </p>
 
 ```python
-bt2Vec.wv.most_similar('smartest')
+bt4Vec.wv.most_similar('smartest')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102840173-3bc5a800-43d0-11eb-967f-b27ad1bd00f9.PNG" width="300px">
 </p>
 
 ```python
-bt2Vec.wv.most_similar('insane')
+bt4Vec.wv.most_similar('insane')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102840210-57c94980-43d0-11eb-85d3-8fdec63bb33f.PNG" width="300px">
 </p>
 
 ```python
-bt2Vec.wv.most_similar('loser')
+bt4Vec.wv.most_similar('loser')
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/102840249-6adc1980-43d0-11eb-81a2-a385af89e84b.PNG" width="300px">
