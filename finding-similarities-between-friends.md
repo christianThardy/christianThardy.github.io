@@ -1483,4 +1483,4 @@ bt2Vec.wv.most_similar('loser')
 
 <br/>
 
-...with the cosine distance of each randomly chosen word staying close to 100%. We can assume that the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption, but if we could divide `bt_4`'s text into topics, maybe we could gain a broader understanding of `bt_4`. 
+...with the cosine distance of each randomly chosen word staying close to 100%. We can assume the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption, but if we could divide `bt_4`'s text into topics, maybe we could gain a broader understanding of `bt_4`. 
