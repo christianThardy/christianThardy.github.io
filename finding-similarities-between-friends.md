@@ -1484,3 +1484,14 @@ bt2Vec.wv.most_similar('loser')
 <br/>
 
 ...with the cosine distance of each randomly chosen word staying close to 100%. We can assume the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption, but if we could divide `bt_4`'s text into topics, maybe we could gain a broader understanding of `bt_4`. 
+
+In order to represent the text using Euclidean distance in higher dimensions, let's consider the previous shape of `bt_4`'s data. A `38954,4` array. After removing common words, the array's size was reduced to:
+
+```python
+len(corpus)
+```
+# `31413`
+
+Each token in the corpus can be thought of as an array of text, with each discrete symbol corresponding to an embedding vector inside the model. The embeddings are contained by one-dimensional vectors, with each vector corresponding to a word in the vocabulary. Each word is mapped to vectors of real numbers, so that's 31,413 tokens and each one will contain several of their own embeddings and is expressed as the sequence in which the word occurs, but as a vector. 
+ 
+To visualize the one-dimensional embeddings, we'll need to transform them into two-dimensional tensors. A tensor is a variable that has `n` indices where each index covers a range of dimensions of the three-dimensional space. In short, they are abstractions of scalars that give us a good framework to represent our one-dimensional vectors in Euclidean space.
