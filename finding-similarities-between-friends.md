@@ -1186,7 +1186,7 @@ This simple example does a lot to illustrate the intuition behind word represent
 
 <br/>
  
-The name cobra is the target word and licking her fur is the context.
+The name `cobra` is the target word and `licking her fur` is the context.
 
 To learn an embedding for a sentence, it needs to be arranged in a way that derives context from the words on the left and right of the center word in the sentence. To solve this, we will train a word2vec model and we will only make use of its hidden layer weights, which are represented as an embedding matrix of the words based on their context in the sentence and then use gradient descent by way of backpropagation to correct its loss.
 
