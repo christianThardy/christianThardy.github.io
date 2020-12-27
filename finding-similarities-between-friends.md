@@ -234,7 +234,7 @@ During this initial exploration, we'll want to isolate and remove a significant 
 ```python
 # data
 
-dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna('')
+dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna(' ')
 
 # shape of data
 print("Training Data Shape : ", dataset.shape)
