@@ -1561,7 +1561,7 @@ There's no hope of recovering the work and I regret not having a backup. Lesson 
 
 # 9. shallow algorithms 
 
-In the context of machine learning, the essence of deep learning is associated with network architectures containing many layers and their ability to learn hierarchical distributed representations with little to no prior knowledge of the target problem. Traditional *shallow* machine learning algorithms usually lack a multitude of layers and require features to be engineered for them so they can learn the representations in the target problem (although feature engineering is not exclusive to shallow learning). The first shallow learners we're going to train on our data are count vectorization and TF-IDF.
+In the context of machine learning, the essence of deep learning is associated with network architectures containing many layers and their ability to learn hierarchical distributed representations with little to no prior knowledge of the target problem. Traditional *shallow* machine learning algorithms usually lack a multitude of layers and require a large number of features to be engineered for them so they can learn the representations in the target problem (although feature engineering is not exclusive to shallow learning). The first shallow learners trained on our data are count vectorization and TF-IDF.
 
 <br/>
 
