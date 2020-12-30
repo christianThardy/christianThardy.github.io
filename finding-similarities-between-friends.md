@@ -1502,7 +1502,7 @@ To visualize the one-dimensional embeddings, we'll need to transform them into t
 
 I started this version of the project, so all of the work in this post, in August of 2017. It was completed in April of 2018 and was posted to my old blog a few months after that. The platform I was using at the time to host my content had many problems and in November of 2020 I lost the next 5 sections of the project. As mentioned in the introduction, the next sections would have included working with deep learning based algorithms to classify each member of the dataset to their respective text where the label was lost. 
 
-This section contained an in depth analysis of how attention-based bidirectional recurrent neural networks and dimensionality reduction algorithms are constructed mathematically, their lay intutions, as well as other sections detailing how to use the t-SNE algorithm to visualize word embeddings derived from one-dimensional vectors that were transformed to tensors to build semantic intuitions of the dataset.... 
+Each section contained in depth analysis of how attention-based bidirectional recurrent neural networks and dimensionality reduction algorithms are constructed mathematically, their lay intutions, as well as other sections detailing how to use the t-SNE algorithm to visualize word embeddings derived from one-dimensional vectors that were transformed to tensors to build semantic intuitions of the dataset.... 
 
 <br/>
 
