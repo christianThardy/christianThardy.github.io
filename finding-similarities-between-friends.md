@@ -1545,7 +1545,7 @@ Sections 4 through 8 contained in depth analysis of how attention-based bidirect
 
 ...the intuition regarding different loss functions, diagnosing bad network performance, intrepretability of deep learning models, accuracy scores for the f1, precision and recall of the network, and the list goes on. The final classification results of the final model ended up being approximately 53%.
 
-Included in section 8 was the performance and f1 score for a series of shallow machine learning algorithms that were trained and tested on the same data. Here are there scores:
+Included in section 8 was the performance and f1 score for a series of shallow machine learning algorithms that were trained and tested on the same data. Here are their scores:
 
 <br/>
 
