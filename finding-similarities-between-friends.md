@@ -8,7 +8,7 @@ With the surge of social media, the internet has become an interesting and spiri
 
 It is my goal to make sense of a Facebook Messenger chat group belonging to a group of friends that has been active for about 8 years and I hope to find relationships within each members text to derive an overall view of what those relationships mean to each other. The shared meaning within these conversations go back pretty far, and should be reinforced when you look over the entire body of conversational sentences. I do not use the word *meaning* as a way to represent strings of words relating to the intent of a speaker per say. The meaning I'm after in this analysis is derived from *form* rather than context of use. This is to say that we will learn which words are similar in place of commonsense reasoning without truly knowing what each atoms' private mental state infers. 
 
-The overall text fragments within this corpus will be very short, considering the conversations held within the medium are stream of conscious by nature. I will explain in great detail, methods of deriving meaning from these short series of sentences using dense, distributed word embeddings by way of deep learning. After the text has been cleaned, each word will be mapped onto points in a high dimensional space to further reduce *meaningless* words to obtain *meaningful* words for each user. During the text extraction about 25,251 instances from the sum of each users name--originally ending at the 302,733rd instance--was lost. In an attempt to label this wealth of data so that it can be included in modeling user sentiment and topics, I propose a binary classification task to classify each users name to their respective text using an attention-based bidirectional long, short term memory recurrent neural network to learn the relevant features of each users text. The AB-BiLSTMRNN results will be weighted against engineered features tested on more classical information retrieval and shallow learning techniques such as term frequency inverse document frequency, sparse count vectorization, logistic regression, gradient boosted trees, naive bayes and support vector machines.
+The overall text fragments within this corpus will be very short, considering the conversations held within the medium are stream of conscious by nature. I will explain in great detail, methods of deriving meaning from these short series of sentences using dense, distributed word embeddings by way of deep learning. After the text has been cleaned, each word will be mapped onto points in a high dimensional space to further reduce *meaningless* words to obtain *meaningful* words for each user. During the text extraction about 25,251 instances from the sum of each users name--originally ending at the 302,733rd instance--was lost. In an attempt to label this wealth of data so that it can be included in modeling user sentiment and topics, I propose a binary classification task to classify each users name to their respective text using an attention-based bidirectional long, short term memory recurrent neural network to learn the relevant features of each users text. The AB-BiLSTMRNN results will be weighted against engineered features tested on more classical information retrieval and shallow learning techniques such as term frequency inverse document frequency and sparse count vectorization trained with semantically weighted word vectors, logistic regression, gradient boosted trees, naive bayes and support vector machines.
 
 <br/>
 
@@ -1495,3 +1495,86 @@ print('bt_4 corpus length:', len(corpus))
 Each token in the corpus can be thought of as an array of text, with each discrete symbol corresponding to an embedding vector inside the model. The embeddings are contained by one-dimensional vectors, with each vector corresponding to a word in the vocabulary. Each word is mapped to vectors of real numbers, so that's 31,413 tokens and each one will contain several of their own embeddings and is expressed as the sequence in which the word occurs, but as a vector. 
  
 To visualize the one-dimensional embeddings, we'll need to transform them into two-dimensional tensors. A tensor is a variable that has `n` indices where each index covers a range of dimensions of the three-dimensional space. In short, they are abstractions of scalars that give us a good framework to represent our one-dimensional vectors in Euclidean space.
+
+<br/>
+
+# restatement
+
+I started this version of the project, so all of the work in this post, in August of 2017. It was completed in April of 2018 and was posted to my old blog a few months after that. The platform I was using at the time to host my content had many problems and in November of 2020 I lost over half of the posted work. As mentioned in the introduction, this section would have included working with deep learning based algorithms to classify each member of the dataset to their respective text where the label was lost. 
+
+This section contained an in depth analysis of how attention-based bidirectional recurrent neural networks and dimensionality reduction algorithms are constructed mathematically, their lay intutions, as well as other sections detailing how to use the t-SNE algorithm to visualize word embeddings derived from one-dimensional vectors that were transformed to tensors to build semantic intuitions of the dataset.... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373073-ebbaa580-4aa1-11eb-8534-285d724f6c93.png" width="900px">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373090-f83efe00-4aa1-11eb-9bd2-42b625dc9205.gif" width="500px">
+</p>
+
+<br/>
+
+...it detailed how to break down multi-classification problems into binary problems... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373214-5370f080-4aa2-11eb-9e78-e372fa9e9934.png" width="600px">
+</p>
+
+<br/>
+
+...illustrations of how recurrent nets work... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373324-9d59d680-4aa2-11eb-9540-3153e5280bae.png" width="600px">
+</p>
+
+<br/>
+
+...how to tune hyperparameters and make architectural changes to AB-BiLSTMRNNs... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373410-e14cdb80-4aa2-11eb-94a9-3fef668873e6.png" width="600px">
+</p>
+
+<br/>
+
+...the intuition regarding different loss functions, diagnosing bad network performance, intrepretability of deep learning models, accuracy scores for the f1, precision and recall of the network, and the final classification results which ended up being approximately 53%.
+
+Also included in the previous section was the performance and f1 score for a series of shallow machine learning algorithms that were trained and tested on the same data. Here are there scores:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373597-5c15f680-4aa3-11eb-862d-f7c439c7c4af.png" width="290px">
+</p>
+
+<br/>
+
+There's no hope of recovering the work and I regret not having a backup. Lesson learned. While this work was important to me, I will not try to recreate it, but I'm optimistic about where the project has gone from here and I can't wait to post about it.
+
+<br/>
+
+# 9. shallow algorithms 
+
+In the context of machine learning, the essence of deep learning is associated with network architectures containing many layers and their ability to learn hierarchical distributed representations with little to no prior knowledge of the target problem. Traditional *shallow* machine learning algorithms usually lack a multitude of layers and require features to be engineered for them so they can learn the representations in the target problem (although feature engineering is not exclusive to shallow learning). The first shallow learners we're going to train on our data are count vectorization and TF-IDF.
+
+<br/>
+
+# count vectorization & term frequency, inverse document frequency 
+ 
+CountVectorizer is a bag-of-words (BOWs) model from the sklearn open-source library. A bag-of-words is a way of simplifying the representation of a given sentence by breaking it down into a token.
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373771-d3e42100-4aa3-11eb-9be0-1f0d17d082a5.jpg" width="300px">
+</p>
+
+<br/>
+ 
+BOW models assign a weight to each tokenized word, analogous to the frequency in which it shows up in the document and corpora. In turn, this generates a document term sparse matrix (sparse matrices are mostly comprised of zeros). All columns being a document and each row being a token. 
