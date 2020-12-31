@@ -26,7 +26,7 @@ To build scalable data pipelines, we need to switch from using local files, like
 
 While the tools used across cloud platforms to load data vary significantly, the end result is usually the same, which is a dataframe. In a local environment, we can use Pandas to load the dataframe (csv), but in distributed environments we need different implementations such as Spark RDDs (parquet) in PySpark. Parquet is basically a columnar storage file format and it lets you read, compress and process only the columns required for the current query, whereas CSV files are row based.
 
-Avoid expensive transformations and functions when validating your pipeline across large scale dataframes
+## avoid expensive transformations and functions when validating your pipeline across large scale dataframes
 
 When scaling our pipeline we ran into a few nontrivial issues. One of which required us to sift through Spark code and unit test their data partitioning functions. We needed to run a few jobs with dataframes at 75 to 100 million records a pop and when using native spark functions to handle our partitioning and the size of our clusters, we ran into speed efficiency issues. Each job was taking upwards of 24 to 48 hours to complete and some of them would just flat out stall.
 
@@ -44,6 +44,10 @@ After investigating the source code, I figured out that one of the functions run
 
 At that point the problem was as easy as removing the MD5 function so the modulus could just run on the key we were partitioning on and after that our jobs were able to run in a half hour with a lot less overhead.
 
+## always tune your number of partitions
+
+The number by which you partition your data will always be unique to your datasets. There is no one size fits all and for our use case we were only dealing with millions of comparisons so between 120 and 144 partitions got our larger jobs done. We also saw savings in cost by dynamically changing our workers and cores during job runs.
+
 ## partition on evenly distributed fields
 
 A Spark application is executed in 3 steps:
@@ -55,10 +59,6 @@ A Spark application is executed in 3 steps:
 3. A stage is composed on tasks based on partitions of the input data. The DAG scheduler pipelines operators together. Create stage graph, so a DAG of stages, that is a logical execution plan based on an RDD graph. Stages are created by breaking the RDD graph at shuffle boundaries.
 
 Shuffle boundaries are important because they dictate how the data between workers are transported across a Spark clusters network. They basically redistribute data so it can be grouped differently across partitions. This operation is VERY expensive so its important that you partition your data based on an evenly distributed column like an id or key so the amount of data across your clusters are balanced. Be wary if you're working with funky UUID columns that overly represent particular values.
-
-## always tune your number of partitions
-
-The number by which you partition your data will always be unique to your datasets. There is no one size fits all and for our use case we were only dealing with millions of comparisons so between 120 and 144 partitions got our larger jobs done. We also saw savings in cost by dynamically changing our workers and cores during job runs.
 
 ## visualizing the movement of your data will save you time
 
