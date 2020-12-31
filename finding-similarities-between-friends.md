@@ -1513,7 +1513,7 @@ Section 4 detailed the mathematical and lay intuitions on how to use the t-SNE a
 
 <br/>
 
-...sections 5 through 8 contained in depth analysis and illustrations of how attention-based bidirectional recurrent neural networks are constructed mathematically, how they work and their lay intutions... 
+...sections 5 through 8 contained in depth analysis and illustrations of how attention-based bidirectional long-short term memory recurrent neural networks are constructed mathematically, how they work and their lay intutions... 
 
 <br/>
 
