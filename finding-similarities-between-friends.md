@@ -1567,7 +1567,7 @@ In the context of machine learning, the essence of deep learning is associated w
 
 <br/>
 
-# count vectorization & term frequency, inverse document frequency 
+# sparse count vectorization & term frequency, inverse document frequency 
  
 `CountVectorizer` is a bag-of-words (BOWs) model from the sklearn open-source library. A bag-of-words is a way of simplifying the representation of a given sentence by breaking it down into a token.
  
