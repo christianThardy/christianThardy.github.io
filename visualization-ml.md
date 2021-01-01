@@ -124,7 +124,7 @@ Things like neural ordinary differential equations, optimization algorithm devel
 
 Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[1]
 
-Eric Weisstein. *Möbius Strip.* 2020.[2]
+Weisstein. *Möbius Strip.* 2020.[2]
 
 Olah. Neural Networks, Manifolds and Topology. 2014.[3]
 
