@@ -122,10 +122,10 @@ Things like neural ordinary differential equations, optimization algorithm devel
 
 ## References:
 
-Vellido, Martin. Rossi, Lisboa, Seeing is Believing: The Importance of Visualization in real-world machine learning applications. 2011.[1]
+Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[1]
 
-Olah, Neural Networks, Manifolds and Topology. 2014.[2]
+Eric Weisstein. *Möbius Strip.* 2020.[2]
 
-Ghrist, Three Examples of Applied and Computational Homology. 2008.[3]
+Olah. Neural Networks, Manifolds and Topology. 2014.[3]
 
-Mahadevan, Imagination Machines: New Horizons in Artificial Intelligence. 2018.[4]
+Ghrist. *Three Examples of Applied and Computational Homology.* 2008.[4]
