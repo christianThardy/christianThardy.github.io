@@ -315,10 +315,10 @@ Resources to train these models can also present potential bottlenecks, because 
 
 ### References
 
-Neural architectures for named entity recognition
+*Neural architectures for named entity recognition*
 
-A survey on deep learning for named entity recognition
+*A survey on deep learning for named entity recognition*
 
-Complex linguistic features for text classification: a comprehensive study
+*Complex linguistic features for text classification: a comprehensive study*
 
-Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models
+*Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models*
