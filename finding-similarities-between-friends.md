@@ -1589,4 +1589,64 @@ BOW models assign a weight to each tokenized word, analogous to the frequency in
 
 <br/>
 
-The idea behind BOWs is that you can take your document and break down each sentence it into tokens (either unigrams, bigrams or trigrams) and you throw them into the model. It's like you're cutting up a piece of paper, writing a single word on each piece and you dump those into a bag. It's very unsophisticated, and the order is loosely structured. It's not like you're working your way through a model from left to right, maintaining grammar or even sequential probability.
+The idea behind BOWs is that you can take your document and break down each sentence into tokens (either unigrams, bigrams or trigrams) and you throw them into the model. It's like you're cutting up a piece of paper, writing a single word on each piece and you dump those into a bag. It's very unsophisticated, and the order is loosely structured. It's not like you're working your way through a model from left to right, maintaining grammar or even sequential probability.
+
+When we use BOWs, what we're looking for is overlap. Whatever word we're looking for to complete a compound word or a sentence, does it have a trigger word in the bag, and if the trigger words are there, more than likely the correct document can be found, which will be the goal for the classification task. So we can begin to ask, *"Does this corpus have certain trigger words in the bag?"*. It doesn't matter what order they appear, it doesn't matter what grammatical path we pave through the sentence, all that matters is that those words are present. 
+ 
+Out of the two methods covered in this section, `CountVectorizer` is the most basic. It allows you to build a lexicon of familiar words and encode new documents using that vocabulary by counting the number of times a token shows up in the document and it uses this value as its weight. So `CountVectorizer` is primarily based on the count of words.
+
+`TfidfVectorizer` (also from sklearn) is different from `CountVectorizer` in that it allows us to calculate word frequencies. So the weight given to every token relies on its frequency in a document and how that term is reoccurring in the corpora[28]. `TfidfVectorizer` is based on the TF-IDF (term frequency, inverse document frequency) method and is the information retrieval technique that made the search engine likes of Google possible.
+ 
+So term frequency measures how often a word occurs in corpora. Since most documents vary in range, it is possible that a term would appear many times in long documents rather than in shorter ones. Therefore, the word frequency is divided by the document's range as a way of normalization. To achieve word (term) frequency you will compute:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449204-fe380900-4c72-11eb-8834-ff471cae6aba.png" width="600px">
+</p>
+
+<br/>
+
+Inverse document frequency estimates how significant a word is and when calculating term frequency on a BOWs, all words are deemed equally significant. Although, certain words like `is`, `of` and `that` will show up a lot, and have little importance. Therefore, the frequent words need to be weighed ↓ while the rare ones are scaled ↑ by way of a logarithm. This is done by computing the following:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449223-51aa5700-4c73-11eb-8761-c1a1dd05e75c.png" width="600px">
+</p>
+
+<br/>
+
+A bag-of-words model takes a document and transforms it into a vector. The vector size or the width of the vector, is going to be the number of columns in your feature space with one vector for every column. The gif below illustrates this document to vector transformation
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449247-a8b02c00-4c73-11eb-8833-2b4b2507c07b.gif" width="600px">
+</p>
+
+<br/>
+
+By formulating the problem like this you can ask, *"Is a given word present in the document?"* which will return a `0` or a `1`, a `yes` or a `no`. So if the word is present in this document then we put a `1` in the column above and if not we put a `0`.
+
+This is called a sparse vector because there is a sparsity of `1`'s, and the rest of the numbers are mostly `0`'s. The opposite of this is a dense vector which is squished down to many real numbers between `0` and `1`. An example of this can be seen at the end of section 4.
+ 
+So we're left with one vector per document, many documents in the corpus and however many rows. If you're looking for the word pet food in the corpus, the algorithm will look through all the documents for documents where the pet column is `1` and the food column is `1`.
+ 
+Any documents that don't have both columns set to `1` are discarded which allows you to sort the documents in order of relevance to the word (or user). Instead of storing a `1` or a `0` in the column for a word for every document, lets store a tally of the number of times that word appears in the document. Instead of storing a `1` for pet lets store the number of times pet appears in the corpus. Now we can sort the documents when searching for pet food retrieved by the number of occurrences of that word in the document. More pets and foods in the document means more relevance to the query.
+
+Sticking with the Google example, people abused this system a long time ago by way of a very old black hat search engine optimization technique called keyword stuffing. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449367-56700a80-4c75-11eb-810b-4c0050fefa64.jpg" width="500px">
+</p>
+
+<br/>
+
+When Google had this naive version of TF-IDF implemented on their search engine, people could add to the end of any web page, any keywords they wanted to show up for as highly relevant for search queries. So way back when, it would have been possible to add `cat cat cat cat cat cat` and `food food food food food food` as many times as you want on your website, with white font on white background, font size 0. Given all of the "algorithm updates" its safe to say that Google's version of information retrieval has been pretty abstracted from this simple example.
+ 
+The way Google was able to abstract away from this naive example was by designing millions of handcrafted features, conceptually like the handcrafted features mentioned near the beginning of this analysis. They fancied the word signal rather than feature, but their researchers would improve Google search by coming up with some new feature, add them as new features for the algorithm, and their search engine would get better. But this was about until 2015. As of fall of 2019 they're most likely only relying on BERT, which is a deep learning model that learns a great deal of these features on its own.
+ 
+To summarize, term frequency-inverse document frequency is a weighted numerical estimate used to calculate how essential a word is to a body of text. The significance of a given word increases relatively to the number of times a word appears in a document but is offset by the frequency of the word in the large body of text. TF-IDF also shines when computing document relevance[29], and trying to figure out how similar documents are to each other.
