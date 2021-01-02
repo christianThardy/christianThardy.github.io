@@ -1580,3 +1580,13 @@ In the context of machine learning, the essence of deep learning is associated w
 <br/>
  
 BOW models assign a weight to each tokenized word, analogous to the frequency in which it shows up in the document and corpora. In turn, this generates a document term sparse matrix (sparse matrices are mostly comprised of zeros). All columns being a document and each row being a token. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449145-f62b9980-4c71-11eb-91e9-ff79e633fa0f.gif" width="400px">
+</p>
+
+<br/>
+
+The idea behind BOWs is that you can take your document and break down each sentence it into tokens (either unigrams, bigrams or trigrams) and you throw them into the model. It's like you're cutting up a piece of paper, writing a single word on each piece and you dump those into a bag. It's very unsophisticated, and the order is loosely structured. It's not like you're working your way through a model from left to right, maintaining grammar or even sequential probability.
