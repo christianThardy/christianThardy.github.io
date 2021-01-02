@@ -1584,7 +1584,7 @@ BOW models assign a weight to each tokenized word, analogous to the frequency in
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/103449145-f62b9980-4c71-11eb-91e9-ff79e633fa0f.gif" width="400px">
+  <img src = "https://user-images.githubusercontent.com/29679899/103449145-f62b9980-4c71-11eb-91e9-ff79e633fa0f.gif" width="500px">
 </p>
 
 <br/>
