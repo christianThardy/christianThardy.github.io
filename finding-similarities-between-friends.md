@@ -787,8 +787,18 @@ dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in 
 # Average length of the words in the text 
 
 dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
-```
 
+
+# Truncated violin plot of the number of words by user
+
+dataset['num_words'].loc[dataset['num_words'] > 80] = 80
+plt.figure(figsize = (12, 8))
+sns.pointplot(x = 'Name', y = 'num_words', data = dataset)
+plt.xlabel('User', fontsize = 20)
+plt.ylabel('Number of words in text', fontsize = 15)
+plt.title('Number of words by User', fontsize = 20)
+plt.show()
+```
 <p align="center">
     <img src = "https://user-images.githubusercontent.com/29679899/101384713-c9f64600-3888-11eb-91e6-52107251dd9b.png" width="500px">
 </p>
