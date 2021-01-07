@@ -233,6 +233,8 @@ The `collections` module can implement unique container datatypes that give us o
 
 During this initial exploration, we'll want to isolate and remove a significant portion of frequently used common words that have little contextual meaning on their own. To do this we'll need the `stopwords` object. Stop words can include words like `'the, and, in, of, to'` etc. These frequent, grammatical filler words play an important role in grammar. For instance, when predicting which word should come next in a sequence of words for a natural language generation or understanding task, but this part of the analysis is not complex enough to warrant that level of minuet understanding. 
 
+<br/>
+
 ```python
 # Data
 
@@ -241,8 +243,11 @@ dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna(' ')
 
 # Shape of data
 
-print("Training Data Shape : ", dataset.shape)
+print("Training Data Shape: ", dataset.shape)
 ```
+## Training Data Shape: (302731, 4)
+
+<br/>
 
 `pd.read_csv` is a function in `pandas` that allows data to pass into python, but unlike python's native `.read()` function, we can perform containerization operations that are exclusive and specific to the pandas library. `pd.read_csv` is contained within the dataset variable which is then used to determine the shape of the data using the .shape function. After executing these two lines of code, a `pandas` matrix is returned. A matrix in pandas is synonymous with arrays in python. Arrays are data structures that can hold any rendition of data in a structured way, and a matrix is simply a two-dimensional data structure where numbers are arranged into rows and columns. The returned integer tells us that there are 302,731 rows, within the table and 4 columns in a 2-dimensional state. 
 
