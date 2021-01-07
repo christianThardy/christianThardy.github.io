@@ -1688,7 +1688,7 @@ from sklearn.model_selection import train_test_split
 
 # Data
 
-dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna('0')
+dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna(' ')
 
 # Transforms target variable into 0s and 1s for classification
 
