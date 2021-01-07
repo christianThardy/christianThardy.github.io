@@ -1691,8 +1691,6 @@ In the code section below, we will train TF-IDF and count weighted vectors on th
  
 The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory[']. A set is a defined collection of easily distinguishable objects or in our case tokens. 
 
-<br/>
-
 ```python
 # Dependencies
 
@@ -1736,8 +1734,6 @@ list_of_tagged_words = nltk.pos_tag(tokenized_text)
 
 Placing the tagged tokens in a set object corresponding to each word and its part-of-speech, the set will separate the tokens into a number of categories to reduce the number of operations needed to check if a particular token is in the set.
 
-<br/>
-
 ```python
 '''Based on hash-tables, which are continuous vectors 
    similar to python dictionaries, set_pos transforms 
@@ -1765,8 +1761,6 @@ pos_tags = ['PRP','PRP$', 'WP',
 
 We're doing this so that when the set variable is called within `list_of_words`... 
 
-<br/>
-
 ```python
 # Removes the 1st index of set object
 
@@ -1793,8 +1787,6 @@ dataset['pos_features'] = dataset['Message'].apply(lambda x: str([w for w in str
 
 Now we have a new dataset that only contains the specified part of speech features. Next, we'll split them into the train and validation sets, both of which will be stratified and shuffled.
 
-<br/>
-
 ```python
 # Split data into xtrain/ytrain xval/yval sets
 
@@ -1807,8 +1799,6 @@ xtrain, xval, ytrain, yval = train_test_split(dataset.Message.values,y,
 <br/>
 
 We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
-
-<br/>
 
 ```python
 # Import glove embeddings
