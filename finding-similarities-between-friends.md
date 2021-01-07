@@ -1667,7 +1667,11 @@ To summarize, term frequency-inverse document frequency is a weighted numerical 
 
 In the code section below, we will train TF-IDF and count weighted vectors on the part of speech features of `bt_1` and `bt_5` using 6 shallow algorithms and 2 versions of `ExtraTreeClassifier`'s trained on TF-IDF/count weighted GloVe embeddings. Our objective metric to measure performance is based on the weighted F1 metric, which is a weighted average of the relative equal contribution of recall and precision. So:
 
+<br/>
+
 ## F1 = 2 * (precision * recall) / (precision + recall)
+
+<br/>
  
 The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory[']. A set is a defined collection of easily distinguishable objects or in our case tokens. 
 
