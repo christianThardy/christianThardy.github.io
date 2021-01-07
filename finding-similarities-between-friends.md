@@ -239,6 +239,7 @@ During this initial exploration, we'll want to isolate and remove a significant 
 dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna(' ')
 
 # shape of data
+
 print("Training Data Shape : ", dataset.shape)
 ```
 
@@ -588,6 +589,7 @@ Given that I would like a fast, inexpensive and easy technique, I will randomly 
 bt_4 = dataset['Name'] == 'bt_4'
 
 # shape of data
+
 print('bt_4 data shape: ', bt_4.shape)
 ```
 
@@ -637,13 +639,16 @@ The next few lines of code will obtain all the words from `bt_4`'s message featu
 bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
 
 # clean bt_4 text
+
 bt_4_clean = cleanup_text(bt_4_text)
 bt_4_clean = ' '.join(bt_4_clean).split()
 
 # remove words with 's
 
 bt_4_clean = [word for word in bt_4_clean if word != '\'s']
+
 # count all unique words
+
 bt_4_counts = Counter(bt_4_clean)
 bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
 bt_4_common_counts = [word[1] for word in bt_4_counts.most_common(30)]
@@ -736,27 +741,35 @@ import numpy as np
 stopwords = stopwords.words('english') 
 
 # number of words in the text 
+
 dataset["num_words"] = dataset["Message"].apply(lambda x: len(str(x).split()))
 
 # number of unique words in the text 
+
 dataset["num_unique_words"] = dataset["Message"].apply(lambda x: len(set(str(x).split())))
 
 # number of characters in the text 
+
 dataset["num_chars"] = dataset["Message"].apply(lambda x: len(str(x)))
 
 # number of stopwords in the text 
+
 dataset["num_stopwords"] = dataset["Message"].apply(lambda x: len([w for w in str(x).lower().split() if w in stopwords]))
 
 # number of punctuations in the text 
+
 dataset["num_punctuations"] =dataset['Message'].apply(lambda x: len([c for c in str(x) if c in string.punctuation]))
 
 # number of upper case words in the text 
+
 dataset["num_words_upper"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.isupper()]))
 
 # number of title case words in the text 
+
 dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.istitle()]))
 
 # average length of the words in the text 
+
 dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
 ```
 
@@ -1493,7 +1506,7 @@ In order to represent the text using Euclidean distance in higher dimensions, le
 ```python
 print('bt_4 corpus length:', len(corpus))
 ```
-# `bt_4 corpus length: 31413`
+## `bt_4 corpus length: 31413`
 
 Each token in the corpus can be thought of as an array of text, with each discrete symbol corresponding to an embedding vector inside the model. The embeddings are contained by one-dimensional vectors, with each vector corresponding to a word in the vocabulary. Each word is mapped to vectors of real numbers, so that's 31,413 tokens and each one will contain several of their own embeddings and is expressed as the sequence in which the word occurs, but as a vector. 
  
@@ -1651,3 +1664,124 @@ When Google had this naive version of TF-IDF implemented on their search engine,
 The way Google was able to abstract away from this naive example was by designing millions of handcrafted features, conceptually like the handcrafted features mentioned near the beginning of this analysis. They fancied the word signal rather than feature, but their researchers would improve Google search by coming up with some new features, add them as new features for the algorithm, and their search engine would get better. But this was about until 2015. As of fall of 2019 they're most likely only relying on BERT, which is a deep learning model that learns a great deal of these features on its own, and being a large language model it is focused on the intent and semantics of content. This makes gamification of the search engine via SEO virtually impossible.
  
 To summarize, term frequency-inverse document frequency is a weighted numerical estimate used to calculate how essential a word is to a body of text. The significance of a given word increases relatively to the number of times a word appears in a document but is offset by the frequency of the word in the large body of text. TF-IDF also shines when computing document relevance[29], and trying to figure out how similar documents are to each other.
+
+In the code section below, we will train TF-IDF and count weighted vectors on the part of speech features of `bt_1` and `bt_5` using 6 shallow algorithms and 2 versions of `ExtraTreeClassifier`'s trained on TF-IDF/count weighted GloVe embeddings. Our objective metric to measure performance is based on the weighted F1 metric, which is a weighted average of the relative equal contribution of recall and precision. So:
+
+## F1 = 2 * (precision * recall) / (precision + recall)
+ 
+The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory[']. A set is a defined collection of easily distinguishable objects or in our case tokens. 
+
+```python
+# Dependencies
+
+from tqdm import tqdm
+from nltk import word_tokenize
+from sklearn import preprocessing
+from nltk.tag import pos_tag_sents
+from sklearn.model_selection import train_test_split
+
+# Data
+
+dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna('0')
+
+# Transforms target variable into 0s and 1s for classification
+
+lbl_enc = preprocessing.LabelEncoder()
+y = lbl_enc.fit_transform(dataset.Name.values)
+
+# Returns every row as a string inside of a list 
+
+data_str = ''
+for i in dataset.itertuples():
+    data_str = data_str + str(i.Message)
+    
+# Tokenizes text
+
+tokenized_text = word_tokenize(data_str)
+
+# Appends list as a function to retrieve 
+# NLTK part of speech tags
+
+list_of_tagged_words = nltk.pos_tag(tokenized_text) 
+```
+
+Placing the tagged tokens in a set object corresponding to each word and its part-of-speech, the set will separate the tokens into a number of categories to reduce the number of operations needed to check if a particular token is in the set.
+
+```python
+'''Based on hash-tables, which are continuous vectors 
+   similar to python dictionaries, set_pos transforms 
+   list_of_tagged_words into a highly optimized,
+   iterable method that will make sure pos_tags is 
+   contained within the object its called. We only 
+   want the features in pos_tags included in the 
+   final version of list_of_tagged_words before we 
+   split the train and test sets.'''
+
+pos_set = (set(list_of_tagged_words))
+
+'''Specifies the parts of speech
+   we want to capture and groups 
+   them together.''' 
+
+pos_tags = ['PRP','PRP$', 'WP', 
+            'WP$','JJ','JJR','VB', 
+            'VBD','VBG', 'VBN','VBP', 
+            'VBZ','JJS','EX','IN','CD',
+            'CC','NN','NNS','NNP','NNPS']
+```
+
+We're doing this so that when the set variable is called within `list_of_words`... 
+
+```python
+# Removes the 1st index of set object
+
+list_of_words = set(map(lambda tuple_2: tuple_2[0], filter(lambda tuple_2: tuple_2[1] in pos_tags, pos_set)))
+```
+
+...it can help retrieve the parts of speech that are identified in the `pos_tags` variable and only retrieve the items in that variable. To break down `list_of_words` linearly, set allows us to group each function in the variable intelligently → `map` and `lambda` allow our list of inputs, `pos_tags` and `set_pos` to be passed through each function one by one in the variable → they also allow the list of functions,` tuple_2: tuple_2[0]`, do the same and represent our word whose index is `0` (wipe).
+
+Breaking down `tuple_2: tuple_2[0]` a bit, they're packing each word from `set_pos`, while `filter(lambda tuple_2: tuple_2[1]` unpacks and discards the words part of speech tags indexed by `1` `(NNS)` that are not specified in the `pos_tags` variable. `filter` is the function that handles this by only returning the parts of speech specified in `pos_tags`. Using nested sets in combination with tuples allows iterating over the massive rows of text to happen very quickly. 
+
+`dataset['pos_features']`... 
+
+```python
+# Transforms bt_1 & bt_5 Message vectors 
+# Based on functions from list_of_words
+
+dataset['pos_features'] = dataset['Message'].apply(lambda x: str([w for w in str(x).split() if w in list_of_words]))
+```
+
+...takes the `'Message'` column from the dataset and applies the `list_of_words` variable which transforms `bt_1` and `bt_5`'s sentences into individual words that can be categorized as personal possessive pronouns, nouns, verbs, adjectives, existential phrases, prepositional phrases, coordinating conjunctions, and cardinal digits that are in each row of each users respective document. 
+
+Now we have a new dataset that only contains the specified part of speech features. 
+
+Next, we'll split them into the train and validation sets, both of which will be stratified and shuffled.
+
+```python
+# Split data into xtrain/ytrain xval/yval sets
+
+xtrain, xval, ytrain, yval = train_test_split(dataset.Message.values,y, 
+                                                  stratify=y, 
+                                                  random_state=42, 
+                                                  test_size=0.1, shuffle=True)
+```
+
+We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
+
+```python
+# Import glove embeddings
+
+glove_vectors = {}
+e = open('glove.840B.300d.txt') # Need the full representation which includes stopwords
+for p in tqdm(e):
+    real_num = p.split(' ')
+    word = real_num[0]
+    coefs = np.asarray(real_num[1:], dtype='float32')
+    glove_vectors[word] = coefs
+e.close()
+print('Found %s word vectors.' % len(glove_vectors))
+```
+## 2196018it [02:35, 14077.23it/s]
+## Found 2196017 word vectors.
+
+...and we'll use them to create TF-IDF, count-vectorized weighted GloVe vectors which will serve as input for the `ExtraTreesClassifer`.
