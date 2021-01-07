@@ -1742,13 +1742,13 @@ Placing the tagged tokens in a set object corresponding to each word and its par
    contained within the object its called. We only 
    want the features in pos_tags included in the 
    final version of list_of_tagged_words before we 
-   split the train and test sets.'''
+   split the train and test sets'''
 
 pos_set = (set(list_of_tagged_words))
 
 '''Specifies the parts of speech
    we want to capture and groups 
-   them together.''' 
+   them together''' 
 
 pos_tags = ['PRP','PRP$', 'WP', 
             'WP$','JJ','JJR','VB', 
