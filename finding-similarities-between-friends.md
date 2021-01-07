@@ -150,7 +150,7 @@ Web pages are nice when you're browsing the internet, but analyzing the text wou
 In the gif above all the information we need is nested within div tags. A div tag is simply a container that encloses page elements in an html file and divides the html file into sections. What we're interested in is what's inside the div containers. Specifically the user names, which are in the `"_3-96 _2pio _2lek _2lel"` div class, their messages are in the `"_3-96 _2let"` div class and the date & time is in the `"_3-94 _2lem"` div class. The div classes--which is where your distinctive markers will usually reside--within the nested div tags contain unique identifiers that will allow us to extract all the div containers that have class attribute `"_3-96 _2pio _2lek _2lel"`, `"_3-96 _2let"` or `"_3-94 _2lem"`. We can scrape each users text, dates and times from this web page, because each piece of information is nested within a particular variable. To scrape the text, we will use a common parsing module called BeautifulSoup.
 
 ```python
-# dependencies
+# Dependencies
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -181,7 +181,7 @@ Now that the scraping environment is set up, we can begin the process of extract
 Earlier I mentioned how `BeautifulSoup` can define methods for searching through parse trees for specific pieces of data. The `data_name`, `data_date_time` and `data_message` variables contain the soup which is appended to the `find_all()` method. By passing the specified div classes as arguments to `find_all()`, it is now possible to extract the `name`, `message` and `date/time` features from the html soup. Calling the `writerow()` function within a for loop will iterate each observation for a given user over the entirety of the html document and simultaneously write each observation to the CSV file created by `csv.writer()`.
 
 ```python
-# names of users 
+# Names of users 
 
 d = csv.writer(open('bt_name_data_R.csv', 'w'))
 d.writerow('Name')
@@ -190,7 +190,7 @@ for data_name in data_name:
     names = data_name.contents
     d.writerow(names)
     
-# users dates & times 
+# Users dates & times 
 
 d = csv.writer(open('bt_date_data_R.csv', 'w'))
 d.writerow(['Date & Time'])
@@ -199,7 +199,7 @@ for data_date_time in data_date_time:
     dates_times = data_date_time.contents
     d.writerow(dates_times)
     
-# users messages 
+# Users messages 
 
 d = csv.writer(open('bt_message_data.csv', 'w'))
 d.writerow(['Message'])
@@ -215,7 +215,7 @@ for data_message in data_message:
 Datasets are like a good satirical bildungsroman[<a href="https://en.wikipedia.org/wiki/Bildungsroman" title="What is a bildungsroman" rel="nofollow">'</a>]. They will give you many ambiguous ideas, and sometimes they will even have an interesting story to tell. Exploring your data is a very important pillar of data analysis, because it gives a sense of what can be done with it and what may be possible. The first few reduction methods in this post will attempt to deconstruct the signal in our dataset into a set of features that will help our algorithms learn something meaningful. The only way you can handcraft good features for your data is by visualizing it, and after extracting the text from the html file and exporting everything into a nice tabular format, our first visualization is just a matter of several dependencies and less than 10 lines of code.
 
 ```python
-# dependencies
+# Dependencies
 
 import string
 import matplotlib.pyplot as plt
@@ -234,11 +234,12 @@ The `collections` module can implement unique container datatypes that give us o
 During this initial exploration, we'll want to isolate and remove a significant portion of frequently used common words that have little contextual meaning on their own. To do this we'll need the `stopwords` object. Stop words can include words like `'the, and, in, of, to'` etc. These frequent, grammatical filler words play an important role in grammar. For instance, when predicting which word should come next in a sequence of words for a natural language generation or understanding task, but this part of the analysis is not complex enough to warrant that level of minuet understanding. 
 
 ```python
-# data
+# Data
 
 dataset = pd.read_csv('bt_fb_messenger_data.csv').fillna(' ')
 
-# shape of data
+
+# Shape of data
 
 print("Training Data Shape : ", dataset.shape)
 ```
@@ -252,7 +253,7 @@ Since each users response in the app is dictated by the amount of times they sen
 `sns.barplot` supports the input data from `.index`, which specifies where the index values begin, and we use this to access the `pandas` data frame within the names variable, and `.values` allows the index values to be displayed. alpha specifies a semi-translucent tone to the bar plot and color simply returns a color for the bars. `plt.xlabel` and plt.ylabel applies a label to the `x/y` axis and `plt.show()` allows us to visualize the 6 lines of code.
 
 ```python
-# number of occurances for each user
+# Number of occurances for each user
 
 names = dataset['Name'].value_counts()
 plt.figure(figsize=(12,4)) # 36,16 # 12,4
@@ -584,11 +585,12 @@ Given that I would like a fast, inexpensive and easy technique, I will randomly 
 <br/>
 
 ```python
-# sample: bt_4
+# Sample: bt_4
 
 bt_4 = dataset['Name'] == 'bt_4'
 
-# shape of data
+
+# Shape of data
 
 print('bt_4 data shape: ', bt_4.shape)
 ```
@@ -604,7 +606,7 @@ The first part of the code is used to clean the text by lemmatizing the words an
 <br/>
 
 ```python
-# create function to clean up text by removing personal pronouns, stopwords and punctuation
+# Create function to clean up text by removing personal pronouns, stopwords and punctuation
 
 import spacy
 nlp = spacy.load('en_core_web_sm')
@@ -634,20 +636,23 @@ The next few lines of code will obtain all the words from `bt_4`'s message featu
 <br/>
 
 ```python
-# collect all text associated to bt_4
+# Collect all text associated to bt_4
 
 bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
 
-# clean bt_4 text
+
+# Clean bt_4 text
 
 bt_4_clean = cleanup_text(bt_4_text)
 bt_4_clean = ' '.join(bt_4_clean).split()
 
-# remove words with 's
+
+# Remove words with 's
 
 bt_4_clean = [word for word in bt_4_clean if word != '\'s']
 
-# count all unique words
+
+# Count all unique words
 
 bt_4_counts = Counter(bt_4_clean)
 bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
@@ -661,7 +666,7 @@ After the text has been preprocessed, the 30 most frequently occurring words for
 <br/>
 
 ```python
-# plot 30 most commonly occuring words
+# Plot 30 most commonly occuring words
 
 plt.figure(figsize=(20, 12))
 sns.barplot(x=bt_4_common_words, y=bt_4_common_counts)
@@ -740,35 +745,43 @@ Executing this code let's us visualize each users distribution.
 import numpy as np
 stopwords = stopwords.words('english') 
 
-# number of words in the text 
+
+# Number of words in the text 
 
 dataset["num_words"] = dataset["Message"].apply(lambda x: len(str(x).split()))
 
-# number of unique words in the text 
+
+# Number of unique words in the text 
 
 dataset["num_unique_words"] = dataset["Message"].apply(lambda x: len(set(str(x).split())))
 
-# number of characters in the text 
+
+# Number of characters in the text 
 
 dataset["num_chars"] = dataset["Message"].apply(lambda x: len(str(x)))
 
-# number of stopwords in the text 
+
+# Number of stopwords in the text 
 
 dataset["num_stopwords"] = dataset["Message"].apply(lambda x: len([w for w in str(x).lower().split() if w in stopwords]))
 
-# number of punctuations in the text 
+
+# Number of punctuations in the text 
 
 dataset["num_punctuations"] =dataset['Message'].apply(lambda x: len([c for c in str(x) if c in string.punctuation]))
 
-# number of upper case words in the text 
+
+# Number of upper case words in the text 
 
 dataset["num_words_upper"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.isupper()]))
 
-# number of title case words in the text 
+
+# Number of title case words in the text 
 
 dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.istitle()]))
 
-# average length of the words in the text 
+
+# Average length of the words in the text 
 
 dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
 ```
@@ -973,7 +986,7 @@ In this section, `bt_4` will undergo further preprocessing to reduce her corpus 
 The dependencies for this section will include a few that we're familiar with like, `numpy` and `pandas`. Then we have `re`, `PorterStemmer` (removes morphological affixes) and the stopwords module from `nltk`, python's custom `stopwords` list, and another `STOPWORDS` list from the `gensim` module. The combined strength of our new stop word lists contains 3x the common filler words used in the list from the previous sampling section.  
 
 ```python
-# dependencies
+# Dependencies
 
 extra_stopwords = []
 bt_4_additional_stopwords = extra_stopwords
@@ -1686,14 +1699,17 @@ from sklearn import preprocessing
 from nltk.tag import pos_tag_sents
 from sklearn.model_selection import train_test_split
 
+
 # Data
 
 dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna(' ')
+
 
 # Transforms target variable into 0s and 1s for classification
 
 lbl_enc = preprocessing.LabelEncoder()
 y = lbl_enc.fit_transform(dataset.Name.values)
+
 
 # Returns every row as a string inside of a list 
 
@@ -1701,9 +1717,11 @@ data_str = ''
 for i in dataset.itertuples():
     data_str = data_str + str(i.Message)
     
+    
 # Tokenizes text
 
 tokenized_text = word_tokenize(data_str)
+
 
 # Appends list as a function to retrieve 
 # NLTK part of speech tags
