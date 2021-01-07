@@ -1816,7 +1816,7 @@ e.close()
 print('Found %s word vectors.' % len(glove_vectors))
 ```
 ## 2196018it [02:35, 14077.23it/s]
-## Found 2196017 word vectors.
+## Found 2196017 word vectors
 
 <br/>
 
