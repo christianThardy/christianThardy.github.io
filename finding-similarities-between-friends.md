@@ -1757,17 +1757,15 @@ dataset['pos_features'] = dataset['Message'].apply(lambda x: str([w for w in str
 
 ...takes the `'Message'` column from the dataset and applies the `list_of_words` variable which transforms `bt_1` and `bt_5`'s sentences into individual words that can be categorized as personal possessive pronouns, nouns, verbs, adjectives, existential phrases, prepositional phrases, coordinating conjunctions, and cardinal digits that are in each row of each users respective document. 
 
-Now we have a new dataset that only contains the specified part of speech features. 
-
-Next, we'll split them into the train and validation sets, both of which will be stratified and shuffled.
+Now we have a new dataset that only contains the specified part of speech features. Next, we'll split them into the train and validation sets, both of which will be stratified and shuffled.
 
 ```python
 # Split data into xtrain/ytrain xval/yval sets
 
 xtrain, xval, ytrain, yval = train_test_split(dataset.Message.values,y, 
-                                                  stratify=y, 
-                                                  random_state=42, 
-                                                  test_size=0.1, shuffle=True)
+                                              stratify=y, 
+                                              random_state=42, 
+                                              test_size=0.1, shuffle=True)
 ```
 
 We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
@@ -1787,5 +1785,7 @@ print('Found %s word vectors.' % len(glove_vectors))
 ```
 ## 2196018it [02:35, 14077.23it/s]
 ## Found 2196017 word vectors.
+
+<br/>
 
 ...and we'll use them to create TF-IDF, count-vectorized weighted GloVe vectors which will serve as input for the `ExtraTreesClassifer`.
