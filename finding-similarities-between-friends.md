@@ -1805,12 +1805,14 @@ We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to 
 
 glove_vectors = {}
 e = open('glove.840B.300d.txt') # Need the full representation which includes stopwords
+
 for p in tqdm(e):
     real_num = p.split(' ')
     word = real_num[0]
     coefs = np.asarray(real_num[1:], dtype='float32')
     glove_vectors[word] = coefs
 e.close()
+
 print('Found %s word vectors.' % len(glove_vectors))
 ```
 ## 2196018it [02:35, 14077.23it/s]
