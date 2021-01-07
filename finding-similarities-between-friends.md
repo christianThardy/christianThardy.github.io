@@ -1082,6 +1082,7 @@ clean_text = [word for word in clean_text if not word in set(get_stop_words('eng
 clean_text = [word for word in clean_text if word not in STOPWORDS]
 clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
 ```
+## `['goddamn', 'season', 'queer', 'eye']`
 
 <br/>
 
