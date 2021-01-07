@@ -1675,6 +1675,8 @@ In the code section below, we will train TF-IDF and count weighted vectors on th
  
 The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory[']. A set is a defined collection of easily distinguishable objects or in our case tokens. 
 
+<br/>
+
 ```python
 # Dependencies
 
@@ -1709,7 +1711,11 @@ tokenized_text = word_tokenize(data_str)
 list_of_tagged_words = nltk.pos_tag(tokenized_text) 
 ```
 
+<br/>
+
 Placing the tagged tokens in a set object corresponding to each word and its part-of-speech, the set will separate the tokens into a number of categories to reduce the number of operations needed to check if a particular token is in the set.
+
+<br/>
 
 ```python
 '''Based on hash-tables, which are continuous vectors 
@@ -1734,13 +1740,18 @@ pos_tags = ['PRP','PRP$', 'WP',
             'CC','NN','NNS','NNP','NNPS']
 ```
 
+<br/>
+
 We're doing this so that when the set variable is called within `list_of_words`... 
+
+<br/>
 
 ```python
 # Removes the 1st index of set object
 
 list_of_words = set(map(lambda tuple_2: tuple_2[0], filter(lambda tuple_2: tuple_2[1] in pos_tags, pos_set)))
 ```
+<br/>
 
 ...it can help retrieve the parts of speech that are identified in the `pos_tags` variable and only retrieve the items in that variable. To break down `list_of_words` linearly, set allows us to group each function in the variable intelligently → `map` and `lambda` allow our list of inputs, `pos_tags` and `set_pos` to be passed through each function one by one in the variable → they also allow the list of functions,` tuple_2: tuple_2[0]`, do the same and represent our word whose index is `0` (wipe).
 
@@ -1755,9 +1766,13 @@ Breaking down `tuple_2: tuple_2[0]` a bit, they're packing each word from `set_p
 dataset['pos_features'] = dataset['Message'].apply(lambda x: str([w for w in str(x).split() if w in list_of_words]))
 ```
 
+<br/>
+
 ...takes the `'Message'` column from the dataset and applies the `list_of_words` variable which transforms `bt_1` and `bt_5`'s sentences into individual words that can be categorized as personal possessive pronouns, nouns, verbs, adjectives, existential phrases, prepositional phrases, coordinating conjunctions, and cardinal digits that are in each row of each users respective document. 
 
 Now we have a new dataset that only contains the specified part of speech features. Next, we'll split them into the train and validation sets, both of which will be stratified and shuffled.
+
+<br/>
 
 ```python
 # Split data into xtrain/ytrain xval/yval sets
@@ -1768,7 +1783,11 @@ xtrain, xval, ytrain, yval = train_test_split(dataset.Message.values,y,
                                               test_size=0.1, shuffle=True)
 ```
 
+<br/>
+
 We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
+
+<br/>
 
 ```python
 # Import glove embeddings
