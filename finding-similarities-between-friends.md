@@ -1930,6 +1930,8 @@ multi_nb_tfidf = Pipeline([("tfidf_vectorizer",
                                             stop_words='english')),("multinomial nb",MultinomialNB())])
 ```
 
+<br/>
+
 Inside of the `multi_nb` and `multi_nb_tfidf` variables, an sklearn `Pipeline` function is defined with parameters specific to each vectorizer type. 
 
 The `analyzer` in `CountVectorizer` needs to transform strings of words into features. We've previously taken ngram features from NLTK as input, so to vectorize an iterable of strings for `CountVectorizer` we'll use `lambda x: x` to express an anonymous function which will serve as the `analyzer`'s input. Using a `lambda` here is great because it effectively allows us to declare a simple inline function on a parameter that we don't actually need but requires an argument. `Token_pattern` defines what constitutes a token. `ngram_range` tells `CountVectorizer` the upper and lower boundries of ngrams to extract from the data.
@@ -1976,5 +1978,7 @@ class CountVectorizerEmbeddings(object):
             for words in X
         ])
 ```
+
+<br/>
 
 ...is defined as a new type of class object which will allow instances of its type to be passed on to `ExtraTreesClassifier`. As explained in the Attention section of the 7th part of this post, `__init__` , which is our constructor, allows class objects to accept arguments and will be the main definer of the `CountVectorizerEmbeddings` class where self assigns the glove vectors as static instances of the class object `CountVectorizerEmbeddings`.
