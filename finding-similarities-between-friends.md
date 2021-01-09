@@ -2167,7 +2167,7 @@ Let's examine the function estimation `F` in gradient boosting:
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104081865-96983580-51ff-11eb-8ec0-69ae45578791.png" width="300px">
+  <img src = "https://user-images.githubusercontent.com/29679899/104081865-96983580-51ff-11eb-8ec0-69ae45578791.png" width="280px">
 </p>
 
 <br/>
