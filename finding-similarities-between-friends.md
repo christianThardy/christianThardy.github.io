@@ -2103,6 +2103,7 @@ disordered_scores = [(name,cross_val_score(model,xtrain,ytrain,
                                          scoring= 'f1_weighted',
                                          cv=2).mean()) for name,model in all_models]
 
+
 # Sorts and prints the evaluation score of each algorithm
 
 scores = sorted(disordered_scores, key=lambda x: -x[1])
