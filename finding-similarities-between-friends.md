@@ -186,6 +186,7 @@ Earlier I mentioned how `BeautifulSoup` can define methods for searching through
 d=csv.writer(open('bt_name_data_R.csv','w'))
 d.writerow('Name')
 data_name=soup.find_all('div',class_='_3-96 _2pio _2lek _2lel')
+
 for data_name in data_name:
     names=data_name.contents
     d.writerow(names)
@@ -195,17 +196,19 @@ for data_name in data_name:
 d=csv.writer(open('bt_date_data_R.csv','w'))
 d.writerow(['Date & Time'])
 data_date_time=soup.find_all('div',class_='_3-94 _2lem')
+
 for data_date_time in data_date_time:
     dates_times=data_date_time.contents
     d.writerow(dates_times)
     
 # Users messages 
 
-d = csv.writer(open('bt_message_data.csv', 'w'))
+d=csv.writer(open('bt_message_data.csv','w'))
 d.writerow(['Message'])
-data_message = soup.find_all('div', class_ = '_3-96 _2let')
+data_message=soup.find_all('div',class_ = '_3-96 _2let')
+
 for data_message in data_message:
-    messages = data_message.get('_3-96 _2let')
+    messages=data_message.get('_3-96 _2let')
     d.writerow([messages])
 ```
 <br/>
@@ -612,22 +615,22 @@ The first part of the code is used to clean the text by lemmatizing the words an
 # Create function to clean up text by removing personal pronouns, stopwords and punctuation
 
 import spacy
-nlp = spacy.load('en_core_web_sm')
-punctuations = string.punctuation
+nlp=spacy.load('en_core_web_sm')
+punctuations=string.punctuation
 
-def cleanup_text(docs, logging=False):
-    texts = []
-    counter = 1
+def cleanup_text(docs,logging=False):
+    texts=[]
+    counter=1
     for doc in docs:
         if counter % 1000 == 0 and logging:
-            print("Processed %d out of %d documents." % (counter, len(docs)))
+            print("Processed %d out of %d documents." % (counter,len(docs)))
         counter += 1
-        doc = nlp(doc, disable=['parser', 'ner'])
-        tokens = [tok.lemma_.lower().strip() for tok in doc if tok.lemma_ != '-PRON-']
-        tokens = [tok for tok in tokens if tok not in stopwords and tok not in punctuations]
-        tokens = ' '.join(tokens)
-        tokens = re.sub("(^|\W)\d+($|\W)", " ", tokens)
-        tokens = re.sub('[^A-Za-z0-9]+', '', tokens)
+        doc = nlp(doc,disable=['parser','ner'])
+        tokens=[tok.lemma_.lower().strip() for tok in doc if tok.lemma_ != '-PRON-']
+        tokens=[tok for tok in tokens if tok not in stopwords and tok not in punctuations]
+        tokens=' '.join(tokens)
+        tokens=re.sub("(^|\W)\d+($|\W)", " ",tokens)
+        tokens=re.sub('[^A-Za-z0-9]+', '',tokens)
         texts.append(tokens)
     return pd.Series(texts)
 ```
@@ -641,25 +644,25 @@ The next few lines of code will obtain all the words from `bt_4`'s message featu
 ```python
 # Collect all text associated to bt_4
 
-bt_4_text = [text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
+bt_4_text=[text for text in dataset[dataset['Name'] == 'bt_4']['Message']]
 
 
 # Clean bt_4 text
 
-bt_4_clean = cleanup_text(bt_4_text)
-bt_4_clean = ' '.join(bt_4_clean).split()
+bt_4_clean=cleanup_text(bt_4_text)
+bt_4_clean=' '.join(bt_4_clean).split()
 
 
 # Remove words with 's
 
-bt_4_clean = [word for word in bt_4_clean if word != '\'s']
+bt_4_clean=[word for word in bt_4_clean if word != '\'s']
 
 
 # Count all unique words
 
-bt_4_counts = Counter(bt_4_clean)
-bt_4_common_words = [word[0] for word in bt_4_counts.most_common(30)]
-bt_4_common_counts = [word[1] for word in bt_4_counts.most_common(30)]
+bt_4_counts=Counter(bt_4_clean)
+bt_4_common_words=[word[0] for word in bt_4_counts.most_common(30)]
+bt_4_common_counts=[word[1] for word in bt_4_counts.most_common(30)]
 ```
 
 <br/>
@@ -792,11 +795,11 @@ dataset["mean_word_len"]=dataset["Message"].apply(lambda x: np.mean([len(w) for 
 # Truncated violin plot of the number of words by user
 
 dataset['num_words'].loc[dataset['num_words']>80]=80
-plt.figure(figsize = (12,8))
-sns.pointplot(x = 'Name',y = 'num_words', data=dataset)
-plt.xlabel('User', fontsize = 20)
-plt.ylabel('Number of words in text', fontsize=15)
-plt.title('Number of words by User', fontsize=20)
+plt.figure(figsize=(12,8))
+sns.pointplot(x='Name',y = 'num_words',data=dataset)
+plt.xlabel('User',fontsize = 20)
+plt.ylabel('Number of words in text',fontsize=15)
+plt.title('Number of words by User',fontsize=20)
 plt.show()
 ```
 <p align="center">
@@ -1135,6 +1138,7 @@ for i in range(0,38954):
     clean_text=re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
     clean_text=clean_text.lower()
     clean_text=clean_text.split()
+
     # text stemming & stop word removal
     ps=PorterStemmer() 
     clean_text=[ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
@@ -1790,10 +1794,10 @@ Now we have a new dataset that only contains the specified part of speech featur
 ```python
 # Split data into xtrain/ytrain xval/yval sets
 
-xtrain, xval, ytrain, yval = train_test_split(dataset.Message.values,y, 
-                                              stratify=y, 
-                                              random_state=42, 
-                                              test_size=0.1, shuffle=True)
+xtrain,xval,ytrain,yval = train_test_split(dataset.Message.values,y, 
+                                           stratify=y, 
+                                           random_state=42, 
+                                           test_size=0.1, shuffle=True)
 ```
 
 <br/>
