@@ -2042,7 +2042,7 @@ So `max_idf` is defined by the python function max which takes `tfidf.idf_` as i
 
 Keys that do exist are represented by a list comprehension of key-value pairs (w representing our words and `tfidf.idf_[i]` denoting a one-dimensional index of all TF-IDF, GloVe weighted scores in our corpus) that are tossed inside of `tfidf.vocabulary_`, which determines what a key is and what a weight is, and `.items()` iterates over the key-value pairs which will automatically assign the first variable as the key (word) and the second variable as the value (TF-IDF, GloVe weighted value) for the key. This is necessary so that words from our users corpora can attain their own individual weighted TF-IDF and GloVe features.
 
-Like CountVectorizerEmbeddings, TfidfVectorizerEmbeddings will transform the parameters defined by the `__init__` and the fit function, but in a very different way. np.mean not only takes a nested list comprehension to retrieve each word in glove_vectors, but it also calculates the weighted sum of TF-IDF and GloVe embedding vectors;                   
+Like `CountVectorizerEmbeddings`, `TfidfVectorizerEmbeddings` will transform the parameters defined by the `__init__` and the fit function, but in a very different way. np.mean not only takes a nested list comprehension to retrieve each word in `glove_vectors`, but it also calculates the weighted sum of TF-IDF and GloVe embedding vectors;                   
 
 <br/>
 
@@ -2056,7 +2056,7 @@ Like `CountVectorizerEmbeddings` `transform` function, if the elements within th
  
 When we weight each measure by the semantic information the GloVe vectors capture, this will further maximize our classification algorithms ability to generalize, because as effective as count vectorization and TF-IDF are on their own, adding weights to each word based on its frequency within the GloVe embeddings will allow count vectorization and TF-IDF to also take semantic similarities into account during classification.
   
-The last two sections were pretty dense, but things will get a lot easier from here. Taking queues from notebook 43, we'll assemble an sklearn `Pipeline` to encompass the `ExtraTreesClassifier`'s, which will each take 200 `n_estimators`...
+The last two sections were pretty dense, but things will get a lot easier from here. Taking queues from notebook 43, we'll assemble an sklearn `Pipeline` to encompass the `ExtraTreesClassifier`'s, which will each take `n_estimators` that are equal to `200`...
 
 ```python
 '''Glove vectors passing through a stack of random decision trees
@@ -2158,7 +2158,7 @@ I'll define some of the main ideas behind boosting using our binary classificati
 
 <br/>
 
-`argmin` or "argument of the minimum" permits the inputs minimum output, so it returns the value `F` which minimizes `L`. So `F` is our interest, and the objective is to find `L` so that the sum of its distance is as small as it can be, dependent on <code>x<sub>i</sub></code>.
+`argmin` or *"argument of the minimum"* permits the inputs minimum output, so it returns the value `F` which minimizes `L`. So `F` is our interest, and the objective is to find `L` so that the sum of its distance is as small as it can be, dependent on <code>x<sub>i</sub></code>.
 
 Let's examine the function estimation `F` in gradient boosting:
 
@@ -2170,7 +2170,7 @@ Let's examine the function estimation `F` in gradient boosting:
 
 <br/>
 
-`T` is the number of iterations. <code>f<sub>m</sub>(x)</code> is designed cumulatively so that at the m-th stage, the recently calculated function, <code>f<sub>m</sub></code> will improve the total loss while retaining <code>{f<sub>j</sub>}<sup>m-1</sup><sub>j=1</sub></code> as a fixed property.      
+`T` is the number of iterations. <code>f<sub>m</sub>(x)</code> is designed cumulatively so that at the <code>m<sup>-th</sup></code> stage, the recently calculated function, <code>f<sub>m</sub></code> will improve the total loss while retaining <code>{f<sub>j</sub>}<sup>m-1</sup><sub>j=1</sub></code> as a fixed property.      
  
 Each function <code>f<sub>m</sub></code> is retained to a set of parameterized "weak learners", letting `Θ` denote the vector of parameters of the weak learners. Gradient boosting uses decision trees as its weak learners, and because this `Θ` is composed of parameters that represent the tree structure that will split the feature in each internal node and also serves as the threshold for splitting each node, at phase `m`, we shape an estimated function of the loss:
  
