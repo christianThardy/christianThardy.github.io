@@ -2031,9 +2031,14 @@ So `max_idf` is defined by the python function max which takes `tfidf.idf_` as i
 
 Keys that do exist are represented by a list comprehension of key-value pairs (w representing our words and `tfidf.idf_[i]` denoting a one-dimensional index of all TF-IDF, GloVe weighted scores in our corpus) that are tossed inside of `tfidf.vocabulary_`, which determines what a key is and what a weight is, and `.items()` iterates over the key-value pairs which will automatically assign the first variable as the key (word) and the second variable as the value (TF-IDF, GloVe weighted value) for the key. This is necessary so that words from our users corpora can attain their own individual weighted TF-IDF and GloVe features.
 
-Like CountVectorizerEmbeddings, TfidfVectorizerEmbeddings will transform the parameters defined by the `__init__` and the fit function, but in a very different way. np.mean not only takes a nested list comprehension to retrieve each word in glove_vectors, but it also calculates the weighted sum of TF-IDF and GloVe embedding vectors;                                                            
+Like CountVectorizerEmbeddings, TfidfVectorizerEmbeddings will transform the parameters defined by the `__init__` and the fit function, but in a very different way. np.mean not only takes a nested list comprehension to retrieve each word in glove_vectors, but it also calculates the weighted sum of TF-IDF and GloVe embedding vectors;                   
+
+<br/>
+
 ## `self.glove[w]  *  self.word2weight[w]`
- 
+
+<br/>
+
 Like `CountVectorizerEmbeddings` `transform` function, if the elements within the nested, iterable list is `True`, the function will place the weighted embeddings into a sparse array of zeros with the same length as `self.dim`.
  
 `CountVectorizerEmbeddings` and `TfidfVectorizerEmbeddings` are essentially bag-of-words representations. Where they differ is that the former is simply based on the number of occurrences of words, whereas the latter determines which words in the corpora are favorable based on each words document frequency denoted by the total number of words in the corpora.
