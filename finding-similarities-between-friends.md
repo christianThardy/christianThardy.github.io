@@ -2177,7 +2177,17 @@ Each function <code>f<sub>m</sub></code> is retained to a set of parameterized "
  
 One of the key ideas behind boosting algorithms is controlling bias and variance, which is necessary because tree based models induce high variance naturally. Bias is the sum of error from incorrect assumptions in the weak learners, and a large bias can cause the algorithm to overlook the pertinent connections between features and outputs. The variance is the sum of error of sensitivity from small changes in the same data. So a large variance will induce overfitting instead of finding the anticipated outputs.
  
-Naturally, weak learners generate high bias and low variance and boosting reduces the output error by reducing bias and to a lesser extent variance, by aggregating the output from many sequential, weak learners so that their sum becomes one strong learner that reduces bias at every iteration. So the main advantage of xgb (XGBoost), is that we can use multiple models (weak learners) that will reduce variance and bias by training the model on the errors the previous learners made. 
+Naturally, weak learners generate high bias and low variance... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104083323-9ef66d80-520b-11eb-940c-fa0e3bc3c789.PNG" width="550px">
+</p>
+
+<br/> 
+
+...and boosting reduces the output error by reducing bias and to a lesser extent variance, by aggregating the output from many sequential, weak learners so that their sum becomes one strong learner that reduces bias at every iteration. So the main advantage of xgb (XGBoost), is that we can use multiple models (weak learners) that will reduce variance and bias by training the model on the errors the previous learners made. 
  
 But this method can also be optimized by introducing a random element to the algorithm's training, which has been proved to increase the accuracy of weak learners considerably, and they're computationally cost efficient which makes them easy to train, unlike neural networks. The randomization occurs when the weak learners are growing, and searching for the best split. Instead of making the split at the most distinct learning threshold, the `ExtraTreesClassifier` selects its split points fully at random for each feature, independent of the target variable and the best randomly generated threshold is chosen as the algorithm's splitting rule[']. Then they make a majority vote on the output based on the sum of weak learners. 
  
