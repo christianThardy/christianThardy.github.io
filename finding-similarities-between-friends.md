@@ -1585,17 +1585,7 @@ Section 4 detailed the mathematical and lay intuitions on how to use the t-SNE a
 
 <br/>
 
-...the mathematical/lay intuition regarding different loss functions, network layers, GloVe embeddings vs word2vec embeddings, diagnosing bad network performance, interpretability of deep learning models, accuracy scores for the f1, precision and recall of the network, and the list goes on. The final classification results of the final model ended up being approximately 53%.
-
-Included in section 8 was the performance and f1 score for a series of shallow machine learning algorithms that were trained and tested on the same data. Here are their scores:
-
-<br/>
-
-<p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/103373597-5c15f680-4aa3-11eb-862d-f7c439c7c4af.png" width="290px">
-</p>
-
-<br/>
+...the mathematical/lay intuition regarding different loss functions, network layers, GloVe embeddings vs word2vec embeddings, diagnosing bad network performance, interpretability of deep learning models, accuracy scores for the f1, precision and recall of the network, and the list goes on. 
 
 There's no hope of recovering the work and I regret not having a backup. Lesson learned. While this work was important to me, I will not try to recreate it, but I'm optimistic about where the project has gone from here and I can't wait to post about it.
 
@@ -1982,3 +1972,207 @@ class CountVectorizerEmbeddings(object):
 <br/>
 
 ...is defined as a new type of class object which will allow instances of its type to be passed on to `ExtraTreesClassifier`. As explained in the Attention section of the 7th part of this post, `__init__` , which is our constructor, allows class objects to accept arguments and will be the main definer of the `CountVectorizerEmbeddings` class where self assigns the glove vectors as static instances of the class object `CountVectorizerEmbeddings`.
+
+The following `if` / `else` statement says that if the length of the `glove_vectors` are greater than 0, the instance dim of the class object will ask next (ran inline for conveniece) to process the contents of `glove_vectors` and will iterate over the length of the vectors one time. Otherwise (`else`) if the length of the `glove_vectors` are less than 0, `dim` will be equal to 0.
+
+The `fit` function allows the class instance to define our `X` and `y` variables that will eventually contain `xtrain` and `ytrain`. This is where the model will fit the parameters from our initial class to the data, which will enable the model to learn.
+
+Finally, the `transform` function applies the parameters obtained by the `fit` function. It will transform documents into a document-term matrix, and extract token counts using the argument specified by fit or the class instance provided by the initial class. It will do this by returning a numpy array, `np.array([])`.
+
+We need the `glove_vectors` inside of an array as they are the input type that machine learning algorithms like, because numerical representations are what they can understand. Subsequently, it will also transform  `xtrain` into an array when passed as its argument.
+
+Calling `transform` will return the `np.array([])` which contains the np.mean object (literally takes the arithmetic mean of its arguments) which contains an expression called a nested list comprehension as its argument, that will retrieve each word contained in `glove_vectors` and will append them to `xtrain`. `self.glove[w]` to represent each row of words in our `glove_vectors` as `w`.
+ 
+The conditional states, for the `glove_vectors` retrieved in all words, if the `glove_vectors` are located in the `self.glove` instance or a matrix of zeros defined by the `self.dim` instance from the initial class, and if the words in `X` are evaluated as `True` with respect to `self.glove`, the `transform` function can initialize and the `CountVectorizerEmbeddings` class to be used in conjunction with any classification algorithm of our choice.
+
+The `__init__` function of the `TfidfVectorizerEmbeddings` class... 
+
+```python
+'''Vectorizes the text by taking the mean 
+   of all the  vectors corresponding to individual 
+   words in a given vector mapping''' 
+
+class TfidfVectorizerEmbeddings(object):
+    def __init__(self, glove):
+        self.glove = glove
+        self.word2weight = None
+        if len(glove)>0:
+            self.dim=len(glove[next(iter(glove_vectors))])
+        else:
+            self.dim=0
+        
+    def fit(self, X, y):
+        tfidf = TfidfVectorizer(analyzer=lambda x: x)
+        tfidf.fit(X)
+        '''If a word was never seen - it must be at least as infrequent
+           as any of the known words - so the default idf is the max of 
+           known idf's.'''
+        max_idf = max(tfidf.idf_)
+        self.word2weight = defaultdict(
+            lambda: max_idf, 
+            [(w, tfidf.idf_[i]) for w, i in tfidf.vocabulary_.items()]) 
+    
+        return self
+    
+    def transform(self, X):
+        return np.array([
+                np.mean([self.glove[w] * self.word2weight[w]
+                         for w in words if w in self.glove] or
+                        [np.zeros(self.dim)], axis=0)
+                for words in X
+            ])
+```
+
+...follows the same conventions as `CountVectorizerEmbeddings` but the `fit` and `transform` functions are a bit different. Similar to `CountVectorizerEmbeddings` `fit` function, `X` and `y` are defined. The functionality from sklearn's `TfidfVectorizer` is borrowed out of convenience to define `max_idf` so that if a word was never seen, it needs to be as rare as any of the known words so that the baseline `idf` is the max of known `idf`'s.
+
+So `max_idf` is defined by the python function max which takes `tfidf.idf_` as its argument. `.idf_` is an attribute of the `TfidfVectorizer` method that takes the TF-IDF score of each feature and makes it retrievable. When `max_idf` is computed,  its passed to the `self.word2weight` variable as an argument of the `defaultdict`.
+
+`defaultdict` will create a dictionary that counts the number of times each word (key) occurs in each users documents and count the number of times the top occurrences of words across all documents in each users corpora best represents the total corpus (TF-IDF, GloVe weight value). `defaultdict` receives `lambda: max_idf` as its default value, and allows the dictionary to return when its trying to be retrieved by a hypothetical key.
+
+Keys that do exist are represented by a list comprehension of key-value pairs (w representing our words and `tfidf.idf_[i]` denoting a one-dimensional index of all TF-IDF, GloVe weighted scores in our corpus) that are tossed inside of `tfidf.vocabulary_`, which determines what a key is and what a weight is, and `.items()` iterates over the key-value pairs which will automatically assign the first variable as the key (word) and the second variable as the value (TF-IDF, GloVe weighted value) for the key. This is necessary so that words from our users corpora can attain their own individual weighted TF-IDF and GloVe features.
+
+Like CountVectorizerEmbeddings, TfidfVectorizerEmbeddings will transform the parameters defined by the `__init__` and the fit function, but in a very different way. np.mean not only takes a nested list comprehension to retrieve each word in glove_vectors, but it also calculates the weighted sum of TF-IDF and GloVe embedding vectors;                                                            
+## `self.glove[w]  *  self.word2weight[w]`
+ 
+Like `CountVectorizerEmbeddings` `transform` function, if the elements within the nested, iterable list is `True`, the function will place the weighted embeddings into a sparse array of zeros with the same length as `self.dim`.
+ 
+`CountVectorizerEmbeddings` and `TfidfVectorizerEmbeddings` are essentially bag-of-words representations. Where they differ is that the former is simply based on the number of occurrences of words, whereas the latter determines which words in the corpora are favorable based on each words document frequency denoted by the total number of words in the corpora.
+ 
+When we weight each measure by the semantic information the GloVe vectors capture, this will further maximize our classification algorithms ability to generalize, because as effective as count vectorization and TF-IDF are on their own, adding weights to each word based on its frequency within the GloVe embeddings will allow count vectorization and TF-IDF to also take semantic similarities into account during classification.
+  
+The last two sections were pretty dense, but things will get a lot easier from here. Taking queues from notebook 43, we'll assemble an sklearn `Pipeline` to encompass the `ExtraTreesClassifier`'s, which will each take 200 `n_estimators`...
+
+```python
+'''Glove vectors passing through a stack of random decision trees
+   that will be trained using tf-idf weighted + glove weighted vectors'''
+
+from sklearn.ensemble import ExtraTreesClassifier
+stacked_r_tree_glove_vectors = Pipeline([(
+    "glove vectorizer", CountVectorizerEmbeddings(glove_vectors)),
+    ("stacked trees", ExtraTreesClassifier(n_estimators=200))])
+
+stacked_r_tree_glove_vectors_tfidf = Pipeline([(
+    "glove vectorizer", TfidfVectorizerEmbeddings(glove_vectors)),
+    ("stacked trees", ExtraTreesClassifier(n_estimators=200))])
+```
+
+<br/>
+
+...which are the number of trees in the classifier... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104081535-4b7d2300-51fd-11eb-8572-6f074307e56b.png" width="400px">
+</p>
+
+<br/>
+
+...and our embedding classes.
+
+Each model that we're training is stored in `all_models`: 
+
+```python
+# Places algorithm variables in a neat tabulated format
+
+from tabulate import tabulate
+# all 6 models
+all_models = [('multi_nb', multi_nb),
+              ('multi_nb_tfidf', multi_nb_tfidf),
+              ('bern_nb', bern_nb),
+              ('bern_nb_tfidf', bern_nb_tfidf),
+              ('log_reg',log_reg),
+              ('log_reg_tfidf',log_reg_tfidf),
+              ('xgb',xgb),
+              ('xgb_tfidf',xgb_tfidf),
+              ('svc', svc),
+              ('svc_tfidf', svc_tfidf),
+              ('glove_vectors', stacked_r_tree_glove_vectors),
+              ('glove_vectors_tfidf', stacked_r_tree_glove_vectors_tfidf)]
+
+
+# Takes average of each algorithms output via the weighted f1 evaluation metric
+
+from sklearn.model_selection import cross_val_score
+disordered_scores = [(name,cross_val_score(model,xtrain,ytrain,
+                                         scoring= 'f1_weighted',
+                                         cv=2).mean()) for name,model in all_models]
+
+# Sorts and prints the evaluation score of each algorithm
+
+scores = sorted(disordered_scores, key=lambda x: -x[1])
+print (tabulate(scores, floatfmt=".4f", headers=("model", 'score')))
+```
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/103373597-5c15f680-4aa3-11eb-862d-f7c439c7c4af.png" width="290px">
+</p>
+
+<br/>
+
+The baseline score obtained from the AB-BiLSTMRNN was 53%. Each algorithm from this section is evaluated on the same data and scores moderately to much higher than the AB-BiLSTMRNN. The weighted GloVe, TF-IDF embeddings trained on the `ExtraTreeClassifier` scored 70%. The vanilla XGBoost algorithm trained on the vanilla count vectorizer model scored 69% and the TF-IDF weighted Bernoulli Naive Bayes algorithm scored 68%. These scores were obtained only using the part of speech features. Its probable the score would increase if we included the numerical count based features. Relying on an end-to-end, deep learning architecture to independently learn the correlating features in a dataset is not always the best path to take. For this problem, feature engineering is the best tool to use.
+ 
+In the next section I will explain the defining aspects of the gradient boosted algorithm extremely randomized trees, XGBoost and the probabilistic algorithm Bernoulli Naive Bayes in a little more depth, and interpret their decision making processes.
+
+<br/>
+
+# boosting
+ 
+Boosting algorithms are based on decision trees and random forests. They make their predictions by searching for the best point at which the algorithm divides the training data at the root into multiple small-scale pieces of data (leaves) based on correlated variables in the data and eventually the split with the greatest advancement is chosen as the strongest predictor.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104081766-c98df980-51fe-11eb-88c8-cabcf70ae69f.png" width="500px">
+</p>
+
+<br/>
+
+While gradient boosting and neural networks can be very different, they share one very important component. Training a gradient boosting machine is essentially performing gradient descent by moving some parameter `x` in vector space, while minimizing a loss function `L`, that compares the target `y` to a nonlinear approximation `y^`.
+
+Gradient boosting machines are made up of multiple weak, but computationally efficient (more so than neural networks), decision-tree based models, or learners. The algorithm builds on one learner at a time to fit the residual of the learner that preceded it, whose output is then summed to get an overall approximation. The trees learn when the approximation `y^` is moving closer to the target `y` by way of the minimization of the loss function `L`. We can think of the minimization, `y - y^` , as the residual difference between the target and approximation. This residual (the distance to the target `y^`) is a directional vector that points in the direction of the best approximation from the descent of the loss function.
+ 
+So we can think of GBM's as a sum of two parts. It's one part a boosting algorithm that increases its output space---its second part is the boosting algorithm wrapped over a decision tree based architecture. The gradient descent mechanism of the algorithms optimization strategy happens on the output of the strong learners and not the parameters of the weak learners. The tree based architecture of the algorithm allows it to predict multiple, overlapping regions of the feature space. So they're good at finding strong, residual correlations between features.
+ 
+I'll define some of the main ideas behind boosting using our binary classification problem where a scalar scoring function is formed to differentiate `bt_1` and `bt_5`. Given the data `X` denoted by <code>x<sub>i</sub></code>, and its labels `Y` denoted by <code>y<sub>i</sub></code>, the goal is to choose a classification function `F(x)` to minimize the aggregation of some specified loss function `L` or L(<code>y<sub>i</sub></code>, F(<code>x<sub>i</sub></code>))[36]. It's additive form would be:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104082095-386c5200-5201-11eb-95e1-33eaef3a5e41.png" width="420px">
+</p>
+
+<br/>
+
+`argmin` or "argument of the minimum" permits the inputs minimum output, so it returns the value `F` which minimizes `L`. So `F` is our interest, and the objective is to find `L` so that the sum of its distance is as small as it can be, dependent on <code>x<sub>i</sub></code>.
+
+Let's examine the function estimation `F` in gradient boosting:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104081865-96983580-51ff-11eb-8ec0-69ae45578791.png" width="300px">
+</p>
+
+<br/>
+
+`T` is the number of iterations. <code>f<sub>m</sub>(x)</code> is designed cumulatively so that at the m-th stage, the recently calculated function, <code>f<sub>m</sub></code> will improve the total loss while retaining `{fj}m-1,j=1` as a fixed property.   
+ 
+Each function <code>f<sub>m</sub></code> is retained to a set of parameterized "weak learners", letting `Θ` denote the vector of parameters of the weak learners. Gradient boosting uses decision trees as its weak learners, and because this `Θ` is composed of parameters that represent the tree structure that will split the feature in each internal node and also serves as the threshold for splitting each node, at phase `m`, we shape an estimated function of the loss:
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104082207-5090a100-5202-11eb-834b-83c647fc33d5.png" width="550px">
+</p>
+
+<br/> 
+ 
+<code>f<sub>m</sub></code> minimizes the right hand side of the second equation, and since the direction is only fitted to a shrinkage parameter which is designed to find the best step size, this is usually applied to tm before its added to <code>f<sub>m</sub>-1</code>. Where the derivative `∂` of the loss function `L` and the classification function `F`, defines the direction of `L`, its slope and optimizes how big of a step to take when finding the minimum. Hence its relation to gradient descent but is otherwise known as steepest descent. The advantage is that only the expression of the gradient varies for different loss functions, while the induction step of our weak learners remain the same for different loss functions. So essentially we can optimize the algorithm using any number of loss functions which also makes the algorithm diverse enough for classification or regression tasks[31].
+ 
+One of the key ideas behind boosting algorithms is controlling bias and variance, which is necessary because tree based models induce high variance naturally. Bias is the sum of error from incorrect assumptions in the weak learners, and a large bias can cause the algorithm to overlook the pertinent connections between features and outputs. The variance is the sum of error of sensitivity from small changes in the same data. So a large variance will induce overfitting instead of finding the anticipated outputs.
+ 
+Naturally, weak learners generate high bias and low variance and boosting reduces the output error by reducing bias and to a lesser extent variance, by aggregating the output from many sequential, weak learners so that their sum becomes one strong learner that reduces bias at every iteration. So the main advantage of xgb (XGBoost), is that we can use multiple models (weak learners) that will reduce variance and bias by training the model on the errors the previous learners made. 
+ 
+But this method can also be optimized by introducing a random element to the algorithm's training, which has been proved to increase the accuracy of weak learners considerably, and they're computationally cost efficient which makes them easy to train, unlike neural networks. The randomization occurs when the weak learners are growing, and searching for the best split. Instead of making the split at the most distinct learning threshold, the `ExtraTreesClassifier` selects its split points fully at random for each feature, independent of the target variable and the best randomly generated threshold is chosen as the algorithm's splitting rule[']. Then they make a majority vote on the output based on the sum of weak learners. 
+ 
+Randomization increases bias and variance of trees individually, but decreases their variance exponentially with respect to averaging over a large ensemble of trees, which naturally reduces high bias in the learning samples. Based on the accuracy in comparison to the neural network, this classification task can tolerate high levels of bias of class probability estimates without yielding high error rates. 
