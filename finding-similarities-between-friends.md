@@ -2161,7 +2161,7 @@ Let's examine the function estimation `F` in gradient boosting:
 
 <br/>
 
-`T` is the number of iterations. <code>f<sub>m</sub>(x)</code> is designed cumulatively so that at the m-th stage, the recently calculated function, <code>f<sub>m</sub></code> will improve the total loss while retaining `{fj}m-1,j=1` as a fixed property.   
+`T` is the number of iterations. <code>f<sub>m</sub>(x)</code> is designed cumulatively so that at the m-th stage, the recently calculated function, <code>f<sub>m</sub></code> will improve the total loss while retaining <code>{f<sub>j</sub>}<sup>m-1</sup><sub>j=1</sub></code> as a fixed property.      
  
 Each function <code>f<sub>m</sub></code> is retained to a set of parameterized "weak learners", letting `Θ` denote the vector of parameters of the weak learners. Gradient boosting uses decision trees as its weak learners, and because this `Θ` is composed of parameters that represent the tree structure that will split the feature in each internal node and also serves as the threshold for splitting each node, at phase `m`, we shape an estimated function of the loss:
  
