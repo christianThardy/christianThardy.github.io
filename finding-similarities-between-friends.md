@@ -2034,6 +2034,8 @@ class TfidfVectorizerEmbeddings(object):
             ])
 ```
 
+<br/>
+
 ...follows the same conventions as `CountVectorizerEmbeddings` but the `fit` and `transform` functions are a bit different. Similar to `CountVectorizerEmbeddings` `fit` function, `X` and `y` are defined. The functionality from sklearn's `TfidfVectorizer` is borrowed out of convenience to define `max_idf` so that if a word was never seen, it needs to be as rare as any of the known words so that the baseline `idf` is the max of known `idf`'s.
 
 So `max_idf` is defined by the python function max which takes `tfidf.idf_` as its argument. `.idf_` is an attribute of the `TfidfVectorizer` method that takes the TF-IDF score of each feature and makes it retrievable. When `max_idf` is computed,  its passed to the `self.word2weight` variable as an argument of the `defaultdict`.
