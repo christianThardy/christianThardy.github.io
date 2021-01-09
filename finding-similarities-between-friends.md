@@ -260,9 +260,9 @@ Since each users response in the app is dictated by the amount of times they sen
 
 names = dataset['Name'].value_counts()
 plt.figure(figsize=(12,4)) # 36,16 # 12,4
-sns.barplot(names.index, names.values, alpha=0.8, color=color[1])
-plt.ylabel('Number of Occurrences', fontsize=12)
-plt.xlabel('User Name', fontsize=12)
+sns.barplot(names.index, names.values,alpha=0.8,color=color[1])
+plt.ylabel('Number of Occurrences',fontsize=12)
+plt.xlabel('User Name',fontsize=12)
 plt.show()
 ```
 <p align="center">
@@ -671,8 +671,8 @@ After the text has been preprocessed, the 30 most frequently occurring words for
 ```python
 # Plot 30 most commonly occuring words
 
-plt.figure(figsize=(20, 12))
-sns.barplot(x=bt_4_common_words, y=bt_4_common_counts)
+plt.figure(figsize=(20,12))
+sns.barplot(x=bt_4_common_words,y=bt_4_common_counts)
 plt.title('Most Common Words used by bt_4')
 plt.show()
 ```
@@ -746,57 +746,57 @@ Executing this code let's us visualize each users distribution.
 # dependencies
 
 import numpy as np
-stopwords = stopwords.words('english') 
+stopwords=stopwords.words('english') 
 
 
 # Number of words in the text 
 
-dataset["num_words"] = dataset["Message"].apply(lambda x: len(str(x).split()))
+dataset["num_words"]=dataset["Message"].apply(lambda x: len(str(x).split()))
 
 
 # Number of unique words in the text 
 
-dataset["num_unique_words"] = dataset["Message"].apply(lambda x: len(set(str(x).split())))
+dataset["num_unique_words"]=dataset["Message"].apply(lambda x: len(set(str(x).split())))
 
 
 # Number of characters in the text 
 
-dataset["num_chars"] = dataset["Message"].apply(lambda x: len(str(x)))
+dataset["num_chars"]=dataset["Message"].apply(lambda x: len(str(x)))
 
 
 # Number of stopwords in the text 
 
-dataset["num_stopwords"] = dataset["Message"].apply(lambda x: len([w for w in str(x).lower().split() if w in stopwords]))
+dataset["num_stopwords"]=dataset["Message"].apply(lambda x: len([w for w in str(x).lower().split() if w in stopwords]))
 
 
 # Number of punctuations in the text 
 
-dataset["num_punctuations"] =dataset['Message'].apply(lambda x: len([c for c in str(x) if c in string.punctuation]))
+dataset["num_punctuations"]=dataset['Message'].apply(lambda x: len([c for c in str(x) if c in string.punctuation]))
 
 
 # Number of upper case words in the text 
 
-dataset["num_words_upper"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.isupper()]))
+dataset["num_words_upper"]=dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.isupper()]))
 
 
 # Number of title case words in the text 
 
-dataset["num_words_title"] = dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.istitle()]))
+dataset["num_words_title"]=dataset["Message"].apply(lambda x: len([w for w in str(x).split() if w.istitle()]))
 
 
 # Average length of the words in the text 
 
-dataset["mean_word_len"] = dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
+dataset["mean_word_len"]=dataset["Message"].apply(lambda x: np.mean([len(w) for w in str(x).split()]))
 
 
 # Truncated violin plot of the number of words by user
 
-dataset['num_words'].loc[dataset['num_words'] > 80] = 80
-plt.figure(figsize = (12, 8))
-sns.pointplot(x = 'Name', y = 'num_words', data = dataset)
+dataset['num_words'].loc[dataset['num_words']>80]=80
+plt.figure(figsize = (12,8))
+sns.pointplot(x = 'Name',y = 'num_words', data=dataset)
 plt.xlabel('User', fontsize = 20)
-plt.ylabel('Number of words in text', fontsize = 15)
-plt.title('Number of words by User', fontsize = 20)
+plt.ylabel('Number of words in text', fontsize=15)
+plt.title('Number of words by User', fontsize=20)
 plt.show()
 ```
 <p align="center">
@@ -1018,9 +1018,9 @@ To initiate the second phase of text preprocessing, we need a `for` loop to iter
 <br/>
 
 ```python
-corpus = []
-for i in range(0, 38954):
-    clean_text = re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
+corpus=[]
+for i in range(0,38954):
+    clean_text=re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
     corpus.append(clean_text) 
 ```
 
@@ -1116,10 +1116,10 @@ ps = PorterStemmer()
 When constructing the stop word for loops, we'll need to go through each word in every document and look for all stop words which we've indicated in the `stopwords`, `get_stop_words`, `STOPWORDS` and `bt_4_additional_stopwords` variables. Each individual token in the `clean_text` variable will be included in a list `[word for word in clean_text]` function and the stop word conditions inside each stop words list will remove all of the words in the nested `clean_text` variable after the `if not` statement is called.
 
 ```python
-clean_text = [ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
-clean_text = [word for word in clean_text if not word in set(get_stop_words('english'))]
-clean_text = [word for word in clean_text if word not in STOPWORDS]
-clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
+clean_text=[ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
+clean_text=[word for word in clean_text if not word in set(get_stop_words('english'))]
+clean_text=[word for word in clean_text if word not in STOPWORDS]
+clean_text=[word for word in clean_text if word not in bt_4_additional_stopwords]
 ```
 ## `['goddamn', 'season', 'queer', 'eye']`
 
@@ -1130,17 +1130,17 @@ With our example illustrated, now we can put everything into a nice `for` loop t
 <br/>
 
 ```python
-corpus = []
-for i in range(0, 38954):
-    clean_text = re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
-    clean_text = clean_text.lower()
-    clean_text = clean_text.split()
+corpus=[]
+for i in range(0,38954):
+    clean_text=re.sub('[^a-zA-Z]', ' ', str(bt_4_text[i]))
+    clean_text=clean_text.lower()
+    clean_text=clean_text.split()
     # text stemming & stop word removal
-    ps = PorterStemmer() 
-    clean_text = [ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
-    clean_text = [word for word in clean_text if not word in set(get_stop_words('english'))]
-    clean_text = [word for word in clean_text if word not in STOPWORDS]
-    clean_text = [word for word in clean_text if word not in bt_4_additional_stopwords]
+    ps=PorterStemmer() 
+    clean_text=[ps.stem(word) for word in clean_text if not word in set(stopwords.words('english'))]
+    clean_text=[word for word in clean_text if not word in set(get_stop_words('english'))]
+    clean_text=[word for word in clean_text if word not in STOPWORDS]
+    clean_text=[word for word in clean_text if word not in bt_4_additional_stopwords]
     corpus.append(clean_text) 
 ```
 
@@ -1378,9 +1378,9 @@ The goal of using word2vec will be to learn the embedding matrix `N` by initiali
 ```python
 from gensim.models import Word2Vec
 
-bt4Vec = Word2Vec(sentences = corpus, size = 100, window = 5, min_count = 4, 
-                  workers = 8, sg = 0, iter = 30, alpha = 0.020)
-bt4Vec = bt4Vec.wv
+bt4Vec=Word2Vec(sentences=corpus,size=100,window=5,min_count=4, 
+                workers=8,sg=0,iter=30,alpha=0.020)
+bt4Vec=bt4Vec.wv
 ```
 
 `size` reduces the large dimensional vectors down to smaller vectors, which is the same as saying the number of dimensions of the word vectors will have some `n` number of columns, and `n` is going to be the amount of generalization that you want to reduce the word vectors down to. Word vectors/embeddings with smaller dimensions means more general but less accurate word representations and high dimensional word vectors/embeddings means less general but more accurate and potentially overfit. This parameter will require a bit of tweaking.
@@ -1703,31 +1703,31 @@ from sklearn.model_selection import train_test_split
 
 # Data
 
-dataset = pd.read_csv('bt_data_train_set_1_5.csv').fillna(' ')
+dataset=pd.read_csv('bt_data_train_set_1_5.csv').fillna(' ')
 
 
 # Transforms target variable into 0s and 1s for classification
 
-lbl_enc = preprocessing.LabelEncoder()
-y = lbl_enc.fit_transform(dataset.Name.values)
+lbl_enc=preprocessing.LabelEncoder()
+y=lbl_enc.fit_transform(dataset.Name.values)
 
 
 # Returns every row as a string inside of a list 
 
-data_str = ''
+data_str=''
 for i in dataset.itertuples():
-    data_str = data_str + str(i.Message)
+    data_str=data_str + str(i.Message)
     
     
 # Tokenizes text
 
-tokenized_text = word_tokenize(data_str)
+tokenized_text=word_tokenize(data_str)
 
 
 # Appends list as a function to retrieve 
 # NLTK part of speech tags
 
-list_of_tagged_words = nltk.pos_tag(tokenized_text) 
+list_of_tagged_words=nltk.pos_tag(tokenized_text) 
 ```
 
 <br/>
@@ -1842,66 +1842,66 @@ from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
    xgboost and a support vector classifier
    all with countvec and tfidf weighted features.'''
 
-multi_nb = Pipeline([("count_vectorizer",
-                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
-                                      stop_words='english')),("multinomial nb",MultinomialNB())])
+multi_nb = Pipeline([('count_vectorizer',
+                       CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
+                                       stop_words='english')),('multinomial nb',MultinomialNB())])
                                       
-multi_nb_tfidf = Pipeline([("tfidf_vectorizer",
+multi_nb_tfidf = Pipeline([('tfidf_vectorizer',
+                             TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                             strip_accents='unicode',token_pattern=r'\w{1,}',
+                                             ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                             stop_words='english')),('multinomial nb',MultinomialNB())])
+                                            
+bern_nb = Pipeline([('count_vectorizer',
+                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
+                                      stop_words='english')),('bernoulli nb',BernoulliNB())])
+                                     
+bern_nb_tfidf = Pipeline([('tfidf_vectorizer',
+                            TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                            strip_accents='unicode',token_pattern=r'\w{1,}',
+                                            ngram_range=(1,3), use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                            stop_words='english')),('bernoulli nb',BernoulliNB())])
+                                           
+log_reg = Pipeline([('count_vectorizer',
+                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                      ngram_range=(1,3),stop_words='english')),
+                                     ('logistic regression', LogisticRegression(C=1.0))])
+                    
+log_reg_tfidf = Pipeline([('tfidf_vectorizer',
                             TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
                                             strip_accents='unicode',token_pattern=r'\w{1,}',
                                             ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                            stop_words='english')),("multinomial nb",MultinomialNB())])
-                                            
-bern_nb = Pipeline([("count_vectorizer",
-                     CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
-                                     stop_words='english')),("bernoulli nb",BernoulliNB())])
-                                     
-bern_nb_tfidf = Pipeline([("tfidf_vectorizer",
-                           TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
-                                           strip_accents='unicode',token_pattern=r'\w{1,}',
-                                           ngram_range=(1,3), use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                           stop_words='english')),("bernoulli nb",BernoulliNB())])
+                                            stop_words='english')),('logistic regression',LogisticRegression(C=1.0))])
                                            
-log_reg = Pipeline([("count_vectorizer",
-                     CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
-                                     ngram_range=(1,3),stop_words='english')),
-                    ("logistic regression", LogisticRegression(C=1.0))])
-                    
-log_reg_tfidf = Pipeline([("tfidf_vectorizer",
-                           TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
-                                           strip_accents='unicode',token_pattern=r'\w{1,}',
-                                           ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                           stop_words='english')),("logistic regression",LogisticRegression(C=1.0))])
-                                           
-xgb = Pipeline([("count_vectorizer", 
-                 CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
-                                 ngram_range=(1,3),stop_words='english')),("xg boost",
-                                                                           XGBClassifier(max_depth=7,
-                                                                                         n_estimators=200,
-                                                                                         colsample_bytree=0.8,
-                                                                                         subsample=0.8,nthread=10,
-                                                                                         learning_rate=0.1))])
-xgb_tfidf = Pipeline([("tfidf_vectorizer",
-                       TfidfVectorizer(analyzer=lambda x: x,min_df=3,  max_features=None,
-                                       strip_accents='unicode',token_pattern=r'\w{1,}',
-                                       ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                       stop_words='english')),("xg boost",
-                                                               XGBClassifier(max_depth=7,
-                                                                             n_estimators=200,
-                                                                             colsample_bytree=0.8,
-                                                                             subsample=0.8,nthread=10,
-                                                                             learning_rate=0.1))])
-svc = Pipeline([("count_vectorizer", 
-                 CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
-                                 ngram_range=(1, 3), stop_words='english')),("linear svc",
-                                                                             SVC(kernel="linear"))])
+xgb = Pipeline([('count_vectorizer', 
+                  CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                  ngram_range=(1,3),stop_words='english')),('xg boost',
+                                                                             XGBClassifier(max_depth=7,
+                                                                                           n_estimators=200,
+                                                                                           colsample_bytree=0.8,
+                                                                                           subsample=0.8,nthread=10,
+                                                                                           learning_rate=0.1))])
+xgb_tfidf = Pipeline([('tfidf_vectorizer',
+                        TfidfVectorizer(analyzer=lambda x: x,min_df=3,  max_features=None,
+                                        strip_accents='unicode',token_pattern=r'\w{1,}',
+                                        ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                        stop_words='english')),('xg boost',
+                                                                XGBClassifier(max_depth=7,
+                                                                              n_estimators=200,
+                                                                              colsample_bytree=0.8,
+                                                                              subsample=0.8,nthread=10,
+                                                                              learning_rate=0.1))])
+svc = Pipeline([('count_vectorizer', 
+                  CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                  ngram_range=(1, 3), stop_words='english')),('linear svc',
+                                                                               SVC(kernel='linear'))])
                                                                              
-svc_tfidf = Pipeline([("tfidf_vectorizer", TfidfVectorizer(analyzer=lambda x: x,min_df=3,
+svc_tfidf = Pipeline([('tfidf_vectorizer', TfidfVectorizer(analyzer=lambda x: x,min_df=3,
                                                            max_features=None,strip_accents='unicode',
                                                            token_pattern=r'\w{1,}',ngram_range=(1, 3),
                                                            use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                                           stop_words='english')), ("linear svc", 
-                                                                                      SVC(kernel="linear"))])
+                                                           stop_words='english')), ('linear svc', 
+                                                                                     SVC(kernel='linear'))])
 ```
 
 <br/>
@@ -2100,8 +2100,8 @@ all_models=[('multi_nb',multi_nb),
 # Takes average of each algorithms output via the weighted f1 evaluation metric
 
 disordered_scores=[(name,cross_val_score(model,xtrain,ytrain,
-                                           scoring='f1_weighted',
-                                           cv=2).mean()) for name,model in all_models]
+                                         scoring='f1_weighted',
+                                         cv=2).mean()) for name,model in all_models]
 
 
 # Sorts and prints the evaluation score of each algorithm
