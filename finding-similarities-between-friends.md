@@ -183,20 +183,20 @@ Earlier I mentioned how `BeautifulSoup` can define methods for searching through
 ```python
 # Names of users 
 
-d = csv.writer(open('bt_name_data_R.csv', 'w'))
+d=csv.writer(open('bt_name_data_R.csv','w'))
 d.writerow('Name')
-data_name = soup.find_all('div', class_ = '_3-96 _2pio _2lek _2lel')
+data_name=soup.find_all('div',class_='_3-96 _2pio _2lek _2lel')
 for data_name in data_name:
-    names = data_name.contents
+    names=data_name.contents
     d.writerow(names)
     
 # Users dates & times 
 
-d = csv.writer(open('bt_date_data_R.csv', 'w'))
+d=csv.writer(open('bt_date_data_R.csv','w'))
 d.writerow(['Date & Time'])
-data_date_time = soup.find_all('div', class_ = '_3-94 _2lem')
+data_date_time=soup.find_all('div',class_='_3-94 _2lem')
 for data_date_time in data_date_time:
-    dates_times = data_date_time.contents
+    dates_times=data_date_time.contents
     d.writerow(dates_times)
     
 # Users messages 
@@ -1909,15 +1909,15 @@ svc_tfidf = Pipeline([("tfidf_vectorizer", TfidfVectorizer(analyzer=lambda x: x,
 `Pipeline`'s allow us to gather multiple steps or perform sequences of different transformations, that can be cross validated together while also allowing us to test a number of different algorithms and parameters. Defining each model is pretty simple and so I will only explain what's happening with the multi-nomial naive bayes algorithm:
 
 ```python
-multi_nb = Pipeline([("count_vectorizer",
-                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
-                                      stop_words='english')),("multinomial nb",MultinomialNB())])
+multi_nb = Pipeline([('count_vectorizer',
+                       CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1, 3),
+                                       stop_words='english')),('multinomial nb',MultinomialNB())])
                                       
-multi_nb_tfidf = Pipeline([("tfidf_vectorizer",
-                            TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
-                                            strip_accents='unicode',token_pattern=r'\w{1,}',
-                                            ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
-                                            stop_words='english')),("multinomial nb",MultinomialNB())])
+multi_nb_tfidf = Pipeline([('tfidf_vectorizer',
+                             TfidfVectorizer(analyzer=lambda x: x,min_df = 3,max_features=None,
+                                             strip_accents='unicode',token_pattern=r'\w{1,}',
+                                             ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                             stop_words='english')),('multinomial nb',MultinomialNB())])
 ```
 
 <br/>
@@ -1944,6 +1944,8 @@ In order to use GloVe weighted TF-IDF and count vectorizer embeddings on the `Ex
 # Dependencies
 
 from collections import defaultdict
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.model_selection import cross_val_score
 
 
 '''Vectorizes the text by taking the mean 
@@ -2006,7 +2008,7 @@ class TfidfVectorizerEmbeddings(object):
         tfidf.fit(X)
         '''If a word was never seen - it must be at least as infrequent
            as any of the known words - so the default idf is the max of 
-           known idf's.'''
+           known idf's'''
         max_idf = max(tfidf.idf_)
         self.word2weight = defaultdict(
             lambda: max_idf, 
@@ -2014,11 +2016,11 @@ class TfidfVectorizerEmbeddings(object):
     
         return self
     
-    def transform(self, X):
+    def transform(self,X):
         return np.array([
                 np.mean([self.glove[w] * self.word2weight[w]
                          for w in words if w in self.glove] or
-                        [np.zeros(self.dim)], axis=0)
+                        [np.zeros(self.dim)],axis=0)
                 for words in X
             ])
 ```
@@ -2051,14 +2053,13 @@ The last two sections were pretty dense, but things will get a lot easier from h
 '''Glove vectors passing through a stack of random decision trees
    that will be trained using tf-idf weighted + glove weighted vectors'''
 
-from sklearn.ensemble import ExtraTreesClassifier
-stacked_r_tree_glove_vectors = Pipeline([(
-    "glove vectorizer", CountVectorizerEmbeddings(glove_vectors)),
-    ("stacked trees", ExtraTreesClassifier(n_estimators=200))])
+stacked_r_tree_glove_vectors=Pipeline([(
+     'glove vectorizer',CountVectorizerEmbeddings(glove_vectors)),
+    ('stacked trees',ExtraTreesClassifier(n_estimators=200))])
 
-stacked_r_tree_glove_vectors_tfidf = Pipeline([(
-    "glove vectorizer", TfidfVectorizerEmbeddings(glove_vectors)),
-    ("stacked trees", ExtraTreesClassifier(n_estimators=200))])
+stacked_r_tree_glove_vectors_tfidf=Pipeline([(
+     'glove vectorizer',TfidfVectorizerEmbeddings(glove_vectors)),
+    ('stacked trees',ExtraTreesClassifier(n_estimators=200))])
 ```
 
 <br/>
@@ -2082,32 +2083,31 @@ Each model that we're training is stored in `all_models`:
 
 from tabulate import tabulate
 # all 6 models
-all_models = [('multi_nb', multi_nb),
-              ('multi_nb_tfidf', multi_nb_tfidf),
-              ('bern_nb', bern_nb),
-              ('bern_nb_tfidf', bern_nb_tfidf),
-              ('log_reg',log_reg),
-              ('log_reg_tfidf',log_reg_tfidf),
-              ('xgb',xgb),
-              ('xgb_tfidf',xgb_tfidf),
-              ('svc', svc),
-              ('svc_tfidf', svc_tfidf),
-              ('glove_vectors', stacked_r_tree_glove_vectors),
-              ('glove_vectors_tfidf', stacked_r_tree_glove_vectors_tfidf)]
+all_models=[('multi_nb',multi_nb),
+            ('multi_nb_tfidf',multi_nb_tfidf),
+            ('bern_nb',bern_nb),
+            ('bern_nb_tfidf',bern_nb_tfidf),
+            ('log_reg',log_reg),
+            ('log_reg_tfidf',log_reg_tfidf),
+            ('xgb',xgb),
+            ('xgb_tfidf',xgb_tfidf),
+            ('svc',svc),
+            ('svc_tfidf',svc_tfidf),
+            ('glove_vectors',stacked_r_tree_glove_vectors),
+            ('glove_vectors_tfidf',stacked_r_tree_glove_vectors_tfidf)]
 
 
 # Takes average of each algorithms output via the weighted f1 evaluation metric
 
-from sklearn.model_selection import cross_val_score
-disordered_scores = [(name,cross_val_score(model,xtrain,ytrain,
-                                         scoring= 'f1_weighted',
-                                         cv=2).mean()) for name,model in all_models]
+disordered_scores=[(name,cross_val_score(model,xtrain,ytrain,
+                                           scoring='f1_weighted',
+                                           cv=2).mean()) for name,model in all_models]
 
 
 # Sorts and prints the evaluation score of each algorithm
 
-scores = sorted(disordered_scores, key=lambda x: -x[1])
-print (tabulate(scores, floatfmt=".4f", headers=("model", 'score')))
+scores=sorted(disordered_scores,key=lambda x: -x[1])
+print(tabulate(scores,floatfmt='.4f',headers=('model','score')))
 ```
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/103373597-5c15f680-4aa3-11eb-862d-f7c439c7c4af.png" width="290px">
