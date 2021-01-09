@@ -1831,3 +1831,150 @@ print('Found %s word vectors.' % len(glove_vectors))
 <br/>
 
 ...and we'll use them to create TF-IDF, count-vectorized weighted GloVe vectors which will serve as input for the `ExtraTreesClassifer`.
+
+In order to train each model at the same time we need to construct something called a `Pipeline`. Ten of them to be exact: 
+
+```python
+# Dependencies
+
+import xgboost as xgb
+from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
+from xgboost.sklearn import XGBClassifier 
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.decomposition import TruncatedSVD
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
+
+
+'''Multinomial/bernoulli naive bayes, logistic regression 
+   xgboost and a support vector classifier
+   all with countvec and tfidf weighted features.'''
+
+multi_nb = Pipeline([("count_vectorizer",
+                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
+                                      stop_words='english')),("multinomial nb",MultinomialNB())])
+                                      
+multi_nb_tfidf = Pipeline([("tfidf_vectorizer",
+                            TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                            strip_accents='unicode',token_pattern=r'\w{1,}',
+                                            ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                            stop_words='english')),("multinomial nb",MultinomialNB())])
+                                            
+bern_nb = Pipeline([("count_vectorizer",
+                     CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
+                                     stop_words='english')),("bernoulli nb",BernoulliNB())])
+                                     
+bern_nb_tfidf = Pipeline([("tfidf_vectorizer",
+                           TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                           strip_accents='unicode',token_pattern=r'\w{1,}',
+                                           ngram_range=(1,3), use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                           stop_words='english')),("bernoulli nb",BernoulliNB())])
+                                           
+log_reg = Pipeline([("count_vectorizer",
+                     CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                     ngram_range=(1,3),stop_words='english')),
+                    ("logistic regression", LogisticRegression(C=1.0))])
+                    
+log_reg_tfidf = Pipeline([("tfidf_vectorizer",
+                           TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                           strip_accents='unicode',token_pattern=r'\w{1,}',
+                                           ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                           stop_words='english')),("logistic regression",LogisticRegression(C=1.0))])
+                                           
+xgb = Pipeline([("count_vectorizer", 
+                 CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                 ngram_range=(1,3),stop_words='english')),("xg boost",
+                                                                           XGBClassifier(max_depth=7,
+                                                                                         n_estimators=200,
+                                                                                         colsample_bytree=0.8,
+                                                                                         subsample=0.8,nthread=10,
+                                                                                         learning_rate=0.1))])
+xgb_tfidf = Pipeline([("tfidf_vectorizer",
+                       TfidfVectorizer(analyzer=lambda x: x,min_df=3,  max_features=None,
+                                       strip_accents='unicode',token_pattern=r'\w{1,}',
+                                       ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                       stop_words='english')),("xg boost",
+                                                               XGBClassifier(max_depth=7,
+                                                                             n_estimators=200,
+                                                                             colsample_bytree=0.8,
+                                                                             subsample=0.8,nthread=10,
+                                                                             learning_rate=0.1))])
+svc = Pipeline([("count_vectorizer", 
+                 CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',
+                                 ngram_range=(1, 3), stop_words='english')),("linear svc",
+                                                                             SVC(kernel="linear"))])
+                                                                             
+svc_tfidf = Pipeline([("tfidf_vectorizer", TfidfVectorizer(analyzer=lambda x: x,min_df=3,
+                                                           max_features=None,strip_accents='unicode',
+                                                           token_pattern=r'\w{1,}',ngram_range=(1, 3),
+                                                           use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                                           stop_words='english')), ("linear svc", 
+                                                                                      SVC(kernel="linear"))])
+```
+
+<br/>
+
+`Pipeline`'s allow us to gather multiple steps or perform sequences of different transformations, that can be cross validated together while also allowing us to test a number of different algorithms and parameters. Defining each model is pretty simple and so I will only explain what's happening with the multi-nomial naive bayes algorithm:
+
+```python
+multi_nb = Pipeline([("count_vectorizer",
+                      CountVectorizer(analyzer=lambda x: x,token_pattern=r'\w{1,}',ngram_range=(1,3),
+                                      stop_words='english')),("multinomial nb",MultinomialNB())])
+                                      
+multi_nb_tfidf = Pipeline([("tfidf_vectorizer",
+                            TfidfVectorizer(analyzer=lambda x: x,min_df=3,max_features=None,
+                                            strip_accents='unicode',token_pattern=r'\w{1,}',
+                                            ngram_range=(1,3),use_idf=1,smooth_idf=1,sublinear_tf=1,
+                                            stop_words='english')),("multinomial nb",MultinomialNB())])
+```
+
+Inside of the `multi_nb` and `multi_nb_tfidf` variables, an sklearn `Pipeline` function is defined with parameters specific to each vectorizer type. 
+
+The `analyzer` in `CountVectorizer` needs to transform strings of words into features. We've previously taken ngram features from NLTK as input, so to vectorize an iterable of strings for `CountVectorizer` we'll use `lambda x: x` to express an anonymous function which will serve as the `analyzer`'s input. Using a `lambda` here is great because it effectively allows us to declare a simple inline function on a parameter that we don't actually need but requires an argument. `Token_pattern` defines what constitutes a token. `ngram_range` tells `CountVectorizer` the upper and lower boundries of ngrams to extract from the data.
+
+N-grams are very important. After defining what a token is, traditionally you then split those tokens into a gram of some sort. n being the number of grams. If you're splitting the document into 1 grams or unigrams, you're splitting the document into its individual tokens. For example, `"How's" "the" "weather"` would be 3 tokens or 3 unigrams.
+
+The document can also be split into 2 grams or bi-grams, `n` being 2-grams. `"How's the" "the weather"` would then be 2 bi-grams. Notice how the first bi-gram overlaps with the second bi-gram. This is done because the number of grams can increase the accuracy of the language model at the expense of compute power. Our upper bound and lower bound will be set to 1 and 3 for each algorithm. `'english'` is passed to `stop_words` and finally `'multinomial nb'` variable is initialized by `MultinomialNB()`.
+
+`tfidf_vectorizer` shares similarities to `count_vectorizer`, noteably the `analyzer`, `token_pattern`, `ngram_range` and `stop_words` parameters.
+
+Where they differ is `min_df`, ignores words with a document frequency lower than `3` → `max_features` set to None ignores frequent/rare terms and considers the entire corpus during the term frequency, inverse document frequency transformation → `strip_accents` normalizes the characters in each ngram set by removing accents and `'unicode'` removes special characters thus reducing the dimensionality of the text → `use_idf` is set to `1` = True so the inverse document frequency is considered during transformation → `smooth_idf` smoothes the inverse document frequency weights called from `user_idf` in a way that if a word in the corpus was never seen by the training data but occurs in the test set, it allows that word to be processed → `sublinear_tf` computes the logarithm of the frequency and scales words logarithmically so that rare words carry as much significance as words that might be common but have many occurrences.
+
+The algorithms used in this code section are Multinomial & Bernoulli Naive Bayes, logistic regression, XGBoost and a support vector classifier[30]. Later on I will only explain the algorithms that return the most favorable results on our weighted F1 metric.
+
+In order to use GloVe weighted TF-IDF and count vectorizer embeddings on the `ExtraTreeClassifier`, we'll need to tap into some syntactic sugar['] and define custom TF-IDF and count vectorizer classes and methods.
+
+`CountVectorizerEmbeddings`... 
+
+```python
+# Dependencies
+
+from collections import defaultdict
+
+
+'''Vectorizes the text by taking the mean 
+   of all the  vectors corresponding to individual 
+   words in a given vector mapping''' 
+
+class CountVectorizerEmbeddings(object):
+    def __init__(self, glove):
+        self.glove = glove
+        if len(glove)>0:
+            self.dim=len(glove[next(iter(glove_vectors))])
+        else:
+            self.dim=0
+            
+    def fit(self, X, y):
+        return self 
+
+    def transform(self, X):
+        return np.array([
+            np.mean([self.glove[w] for w in words if w in self.glove] 
+                    or [np.zeros(self.dim)], axis=0)
+            for words in X
+        ])
+```
+
+...is defined as a new type of class object which will allow instances of its type to be passed on to `ExtraTreesClassifier`. As explained in the Attention section of the 7th part of this post, `__init__` , which is our constructor, allows class objects to accept arguments and will be the main definer of the `CountVectorizerEmbeddings` class where self assigns the glove vectors as static instances of the class object `CountVectorizerEmbeddings`.
