@@ -191,6 +191,7 @@ for data_name in data_name:
     names=data_name.contents
     d.writerow(names)
     
+    
 # Users dates & times 
 
 d=csv.writer(open('bt_date_data_R.csv','w'))
@@ -200,6 +201,7 @@ data_date_time=soup.find_all('div',class_='_3-94 _2lem')
 for data_date_time in data_date_time:
     dates_times=data_date_time.contents
     d.writerow(dates_times)
+    
     
 # Users messages 
 
@@ -262,7 +264,7 @@ Since each users response in the app is dictated by the amount of times they sen
 # Number of occurances for each user
 
 names = dataset['Name'].value_counts()
-plt.figure(figsize=(12,4)) # 36,16 # 12,4
+plt.figure(figsize=(12,4)) 
 sns.barplot(names.index, names.values,alpha=0.8,color=color[1])
 plt.ylabel('Number of Occurrences',fontsize=12)
 plt.xlabel('User Name',fontsize=12)
@@ -612,11 +614,14 @@ The first part of the code is used to clean the text by lemmatizing the words an
 <br/>
 
 ```python
-# Create function to clean up text by removing personal pronouns, stopwords and punctuation
+# Dependencies
 
 import spacy
 nlp=spacy.load('en_core_web_sm')
 punctuations=string.punctuation
+
+
+# Create function to clean up text by removing personal pronouns, stopwords and punctuation
 
 def cleanup_text(docs,logging=False):
     texts=[]
@@ -2086,7 +2091,7 @@ Each model that we're training is stored in `all_models`:
 # Places algorithm variables in a neat tabulated format
 
 from tabulate import tabulate
-# all 6 models
+# All 6 models
 all_models=[('multi_nb',multi_nb),
             ('multi_nb_tfidf',multi_nb_tfidf),
             ('bern_nb',bern_nb),
