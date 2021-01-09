@@ -630,7 +630,7 @@ def cleanup_text(docs,logging=False):
         if counter % 1000 == 0 and logging:
             print("Processed %d out of %d documents." % (counter,len(docs)))
         counter += 1
-        doc = nlp(doc,disable=['parser','ner'])
+        doc=nlp(doc,disable=['parser','ner'])
         tokens=[tok.lemma_.lower().strip() for tok in doc if tok.lemma_ != '-PRON-']
         tokens=[tok for tok in tokens if tok not in stopwords and tok not in punctuations]
         tokens=' '.join(tokens)
@@ -1812,14 +1812,14 @@ We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to 
 ```python
 # Import glove embeddings
 
-glove_vectors = {}
-e = open('glove.840B.300d.txt') # Need the full representation which includes stopwords
+glove_vectors={}
+e=open('glove.840B.300d.txt') # Need the full representation which includes stopwords
 
 for p in tqdm(e):
-    real_num = p.split(' ')
-    word = real_num[0]
-    coefs = np.asarray(real_num[1:], dtype='float32')
-    glove_vectors[word] = coefs
+    real_num=p.split(' ')
+    word=real_num[0]
+    coefs=np.asarray(real_num[1:],dtype='float32')
+    glove_vectors[word]=coefs
 e.close()
 
 print('Found %s word vectors.' % len(glove_vectors))
