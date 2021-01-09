@@ -2203,3 +2203,99 @@ Naturally, weak learners generate high bias and low variance...
 But this method can also be optimized by introducing a random element to the algorithm's training, which has been proved to increase the accuracy of weak learners considerably, and they're computationally cost efficient which makes them easy to train, unlike neural networks. The randomization occurs when the weak learners are growing, and searching for the best split. Instead of making the split at the most distinct learning threshold, the `ExtraTreesClassifier` selects its split points fully at random for each feature, independent of the target variable and the best randomly generated threshold is chosen as the algorithm's splitting rule[']. Then they make a majority vote on the output based on the sum of weak learners. 
  
 Randomization increases bias and variance of trees individually, but decreases their variance exponentially with respect to averaging over a large ensemble of trees, which naturally reduces high bias in the learning samples. Based on the accuracy in comparison to the neural network, this classification task can tolerate high levels of bias of class probability estimates without yielding high error rates. 
+
+<br/>
+
+# naive bayes
+
+You can imagine the function of a support vector machine or even logistic regression drawing a line between or through some blob of data to separate the classes and classify them.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110025-a5cfbf80-52a1-11eb-9a82-5ee8cc0018f6.png" width="400px">
+</p>
+
+<br/> 
+
+With the probabilistic generative model naive bayes, you can imagine a probability distribution being drawn around the bits of each separate class so you end up with two separate probability distributions and in some cases a higher level of accuracy. 
+
+We need the data for bt_1 and bt_5 to learn a rule that maps an input `X` to an output `Y` given a number of training examples. In other words, we need to know what is the distribution of the `X`'s given the `Y`'s. The cool thing about the NB algorithm is that its function is baked into the name.
+
+The problematic, naive part of NB double counts words because its independence assumption throws away the dependence that words have on each other. For example, the word `['Hong Kong']`, would be split into two separate words through tokenization, `["Hong"`,`"Kong"]`, and is double counted, which can skew the final output. The independence assumption states that no features or words depend on each other, but this is counter intuitive to text as every word depends on prior words in very strict, grammatical hierarchies. 
+
+The straightforward, bayesian part of NB lets us ask the computer a question in a way that we actually want the computer to represent it. We ask the question in the opposite way you want the answer returned, and we use Bayes Rule to flip the question the way that we want it. Before I begin to explain the algorithm used in the analysis, Bernoulli NB, let's consider a generic NB example. 
+
+Given all the words in a bag, what is the probability that the document of tokens belongs to `bt_1`? The way you want to phrase it to the computer is given that the document of tokens belongs to `bt_1`, what is the probability that a given word will belong to `bt_1`. So you ask the question in reverse and use Bayes Rule to flip it back to a representation that we can understand.
+
+NB is asking "What is the probability that an observation from the dataset is `bt_1` given the specific features `(X)` that we specify?". Let's break it down even further...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110236-acf7cd00-52a3-11eb-8294-f7fafc751d50.png" width="600px">
+</p>
+
+<br/> 
+
+First we must calculate the prior probability `P(bt_1)`, which tells us the probability that a given observation is `bt_1` without knowing the amount of features or which features are associated to any of the other observations[32]. The only thing we can do is calculate all of `bt_1`'s observations and divide by the overall number of observations in the dataset.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110337-c5b4b280-52a4-11eb-99f3-b4562ca72bc0.png" width="500px">
+</p>
+
+<br/> 
+
+After calculating the prior probability, we'll need to calculate the marginal likelihood, `P(X)`. We need to take an input parameter of our choosing to build a radius around the unknown observation...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110075-2e4e6000-52a2-11eb-870d-65d74eab96ec.png" width="500px">
+</p>
+
+<br/> 
+
+Looking at all the observations inside the radius, we're going to conclude that known observations are similar to unknown observation in terms of their position in the feature space. The probability of `X` is the probability of an unknown observation having similar features to the known observations within the parameter radius that we specify. `P(X)` is calculated as:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110371-0ca2a800-52a5-11eb-9db1-487779f5fe89.png" width="550px">
+</p>
+
+<br/> 
+
+Referencing the radius of data points from the graph above, we must compute the likelihood, `P(X|bt_1)`, which tells us the likelihood of a given observation belonging to `bt_1` given that they have the set of features specified by `X`. So, what is the likelihood that an unknown observation will be from the radius of observations with similar features to the unknown observation given (this is what the `|` stands for) that the observation is actually `bt_1`, which is calculated as:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110620-67d59a00-52a7-11eb-838b-9fb3ad69d84f.png" width="550px">
+</p>
+
+<br/> 
+
+When we plug these numbers into the equation we'll get the posterior probability, and it represents the final likelihood of a set of `bt_1`'s observations given `bt_1`'s features.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110639-a9fedb80-52a7-11eb-905d-4582bc35e324.png" width="550px">
+</p>
+
+<br/> 
+
+So we're left with a `67%` (which is better than random) probability that the unknown observation inside of our parameter radius `X` should be classified as one of `bt_1`'s observations. The algorithm will then do the same for `bt_5`'s observations.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110676-006c1a00-52a8-11eb-8e9d-eb5149e129c7.png" width="550px">
+</p>
+
+<br/> 
+
+Now we can compare the probability that the obsevation is `bt_1` given our features `X` vs. the probability that it could be `bt_5`. It's pretty obvious that `0.67 > 0.33`, so the question mark in the graph above will be `bt_1`'s observation rather than `bt_5`'s.
