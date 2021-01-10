@@ -2213,7 +2213,7 @@ You can imagine the function of a support vector machine or even logistic regres
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104111500-678dcc80-52b0-11eb-8c4e-0bd60ef18d73.png" width="400px">
+  <img src = "https://user-images.githubusercontent.com/29679899/104111500-678dcc80-52b0-11eb-8c4e-0bd60ef18d73.png" width="410px">
 </p>
 
 <br/> 
