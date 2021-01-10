@@ -2213,12 +2213,20 @@ You can imagine the function of a support vector machine or even logistic regres
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104110025-a5cfbf80-52a1-11eb-9a82-5ee8cc0018f6.png" width="400px">
+  <img src = "https://user-images.githubusercontent.com/29679899/104111500-678dcc80-52b0-11eb-8c4e-0bd60ef18d73.png" width="400px">
 </p>
 
 <br/> 
 
 With the probabilistic generative model naive bayes, you can imagine a probability distribution being drawn around the bits of each separate class so you end up with two separate probability distributions and in some cases a higher level of accuracy. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104110025-a5cfbf80-52a1-11eb-9a82-5ee8cc0018f6.png" width="400px">
+</p>
+
+<br/> 
 
 We need the data for `bt_1` and `bt_5` to learn a rule that maps an input `X` to an output `Y` given a number of training examples. In other words, we need to know what is the distribution of the `X`'s given the `Y`'s. The cool thing about the NB algorithm is that its function is baked into the name.
 
