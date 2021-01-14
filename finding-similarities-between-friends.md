@@ -2310,7 +2310,7 @@ Now we can compare the probability that the obsevation is `bt_1` given our featu
 
 There are three versions of NB, but the one we're most interested in is Bernoulli NB, which focuses on the binary nature of the data. It tries to distinguish between the presence/absence of counts for a single class that occur and counts for the same class that do not occur. Since our target variable y can only belong to one of two classes, `bt_1` or `bt_5`, this means our target exclusively lies in the interval `0` or `1` and is represented by a binary feature vector.
 
-So the sum of `bt_1` or `bt_5`'s documents are considered to be events and the presence and absence of words are considered attributes of the event. To compute the conditional probabilities for Bernoulli NB we will represent is as P(bt_1|X)=P(<t<sub>1</sub>,...t<sub>k</sub>,...t<sub>n</sub>>|X), where  is a paired vector of dimensionality N that indicates whether each term occurs in `bt_1` or not.
+So the sum of `bt_1` or `bt_5`'s documents are considered to be events and the presence and absence of words are considered attributes of the event. To compute the conditional probabilities for Bernoulli NB we will represent is as , where <t<sub>1</sub>,...t<sub>k</sub>,...t<sub>n</sub>> is a paired vector of dimensionality N that indicates whether each term occurs in `bt_1` or not.
  
 Remember the naive part of NB? The conditional independence assumption applies to Bernoulli NB because it still assumes that features are conditionally independent from one another, despite this assumption rarely being true, because each input you put into the model is assumed to not be dependent on the other inputs. In the case of Bernoulli NB, the conditional  independence assumption states:
 
