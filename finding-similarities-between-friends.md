@@ -1698,7 +1698,7 @@ In the code section below, we will train TF-IDF and count weighted vectors on th
 
 <br/>
  
-The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory[']. A set is a defined collection of easily distinguishable objects or in our case tokens. 
+The dataset is passed to the `data_str` → `word_tokenize` → `tokenized_text` variables which tokenize the dataset. The final `tokenized_text` variable is passed to the part-of-speech tagger `nltk.pos_tag` as the `list_of_tagged_words` variable, which is then passed to a very special function. The set function is reliant on set theory. A set is a defined collection of easily distinguishable objects or in our case tokens. 
 
 ```python
 # Dependencies
@@ -1807,7 +1807,7 @@ xtrain,xval,ytrain,yval = train_test_split(dataset.Message.values,y,
 
 <br/>
 
-We'll re-appropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
+We'll reappropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
 
 ```python
 # Import glove embeddings
