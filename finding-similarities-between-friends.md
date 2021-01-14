@@ -2307,3 +2307,80 @@ So we're left with a `67%` (which is better than random) probability that the un
 <br/> 
 
 Now we can compare the probability that the obsevation is `bt_1` given our features `X` vs. the probability that it could be `bt_5`. It's pretty obvious that `0.67 > 0.33`, so the question mark in the graph above will be `bt_1`'s observation rather than `bt_5`'s.
+
+There are three versions of NB, but the one we're most interested in is Bernoulli NB, which focuses on the binary nature of the data. It tries to distinguish between the presence/absence of counts for a single class that occur and counts for the same class that do not occur. Since our target variable y can only belong to one of two classes, `bt_1` or `bt_5`, this means our target exclusively lies in the interval `0` or `1` and is represented by a binary feature vector.
+
+So the sum of `bt_1` or `bt_5`'s documents are considered to be events and the presence and absence of words are considered attributes of the event. To compute the conditional probabilities for Bernoulli NB we will  represent is as: P(bt_1|X)=P(<t<sub>1</sub>,...t<sub>k</sub>,...t<sub>n</sub>>|X), where <t<sub>1</sub>,...t<sub>k</sub>,...t<sub>n</sub>> is a paired vector of dimensionality N that indicates whether each term occurs in `bt_1` or not.       
+ 
+Remember the naive part of NB? The conditional independence assumption applies to Bernoulli NB because it still assumes that features are conditionally independent from one another, despite this assumption rarely being true, because each input you put into the model is assumed to not be dependent on the other inputs. In the case of Bernoulli NB, the conditional  independence assumption states:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104651826-32a1c100-5686-11eb-9c5f-4ab9cd4d20d1.png" width="900px">
+</p>
+
+<br/> 
+ 
+To the right of the product, `P` representing the probability that a document of class `X` will occur if e<sub>i</sub>=1 and will not occur if  e<sub>i</sub>=0. 
+
+The most defining quality about Bernoulli NB is that it only takes into account the presence or absence of a word and does not capture the frequency of these words. While this may seem like there is a loss of ability as opposed to using a Multinomial NB or Gaussian NB, notice in the 46th notebook, our version of Bernoulli NB is also trained on words that are weighted by the TF-IDF -- GloVe embeddings. 
+ 
+The semantic vectors preserve a fair amount of information about the text with relatively low dimensionality, which gives the algorithm an added advantage. Besides the features that were specified in `dataset['pos_features']`, the weighted semantic vectors allow Bernoulli NB to also capture semantic similarities of the text in `xtrain` when classifying a message to `bt_1` or `bt_5`.
+
+<br/>
+
+# 10. topic modeling
+ 
+Earlier in the post we covered what distributions are, but before we can understand what topic modeling is and how its done, we should first make ourselves familiar, as qualitatively possible, with the dirichlet distribution. In order to to illustrate the unique nature of the dirichlet, lets consider the properties of a continuous normal distribution. Belonging to the same family of continuous probability distributions whose members include the t, logistic, and Laplace distributions, the ND... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104653191-3c2c2880-5688-11eb-8237-80dcbeca83a3.gif" width="520px">
+</p>
+
+<br/> 
+
+
+...represents the probability (measure of spread) over a set of real numbers supported by a whole line of integers and is defined by its mean (target value), variance (the distributions width), standard deviation (the square root of the variance and tells us by how much the samples are expected to deviate from the mean) and skewness of 0. If the standard deviation is high, you'll see values much larger or smaller than the mean, going in a very positive or negative direction. If the standard deviation is low, the samples will be very close to the mean.
+
+The dirichlet distribution does not sample from a set of real numbers, it samples over a probability distribution that has conceptual ties to algebraic topology and it samples over something called a simplex. In all of our discrete number of possible topics in a given users text, we have a finite set of possibilities whose joint probabilities must sum to 1, with each probability represented as a point in Euclidean space. The probabilities will form a high dimensional triangle that is known as the simplex. When you observe the simplex...
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104655495-c924b100-568b-11eb-8a5a-7937357ac369.gif" width="520px">
+</p>
+
+<br/>  
+
+...imagine that the surface of the distribution is a continuous mixture of words in a document in Euclidean space, being mixed over a discrete number of possible topics inside the entire space. We can assume there are fundamental latent topics in the text from the `blues_traveler_2000` dataset, and each topic represents a multinomial distribution over the absolute value of words in the vocabulary at any point over the simplex.
+
+We can segment varying combinations of topics and sample words from the continuous mix which will give us every probable multinomial distribution over all of the words, but the dirichlet will do so in such a way that it assigns each word a joint probability, made up of the mixture of topics and words, with values between `0` and `1` and the centroid of the simplex will be a uniform distribution over all words[34]. The heat-mapped surface of the simplex in the gif above represents the resulting density over the the sum of the multinomial distributions given by the generative model LDA (latent dirichlet allocation), that will use the dirichlet distribution to discover topics in our text. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104656674-ad220f00-568d-11eb-80ea-dde89626aaa9.png" width="520px">
+</p>
+
+<br/>  
+
+V-LDA model in plate notation. The outer plate represents documents in the corpus, the inner plate represents the various topics in the document. `α` = topic distribution of document, `β` = word distribution of each topic, `θ` = topic distribution for plate `m`, `z` = topic for n<sup>th</sup> word in document `m`, `w` = a specific word.
+
+Traditionally, topic modeling is a technique that's used to summarize legal documents, data mine customer support emails, match online ads to relevant webpages or to reduce the dimensionality of some `k` topic space for preprocessing tasks. But the application of topic modeling does not end with the analysis of a product, it can also be used to better understand text that someone has written in a non-formal setting. Like a diary for instance. On the flip side, based on the observations made in sections 5, 6 and 7, the immediate trade-off of predictions relating to words and their corresponding topics in this dataset leads me to assume that the Euclidean space will be very messy, because of the degrees of freedom associated with the stream ofconscious use of language, compared to the aforementioned industrial contexts which represent a more structured and finite topic space. 
+ 
+So we must reduce the dimensionality of the text in such a way that LDA can capture something meaningful. Each users final text was preprocessed using 4 stopword lists. Three of the lists were canonical `(the, and, in, be etc.)` and the fourth was a customized, domain-specific `(bcuz, yep, yup, okkayyy, plllllleeeeaase, com, yeah etc.)` stopword list  and the combined lists totaled over 500 words. The text was lower cased, numerals were removed, the text was lemmatized, varying levels of n-grams ranging from no-grams to quin and sexgrams were used to capture phrases of words that were used together, and words that occurred in less than 20% of documents were also removed from each users corpora.
+ 
+Finally, each users corpus was transformed into a bag-of-words and then used as input to a vanilla and labeled LDA model, the latter being a semi-supervised variant of the vanilla unsupervised LDA model. When using V-LDA, the interpretability of certain topics were affected by outlier words that were not associated to the majority of words in a given topic. To solve this, L-LDA was given a small set of priors in the form of words (seeds) as an indicator of what word would likely belong to a specific topic, which helped keep words without associations away from each other. This was made possible by a tunable parameter `Λ` that guided the model to concentrate around the defined priors or θ. While iteratively running the model, it became clear that some words were converging to topics in which they clearly did not belong; `love trust, spoon, marry, partner, especially`. This observation heavily influenced my judgement in defining L-LDA's seeds, but it's important to keep in mind that defining the seeds takes careful consideration and can reflect inherent biases. 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104657345-cbd4d580-568e-11eb-8df4-ec85dd91734d.png" width="520px">
+</p>
+
+<br/>  
+
+L-LDA model in plate notation. The representation of the plates is the same, but `α` = topic distribution of the document, `β` = word distribution for topic `k`, `n` = word distribution for each topic, `θ` = topic distribution for plate `m`, `z` = topic for n<sup>th</sup> word in document `m`, `w` = a specific word. The label prior `Λ` and the seeds `Φ` guide are our new parameters and they guide the topic mixture in the direction of the seeds and give L-LDA a great upgrade for our use case.
