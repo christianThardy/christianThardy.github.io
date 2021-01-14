@@ -2369,7 +2369,7 @@ The heat-mapped surface of the simplex in the gif above represents the resulting
 
 <br/>  
 
-V-LDA model in plate notation. The outer plate represents documents in the corpus, the inner plate represents the various topics in the document. `α` = topic distribution of document, `β` = word distribution of each topic, `θ` = topic distribution for plate `m`, `z` = topic for n<sup>th</sup> word in document `m`, `w` = a specific word.
+The vanilla LDA model in plate notation. The outer plate represents documents in the corpus, the inner plate represents the various topics in the document. `α` = topic distribution of document, `β` = word distribution of each topic, `θ` = topic distribution for plate `m`, `z` = topic for n<sup>th</sup> word in document `m`, `w` = a specific word.
 
 Traditionally, topic modeling is a technique that's used to summarize legal documents, data mine customer support emails, match online ads to relevant webpages or to reduce the dimensionality of some `k` topic space for preprocessing tasks. But the application of topic modeling does not end with the analysis of a product, it can also be used to better understand text that someone has written in a non-formal setting. 
 
