@@ -2389,4 +2389,4 @@ To solve this, L-LDA was given a small set of priors in the form of words (seeds
 
 <br/>  
 
-L-LDA model in plate notation. The representation of the plates is the same, but `α` = topic distribution of the document, `β` = word distribution for topic `k`, `n` = word distribution for each topic, `θ` = topic distribution for plate `m`, `z` = topic for <code>n<sup>th</sup></code> word in document `m`, `w` = a specific word. The label prior `Λ` and the seeds `Φ` guide are our new parameters and they guide the topic mixture in the direction of the seeds and give L-LDA a great upgrade for our use case.
+L-LDA model in plate notation. The representation of the plates is the same, but `α` = topic distribution of the document, `β` = word distribution for topic `k`, `n` = word distribution for each topic, `θ` = topic distribution for plate `m`, `z` = topic for <code>N<sup>th</sup></code> word in document `m`, `w` = a specific word. The label prior `Λ` and the seeds `Φ` guide are our new parameters and they guide the topic mixture in the direction of the seeds and give L-LDA a great upgrade for our use case.
