@@ -2371,9 +2371,9 @@ The heat-mapped surface of the simplex in the gif above represents the resulting
 
 The vanilla LDA model in plate notation. The outer plate represents documents in the corpus, the inner plate represents the various topics in the document. `α` = topic distribution of document, `β` = word distribution of each topic, `θ` = topic distribution for plate `m`, `z` = topic for n<sup>th</sup> word in document `m`, `w` = a specific word.
 
-Traditionally, topic modeling is a technique that's used to summarize legal documents, data mine customer support emails, match online ads to relevant webpages or to reduce the dimensionality of some `k` topic space for preprocessing tasks. But the application of topic modeling does not end with the analysis of a product, it can also be used to better understand text that someone has written in a non-formal setting. 
+Traditionally, topic modeling is a technique that's used to summarize legal documents, data mine customer support emails, match online ads to relevant webpages or to reduce the dimensionality of some `k` topic space for preprocessing tasks. But the application of topic modeling does not end with the analysis of a product, it can also be used to better understand text that someone has written in a non-formal setting, like a diary for instance.
 
-Like a diary for instance. On the flip side, based on the observations made in sections 5, 6 and 7, the immediate trade-off of predictions relating to words and their corresponding topics in this dataset leads me to assume that the Euclidean space will be very messy, because of the degrees of freedom associated with the stream ofconscious use of language, compared to the aforementioned industrial contexts which represent a more structured and finite topic space. 
+On the flip side, based on the observations made in sections 5, 6 and 7, the immediate trade-off of predictions relating to words and their corresponding topics in this dataset leads me to assume that the Euclidean space will be very messy, because of the degrees of freedom associated with the stream of conscious use of language, compared to the aforementioned industrial contexts which represent a more structured and finite topic space. 
  
 So we must reduce the dimensionality of the text in such a way that LDA can capture something meaningful. Each users final text was preprocessed using 4 stopword lists. Three of the lists were canonical `(the, and, in, be etc.)` and the fourth was a customized, domain-specific `(bcuz, yep, yup, okkayyy, plllllleeeeaase, com, yeah etc.)` stopword list  and the combined lists totaled over 500 words. The text was lower cased, numerals were removed, the text was lemmatized, varying levels of n-grams ranging from no-grams to quin and sexgrams were used to capture phrases of words that were used together, and words that occurred in less than 20% of documents were also removed from each users corpora.
  
@@ -2384,7 +2384,7 @@ To solve this, L-LDA was given a small set of priors in the form of words (seeds
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104657345-cbd4d580-568e-11eb-8df4-ec85dd91734d.png" width="520px">
+  <img src = "https://user-images.githubusercontent.com/29679899/104739300-8e1a9000-5714-11eb-9163-6c05a6c33457.png" width="520px">
 </p>
 
 <br/>  
