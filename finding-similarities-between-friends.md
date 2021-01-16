@@ -2390,3 +2390,251 @@ To solve this, L-LDA was given a small set of priors in the form of words (seeds
 <br/>  
 
 L-LDA model in plate notation. The representation of the plates is the same, but `α` = topic distribution of the document, `β` = word distribution for topic `k`, `n` = word distribution for each topic, `θ` = topic distribution for plate `m`, `z` = topic for <code>N<sup>th</sup></code> word in document `m`, `w` = a specific word. The label prior `Λ` and the seeds `Φ` guide are our new parameters and they guide the topic mixture in the direction of the seeds and give L-LDA a great upgrade for our use case.
+
+The output of both variations of LDA were used as input for the state-of-the-art unsupervised learning algorithm t-SNE (explained in section 5) to capture the position of the global and local structure of each users topics in a multi-dimensional space. When the text is in this space, we're able to reduce the dimensionality of the word space by removing words that have little meaning, which revealed patterns in the text and identified clusters of topics based on the similarity or dissimilarity of their features. So topics that belong to the entire dataset and each users corpora that are similar will have similar structures and small pairwise distances and topics that are dissimilar will have dissimilar structures with large pairwise distances[13].
+ 
+The initial experiments ran without n-gram features, no stop word lists and minimal parameter tuning of V-LDA and t-SNE. The result was this...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104791873-39a1ff80-576a-11eb-9a16-4d3374f13bb5.PNG" width="520px">
+</p>
+
+<br/>  
+ 
+ ...a huge, unstructured blob of words. After adding bigrams, increasing V-LDA's passes to 200, iterations to 700 and decreasing t-SNE's perplexity from 70 to 30, I got this:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104792187-93ef9000-576b-11eb-93bb-08698c022a65.PNG" width="520px">
+</p>
+
+<br/>  
+ 
+Changing the parameters a bit helped, but things are still not as clear as they could be. After increasing the number of n-grams from bigrams to quadgrams, decreasing the passes to 100, the iterations to 400 and maintaining the perplexity of 30, this happened...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104791071-58eb5d80-5767-11eb-8323-b057219110bb.PNG" width="520px">
+</p>
+
+<br/>  
+ 
+...things are still a mess, but a bit of structure is starting to form. As the parameters of t-SNE and V-LDA are manipulated, t-SNE is starting to extract groups of local clusters from the text and is beginning to visually disentangle the dataset and tease out inherent structure so that groups of words that belong to specific topics can reveal themselves. In the next experiment I added a parameter called alpha to V-LDA, which represents the multivariate nature of the Dirichlet distribution, and it smoothes the model by finding the right amount of sparsity between a topic containing multiple documents and words belonging to those documents. After adding a threshold to filter out outlier topics, adding the 4 stop word lists and more parameter tuning...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104790869-84217d00-5766-11eb-86a0-89a334bc76eb.PNG" width="520px">
+</p>
+
+<br/>   
+ 
+...of V-LDA...
+ 
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104792691-42e09b80-576d-11eb-90af-1a57cea94ff1.PNG" width="520px">
+</p>
+
+<br/>   
+ 
+...and L-LDA...
+
+`bt_1`'s latent global structure is distilled into an interpretable local structure... 
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104792726-6277c400-576d-11eb-82e6-13ca83880d87.PNG" width="520px">
+</p>
+
+<br/>  
+ 
+...and the most relevant topics are revealed:
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104792742-78858480-576d-11eb-9a0d-7efea1807e9a.png" width="530px">
+</p>
+
+<br/>  
+ 
+I wasn't sure if there were any patterns in the dataset, but its very obvious that t-SNE coupled with LDA helped uncover a distinct, interpretable structure within each users corpora. It's hard to say what these clusters really mean, but its better than a messy blob of nothing. The most interesting part of the analysis is that we can now answer the high level questions from the introduction. The previous link sort of answers the question, *"What topics are present in the text?"* and *"What can we say about the relationship between users and their topics?"*. We can now answer the question, *"What will each users separate set of topics say about their association to other users?"*. To help answer this question, let's revisit the Hellinger distance metric from section 6.
+
+When you have a discrete distribution space, and you want to measure the distance between word co-occurrences in more than one user, you need a metric that captures a features symmetry[33], because symmetry enhances recognition and the reconstruction of geometric characteristics (shapes and objects), especially in objects projected into a multi-dimensional space.
+
+The Hellinger distance is used to compute the distance between two users corresponding word distributions by giving a probability of how likely it is that user `A`'s use of words is similar to user `B` and how dissimilar user `A`'s use of words are to users `A-Z`, denoted by how large or small of a probability of similarity is computed between different users.
+
+<br/>
+
+<p align="center">
+<a href="https://docs.google.com/document/d/10lZ8w2nYYri_TSoCSvQPTeFpSLCGOceewKNf9l8v-2I/edit?usp=sharing" title="Google Docs" rel="nofollow">user Hellinger distances</a>
+</p>
+
+<br/>
+
+In the Hellinger notebook above, two instances can be seen in the 20th and 22nd cells with `bt_11` and `bt_12`. Each user had approximately 3,000 words in their corpus after preprocessing, while `bt_11` and `bt_12` only had 1,100 - 1,200 words in their corpora. In section 2 its revealed that these two users are probably outliers, and computing the Hellinger distance reinforces this assumption. I kept them in a few cells to show how a lack of sufficient data can skew the results of the metric when comparing them to users of disproportionate size.
+
+Based on the Hellinger distances, it can be said in summary that:
+
+<br/>
+
+<p align="center"> 
+<code>bt_1</code> is most simliar to <code>bt_10</code> and is most dissimilar to <code>bt_5</code>
+<p align="center">  
+<code>bt_2</code> is most similar to <code>bt_7</code> and is most dissimilar to <code>bt_5</code>
+<p align="center">
+<code>bt_3</code> is most similar to <code>bt_1</code> and is most dissimilar to <code>bt_8</code>
+<p align="center">
+<code>bt_4</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_3</code>
+<p align="center">
+<code>bt_5</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
+<p align="center">
+<code>bt_6</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_7</code>
+<p align="center">
+<code>bt_7</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_6</code>
+<p align="center">
+<code>bt_8</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
+<p align="center">
+<code>bt_9</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_8</code>
+<p align="center">
+<code>bt_10</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_4</code>
+</p>
+
+<br/>
+
+It becomes apparent that `bt_10` represents the mean of similarity within the group. When looking at `bt_10` and the users who he is most similar to, there is similarity in their semantic space...
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104794341-00bb5800-5775-11eb-870c-1f87eb88cdfb.png" width="520px">
+</p>
+
+<br/>
+ 
+...represented by significant overlap of frequently used words highlighted in <a href="https://user-images.githubusercontent.com/29679899/104794703-54c73c00-5777-11eb-8f27-16efd4e0df42.mp4" title="bt_10 semantic space comparison" rel="nofollow">bold text</a>.
+ 
+If we look at the most dissimilar users, notice how `bt_5`, `bt_8` and `bt_9` appear in more than one observation, exactly two a piece. In order to determine which user is the most dissimilar to the entire group, we can defer to their <a href="https://drive.google.com/file/d/1KRjqG6cvMA4kXwnSnqtuaktV71DaoLL5/view?usp=sharing" title="All user t-SNE plots" rel="nofollow">t-SNE plots</a>. t-SNE is designed to preserve the local structure of the text by keeping words that should be together, close to their neighbors. So points that were close together in the original 3,000 high-dimensional (each dimension corresponding to a word in the vocabulary), impossible to visualize space, will also be close together in this very easy to visualize, low 2 dimensional space. 
+
+Notice how the structure of `bt_8`'s <a href="https://user-images.githubusercontent.com/29679899/104793932-9a353a80-5772-11eb-87bc-6eeaae651ea1.png" title="bt_8 t-SNE plot" rel="nofollow">t-SNE plot</a> differs from the rest of the group dramatically. The majority of the groups plots cover a wide range of the three-dimensional space while `bt_8` and <a href="https://user-images.githubusercontent.com/29679899/104794164-e2a12800-5773-11eb-9f5c-f9fc7f98450d.png" title="bt_6 t-SNE plot" rel="nofollow">`bt_6`</a> do not, despite having a representative number of observations in their corpora. Even the t-SNE plots of users (<a href="https://user-images.githubusercontent.com/29679899/104794380-437d3000-5775-11eb-888b-33507a5c4397.png" title="bt_11 t-SNE plot" rel="nofollow">bt_11</a>, <a href="https://user-images.githubusercontent.com/29679899/104794428-87703500-5775-11eb-84bd-cc85c0c252c6.png" title="bt_12 t-SNE plot" rel="nofollow">bt_12</a>) with less data and smaller distributional frequencies than `bt_8` and `bt_6` follow the t-SNE localization structure of the majority of the group. What could cause the local structure of both users clusters to be so different from the rest group? Unfortunately LDA and t-SNE do not allow us to make such inferences.
+
+The distinctions between each cluster are easily made when looking at the global structure of all user data, which represents roughly 32,000 words.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/104794932-fb600c80-5778-11eb-9ac7-3494fea52399.PNG" width="520px">
+</p>
+
+<br/>
+
+Notice how the clusters of text are well defined and fairly separated from each other. Remember, based on the observations learned from the text, LDA clusters words together that are likely to co-occur into the same topics. The result of adding the entirety of the `blues_traveler_2000` dataset to guided LDA and t-SNE gives us a <a href="https://user-images.githubusercontent.com/29679899/104794961-1c286200-5779-11eb-8f68-343a51c7a697.png" title="Global structure of bt_2000 dataset" rel="nofollow">map</a> of the most widely clustered topics over a span of 8 years. Getting a glimpse into the underlying global and local structure behind what keeps everyone chatting with each other gives us insightful answers to the questions, *"What topics are present in the text?"* and *"Are certain topics shared among all users or just a subset of users?"* .
+
+We can see a bunch of inside jokes in the blue center cluster, disdain for unfulfilling jobs and negative sentiment regarding death in the news and pop culture in the purple cluster in the lower left. Positive sentiment in the pink cluster in the lower right *--adjacent to the negative cluster--* with the green cluster above it listing the names of prominent users in the group occupying the same space as words like `wife`, `table` and `family`. This looks great, but I would have expected most of the words in the yellow cluster to be in the blue cluster. Words like `true_god` are clustered with bi-grams pertaining to the word `holy`, law enforcement and the expression/slogan, `never_forget`. But both clusters are Euclidean close so I guess that's a fair trade off. 
+
+<br/>
+
+# conclusion
+ 
+*"What can we say about the relationship between users and their topics?"*
+ 
+It's challenging to say what topics are present in each users text, but when looking over the entire body of topics; their shared strength forms something intelligible. It's like they're all in on some proverbial secret, pointing out the silly things in life and not taking it too seriously. 
+ 
+I'm far from finished with the `blues_traveler_2000` dataset. In the future I would like to plot the frequent word and topic distributions of each user over time, explore text normalization, enrichment & augmentation, annotation & fine grained style marking at the sentence level, natural language generation and text classification using more recent state-of-the-art methods, so transformer network architectures like BERT. Over the course of working on this project I've learned many lessons. Including that, in certain contexts, teaching machines to translate, classify and understand natural language is a really hard task. 
+ 
+That being said, NLP *--as an engineering discipline and open area of research--* is thriving. Statistical modeling and complex optimization methods have given us a great way to teach machines natural language through narrowly defined intelligence, but it only introduces us to the cusp of what's possible. Realizing human-level AI systems is complicated and will more than likely require basic math and ways of representing meaning in ways that barely exist. For this reason and a few others, I also believe the current state-of-the-art is fragile in the sense that algorithms do not encode causality and commonsense; which humans need to really understand the world. 
+ 
+Feed-forward neural networks carry biological assumptions and they're able to encode information going forward in time, but biologically there are as many feedback connections as there are feed-forward connections which neural networks cannot yet imitate. Backpropagation tries to address this, but backprop is just a learning mechanism executed during training. For example, when a network trained on backprop is carrying out a task trying to classify images, if someone is maliciously trying to fool the network, backprop does nothing to help the network recognize or make sense of what its perceiving in realtime from this new information regarding its input or output. It can only make sense from the context of examples that it generalized during training.
+ 
+This encoding may require more than an approximation to learn what's happening with images or language on masses of unstructured data, so its my belief that human level AI will not come from fixed datasets. But the future is promising and more in depth <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositionality</a> in language, so how words can be composed of phrases which go into clauses and sentences which can be embedded in larger sentences, may be a short term solution for deconstructing language in a way that allows models to understand commonsense meaning. In any case, we will need a granular understanding and the ability to disentangle multiple levels of abstraction of the fundamental principles and properties that make up language and cognition for machines to achieve a human-level of understanding of how the world works.
+
+<br/>
+<br/>
+
+# references:
+ 
+Jones, *A statistical interpretation of term specificity and its application in retrieval.* Computer Laboratory of the University of Cambridge. 1972.[<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.115.8343&rep=rep1&type=pdf" title="Jones" rel="nofollow">1</a>] 
+ 
+Newman, *Power laws, Pareto distributions and Zipf's law.* Dept. of Physics and Center for Study of Complex Systems. 2006.[<a href="https://arxiv.org/pdf/cond-mat/0412004.pdf" title="Newman" rel="nofollow">2</a>]  
+ 
+Zhao, Marcus, *Long-tailed Distributions and Unsupervised Learning of Morphology.* University of Pennsylvania. 2012.[<a href="https://www.aclweb.org/anthology/C12-1191.pdf" title="Newman" rel="nofollow">2</a>]  
+ 
+Piantadosi, *Zipf's word frequency law in natural language: A critical review and future directions.* Psychon Bull Review. 2015.[<a href="https://pubmed.ncbi.nlm.nih.gov/24664880/" title="Piantadosi" rel="nofollow">3</a>]
+ 
+Barndorff, Nelson, *O. Information and Exponential Families in Statistical Theory.* Wiley, New York. 1978.[<a href="https://www.semanticscholar.org/paper/Information-and-Exponential-Families-in-Statistical-Barndorff-Nielsen/90c05a30cd36269b90d772ca35471f823d4de057" title="Barndorff, Nelson" rel="nofollow">4</a>]   
+ 
+Efron, *Exponential Families in Theory and Practice.* Stanford University. Year Unknown.[<a href="http://www.cs.columbia.edu/~blei/fogm/2019F/readings/Efron2018.pdf" title="Efron" rel="nofollow">5</a>]  
+ 
+Powers, *Applications and Explanations of Zipf's Law.* Dept. of Computer Science Flinders University of South Australia. 1998.[<a href="https://www.aclweb.org/anthology/W98-1218.pdf" title="Powers" rel="nofollow">6</a>]  
+ 
+Brown, L.D. *Fundamentals of Statistical Exponential Families.* IMS Lecture Notes and Monographs Series, Hayward, CA. 1986.[<a href="https://books.google.com/books?hl=en&lr=&id=hmMLShr43PUC&oi=fnd&pg=PA3&dq=Fundamentals+of+Statistical+Exponential+Families.&ots=1ZQEmEsKKC&sig=l7HTeHlCxfPsNT7__bQaULyWPQk#v=onepage&q=Fundamentals%20of%20Statistical%20Exponential%20Families.&f=false" title="Brown, L.D." rel="nofollow">7</a>]  
+ 
+Hintze, Nelson, *Violin Plots: A Box Plot-Density Trace Synergism.* The American Statistician. 1998. [<a href="http://www.stat.cmu.edu/~rnugent/PCMI2016/papers/ViolinPlots.pdf" title="Hintze, Nelson" rel="nofollow">8</a>]  
+ 
+Louwerse, *Symbol Interdependency in Symbolic and Embodied Cognition.* Dept. of Psychology, University of Memphis. 2009.[<a href="https://indico.sissa.it/event/7/contributions/420/attachments/168/194/Louwerse-2011-Topics_in_Cognitive_Science.pdf" title="Louwerse" rel="nofollow">9</a>]  
+ 
+Bojanowski, Grave, Joulin, Mikolov, *Enriching Word Vectors with Subword Information.* Association for Computational Linguistics (Facebook AI Research). 2017.[<a href="https://arxiv.org/pdf/1607.04606.pdf" title="Bojanowski, Grave, Joulin, Mikolov" rel="nofollow">10</a>] 
+ 
+Corrado, Mikolov, Chen, Dean, *Efficient Estimation of Word Representations in Vector Space.* Google. 2013.[<a href="https://arxiv.org/pdf/1301.3781.pdf" title="Corrado, Mikolov, Chen, Dean" rel="nofollow">11</a>]  
+ 
+Ng, *Deep Learning Specialization.* deeplearning.ai. 2018.[12,13]
+ 
+Rong, *word2vec Parameter Learning Explained.* Umich. 2016.[<a href="https://arxiv.org/pdf/1411.2738.pdf" title="Rong" rel="nofollow">14</a>]  
+ 
+Hinton, vans der Maaten, *Visualizing Data using t-SNE.* Journal of Machine Learning Research. 2008.[<a href="https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf" title="Hinton, vans der Maaten" rel="nofollow">15</a>]  
+ 
+Aly, *Survey on Multiclass Classification Methods.* Caltech. 2005.[<a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.175.107&rep=rep1&type=pdf" title="Aly" rel="nofollow">16</a>]  
+ 
+Even-Zohar, Roth, *A Sequential Model for Multi-Class Classification.* Dept. of Computer Science University of Illinois at Urbana-Champaign. 2001.[<a href="https://arxiv.org/pdf/cs/0106044.pdf" title="Even-Zohar, Roth" rel="nofollow">17</a>]  
+ 
+Collins, Rozanov, Zhang, *Evolutionary Data Measures: Understanding the Difficult of Text Classification Tasks.* Wluper Ltd. 2018.[<a href="https://arxiv.org/pdf/1811.01910.pdf" title="Collins, Rozanov, Zhang" rel="nofollow">18</a>]  
+ 
+Pascanu, Mikolov, Bengio, *On The Difficulty of Training Recurrent Neural Networks.* Universite de Montreal & Brno University. 2013.[<a href="https://arxiv.org/pdf/1211.5063.pdf" title="Pascanu, Mikolov, Bengio" rel="nofollow">19</a>]  
+ 
+Joulin, Mikolov, Chopra, Mathieu, Ranzato, *Learning Longer Memory in Recurrent Neural Networks.* Workshop at ICLR. 2015.[<a href="https://arxiv.org/pdf/1412.7753.pdf" title="Joulin, Mikolov, Chopra, Mathieu, Ranzato" rel="nofollow">20</a>]  
+ 
+Pulver, Leu, *LSTM with Working Memory.* Dept. of Computer Science University of Albany. 2017.[<a href="https://arxiv.org/pdf/1605.01988.pdf" title="Pulver, Leu" rel="nofollow">21</a>]  
+ 
+Mousa, Schuller, *Contextual Bidirectional Long Short-Term Memory Recurrent Neural Network Language Models: A Generative Approach to Sentiment Analysis.* Chair of Complex & Intelligent Systems, University of Passau, Dept. of Computer Imperial College London. 2017.[<a href="https://www.aclweb.org/anthology/E17-1096.pdf" title="Mousa, Schuller" rel="nofollow">22</a>]  
+ 
+Schuster, Paliwal, *Bidirectional Recurrent Neural Networks.* IEEE. 1997.[<a href="https://deeplearning.cs.cmu.edu/F20/document/readings/Bidirectional%20Recurrent%20Neural%20Networks.pdf" title="Schuster, Paliwal" rel="nofollow">23</a>] 
+ 
+Pennington, Socher, Manning, *GloVe: Global Vectors for Word Representation.* Computer Science Dept. of Stanford University. 2014[<a href="https://nlp.stanford.edu/pubs/glove.pdf" title="Pennington, Socher, Manning" rel="nofollow">24</a>]  
+ 
+Raffel, P.W. Ellis, *Feed-Forward Networks with Attention can Solve some Long-Term Memory Problems.* LabROSA, Columbia University. 2016.[<a href="https://arxiv.org/pdf/1512.08756.pdf" title="Raffel, P.W. Ellis" rel="nofollow">25</a>]  
+ 
+Lin, Feng, dos Santos, Yu, Xiang, Zhou, Bengio, *A Structured Self-Attentive Sentence Embedding.* Montreal Institute for Learning Algorithms(MILA) Universite de Montreal. 2017.[<a href="https://arxiv.org/pdf/1703.03130.pdf" title="Lin, Feng, dos Santos, Yu, Xiang, Zhou, Bengio" rel="nofollow">26</a>]  
+ 
+Gal, Ghahramani, *A Theoretically Grounded Application of Dropout in Recurrent Neural Networks.* University of Cambridge. 2016.[<a href="https://arxiv.org/pdf/1512.05287.pdf" title="Gal, Ghahramani" rel="nofollow">27</a>]  
+ 
+Krogh, Hertz, *A Simple Weight Decay Can Improve Generalization.* NIPS Proceedings: The Niels Bohr Institute. 1992.[<a href="https://papers.nips.cc/paper/1991/file/8eefcfdf5990e441f0fb6f3fad709e21-Paper.pdf" title="Krogh, Hertz" rel="nofollow">27</a>]   
+ 
+Hinton, Srivastava, Krizhevsky, Salakhutdinov, *Dropout: A Simple Way to Prevent Neural Networks From Overfitting.* Journal of Machine Learning Research: Dept. of Computer Science University of Toronto. 2014.[<a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" title="Hinton, Srivastava, Krizhevsky, Salakhutdinov" rel="nofollow">27</a>] 
+ 
+Robertson, *Understanding Inverse Document Frequency: On theoretical arguments for IDF.* Microsoft Research. 2004.[<a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.97.7340" title="Robertson" rel="nofollow">28</a>]   
+ 
+Shahmirzadi, Lugowski, Younge, *Text Similarity in Vector Space Models: A Comparative Study.* Semantic Scholar. 2018[<a href="https://arxiv.org/pdf/1810.00664.pdf" title="Shahmirzadi, Lugowski, Younge" rel="nofollow">29</a>]  
+ 
+Lilleberg, Zhu, Zhang, *Support Vector Machines and Word2vec for Text Classification with Semantic Features.* Computer Science Depts. of Southwest Minnesota State and Georgia State Universities. 2015.[<a href="http://www.cs.unibo.it/~danilo.montesi/CBD/Articoli/2015_Support%20vector%20machines%20and%20Word2vec%20for%20text%20classification%20with%20semantic%20features.pdf" title="Lilleberg, Zhu, Zhang" rel="nofollow">30</a>]  
+ 
+Friedman, *Greedy Function Approximation: A Gradient Boosting Machine.* IMS 1999 Reitz Lecture. 1999.[<a href="https://statweb.stanford.edu/~jhf/ftp/trebst.pdf" title="Friedman" rel="nofollow">31</a>]  
+ 
+Rish, *An Empirical Study of the Naive Bayes Classifier.* Gatech. 2001.[<a href="https://www.cc.gatech.edu/~isbell/reading/papers/Rish.pdf" title="Rish" rel="nofollow">32</a>]  
+Lebret, Collobert, *Word Embeddings through Hellinger PCA.* Idiap Research Institute. 2014.[<a href="https://www.aclweb.org/anthology/E14-1051.pdf" title="Lebret, Collobert" rel="nofollow">33</a>]  
+ 
+Ng, Blei, Jordan, *Latent Dirichlet Allocation.* Journal of Machine Learning Research. 2003.[<a href="https://jmlr.org/papers/volume3/blei03a/blei03a.pdf" title="Ng, Blei, Jordan" rel="nofollow">34</a>]  
+ 
+Raffel, Ellis, *Feed-Forward Networks With Attention Can Solve Some Long-Term Memory Problems.* LabROSA, Columbia University. 2016.[<a href="https://arxiv.org/pdf/1512.08756.pdf" title="Raffel, Ellis" rel="nofollow">35</a>]  
+ 
+Erhan, Bengio, Courville, Manzagol, Vincent, Bengio, *Why Does Unsupervised Pre-Training Help Deep Learning?* Universite de Montreal, Google Research. 2009.[<a href="https://www.jmlr.org/papers/volume11/erhan10a/erhan10a.pdf" title="Erhan, Bengio, Courville, Manzagol, Vincent, Bengio" rel="nofollow">36</a>]  
+ 
+Zhang, Keerthi, Mahajan, Dhillon, Hsieh, *Gradient Boosted Decision Trees for High Dimensional Sparse Output.* MLR Proceedings. 2017.[<a href="http://www.stat.ucdavis.edu/~chohsieh/rf/icml_sparse_GBDT.pdf" title="Zhang, Keerthi, Mahajan, Dhillon, Hsieh" rel="nofollow">37</a>]  
+ 
+*Visualizations for t-SNE were created using Word2vec generated vector embeddings from a sample user of the blues_traveler_2000 dataset.* The visualization medium was made possible by the Tensorflow: Embedding Projector[<a href="https://projector.tensorflow.org/" title="Google" rel="nofollow">38</a>].  
