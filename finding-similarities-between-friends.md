@@ -2483,15 +2483,40 @@ In the Hellinger notebook above, two instances can be seen in the 20th and 22nd 
 
 Based on the Hellinger distances, it can be said in summary that:
 
+<br/>
 
+<p align="center"> 
+<code>bt_1</code> is most simliar to <code>bt_10</code> and is most dissimilar to <code>bt_5</code>
+  </p>
+<p align="center">  
+<code>bt_2</code> is most similar to <code>bt_7</code> and is most dissimilar to <code>bt_5</code>
+  </p>
+<p align="center">
+<code>bt_3</code> is most similar to <code>bt_1</code> and is most dissimilar to <code>bt_8</code>
+  </p>
+<p align="center">
+<code>bt_4</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_3</code>
+  </p>
+<p align="center">
+<code>bt_5</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
+  </p>
+<p align="center">
+<code>bt_6</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_7</code>
+  </p>
+<p align="center">
+<code>bt_7</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_6</code>
+  </p>
+<p align="center">
+<code>bt_8</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
+  </p>
+<p align="center">
+<code>bt_9</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_8</code>
+  </p>
+<p align="center">
+<code>bt_10</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_4</code>
+</p>
 
-
-
-
-
-
-
-
+<br/>
 
 It becomes apparent that `bt_10` represents the mean of similarity within the group. When looking at `bt_10` and the users who he is most similar to, there is similarity in their semantic space...
 
@@ -2545,7 +2570,7 @@ This encoding may require more than an approximation to learn what's happening w
 # references
  
 Jones, *A statistical interpretation of term specificity and its application in retrieval.* Computer Laboratory of the University of Cambridge. 1972.[<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.115.8343&rep=rep1&type=pdf" title="Jones" rel="nofollow">1</a>] 
-<br/> 
+
 Newman, *Power laws, Pareto distributions and Zipf's law.* Dept. of Physics and Center for Study of Complex Systems. 2006.[<a href="https://arxiv.org/pdf/cond-mat/0412004.pdf" title="Newman" rel="nofollow">2</a>]  
  
 Zhao, Marcus, *Long-tailed Distributions and Unsupervised Learning of Morphology.* University of Pennsylvania. 2012.[<a href="https://www.aclweb.org/anthology/C12-1191.pdf" title="Newman" rel="nofollow">2</a>]  
