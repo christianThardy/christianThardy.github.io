@@ -2558,7 +2558,7 @@ This encoding may require more than an approximation to learn what's happening w
 <br/>
 <br/>
 
-# references:
+# references
  
 Jones, *A statistical interpretation of term specificity and its application in retrieval.* Computer Laboratory of the University of Cambridge. 1972.[<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.115.8343&rep=rep1&type=pdf" title="Jones" rel="nofollow">1</a>] 
  
