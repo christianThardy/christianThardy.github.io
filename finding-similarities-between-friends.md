@@ -2635,7 +2635,7 @@ Lilleberg, Zhu, Zhang, *Support Vector Machines and Word2vec for Text Classifica
  
 Friedman, *Greedy Function Approximation: A Gradient Boosting Machine.* IMS 1999 Reitz Lecture. 1999.[<a href="https://statweb.stanford.edu/~jhf/ftp/trebst.pdf" title="Friedman" rel="nofollow">31</a>]  
  
-Rish, *An Empirical Study of the Naive Bayes Classifier.* Gatech. 2001.[<a href="https://www.cc.gatech.edu/~isbell/reading/papers/Rish.pdf" title="Rish" rel="nofollow">32</a>]  
+Rish, *An Empirical Study of the Naive Bayes Classifier.* Gatech. 2001.[<a href="https://www.cc.gatech.edu/~isbell/reading/papers/Rish.pdf" title="Rish" rel="nofollow">32</a>] <br/> 
 Lebret, Collobert, *Word Embeddings through Hellinger PCA.* Idiap Research Institute. 2014.[<a href="https://www.aclweb.org/anthology/E14-1051.pdf" title="Lebret, Collobert" rel="nofollow">33</a>]  
  
 Ng, Blei, Jordan, *Latent Dirichlet Allocation.* Journal of Machine Learning Research. 2003.[<a href="https://jmlr.org/papers/volume3/blei03a/blei03a.pdf" title="Ng, Blei, Jordan" rel="nofollow">34</a>]  
