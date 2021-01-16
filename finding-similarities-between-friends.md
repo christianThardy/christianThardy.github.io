@@ -2561,7 +2561,7 @@ This encoding may require more than an approximation to learn what's happening w
 # references
  
 Jones, *A statistical interpretation of term specificity and its application in retrieval.* Computer Laboratory of the University of Cambridge. 1972.[<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.115.8343&rep=rep1&type=pdf" title="Jones" rel="nofollow">1</a>] 
- 
+<br/> 
 Newman, *Power laws, Pareto distributions and Zipf's law.* Dept. of Physics and Center for Study of Complex Systems. 2006.[<a href="https://arxiv.org/pdf/cond-mat/0412004.pdf" title="Newman" rel="nofollow">2</a>]  
  
 Zhao, Marcus, *Long-tailed Distributions and Unsupervised Learning of Morphology.* University of Pennsylvania. 2012.[<a href="https://www.aclweb.org/anthology/C12-1191.pdf" title="Newman" rel="nofollow">2</a>]  
