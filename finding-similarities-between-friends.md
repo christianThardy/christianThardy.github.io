@@ -2483,31 +2483,15 @@ In the Hellinger notebook above, two instances can be seen in the 20th and 22nd 
 
 Based on the Hellinger distances, it can be said in summary that:
 
-<br/>
 
-<p align="center"> 
-<code>bt_1</code> is most simliar to <code>bt_10</code> and is most dissimilar to <code>bt_5</code>
-<p align="center">  
-<code>bt_2</code> is most similar to <code>bt_7</code> and is most dissimilar to <code>bt_5</code>
-<p align="center">
-<code>bt_3</code> is most similar to <code>bt_1</code> and is most dissimilar to <code>bt_8</code>
-<p align="center">
-<code>bt_4</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_3</code>
-<p align="center">
-<code>bt_5</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
-<p align="center">
-<code>bt_6</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_7</code>
-<p align="center">
-<code>bt_7</code> is most similar to <code>bt_2</code> and is most dissimilar to <code>bt_6</code>
-<p align="center">
-<code>bt_8</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_9</code>
-<p align="center">
-<code>bt_9</code> is most similar to <code>bt_10</code> and is most dissimilar to <code>bt_8</code>
-<p align="center">
-<code>bt_10</code> is most similar to <code>bt_9</code> and is most dissimilar to <code>bt_4</code>
-</p>
 
-<br/>
+
+
+
+
+
+
+
 
 It becomes apparent that `bt_10` represents the mean of similarity within the group. When looking at `bt_10` and the users who he is most similar to, there is similarity in their semantic space...
 
