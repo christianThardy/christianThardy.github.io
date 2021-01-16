@@ -2523,7 +2523,7 @@ It becomes apparent that `bt_10` represents the mean of similarity within the gr
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104794341-00bb5800-5775-11eb-870c-1f87eb88cdfb.png" width="520px">
+  <img src = "https://user-images.githubusercontent.com/29679899/104820446-b7b1e500-5802-11eb-98c1-8ff79e06e32d.png" width="520px">
 </p>
 
 <br/>
