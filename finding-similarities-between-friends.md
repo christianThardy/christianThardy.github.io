@@ -552,7 +552,7 @@ For example, the frequency of this audio filter effect...
 
 <br/>
 
-...which are represented by an exponential difference and its using this difference to scoop all of the low frequencies out of the sound so that only the highest frequencies remain.
+...which are represented by an exponential difference and its using this difference to scoop all of the low frequencies out of the sound so that only the <a href="https://user-images.githubusercontent.com/29679899/104821265-a23fb980-5808-11eb-8bc8-e626ab1915d7.mp4" title="Audio filter sample" rel="nofollow">highest frequencies</a> remain. 
 
 This is interesting because if sound were measured linearly, the fader in the gif above would have a range of 1 to 1,135,910 notches next to it instead of 1 to 10, which would be ridiculous. By using a logarithmic unit, we can represent the range of 1 to 1,135,910 with only 10 notches next to the fader. So logarithms allow us to compare super large numbers with super small numbers.
 
