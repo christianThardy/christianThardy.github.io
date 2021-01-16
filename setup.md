@@ -49,6 +49,14 @@ Trying to come up with a rule for everything falls in line with how we think abo
 
 When it comes to applying machine learning to complex problems, there’s usually nothing exact about complex things and we need to consider that we want to automate processes that are often nuanced. So some problems need generalization, which makes a 100% rules based view of the world economically unfeasible and is probably why projects like the Semantic Web cannot secure funding.
 
+<br/>
+
+<p align="center">
+  <b><img src = "https://user-images.githubusercontent.com/29679899/104815366-09964300-57e2-11eb-9e56-dbdfdedc035d.PNG" width="455px"></b><br>
+</p>
+
+<br/>
+
 In any case, a future where computers achieve a human-level of understanding of the fundamental principles and properties that make up language and cognition will likely be realized through a reconciliation between the imperfect pragmatic *and* imperfect theoretical perspectives of how the world works.
 
 But I digress, are building neural networks as easy as adding more layers to the network?
