@@ -2554,7 +2554,7 @@ We can see a bunch of inside jokes in the blue center cluster, disdain for unful
  
 *"What can we say about the relationship between users and their topics?"*
  
-It's challenging to say what topics are present in each users text, but when looking over the entire body of topics; their shared strength forms something that's sort of intelligible. It's like they're all in on some proverbial secret, pointing out the silly things in life and not taking it too seriously. 
+It's challenging to say what topics are present in each users text, but when looking over the entire body of topics; their shared strength forms something intelligible. It's like they're all in on some proverbial secret, pointing out the silly things in life and not taking it too seriously. 
  
 I'm far from finished with the `blues_traveler_2000` dataset. In the future I would like to plot the frequent word and topic distributions of each user over time, explore text normalization, enrichment & augmentation, annotation & fine grained style marking at the sentence level, natural language generation and text classification using more recent state-of-the-art methods, so transformer network architectures like BERT. I also have ideas to use this dataset as the zero-start for ASR & speech-to-text related tasks. Over the course of working on this project I've learned many lessons. Including that, in certain contexts, teaching machines to translate, classify and understand natural language is a really hard task. 
  
