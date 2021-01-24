@@ -107,13 +107,17 @@ For example, if you have a set of text where the context is very free and relati
 
 Earlier I mentioned something called a resCNN (residual convolutional neural network) that predicts the label to fix to our words. They are based on the concept of a Resnet, made popular in 2015.
 
-![ResNet-Variations_2x-700x323](https://user-images.githubusercontent.com/29679899/101259975-853ca480-36fa-11eb-99be-7bafe389f68e.png)
+<p align="center">
+<img src = "https://user-images.githubusercontent.com/29679899/101259975-853ca480-36fa-11eb-99be-7bafe389f68e.png" width="700px">
+</p>
 
 Because of them we can train a deeper network and the learning gradient has a shortcut that it can take in the learning process during backpropagation and that gradient will not vanish.
 
 The resCNN solves this problem by adding skip connections which take the activations from early layers, skips a couple and then feeds them to layers that are deeper in the network. By doing this you can effectively train deeper networks and learn better features.
 
+<p align="center">
 <img src = "https://user-images.githubusercontent.com/29679899/101259991-ae5d3500-36fa-11eb-91fa-a09c9d04034a.png" width="545px">
+</p>
 
 Activation functions are necessary to squish the input received from the previous hidden layer down into a small range of values. Without this, we would not be able to learn non-linear relationships. They elongate and squash the layers in space... 
 
