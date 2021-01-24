@@ -126,6 +126,6 @@ Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualiz
 
 Weisstein. *Möbius Strip.* 2020.[2]
 
-Olah. Neural Networks, Manifolds and Topology. 2014.[3]
+Olah. *Neural Networks, Manifolds and Topology.* 2014.[3]
 
 Ghrist. *Three Examples of Applied and Computational Homology.* 2008.[4]
