@@ -319,10 +319,10 @@ Resources to train these models can also present potential bottlenecks, because 
 
 ### References
 
-*Neural architectures for named entity recognition*
+Lample, Ballesteros, Subramanian, Kawakami, Dyer, *Neural architectures for named entity recognition*, Carnegie Mellon University, The NLP Group at Pompeu Fabra University, 2016.[<a href="https://arxiv.org/pdf/1603.01360.pdf" title="arxiv.org" rel="nofollow">1</a></li>]   
 
-*A survey on deep learning for named entity recognition*
+Li, Sun, Han, Li, *A survey on deep learning for named entity recognition*, IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, 2020.[<a href="https://arxiv.org/pdf/1812.09449.pdf" title="arxiv.org" rel="nofollow">2</a></li>]    
 
-*Complex linguistic features for text classification: a comprehensive study*
+Moschitti1, Basili, *Complex linguistic features for text classification: a comprehensive study*, Human Language Technology Research Institute at University of Texas, Computer Science Department at University of Rome Tor Vergata, 2004.[<a href="http://disi.unitn.it/moschitti/articles/ECIR2004.pdf" title="ECRI2004" rel="nofollow">3</a></li>]    
 
-*Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models*
+Honnibal, *Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models*, Explosion.ai, 2016.[<a href="https://explosion.ai/blog/deep-learning-formula-nlp" title="explosion.ai" rel="nofollow">4</a></li>]
