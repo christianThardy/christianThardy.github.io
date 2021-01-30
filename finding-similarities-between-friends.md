@@ -2332,7 +2332,7 @@ The semantic vectors preserve a fair amount of information about the text with r
 
 # 10. topic modeling
  
-Earlier in the post we covered what distributions are, but before we can understand what topic modeling is and how its done, we should first make ourselves familiar, as qualitatively possible, with the dirichlet distribution. In order to to illustrate the unique nature of the dirichlet, lets consider the properties of a continuous normal distribution. Belonging to the same family of continuous probability distributions whose members include the t, logistic, and Laplace distributions, the ND... 
+Earlier in the post we covered what distributions are, but before we can understand what topic modeling is and how its done, we should first make ourselves familiar, as qualitatively possible, with the dirichlet distribution. In order to illustrate the unique nature of the dirichlet, lets consider the properties of a continuous normal distribution. Belonging to the same family of continuous probability distributions whose members include the t, logistic, and Laplace distributions, the ND... 
 
 <br/>
 
