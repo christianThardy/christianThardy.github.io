@@ -1107,7 +1107,7 @@ Tokens are not word agnostic, they can include punctuation, emoji's, and ASCII c
 ```python
 clean_text = clean_text.split()
 ```
-## `['goddamn', 'season', 'queer', 'eye']`
+## `['goddamn', 'season', 'of', 'queer', 'eye']`
 
 <br/>
 
