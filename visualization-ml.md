@@ -120,7 +120,7 @@ Things like neural ordinary differential equations, optimization algorithm devel
 
 <br/>
 
-## References:
+## references:
 
 Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[1]
 
