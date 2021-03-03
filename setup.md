@@ -321,7 +321,7 @@ Resources to train these models can also present potential bottlenecks, because 
 
 <br/>
 
-### References
+### references
 
 Lample, Ballesteros, Subramanian, Kawakami, Dyer, *Neural architectures for named entity recognition*, Carnegie Mellon University, The NLP Group at Pompeu Fabra University, 2016.[<a href="https://arxiv.org/pdf/1603.01360.pdf" title="arxiv.org" rel="nofollow">1</a>]   
 
