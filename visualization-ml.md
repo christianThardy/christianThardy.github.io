@@ -122,10 +122,10 @@ Things like neural ordinary differential equations, optimization algorithm devel
 
 ## references:
 
-Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[1]
+Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[<a href="https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es2011-3.pdf" title="arxiv.org" rel="nofollow">1</a>] 
 
-Weisstein. *Möbius Strip.* 2020.[2]
+Weisstein. *Möbius Strip.* 2020.[<a href="https://mathworld.wolfram.com/MoebiusStrip.html" title="arxiv.org" rel="nofollow">2</a>]
 
-Olah. *Neural Networks, Manifolds and Topology.* 2014.[3]
+Olah. *Neural Networks, Manifolds and Topology.* 2014.[<a href="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/" title="arxiv.org" rel="nofollow">3</a>]
 
-Ghrist. *Three Examples of Applied and Computational Homology.* 2008.[4]
+Ghrist. *Three Examples of Applied and Computational Homology.* 2008.[<a href="https://www2.math.upenn.edu/~ghrist/preprints/nieuwarchief.pdf" title="arxiv.org" rel="nofollow">4</a>]
