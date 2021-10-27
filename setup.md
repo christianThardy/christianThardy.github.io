@@ -203,7 +203,7 @@ So if we train a state-based system on a piece of text like this...
 
 <br/>
 
-...and for any name, location, object or just about anything we would like. 
+...and for any name, location, subject, object or just about anything we would like. 
 
 <br/>
 
