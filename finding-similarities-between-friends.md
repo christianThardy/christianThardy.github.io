@@ -1745,7 +1745,7 @@ Placing the tagged tokens in a set object corresponding to each word and its par
 
 ```python
 '''Based on hash-tables, which are continuous vectors 
-   similar to python dictionaries, set_pos transforms 
+   similar to python dictionaries, pos_set transforms 
    list_of_tagged_words into a highly optimized,
    iterable method that will make sure pos_tags is 
    contained within the object its called. We only 
@@ -1779,7 +1779,7 @@ list_of_words = set(map(lambda tuple_2: tuple_2[0], filter(lambda tuple_2: tuple
 
 ...it can help retrieve the parts of speech that are identified in the `pos_tags` variable and only retrieve the items in that variable. To break down `list_of_words` linearly, set allows us to group each function in the variable intelligently → `map` and `lambda` allow our list of inputs, `pos_tags` and `set_pos` to be passed through each function one by one in the variable → they also allow the list of functions,` tuple_2: tuple_2[0]`, do the same and represent our word whose index is `0` (wipe).
 
-Breaking down `tuple_2: tuple_2[0]` a bit, they're packing each word from `set_pos`, while `filter(lambda tuple_2: tuple_2[1]` unpacks and discards the words part of speech tags indexed by `1` `(NNS)` that are not specified in the `pos_tags` variable. `filter` is the function that handles this by only returning the parts of speech specified in `pos_tags`. Using nested sets in combination with tuples allows iterating over the massive rows of text to happen very quickly. 
+Breaking down `tuple_2: tuple_2[0]` a bit, they're packing each word from `pos_set`, while `filter(lambda tuple_2: tuple_2[1]` unpacks and discards the words part of speech tags indexed by `1` `(NNS)` that are not specified in the `pos_tags` variable. `filter` is the function that handles this by only returning the parts of speech specified in `pos_tags`. Using nested sets in combination with tuples allows iterating over the massive rows of text to happen very quickly. 
 
 `dataset['pos_features']`... 
 
@@ -1807,7 +1807,7 @@ xtrain,xval,ytrain,yval = train_test_split(dataset.Message.values,y,
 
 <br/>
 
-We'll reappropriate the script used during construction of the AB-BiLSTMRNN to import the the `glove_vectors`... 
+We'll reappropriate the script used during construction of the AB-BiLSTMRNN to import the `glove_vectors`... 
 
 ```python
 # Import glove embeddings
@@ -1945,7 +1945,7 @@ Where they differ is `min_df`, ignores words with a document frequency lower tha
 
 The algorithms used in this code section are Multinomial & Bernoulli Naive Bayes, logistic regression, XGBoost and a support vector classifier[30]. Later on I will only explain the algorithms that return the most favorable results on our weighted F1 metric.
 
-In order to use GloVe weighted TF-IDF and count vectorizer embeddings on the `ExtraTreeClassifier`, we'll need to tap into some syntactic sugar['] and define custom TF-IDF and count vectorizer classes and methods.
+In order to use GloVe weighted TF-IDF and count vectorizer embeddings on the `ExtraTreeClassifier`, we'll need to tap into some syntactic sugar and define custom TF-IDF and count vectorizer classes and methods.
 
 `CountVectorizerEmbeddings`... 
 
@@ -1984,7 +1984,7 @@ class CountVectorizerEmbeddings(object):
 
 ...is defined as a new type of class object which will allow instances of its type to be passed on to `ExtraTreesClassifier`. As explained in the Attention section of the 7th part of this post, `__init__` , which is our constructor, allows class objects to accept arguments and will be the main definer of the `CountVectorizerEmbeddings` class where self assigns the glove vectors as static instances of the class object `CountVectorizerEmbeddings`.
 
-The following `if` / `else` statement says that if the length of the `glove_vectors` are greater than 0, the instance dim of the class object will ask next (ran inline for conveniece) to process the contents of `glove_vectors` and will iterate over the length of the vectors one time. Otherwise (`else`) if the length of the `glove_vectors` are less than 0, `dim` will be equal to 0.
+The following `if` / `else` statement says that `if` the length of the `glove_vectors` are greater than 0, the instance `dim` of the class object will ask next (ran inline for conveniece) to process the contents of `glove_vectors` and will iterate over the length of the vectors one time. Otherwise (`else`) if the length of the `glove_vectors` are less than 0, `dim` will be equal to 0.
 
 The `fit` function allows the class instance to define our `X` and `y` variables that will eventually contain `xtrain` and `ytrain`. This is where the model will fit the parameters from our initial class to the data, which will enable the model to learn.
 
