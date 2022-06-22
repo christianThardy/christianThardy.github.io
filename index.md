@@ -10,6 +10,7 @@ layout: default
 [![alt text][4.2]][4]
 [![alt text][5.2]][5]
 [![alt text][6.2]][6]
+[![alt text][7.2]][7]
 
 
 <!-- links to social media icons -->
@@ -29,7 +30,8 @@ layout: default
 [3.2]: http://i.imgur.com/DYEQR1h.png (linkedin icon without padding)  
 [4.2]: http://i.imgur.com/tSiu5uK.png (soundcloud icon without padding)  
 [5.2]: http://i.imgur.com/tSiu5uK.png (soundcloud icon without padding)
-[6.2]: http://i.imgur.com/M53f65R.png (youtube icon without padding) 
+[6.2]: http://i.imgur.com/M53f65R.png (youtube icon without padding)
+[7.2]: https://i.imgur.com/cT1Hor3.png (giphy icon without padding)
 
 
 <!-- links to social media accounts -->
@@ -40,3 +42,4 @@ layout: default
 [4]: http://www.soundcloud.com/softplus
 [5]: http://www.soundcloud.com/aldousband
 [6]: https://www.youtube.com/playlist?list=PLvRxqNCqbSYEB6H1V4ZJtrRtta5nhkhdL
+[7]: https://giphy.com/channel/christian_hardy
