@@ -5,7 +5,7 @@ show_downloads: False
 navigation:
   - title: home
     url: /
-  - title: text summarization from complex policies using transformers
+  - title: text summarization from complex data using transformers
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
     url: setup
