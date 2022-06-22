@@ -24,7 +24,7 @@ problems in NLP.
 While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence, the 
 transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words. This is huge,
 just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering framework is sentient</a>. 
-As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😀</a>.
+As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
 
 <br/>
 
