@@ -31,4 +31,4 @@ more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456
 
 ### references:
 
-https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html
+Roberts, Raffel, *Google AI Blog: Exploring Transfer Learning with T5: the Text-To-Text Transfer Transformer.* Google Research. 2020.[<a href="https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html" title="Transfer Learning" rel="nofollow">1</a>]
