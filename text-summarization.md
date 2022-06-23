@@ -36,7 +36,7 @@ Documents like this can be exhaustively long, and sometimes words can have multi
 
 For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
-To summarize this, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
+To summarize the above paragraph, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
 
 <br/>
 
