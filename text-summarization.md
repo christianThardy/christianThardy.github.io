@@ -26,6 +26,8 @@ more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456
 
 ## the data
 
+<br/>
+
 You have simple text and then you have hard text. With simple text, you can use simple parsing methods to solve easy to intermediate problems. With hard text you
 can try simple and intermediate methods, but there are no guarantees. We can think of hard text as something it would take a subject matter expert to understand. For
 example, the abstract of a paper:
