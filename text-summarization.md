@@ -38,8 +38,6 @@ For instance *“said”* most commonly functions as an adjective, and *“claim
 
 To summarize the above paragraph, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
 
-<br/>
-
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
 #### *"Rule-based natural language processing is provided."*
@@ -58,7 +56,7 @@ Vanilla abstractive summarizer:
 
 <br/>
 
-The output from the 1st and 3rd models meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim and the 3rd model is hallucinating facts that do not exist.
+The output from the 1st and 3rd models meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist.
 
 <br/>
 
