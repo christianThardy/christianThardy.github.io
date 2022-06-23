@@ -3,7 +3,7 @@
 Research and development have very broad implications. After all, we're trying to push the SOTA in our field by looking for hard problems to solve that can make a huge impact. Solving them allows us to redefine the way we look at our work, and shape the future of our organization. 
 
 About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for 
-document summarization. But what do you use when you have a lot of nuanced conditions? What do you do when you want to distill complex data down to its most basic idea, summarize the most interesting parts of a document where specific entities are present and you want control over the context of the output?
+document summarization. But what do you use when you have a lot of nuanced conditions? What do you do when you want to distill a complex piece of text down to its most basic idea, summarize the most interesting parts where specific entities are present and you want control over the context of the output?
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
