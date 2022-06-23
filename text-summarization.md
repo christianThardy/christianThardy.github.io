@@ -54,8 +54,6 @@ Vanilla abstractive summarizer:
 
 #### *"Computer scientists at the Massachusetts Institute of Technology (MIT) have developed a method for processing natural language."*
 
-<br/>
-
 The output from the 1st and 3rd models meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist.
 
 <br/>
