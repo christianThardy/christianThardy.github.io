@@ -34,7 +34,7 @@ example, the abstract of a paper:
 
 Documents like this can be exhaustively long, and sometimes words can have multiple meanings which translates to amgiuous and less common parts-of-speech. 
 
-For instance “said” most commonly functions as an adjective, and “claim” typically functions as a noun, when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
+For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
 To summarize this, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
 
