@@ -1,3 +1,5 @@
+# text summarization on complex data using transformers
+
 Research and development have very broad implications. After all, we're trying to push the SOTA in our field by looking for hard problems to solve that can make a huge impact. Solving them allows us to redefine the way we look at our work, and can potentially shape future optimizations. 
 
 About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for 
@@ -21,6 +23,42 @@ problems in NLP.
 While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence, the 
 transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words. This allows them to encode
 more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering framework is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
+
+## the data
+
+You have simple text and then you have hard text. With simple text, you can use simple parsing methods to solve easy to intermediate problems. With hard text you
+can try simple and intermediate methods, but there are no guarantees. We can think of hard text as something it would take a subject matter expert to understand. For
+example, the abstract of a paper:
+
+*Systems and processes for rule-based natural language processing are provided. In accordance with one example, a method includes, at an electronic device with one or more processors, receiving a natural-language input; determining, based on the natural-language input, an input expression pattern; determining whether the input expression pattern matches a respective expression pattern of each of a plurality of intent definitions; and in accordance with a determination that the input expression pattern matches an expression pattern of an intent definition of the plurality of intent definitions: selecting an intent definition of the plurality of intent definitions having an expression pattern matching the input expression pattern; performing a task associated with the selected intent definition; and outputting an output indicating whether the task was performed.*
+
+Documents like this can be exhaustively long, and sometimes words can have multiple meanings which translates to amgiuous and less common parts-of-speech. 
+
+For instance “said” most commonly functions as an adjective, and “claim” typically functions as a noun, when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
+
+To summarize this, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
+
+<br/>
+
+Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
+
+#### *"Rule-based natural language processing is provided."*
+
+<br/>
+
+Vanilla extractive summarizer: 
+
+#### *"Systems and processes for rule-based natural language processing are provided. In accordance with one example, a method includes, at an electronic device with one or more processors, receiving a natural-language input; determining whether the input expression pattern matches a respective expression pattern of each of a plurality of intent definitions; performing a task associated with the selected intent definition; and outputting an output indicating whether the task was performed."*
+
+<br/>
+
+Vanilla abstractive summarizer: 
+
+#### *"Computer scientists at the Massachusetts Institute of Technology (MIT) have developed a method for processing natural language."*
+
+<br/>
+
+The output from the 1st and 3rd models meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim and the 3rd model is hallucinating facts that do not exist.
 
 <br/>
 
