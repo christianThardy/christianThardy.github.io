@@ -39,7 +39,7 @@ layout: default
 [1]: http://www.github.com/christianThardy
 [2]: http://www.twitter.com/hollyhval
 [3]: https://www.linkedin.com/in/christianth-to/
-[4]: http://www.soundcloud.com/softplus
+[4]: http://www.soundcloud.com/hollyhval
 [5]: http://www.soundcloud.com/aldousband
 [6]: https://www.youtube.com/playlist?list=PLvRxqNCqbSYEB6H1V4ZJtrRtta5nhkhdL
 [7]: https://giphy.com/channel/christian_hardy
