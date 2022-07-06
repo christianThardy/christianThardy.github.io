@@ -10,29 +10,26 @@ document summarization. But what do you use when you have a lot of nuanced condi
 </p>
 
 As humans, we can profit from the experience of someone older or someone who has more experience in what it is we're trying to acheive. Analogous to this, we can think 
-of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. The architecture I fine-tuned and used for our model is called a transformer, specifically the T5 (text-to-text transfer transformer), which takes text as input and generates some target text. 
+of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. Recently I fine-tuned a transformer architecture for a model, specifically the T5 (text-to-text transfer transformer), which takes text as input and generates some target text. 
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
 </p>
 
 Yesteryear, sequencing tasks in natural language processing were dominated by autoencoders(seq2seq), recurrent neural networks and convolutional neural networks. 
-You could build an attention mechanism into these architectures, but so far attention is the main component needed to solve a lot of long range dependency 
+You could build an attention mechanism into these architectures, but so far *attention* is the main component needed to solve a lot of long range dependency 
 problems in NLP. 
 
-While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence, the 
-transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words. This allows them to encode
-more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering system is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
+While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence in terms of text summarization, the transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words. This allows them to encode more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering system is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
 
 <br/>
 
 ## the data
 
 You have simple text and then you have hard text. With simple text, you can use simple parsing methods to solve easy to intermediate problems. With hard text you
-can try simple and intermediate methods, but there are no guarantees. We can think of hard text as something it would take a subject matter expert to understand. For
-example, the abstract of a paper:
+can try simple and intermediate methods, but there are no guarantees. We can think of hard text as documents explaining concepts using broad descriptions, technical and specific terms that requires specialized knowledge. For example, this section of a paper:
 
-*Systems and processes for rule-based natural language processing are provided. In accordance with one example, a method includes, at an electronic device with one or more processors, receiving a natural-language input; determining, based on the natural-language input, an input expression pattern; determining whether the input expression pattern matches a respective expression pattern of each of a plurality of intent definitions; and in accordance with a determination that the input expression pattern matches an expression pattern of an intent definition of the plurality of intent definitions: selecting an intent definition of the plurality of intent definitions having an expression pattern matching the input expression pattern; performing a task associated with the selected intent definition; and outputting an output indicating whether the task was performed.*
+*The object is achieved by a magnet core with high control and linear BH loops at alternating current and direct current, said magnet core having a relative permeability (μ) above 500 and an amount of magnetostrictive saturation (λ s ) of less than 15 ppm. The method of claim 16, Wherein said heat treatment occurs in the transverse field after heat treatment in the longitudinal field. As a current transformer for alternating current having a magnet core according to claim 1 or 2, In addition to the magnetic core, the current transformer has a primary winding and at least one secondary winding, wherein the secondary winding is terminated to low-resistance by the load resistance and / or the measurement electronics.*
 
 Documents like this can be exhaustively long, and sometimes words can have multiple meanings which translates to amgiuous and less common parts-of-speech. 
 
@@ -42,21 +39,21 @@ To summarize the above paragraph, you could use something off of the shelf so to
 
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
-#### *"Rule-based natural language processing is provided."*
+#### *"A magnet core with high control and linear BH loops at alternating current and direct current, said magnet core having a relative permeability above 500 and an amount of magnetostrictive saturation of less than 15 ppm."*
 
 <br/>
 
 Vanilla extractive summarizer: 
 
-#### *"Systems and processes for rule-based natural language processing are provided. In accordance with one example, a method includes, at an electronic device with one or more processors, receiving a natural-language input; determining whether the input expression pattern matches a respective expression pattern of each of a plurality of intent definitions; performing a task associated with the selected intent definition; and outputting an output indicating whether the task was performed."*
+#### *"The object is achieved by a magnet core with high control and linear BH loops at alternating current and direct current. In addition to the magnetic core, the current transformer has a primary winding and at least one secondary winding. The secondary winding is terminated to low-resistance by the load resistance and / or the measurement electronics."*
 
 <br/>
 
 Vanilla abstractive summarizer: 
 
-#### *"Computer scientists at the Massachusetts Institute of Technology (MIT) have developed a method for processing natural language."*
+#### *"The current transformer is one of the world's most powerful current transformers, and has been described as "the most powerful transformer of its kind in the world"*
 
-The output from the 1st and 3rd models meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist.
+The output from the 1st and 3rd models sort of meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist.
 
 <br/>
 
