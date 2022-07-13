@@ -27,7 +27,7 @@ While rnns tend to forget the words they learn over time, and cnns suffer from t
 ## the data
 
 You have simple text and then you have hard text. With simple text, you can use simple parsing methods to solve easy to intermediate problems. With hard text you
-can try simple and intermediate methods, but there are no guarantees. We can think of hard text as documents explaining concepts using broad descriptions, technical and specific terms that require specialized knowledge. For example, this section of a paper:
+can try simple and intermediate methods, but there are no guarantees. We can think of hard text as documents explaining concepts using broad descriptions, technical and specific terms that require specialized knowledge that can easily lead to information overload. For example, this section of a paper:
 
 *The object is achieved by a magnet core with high control and linear BH loops at alternating current and direct current, said magnet core having a relative permeability (μ) above 500 and an amount of magnetostrictive saturation (λ s ) of less than 15 ppm. The method of claim 16, Wherein said heat treatment occurs in the transverse field after heat treatment in the longitudinal field. As a current transformer for alternating current having a magnet core according to claim 1 or 2, In addition to the magnetic core, the current transformer has a primary winding and at least one secondary winding, wherein the secondary winding is terminated to low-resistance by the load resistance and / or the measurement electronics.*
 
@@ -35,7 +35,7 @@ Documents like this can be exhaustively long, and sometimes words can have multi
 
 For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
-To summarize the above paragraph, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
+If you want to summarize the above paragraph, and as a result save potential users a ton of reading time, you could use something off of the shelf so to speak, but then you can expect off the shelf results...
 
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
@@ -56,6 +56,8 @@ Vanilla abstractive summarizer:
 The output from the 1st and 3rd models sort of meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist.
 
 <br/>
+
+When thinking about this we first need to understand our source documents and handwrite a short, coherent, abbreviated version of it that contains the most relevant information in the document that we would like to capture. The hope is that T5 will have the data needed to reproduce similar results on unseen data automatically.
 
 # to be continued...
 
