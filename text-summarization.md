@@ -36,9 +36,11 @@ Let's define *hard text* as documents that can easily lead to information overlo
 
 Documents like this can be exhaustively long, and sometimes words can have multiple meanings which translates to amgiuous and less common parts-of-speech. 
 
-For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
+For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This difference in the use of language can potentially misidentify surrounding words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
-The goal is to save users a ton of reading time so they can allocate their time more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that ```transformers``` have issues with ```load resistance``` because of ```secondary magnetic core windings```. Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
+The goal is to save users a ton of reading time so they can allocate their time more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that ```transformers``` have issues with ```load resistance``` because of ```secondary magnetic core windings```. 
+
+Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
 
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
