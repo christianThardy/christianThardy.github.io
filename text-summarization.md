@@ -28,7 +28,9 @@ Recently I fine-tuned the T5 transformer for a summarization task, but before we
 ## the data
 
 You have simple text and then you have hard text. With simple text, you can use simple parsing methods to solve easy to intermediate problems. With hard text you
-can try simple and intermediate methods, but there are no guarantees. Let's define *hard text* as documents that can easily lead to information overload because they explain concepts using broad descriptions, and use technical and specific terms that require specialized knowledge to understand the document. For example, this section of a paper:
+can try simple and intermediate methods, but there are no guarantees. 
+
+Let's define *hard text* as documents that can easily lead to information overload because they explain concepts using broad descriptions, and use technical and specific terms that require specialized knowledge to understand the document. For example, this section of a paper:
 
 *The object is achieved by a magnet core with high control and linear BH loops at alternating current and direct current, said magnet core having a relative permeability (μ) above 500 and an amount of magnetostrictive saturation (λ s ) of less than 15 ppm. The method of claim 16, Wherein said heat treatment occurs in the transverse field after heat treatment in the longitudinal field. As a current transformer for alternating current having a magnet core according to claim 1 or 2, In addition to the magnetic core, the current transformer has a primary winding and at least one secondary winding, wherein the secondary winding is terminated to low-resistance by the load resistance and / or the measurement electronics.*
 
@@ -36,7 +38,7 @@ Documents like this can be exhaustively long, and sometimes words can have multi
 
 For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This misidentification misidentifies other words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
-The goal is to save potential users a ton of reading time so they can allocate their time on the platform more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that transformers have issues with load resistance because of secondary magnetic core windings. Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
+The goal is to save users a ton of reading time so they can allocate their time more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that ```transformers``` have issues with ```load resistance``` because of ```secondary magnetic core windings```. Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
 
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
