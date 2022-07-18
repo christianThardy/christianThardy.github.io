@@ -21,7 +21,7 @@ While rnns tend to forget the words they learn over time, and cnns suffer from t
 
 The way transformers compute over sets of words allows them to encode more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering system is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
 
-Recently I fine-tuned the T5 transformer for a summarization task. Before we dive deeper into transformers and this architecture specifically, let's understand the type of model I wanted to create. 
+Recently I fine-tuned the T5 transformer for a summarization task, but before we dive deeper into transformers and this architecture specifically, let's understand the type of model I wanted to create. 
 
 <br/>
 
