@@ -1,8 +1,8 @@
 # text summarization on complex data using transformers
 
-About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions. For example, distilling complex text down to their most basic ideas and summarizing the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about.
+About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions. For example, they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. These older methods present a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data. They're compressors, all they can essentially do are delete tokens from sentences.
 
-At this point the only feature we need to engineer is the input text to generate some target text, thanks to the T5 (text-to-text transfer transformer) architecture.
+But at this point the only feature we need to engineer to shorten a document while preserving its meaning is the input text to generate some target text thanks to end to end training using backpropagation, and more specific to my use-case the T5 (text-to-text transfer transformer) architecture.
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
@@ -17,7 +17,7 @@ As humans, we can profit from the experience of someone older or someone who has
 More recently, sequencing tasks in natural language processing were dominated by autoencoders(seq2seq), recurrent neural networks and convolutional neural networks. 
 These methods certainly worked, but for one reason or another they all fell short.
 
-While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence in terms of text summarization, the transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words, which allows them to solve a lot of long range dependency problems. You can build an attention mechanism into seq2seq, rnn and cnn architectures, but so far *attention* is the main component needed to avoid these common pitfalls.
+While rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence in terms of text summarization, the transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words, which allows them to solve a lot of long range dependency problems. In other words, attention can link each part of the generated text back to a record in the data. You can build an attention mechanism into seq2seq, rnn and cnn architectures, but so far *attention* is the main component needed to avoid these common pitfalls.
 
 The way transformers compute over sets of words allows them to encode more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering system is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
 
@@ -61,6 +61,8 @@ Vanilla abstractive summarizer:
 The output from the 1st and 3rd models sort of meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither is very interesting, the 2nd model repeats everything verbatim, while the 3rd model is hallucinating facts that do not exist and none of them are close to our expected output.
 
 When thinking about this we first need to understand our source documents and handwrite a short, coherent, abbreviated version of it that contains the most relevant information in the document that we would like to capture. The hope is that T5 will have the data needed to reproduce similar results on unseen data automatically.
+
+
 
 # to be continued...
 
