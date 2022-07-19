@@ -1,6 +1,12 @@
 # text summarization on complex data using transformers
 
-About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions. For example, they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. These older methods present a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data. They're compressors, all they can essentially do are delete tokens from sentences.
+About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions. For example, they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. 
+
+<p align="center">
+  <b><img src = "https://user-images.githubusercontent.com/29679899/179746579-26034750-dfa6-47f8-ba12-00fa16bffac1.jpg" width="455px"></b><br>
+</p>
+
+These older methods present a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data. They're compressors, all they can essentially do are delete tokens from sentences.
 
 But at this point the only feature we need to engineer to shorten a document while preserving its meaning is the input text to generate some target text thanks to end to end training using backpropagation, and more specific to my use-case the T5 (text-to-text transfer transformer) architecture.
 
