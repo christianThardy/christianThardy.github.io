@@ -68,7 +68,7 @@ None of them are close to our expected output. The 1st and 3rd models sort of me
 
 When thinking about this we first need to understand our source documents and handwrite a short, coherent, abbreviated version of it that contains the most relevant information in the document that we would like to capture. The hope is that T5 will have the data needed to reproduce similar results on unseen data automatically.
 
-
+<br/>
 
 # to be continued...
 
