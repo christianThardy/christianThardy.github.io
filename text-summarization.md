@@ -8,7 +8,7 @@ These older methods are basically compressors, all they can essentially do are d
   <b><img src = "https://user-images.githubusercontent.com/29679899/179746579-26034750-dfa6-47f8-ba12-00fa16bffac1.jpg" width="455px"></b><br>
 </p>
 
-Luckily at this point the only feature we need to engineer to shorten a document while preserving its meaning is the input text to generate some target text thanks to end to end training using backpropagation, and more specific to my use-case the T5 (text-to-text transfer transformer) architecture.
+Luckily at this point the only feature we need to engineer to shorten a document while preserving its meaning is the input text to generate some target text thanks to transfer learning by way of end to end training using backpropagation, and more specifically the T5 (text-to-text transfer transformer) architecture.
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
