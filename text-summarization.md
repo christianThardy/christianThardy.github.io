@@ -2,22 +2,22 @@
 
 About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions. For example, they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. 
 
+These older methods are basically compressors, all they can essentially do are delete tokens from sentences. This presents a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data that are interesting for my specific task. 
+
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/179746579-26034750-dfa6-47f8-ba12-00fa16bffac1.jpg" width="455px"></b><br>
 </p>
 
-These older methods are basically compressors, all they can essentially do are delete tokens from sentences. This presents a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data that are interesting for my specific task. 
-
 Luckily at this point the only feature we need to engineer to shorten a document while preserving its meaning is the input text to generate some target text thanks to end to end training using backpropagation, and more specific to my use-case the T5 (text-to-text transfer transformer) architecture.
 
 <p align="center">
-  <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
+  <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
 </p>
 
-As humans, we can profit from the experience of someone older or someone who has more experience in what it is we're trying to acheive. Analogous to this, we can think of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. We assume that a lot of the factors that explain the variations in model A are relevant to the variations that need to be captured in model B.
+As humans, we can profit from the experience of someone older or someone who has more experience in what it is we're trying to acheive. Analogous to this, we can think of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. We assume that a lot of the factors that explain the variations in model A are relevant to the variations that need to be captured in model B, which in most cases will eliminate the need for exhaustive sets of rules and ranking algorithms.
 
 <p align="center">
-  <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
+  <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
 </p>
 
 More recently, sequencing tasks in natural language processing were dominated by autoencoders(seq2seq), recurrent neural networks and convolutional neural networks. 
@@ -44,9 +44,9 @@ Documents like this can be exhaustively long, and sometimes words can have multi
 
 For instance *“said”* most commonly functions as an adjective, and *“claim”* typically functions as a noun when occurring in text like this, but these words more typically appear as verbs in news articles, the web, and other sources of text which off the shelf models are usually trained on. This difference in the use of language can potentially misidentify surrounding words compositionally, which substantially damages the ability to construct consistent compositionality and can lead to incorrect predictions, which is why text like this can be hard to work with. 
 
-The goal is to save users a ton of reading time so they can allocate their time more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that ```transformers``` have issues with ```load resistance``` because of ```secondary magnetic core windings```. 
+The goal is to save users a ton of reading time so they can allocate their time more effectively. Ideally for my use-case I would want a summary that tells me in some approachable way that ```transformers``` have issues with ```load resistance``` because of ```secondary magnetic core windings```.  Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
 
-Lets try summarizing the paragraph using an existing algorithm from a package trained on some out of domain data...
+<br/>
 
 Google's Pegasus model trained on the big patent dataset would summarize the paragraph as: 
 
@@ -63,6 +63,8 @@ Vanilla extractive summarizer:
 Vanilla abstractive summarizer: 
 
 #### *"The current transformer is one of the world's most powerful current transformers, and has been described as "the most powerful transformer of its kind in the world"*
+
+<br/>
 
 None of them are close to our expected output. The 1st and 3rd models sort of meet our complex to simple heuristic, a few entities of interest are present to capture a bit of context, but neither are very interesting, and the 2nd model repeats everything verbatim. Abstractive summarization should introduce new words or phrases, as I'm after a model that removes technical language and replaces it with more novel, approachable language, but the 3rd model just hallucinates facts that do not exist.
 
