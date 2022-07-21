@@ -14,7 +14,7 @@ Luckily at this point the only feature we need to engineer to shorten a document
   <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
 </p>
 
-As humans, we can profit from the experience of someone older or someone who has more experience in what it is we're trying to acheive. Analogous to this, we can think of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. 
+As humans, we can profit from the experience of someone older or someone who has more experience in what it is we're trying to acheive. Analogous to this, we can think of transfer learning as reusing a model developed for a task as the starting point for a model on a second task. We assume that a lot of the factors that explain the variations in model A are relevant to the variations that need to be captured in model B.
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
