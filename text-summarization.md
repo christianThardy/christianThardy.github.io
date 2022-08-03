@@ -4,13 +4,13 @@ The machine learning task of summarization is to convert long text into short te
 
 About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions; they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. 
 
-These older methods are basically compressors, all they can essentially do are delete tokens from sentences. This presents a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data that are interesting for my preferences. 
+These older methods are basically compressors, all they can essentially do are delete tokens from sentences. This presents a problem of alignment, where labeled examples provide the data and the text, but they do not specify which parts of the text correspond to which parts of the data that are interesting for our preferences. 
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/179746579-26034750-dfa6-47f8-ba12-00fa16bffac1.jpg" width="455px"></b><br>
 </p>
 
-Luckily at this point the only feature we need to engineer to shorten a document while preserving its meaning is a small amount of input text and handwritten summaries to generate predicted target text thanks to transfer learning by way of end to end training using backpropagation, and more specifically the T5 (text-to-text transfer transformer) architecture.
+For my problem, I needed to make a few tweaks architecturally, but the only feature I needed to engineer to shorten a document while preserving its meaning was a small amount of input text and handwritten summaries to generate predicted target text thanks to the T5 (text-to-text transfer transformer).
 
 <p align="center">
   <b><img src = "https://user-images.githubusercontent.com/29679899/175078481-54b16b89-f9c4-4008-8b5d-d55fc2be0132.gif" width="455px"></b><br>
@@ -22,10 +22,10 @@ As humans, we can profit from the experience of someone older or someone who has
   <b><img src = "https://user-images.githubusercontent.com/29679899/175053632-8534d9fe-b5b6-4737-a627-350d57254fb3.PNG" width="455px"></b><br>
 </p>
 
-More recently, sequencing tasks in natural language processing were dominated by autoencoders(seq2seq), recurrent neural networks and convolutional neural networks. 
+More recently, sequencing tasks in natural language processing were dominated by vanilla autoencoders(seq2seq), recurrent neural networks and convolutional neural networks. 
 These methods certainly worked, but for one reason or another they all fell short.
 
-While seq2seq models perform better on shorter text, rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence in terms of text summarization, the transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words, which allows them to solve a lot of long range dependency problems. In other words, attention can link each part of the generated text back to a record in the data, not to mention they can scale dramatically compared to the other three. You can build an attention mechanism into seq2seq, rnn and cnn architectures, but so far *attention* is the main component needed to avoid these common pitfalls.
+While seq2seq models perform better on shorter text, rnns tend to forget the words they learn over time, and cnns suffer from the need of a ridiculous amount of layers without the promise of convergence in terms of text summarization, the transformers stacked self-attention layers allow them to see different positions of words to compute a representation of sets of words, which allows them to solve a lot of long range dependency problems. In other words, attention can link each part of the generated text back to a record in the data, not to mention they can scale dramatically compared to the other three. You can build an attention mechanism into seq2seq, rnn and cnn architectures, but so far *attention* is the main component needed to avoid these common pitfalls. 
 
 The way transformers compute over sets of words allows them to encode more <a href="https://user-images.githubusercontent.com/29679899/104795121-fc456e00-5779-11eb-8126-2bcd5cec0152.png" title="Yoshua Bengio's thoughts on the subject" rel="nofollow">compositional</a> information than any model before them. This is huge, just ask the engineer who said <a href="https://www.giantfreakinrobot.com/tech/artificial-intelligence-hires-lawyer.html" title="Can't tell if this is cap or not" rel="nofollow">Google's new question answering system is sentient</a>. As one of the main learning components for this system, transformers could very well be at the forefront of what it means to create general intelligence. <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html" title="This is definitely not cap" rel="nofollow">NLP has really taken off this year 😬</a>.
 
