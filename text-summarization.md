@@ -1,5 +1,7 @@
 # text summarization on complex data using transformers
 
+Summaries help us extract and compress information quickly. If we're summarizing something we read in the morning paper to a friend at the office, or telling them about an experience we had on vacation, pulling out the main points of an event and describing it in our own words is something we do everyday.
+
 The machine learning task of summarization is to convert long text into short text. To do this we need to compute the probability of the text itself to get a probability of word sequences. Good language models allow us to generate summaries that are fluent, and to do this we must also compute the probability of the output text.
 
 About 2 to 3 years ago extractive summary algorithms, graph based reduction summarization and importance ranking based on engineered features were pretty popular for document summarization, but did little to give us control over the context of the predicted result, let alone handle very nuanced conditions; they could not distill complex text down to their most basic ideas and summarize the most interesting parts where specific entities are present in a way that makes it easy for someone reading the summary to know what the document is about. 
