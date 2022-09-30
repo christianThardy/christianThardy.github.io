@@ -20,10 +20,10 @@ navigation:
   - title: visualizations & machine learning
     url: visualization-ml
   - title: ml for growth at scale: data discovery and creating user segments using unsupervised learning
-    url:
+    url: user-segments-unsupervised-learning
   - title: ml for growth at scale: user and content analogies using unsupervised learning
-    url:
+    url: user-content-analogies-unsupervised-learning
   - title: ml for growth at scale: predicting user actions using supervised learning 
-    url:
+    url: predict-user-actions-supervised-learning
   - title: ml for growth at scale: creating a flexible a/b testing strategy using reinforcement learning
-    url:
+    url: flexible-ab-testing-reinforcement-learning
