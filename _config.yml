@@ -19,5 +19,11 @@ navigation:
     url: a-convnet-trying
   - title: visualizations & machine learning
     url: visualization-ml
-  - title: ml for growth at scale: data discovery and creating User Segments using unsupervised learning:
+  - title: ml for growth at scale: data discovery and creating user segments using unsupervised learning
+    url:
+  - title: ml for growth at scale: user and content analogies using unsupervised learning
+    url:
+  - title: ml for growth at scale: predicting user actions using supervised learning 
+    url:
+  - title: ml for growth at scale: creating a flexible a/b testing strategy using reinforcement learning
     url:
