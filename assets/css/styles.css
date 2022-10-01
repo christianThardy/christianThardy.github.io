@@ -27,14 +27,14 @@ h1 {
 h2 {
   color:#393939;
   font-weight: 500;
-  overflow: scroll;
-  max-height: 80em;
 }
 
 h3, h4, h5, h6 {
   color:#494949;
-  font-size:15px
   font-weight: 500;
+  font-size:15px
+  overflow: scroll;
+  max-height: 80em;
 }
 
 a {
