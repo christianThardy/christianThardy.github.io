@@ -16,7 +16,7 @@ p, ul, ol, table, pre, dl {
 }
 
 h1, h2, h3 {
-  line-height:0.0000001;
+  line-height:0.0;
 }
 
 h1 {
@@ -137,7 +137,7 @@ header li:last-child a {
 }
 
 header ul a {
-  line-height:1;
+  line-height:0.0;
   font-size:11px;
   color:#999;
   display:block;
