@@ -115,7 +115,7 @@ header {
 
 header ul {
   list-style:none;
-  height:90px;
+  height:40px;
   padding:0;
   background: #f4f4f4;
   border-radius:5px;
@@ -127,7 +127,7 @@ header li {
   width:89px;
   float:left;
   border-right:1px solid #e0e0e0;
-  height:40px;
+  height:80px;
 }
 
 header li:first-child a {
