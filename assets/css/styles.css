@@ -200,14 +200,13 @@ footer {
   div.wrapper {
     width:auto;
     margin:0;
-    overflow: scroll;
-    max-height: 80em;
   }
 
   header, section, footer {
     float:none;
     position:static;
     width:auto;
+    length:auto;
   }
 
   header {
