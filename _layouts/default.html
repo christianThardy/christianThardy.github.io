@@ -21,12 +21,13 @@
               <tr><th><a href="{{ nav.url }}">{{ nav.title }}</a></th></tr>
             {% else %}
               <tr><th><a href="{{ nav.url | relative_url }}">{{ nav.title }}</a></th></tr>
-            {% endif %}
-          {% endfor %}
           
 <div id="main" role="main">
   
   <div class="sidebar sticky">
+    
+            {% endif %}
+          {% endfor %}
     
         </table>
 
