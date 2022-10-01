@@ -11,8 +11,6 @@ navigation:
     url: setup
   - title: things I wish I knew about aws glue, spark and distributed systems
     url: things-I-wish-I-knew
-  - title: millennial noir
-    url: millennial-noir
   - title: finding similarities between friends using shallow & deep nlp
     url: finding-similarities-between-friends
   - title: a convnet trying to learn rotational relationships
