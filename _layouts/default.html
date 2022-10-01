@@ -7,18 +7,13 @@
     <title>{{ site.title | default: site.github.repository_name }} by {{ site.github.owner_name }}</title>
 
     <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=' | append: site.github.build_revision | relative_url }}">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <div class="wrapper">
       <header>
         <h1>{{ site.title | default: site.github.repository_name }}</h1>
-        <p>{{ site.description | default: site.github.project_tagline }}</p>
-        
-<div id="main" role="main">
-  
-  <div class="sidebar sticky">        
-
+        <p>{{ site.description | default: site.github.project_tagline }}</p>       
         <table>
           {% for nav in site.navigation %}
             {% if nav.url contains "://" %}
