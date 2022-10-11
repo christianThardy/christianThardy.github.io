@@ -15,11 +15,3 @@ navigation:
     url: finding-similarities-between-friends
   - title: visualizations & machine learning
     url: visualization-ml
-  - title: ml4gas-creating user segments with unsupervised learning
-    url: user-segments-unsupervised-learning
-  - title: ml4gas-predicting user actions with supervised learning 
-    url: predict-user-actions-supervised-learning    
-  - title: ml4gas-user/content analogies with unsupervised learning
-    url: user-content-analogies-unsupervised-learning
-  - title: ml4gas-creating a flexible a/b testing strategy with reinforcement learning
-    url: flexible-ab-testing-reinforcement-learning
