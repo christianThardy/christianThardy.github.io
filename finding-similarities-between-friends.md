@@ -1486,7 +1486,7 @@ The scale of 1% to 100% next to each word represent the cosine similarity being 
  
 The word `cool` can represent a state of being, aesthetic appeal, a behavioral characteristic, or can be used in non-commital phrases. So it makes sense that `cool` is highly similar to words like `nice`, `wow`, `ok`, `chill`, `sweet` and `good` which are words commonly used in the same context.  
  
-One of the useful things about similarity is that you can follow hierarchies of words until you reach a theme or possible topic. For example...
+One of the useful things about similarity is that you can follow hierarchies of words until you reach a potential theme or topic. For example...
 
 <br/>
 
@@ -1534,7 +1534,7 @@ bt4Vec.wv.most_similar('loser')
 
 <br/>
 
-...with the cosine distance of each randomly chosen word staying close to 100%. We can assume the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption, but if we could divide `bt_4`'s text into topics, maybe we could gain a broader understanding of `bt_4`. 
+...with the cosine distance of each randomly chosen word staying close to 100%. We can assume the semantic similarities between each word are significant, but there's no way we can say that each word is causal. We just can't make that kind of assumption. The field of mental health is heterogeneous, multifactorial and multimodal, so making such simple assumptions about people are problematic. If humans need to define the labels for a supervised task, there could be issues from biased data collection methods, to issues with managing consent from data collection and analysis to action, too many false positives and wrongfully assigning groups to a category(ex. narcissistic or psychopathic). Maybe just improving our understanding of mental health to effectively execute treatment response, emotional assessments and relapsing conditions is enough, but I digress. For our simplified definition of *meaning*, if we could divide `bt_4`'s text into topics, maybe we could gain a broader *understanding* of `bt_4`. 
 
 In order to represent the text using Euclidean distance in higher dimensions, let's consider the previous shape of `bt_4`'s data. A `38954,4` array. After removing common words, the array's size was reduced to:
 
