@@ -7,7 +7,7 @@ layout: default
 [![alt text][1.2]][1]
 [![alt text][2.2]][2]
 [![alt text][3.2]][3]
-[![alt text][7.2]][7]
+[![alt text][4.2]][4]
 
 
 <!-- links to social media icons -->
@@ -19,15 +19,15 @@ layout: default
 [3.1]: http://i.imgur.com/0gXuG0N.png (linkedin icon with padding)
 
 <!-- icons without padding -->
-[1.2]: http://i.imgur.com/MBpTmib.png (github icon without padding) 
-[2.2]: http://i.imgur.com/gPtDT24.png (twitter icon without padding) 
-[3.2]: http://i.imgur.com/DYEQR1h.png (linkedin icon without padding)  
-[7.2]: https://i.imgur.com/cT1Hor3.png (giphy icon without padding)
+[1.2]: http://i.imgur.com/DYEQR1h.png (linkedin icon without padding) 
+[2.2]: http://i.imgur.com/MBpTmib.png (github icon without padding) 
+[3.2]: http://i.imgur.com/gPtDT24.png (twitter icon without padding)  
+[4.2]: https://i.imgur.com/cT1Hor3.png (giphy icon without padding)
 
 
 <!-- links to social media accounts -->
 
-[1]: http://www.github.com/christianThardy
-[2]: http://www.twitter.com/hollyhval
-[3]: https://www.linkedin.com/in/christianth-to/
-[7]: https://giphy.com/channel/christian_hardy
+[1]: https://www.linkedin.com/in/christianth-to/
+[2]: http://www.github.com/christianThardy
+[3]: http://www.twitter.com/hollyhval
+[4]: https://giphy.com/channel/christian_hardy
