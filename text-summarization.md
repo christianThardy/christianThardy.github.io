@@ -1,6 +1,6 @@
 # text summarization on complex data using transformers
 
-Summaries help us extract and compress information quickly. If we're summarizing something we read in the morning paper to a friend, or telling them about an experience we had on vacation, pulling out the main points of an event and describing it in our own words is something we do everyday.
+Summaries help us extract and compress information quickly. If we're summarizing something we read in the morning paper to a friend, or telling them about an experience we had on vacation, we're pulling out the main points of the event and describing it in our own words.
 
 The machine learning task of summarization is to convert long text into short text. To do this we need to compute the probability of the text itself to get a probability of word sequences. Good language models allow us to generate summaries that are fluent, and to do this we must also compute the probability of the output text.
 
