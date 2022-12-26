@@ -2462,7 +2462,7 @@ Changing the parameters a bit helped, but things are still not as clear as they 
 <br/>
 
 <p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/104792742-78858480-576d-11eb-9a0d-7efea1807e9a.png" width="530px">
+  <img src = "https://user-images.githubusercontent.com/29679899/209571067-3714f57d-db7a-4c63-9d49-b7aa128c34d5.png" width="530px">
 </p>
 
 <br/>  
@@ -2476,7 +2476,7 @@ The Hellinger distance is used to compute the distance between two users corresp
 <br/>
 
 <p align="center">
-<a href="https://docs.google.com/document/d/10lZ8w2nYYri_TSoCSvQPTeFpSLCGOceewKNf9l8v-2I/edit?usp=sharing" title="Google Docs" rel="nofollow">user Hellinger distances</a>
+<a href="https://user-images.githubusercontent.com/29679899/209569790-fb8f96ad-6770-47e4-9a72-b40c0be25bdf.png" title="User hellinger distances" rel="nofollow">user Hellinger distances</a>
 </p>
 
 <br/>
