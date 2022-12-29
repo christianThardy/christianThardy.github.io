@@ -1,5 +1,0 @@
-```html
-<button id="record-button">Record</button>
-<div id="counter"></div>
-<div id="translated-text"></div>
-```
