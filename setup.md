@@ -330,3 +330,5 @@ Li, Sun, Han, Li, *A survey on deep learning for named entity recognition*, IEEE
 Moschitti, Basili, *Complex linguistic features for text classification: a comprehensive study*, Human Language Technology Research Institute at University of Texas, Computer Science Department at University of Rome Tor Vergata, 2004.[<a href="http://disi.unitn.it/moschitti/articles/ECIR2004.pdf" title="ECRI2004" rel="nofollow">3</a>]    
 
 Honnibal, *Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models*, Explosion.ai, 2016.[<a href="https://explosion.ai/blog/deep-learning-formula-nlp" title="explosion.ai" rel="nofollow">4</a>]
+
+Olah, *Neural Networks, Manifolds, and Topology*, 2014.[<a href="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/" title="chris olah's blog" rel="nofollow">5</a>] 
