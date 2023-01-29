@@ -215,6 +215,7 @@ gr.Interface(
 <br>
 
 ## Output
+Testing the prompt between Emobot and ChatGPT.
 
 ```
 transcription output: Hi.
