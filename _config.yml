@@ -6,7 +6,7 @@ navigation:
   - title: home
     url: /
   - title: quantum machine learning limitations
-    url: quantum-machine-learning.md
+    url: quantum-machine-learning
   - title: text summarization on complex data using transformers
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
