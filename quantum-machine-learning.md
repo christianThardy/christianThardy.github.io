@@ -40,12 +40,20 @@ To understand quantum gates, imagine a toy train set. Classical gates (boolean l
 <br/>
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/47d9e65f-5c28-4d48-9d70-d2a5edc73937">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/636a8653-3d71-4dde-a2a7-d9321401c8da">
+</p>
+
+Quantum gates are like magical pieces in this train set that can rotate the tracks, twist them into three-dimensional shapes, or even create tunnels that the train can simultaneously travel through and not travel through. 
+
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/91eae46d-68b7-4b2f-8416-812fe2b65993">
 </p>
 
 <br/>
 
-Quantum gates are like magical pieces in this train set that can rotate the tracks, twist them into three-dimensional shapes, or even create tunnels that the train can simultaneously travel through and not travel through. These "magic" pieces perform specific operations on qubits, manipulating them in complex ways, which include superposition and entanglement (where qubits become interconnected and the state of one affects the others).
+These "magic" pieces perform specific operations on qubits, manipulating them in complex ways, which include superposition and entanglement (where qubits become interconnected and the state of one affects the others).
 
 Now, take the concept of deep learning, a form of artificial intelligence where classical computers imitate the way our brains think, forming networks to "learn" from data. Picture it like a very intricate train set with many tracks, switches, and stations representing the complex relationships in the data.
 
