@@ -1,6 +1,6 @@
-# Quantum Machine Learning is Next
+# Quantum machine learning will change everything
 
-Should the findings of the South Korean physics researchers be verified, a significant physics discovery of our era may have occurred. The potential superconductors that function at ambient pressure and room temperatures might fundamentally change the qubit's role in quantum computing. This change could aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
+The findings of the South Korean physics researchers have been verified, and a significant physics discovery of our era may has not occured yet. But the potential for superconductors that function at ambient pressure and room temperatures would fundamentally change the qubit's role in quantum computing. This change could aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
 
 In the future, it might be feasible that quantum hardware and software will collaborate seamlessly with their classical counterparts, concentrating on calculations tailor-made for optimization challenges. Within the realms of machine learning and deep learning, this synergy could transform conventional AI paradigms.
 
@@ -25,6 +25,14 @@ Now, picture a qubit as a dimmer switch instead of a simple light switch. The di
 
 To understand quantum gates, imagine a toy train set. Classical gates (boolean logical operators in classical programming like AND, OR, NOT) in regular computing are akin to the set's basic pieces, which allow the train (data) to move in specific paths, join tracks, or reverse direction. They perform specific logical operations on the bits.
 
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/47d9e65f-5c28-4d48-9d70-d2a5edc73937">
+</p>
+
+<br/>
+
 Quantum gates are like magical pieces in this train set that can rotate the tracks, twist them into three-dimensional shapes, or even create tunnels that the train can simultaneously travel through and not travel through. These "magic" pieces perform specific operations on qubits, manipulating them in complex ways, which include superposition and entanglement (where qubits become interconnected and the state of one affects the others).
 
 Now, take the concept of deep learning, a form of artificial intelligence where classical computers imitate the way our brains think, forming networks to "learn" from data. Picture it like a very intricate train set with many tracks, switches, and stations representing the complex relationships in the data.
@@ -38,7 +46,25 @@ With the limitations of near-term quantum hardware potentially being a thing of 
 
 Let's walk through an example. I have the make moons dataset and BLANK BLANK BLANK. We can illustrate how effective classical machine learning algorithms are, how much better neural networks are, and how far quantum neural networks need to go before we can begin using the technology in a meaningful way.
 
-# Quantum Neural Network
+
+# Limitation understanding
+
+The make moons dataset is a great tool for when you want to experiment with or visualize algorithms that deal with complex, non-linear relationships. Imagine looking up at the night sky and seeing two crescent moons touching at their tips. 
+
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/253302ea-6128-4a13-b873-c7657583b774">
+</p>
+
+<br/>
+
+This toy dataset consists of two interleaving half circles, or "moons," hence the name. If you plot the dataset, it looks like two shapes resembling crescent moons.
+
+This dataset is often used for binary classification problems, where the objective is to categorize data points into one of two classes or groups. Because the two "moons" are intertwined, this dataset is particularly useful for testing algorithms that can handle non-linear boundaries between classes.
+
+
+# Quantum neural network
 
 <br/>
 
@@ -48,7 +74,12 @@ Let's walk through an example. I have the make moons dataset and BLANK BLANK BLA
 
 <br/>
 
-# Logistic Regression
+```python
+Accuracy of the neural quantum model: 45.69%
+```
+
+
+# Logistic regression
 
 <br/>
 
@@ -58,8 +89,12 @@ Let's walk through an example. I have the make moons dataset and BLANK BLANK BLA
 
 <br/>
 
+```python
+Accuracy of the logistic regression model: 88.47%
+```
 
-# Neural Networks
+
+# Neural networks
 
 <br/>
 
@@ -68,3 +103,7 @@ Let's walk through an example. I have the make moons dataset and BLANK BLANK BLA
 </p>
 
 <br/>
+
+```python 
+Accuracy of the neural network model: 94.99%
+```
