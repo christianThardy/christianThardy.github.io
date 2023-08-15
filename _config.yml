@@ -5,6 +5,8 @@ show_downloads: False
 navigation:
   - title: home
     url: /
+  - title: the limitations of quantum machine learning
+    url: quantum-machine-learning.md
   - title: text summarization on complex data using transformers
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
