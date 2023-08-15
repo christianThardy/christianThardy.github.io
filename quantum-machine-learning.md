@@ -73,7 +73,7 @@ Accuracy of logistic regression model: 88.47%
 
 <br/>
 
-# Multi-layer perceptron neural network
+# Multi-layer perceptron
 
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="440" height="330">
@@ -85,7 +85,7 @@ Accuracy of neural network model: 94.99%
 
 <br/>
 
-# Quantum neural network
+# Quantum multi-layer perceptron
 
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="400" height="300">
