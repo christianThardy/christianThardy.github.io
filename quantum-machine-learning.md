@@ -27,7 +27,14 @@ Imagine the bits (a binary digit and is the smallest unit of data that a compute
 
 In the world of regular computing, this binary system forms the foundation of all operations.
 
-Now, picture a qubit as a dimmer switch instead of a simple light switch. The dimmer switch not only has an ON and OFF position but also various stages in between, allowing for a wide range of light levels. This is a lot like how qubits work. They can represent not just 0 or 1 but also a superposition of both 0 and 1 simultaneously, or a range of values between 0 and 1. This ability to be in multiple states at once allows quantum computers to process a vast amount of information simultaneously, leading to potentially enormous computational power.
+Now, picture a qubit as a dimmer switch instead of a simple light switch. The dimmer switch not only has an ON and OFF position but also various stages in between, allowing for a wide range of light levels. This is a lot like how qubits work. They can represent not just 0 or 1 but also a superposition of both 0 and 1 simultaneously, or a range of values between 0 and 1. 
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/8fac1bdb-8283-4f36-97e9-7e3d4f745d14" width="300" height="370">
+</p>
+
+
+This ability to be in multiple states at once allows quantum computers to process a vast amount of information simultaneously, leading to potentially enormous computational power.
 
 To understand quantum gates, imagine a toy train set. Classical gates (boolean logical operators in classical programming like AND, OR, NOT) in regular computing are akin to the set's basic pieces, which allow the train (data) to move in specific paths, join tracks, or reverse direction. They perform specific logical operations on the bits.
 <br/>
