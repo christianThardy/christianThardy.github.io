@@ -45,8 +45,6 @@ To understand quantum gates, imagine a toy train set. Classical gates (boolean l
 
 Quantum gates are like magical pieces in this train set that can rotate the tracks, twist them into three-dimensional shapes, or even create tunnels that the train can simultaneously travel through and not travel through. 
 
-<br/>
-
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/91eae46d-68b7-4b2f-8416-812fe2b65993">
 </p>
