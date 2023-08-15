@@ -67,8 +67,6 @@ Let's walk through an example. I have the make moons dataset and BLANK BLANK BLA
 
 The make moons dataset is a great tool for when you want to experiment with or visualize algorithms that deal with complex, non-linear relationships. Imagine looking up at the night sky and seeing two crescent moons touching at their tips. 
 
-<br/>
-
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/253302ea-6128-4a13-b873-c7657583b774">
 </p>
