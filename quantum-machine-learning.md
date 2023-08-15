@@ -134,6 +134,7 @@ data4, target4 = make_moons(n_samples = 70000, noise = 0.1)
 # Split into training and test sets
 train_data4, test_data4, train_target4, test_target4 = train_test_split(data4, target4, test_size = 0.2, random_state = 42)
 
+# Normalization
 scaler = StandardScaler()
 train_data4 = scaler.fit_transform(train_data4)
 test_data4 = scaler.transform(test_data4)
