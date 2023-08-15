@@ -83,6 +83,40 @@ This dataset is often used for binary classification problems, where the objecti
 </p>
 
 ```python
+data3, target3 = make_moons(n_samples = 70000, noise = 0.1)
+
+# Split into training and test sets
+train_data3, test_data3, train_target3, test_target3 = train_test_split(data3, target3, test_size = 0.2, random_state = 42)
+
+# Normalization
+scaler = StandardScaler()
+train_data3 = scaler.fit_transform(train_data3)
+test_data3 = scaler.transform(test_data3)
+
+# Create and fit logistic regression model
+model = LogisticRegression()
+model.fit(train_data3, train_target3)
+
+# Generate a grid over the feature space
+logistic_x_min, logistic_x_max = test_data3[:, 0].min() - 1, test_data3[:, 0].max() + 1
+logistic_y_min, logistic_y_max = test_data3[:, 1].min() - 1, test_data3[:, 1].max() + 1
+logistic_xx, logistic_yy = np.meshgrid(np.linspace(logistic_x_min, logistic_x_max, 100),
+                                       np.linspace(logistic_y_min, logistic_y_max, 100))
+
+# Evaluate the model on the grid data
+logistic_Z = model.predict_proba(np.c_[logistic_xx.ravel(), logistic_yy.ravel()])[:, 1]
+logistic_Z = logistic_Z.reshape(logistic_xx.shape)
+
+# Plot the decision boundary
+plt.contourf(logistic_xx, logistic_yy, logistic_Z, levels = [0,0.5,1], cmap = 'coolwarm', alpha = 0.3)
+plt.scatter(test_data3[:, 0], test_data3[:, 1], c = test_target3, cmap = 'coolwarm', edgecolors = 'k', marker = 'x')
+plt.title('Logistic Regression Classifier')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.show()
+```
+
+```python
 Accuracy of logistic regression model: 88.47%
 ```
 
@@ -93,6 +127,83 @@ Accuracy of logistic regression model: 88.47%
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="440" height="330">
 </p>
+
+```python
+data4, target4 = make_moons(n_samples = 70000, noise = 0.1)
+
+# Split into training and test sets
+train_data4, test_data4, train_target4, test_target4 = train_test_split(data4, target4, test_size = 0.2, random_state = 42)
+
+scaler = StandardScaler()
+train_data4 = scaler.fit_transform(train_data4)
+test_data4 = scaler.transform(test_data4)
+
+# Convert to PyTorch tensors
+train_data4 = torch.tensor(train_data4, dtype = torch.float32)
+test_data4 = torch.tensor(test_data4, dtype = torch.float32)
+train_target4 = torch.tensor(train_target4, dtype = torch.float32).view(-1, 1)
+test_target4 = torch.tensor(test_target4, dtype = torch.float32).view(-1, 1)
+
+# Define a neural network
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.layer1 = nn.Linear(2, 10)
+        self.layer2 = nn.Linear(10, 1)
+        self.layer3 = nn.Linear(1, 5)
+        self.layer4 = nn.Linear(5, 10)
+        self.layer5 = nn.Linear(10, 20)
+        self.sigmoid = nn.Sigmoid()
+        
+    def forward(self, x):
+        x = torch.relu(self.layer1(x))
+        x = self.layer2(x)
+        x = self.sigmoid(x)
+        return x
+    
+    
+# Neural network model    
+model = NeuralNetwork()
+# Loss function
+loss_func = nn.BCELoss()
+
+# Optimization
+optimizer = optim.Adam(model.parameters(), lr = 0.1)
+# Optimization Loop
+for epoch in range(30):
+    optimizer.zero_grad()
+    predictions = model(train_data4)
+    loss = loss_func(predictions, train_target4)
+    loss.backward()
+    optimizer.step()
+    print('Epoch: {} | Loss: {}'.format(epoch, loss.item()))
+    
+# Plotting the training data
+plt.scatter(train_data4[:, 0], train_data4[:, 1], c = train_target4[:, 0], cmap = 'coolwarm', edgecolors = 'k', alpha = 0.6)
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+
+# Generate a grid over the feature space
+resolution = 100
+x_range = np.linspace(train_data4[:, 0].min() - 1, train_data4[:, 0].max() + 1, resolution)
+y_range = np.linspace(train_data4[:, 1].min() - 1, train_data4[:, 1].max() + 1, resolution)
+grid_x, grid_y = np.meshgrid(x_range, y_range)
+grid_data = torch.tensor(np.c_[grid_x.ravel(), grid_y.ravel()], dtype = torch.float32)
+
+# Evaluate the model on the grid data
+grid_predictions = model(grid_data)
+grid_predictions = grid_predictions.detach().numpy().reshape(grid_x.shape)
+
+# Plot the decision boundary 
+plt.contourf(grid_x, grid_y, grid_predictions, levels = [0,0.5,1], cmap = 'coolwarm', alpha = 0.3)
+plt.colorbar(label = 'Prediction Probability')
+
+test_predictions_continuous = model(test_data4).detach().numpy()
+
+plt.scatter(test_data4[:, 0], test_data4[:, 1], c = test_predictions_continuous, cmap = 'coolwarm', edgecolors = 'k', marker = 'x')
+plt.title('Neural Network Classifier')
+plt.show()
+```
 
 ```python 
 Accuracy of neural network model: 94.99%
@@ -105,6 +216,78 @@ Accuracy of neural network model: 94.99%
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="400" height="300">
 </p>
+
+```python
+# Load dataset and select the first two features
+data, target = make_moons(n_samples = 70000, noise = 0.1)
+
+# Normalization
+data = (data - np.mean(data, axis = 0)) / np.std(data, axis = 0)
+
+# Split into training and test sets
+train_data, test_data = data[:160], data[160:]
+train_target, test_target = target[:160], target[160:]
+
+# Define a quantum device
+dev = qml.device('default.qubit', wires = 2)
+
+# Define a quantum layer
+def layer(W):
+    qml.Rot(W[0, 0], W[0, 1], W[0, 2], wires = 0)
+    qml.Rot(W[1, 0], W[1, 1], W[1, 2], wires = 1)
+    qml.CNOT(wires = [0, 1])
+
+# Quantum node
+@qml.qnode(dev, interface = 'torch')
+def quantum_net(features, weights):
+    padded_features = np.pad(features, (0, 2 - len(features)), constant_values = 0)
+    qml.templates.AngleEmbedding(padded_features, wires = [0, 1])
+    for W in weights:
+        # Increases the number of repetitions of the layer
+        for _ in range(8): 
+            layer(W)
+        #layer(W)
+    return qml.expval(qml.PauliZ(0))
+
+# Hybrid quantum-classical model
+def hybrid_model(x, weights):
+    pre_sigmoid_predictions = torch.tensor([quantum_net(x_, weights) for x_ in x], requires_grad = True)
+    return F.sigmoid(pre_sigmoid_predictions)
+
+# Loss function
+loss_func = torch.nn.BCEWithLogitsLoss()
+
+# Define weights
+weights = torch.tensor(np.random.random(size = (2, 2, 3)), requires_grad = True)
+
+# Optimization Loop
+optimizer = torch.optim.AdamW([weights], lr = 0.1)
+for epoch in range(10):
+    optimizer.zero_grad()
+    predictions = hybrid_model(train_data, weights).float()
+    loss = loss_func(predictions, torch.tensor(train_target, dtype = torch.float))
+    loss.backward()
+    optimizer.step()
+    print('Epoch: {} | Loss: {}'.format(epoch, loss.item()))
+
+# Create a mesh grid
+x_min, x_max = test_data[:, 0].min() - 1, test_data[:, 0].max() + 1
+y_min, y_max = test_data[:, 1].min() - 1, test_data[:, 1].max() + 1
+xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100),
+                     np.linspace(y_min, y_max, 100))
+
+# Apply the model to each point on the grid
+Z = hybrid_model(np.c_[xx.ravel(), yy.ravel()], weights)
+Z = Z.reshape(xx.shape)
+
+# Plot the decision boundary
+plt.contourf(xx, yy, Z.detach().numpy(), levels = [0,0.5,1], cmap = 'coolwarm', alpha = 0.3)
+plt.scatter(test_data[:, 0], test_data[:, 1], c = test_target, cmap = 'coolwarm', edgecolors = 'k', marker = 'x')
+plt.title('Quantum Neural Network Classifier')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.show()
+```
 
 ```python
 Accuracy of neural quantum model: 45.69%
