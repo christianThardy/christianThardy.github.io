@@ -66,7 +66,7 @@ This dataset is often used for binary classification problems, where the objecti
 <br/>
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="500" height="300">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="500" height="355">
 </p>
 
 <br/>
@@ -81,7 +81,7 @@ Accuracy of the neural quantum model: 45.69%
 <br/>
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/b300f0ba-6a59-49c9-948f-c14eb6f03d4a" width="500" height="400">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/b300f0ba-6a59-49c9-948f-c14eb6f03d4a" width="500" height="355">
 </p>
 
 <br/>
@@ -96,7 +96,7 @@ Accuracy of the logistic regression model: 88.47%
 <br/>
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="500" height="400">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="500" height="355">
 </p>
 
 <br/>
