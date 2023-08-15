@@ -21,13 +21,9 @@ In order to make this approachable, I will explain these concepts using an analo
 
 Imagine the bits (a binary digit and is the smallest unit of data that a computer can process and store) of a classical computer as a simple light switch in your home; they are either in the OFF (0) or ON (1) position. 
 
-<br/>
-
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/8377b945-903e-477c-86d2-535a847d9f78" width="400" height="270">
 </p>
-
-<br/>
 
 In the world of regular computing, this binary system forms the foundation of all operations.
 
