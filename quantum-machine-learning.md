@@ -76,7 +76,7 @@ Accuracy of logistic regression model: 88.47%
 # Multi-layer perceptron neural network
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="430" height="330">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="440" height="330">
 </p>
 
 ```python 
