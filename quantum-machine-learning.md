@@ -1,4 +1,4 @@
-# Quantum machine learning will change machine learning
+# Quantum computing will change machine learning
 
 The findings of the South Korean physics researchers have been verified, and the significant physics discovery of our era that many of us thought had occured, has not happened yet. But the potential for superconductors that function at ambient pressure and room temperatures wil fundamentally change the qubit's role in quantum computing. This change will aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
 
