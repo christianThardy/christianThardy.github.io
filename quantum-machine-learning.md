@@ -86,7 +86,7 @@ Accuracy of logistic regression model: 88.47%
 # Neural networks
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="400" height="300">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="410" height="300">
 </p>
 ```python 
 Accuracy of neural network model: 94.99%
