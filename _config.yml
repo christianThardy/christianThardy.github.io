@@ -5,7 +5,7 @@ show_downloads: False
 navigation:
   - title: home
     url: /
-  - title: the limitations of quantum machine learning
+  - title: quantum machine learning limitations
     url: quantum-machine-learning.md
   - title: text summarization on complex data using transformers
     url: text-summarization
