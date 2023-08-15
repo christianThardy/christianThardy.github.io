@@ -11,6 +11,14 @@ Many quantum algorithms that have achieved exponential accelerations have done s
 
 In order to make this approachable, I will explain these concepts using an analogy.
 
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/c2e04061-6988-4aee-980f-507a49086a6e" width="400" height="300">
+</p>
+
+<br/>
+
 Imagine the bits (a binary digit and is the smallest unit of data that a computer can process and store) of a classical computer as a simple light switch in your home; they are either in the OFF (0) or ON (1) position. In the world of regular computing, this binary system forms the foundation of all operations.
 
 Now, picture a qubit as a dimmer switch instead of a simple light switch. The dimmer switch not only has an ON and OFF position but also various stages in between, allowing for a wide range of light levels. This is a lot like how qubits work. They can represent not just 0 or 1 but also a superposition of both 0 and 1 simultaneously, or a range of values between 0 and 1. This ability to be in multiple states at once allows quantum computers to process a vast amount of information simultaneously, leading to potentially enormous computational power.
@@ -26,10 +34,37 @@ In the context of quantum deep learning, replace this classical train set with o
 
 # Limitations
 
-With the limitations of near-term quantum hardware potentially being a thing of the past soon as physics research advances, tthe maturity of classical algorithms is another matter that quantum algorithms will need to address. 
+With the limitations of near-term quantum hardware potentially being a thing of the past soon as physics research advances, the maturity of classical algorithms is another matter that quantum algorithms will need to address. 
 
 Let's walk through an example. I have the make moons dataset and BLANK BLANK BLANK. We can illustrate how effective classical machine learning algorithms are, how much better neural networks are, and how far quantum neural networks need to go before we can begin using the technology in a meaningful way.
 
+# Quantum Neural Network
+
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="500" height="400">
+</p>
+
+<br/>
+
+# Logistic Regression
+
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/b300f0ba-6a59-49c9-948f-c14eb6f03d4a" width="500" height="400">
+</p>
+
+<br/>
 
 
+# Neural Networks
 
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="500" height="400">
+</p>
+
+<br/>
