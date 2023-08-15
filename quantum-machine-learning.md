@@ -14,7 +14,7 @@ In order to make this approachable, I will explain these concepts using an analo
 <br/>
 
 <p align="center">
-<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/c2e04061-6988-4aee-980f-507a49086a6e" width="400" height="230">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/c2e04061-6988-4aee-980f-507a49086a6e" width="400" height="240">
 </p>
 
 <br/>
