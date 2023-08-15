@@ -1,6 +1,6 @@
 # Quantum machine learning will change machine learning
 
-The findings of the South Korean physics researchers have been verified, and a the significant physics discovery of our era that many of us thought had occured, has not happened yet. But the potential for superconductors that function at ambient pressure and room temperatures would fundamentally change the qubit's role in quantum computing. This change could aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
+The findings of the South Korean physics researchers have been verified, and the significant physics discovery of our era that many of us thought had occured, has not happened yet. But the potential for superconductors that function at ambient pressure and room temperatures wil fundamentally change the qubit's role in quantum computing. This change will aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
 
 In the future, it might be feasible that quantum hardware and software will collaborate seamlessly with their classical counterparts, concentrating on calculations tailor-made for optimization challenges. Within the realms of machine learning and deep learning, this synergy could transform conventional AI paradigms.
 
@@ -19,7 +19,17 @@ In order to make this approachable, I will explain these concepts using an analo
 
 <br/>
 
-Imagine the bits (a binary digit and is the smallest unit of data that a computer can process and store) of a classical computer as a simple light switch in your home; they are either in the OFF (0) or ON (1) position. In the world of regular computing, this binary system forms the foundation of all operations.
+Imagine the bits (a binary digit and is the smallest unit of data that a computer can process and store) of a classical computer as a simple light switch in your home; they are either in the OFF (0) or ON (1) position. 
+
+<br/>
+
+<p align="center">
+<img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/8377b945-903e-477c-86d2-535a847d9f78" width="400" height="270">
+</p>
+
+<br/>
+
+In the world of regular computing, this binary system forms the foundation of all operations.
 
 Now, picture a qubit as a dimmer switch instead of a simple light switch. The dimmer switch not only has an ON and OFF position but also various stages in between, allowing for a wide range of light levels. This is a lot like how qubits work. They can represent not just 0 or 1 but also a superposition of both 0 and 1 simultaneously, or a range of values between 0 and 1. This ability to be in multiple states at once allows quantum computers to process a vast amount of information simultaneously, leading to potentially enormous computational power.
 
