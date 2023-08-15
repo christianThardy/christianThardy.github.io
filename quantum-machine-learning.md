@@ -46,7 +46,7 @@ With the limitations of near-term quantum hardware potentially being a thing of 
 Let's walk through an example. I have the make moons dataset and BLANK BLANK BLANK. We can illustrate how effective classical machine learning algorithms are, how much better neural networks are, and how far quantum neural networks need to go before we can begin using the technology in a meaningful way.
 <br/>
 
-# Limitation understanding
+# Understanding the limits
 
 The make moons dataset is a great tool for when you want to experiment with or visualize algorithms that deal with complex, non-linear relationships. Imagine looking up at the night sky and seeing two crescent moons touching at their tips. 
 
