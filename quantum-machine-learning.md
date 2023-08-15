@@ -49,8 +49,6 @@ Quantum gates are like magical pieces in this train set that can rotate the trac
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/91eae46d-68b7-4b2f-8416-812fe2b65993">
 </p>
 
-<br/>
-
 These "magic" pieces perform specific operations on qubits, manipulating them in complex ways, which include superposition and entanglement (where qubits become interconnected and the state of one affects the others).
 
 Now, take the concept of deep learning, a form of artificial intelligence where classical computers imitate the way our brains think, forming networks to "learn" from data. Picture it like a very intricate train set with many tracks, switches, and stations representing the complex relationships in the data.
