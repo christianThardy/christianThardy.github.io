@@ -392,7 +392,7 @@ The hope in using 2 prompts to mitigate this behavior is to catch instances in o
 Previous ChatGPT responses helped me identify ways I could improve the prompt, and while I am happy with the current output, by no means do I think its complete. 
 
 In the example above, specifically the last prompt and response, moderation is good advice but ideally I would like Emobot to suggest eating healthy foods like ChatGPT.
-Ultimately I think there will be a trade-off between informativeness and the level of relatability Emobot is trying to achieve
+Ultimately I think there will be a trade-off between informativeness and the level of relatability Emobot is trying to achieve.
 
 
 
