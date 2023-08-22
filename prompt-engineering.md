@@ -1,6 +1,6 @@
 # Prompt Engineering Project
 
-Applied to mental health, ChatGPTs output is very helpful. But when testing it with a small group of people, it created information overload with many
+6 months ago, ChatGPTs output applied to mental health was very helpful. But when testing it with a small group of people, it created information overload with many
 of its responses, which was paralyzing and caused a lack of action, motivation and pure dismissal from users. In certain contexts, it seems like its output heavily 
 leans on the cognitive behavioral therapy side of psychology (information based and goal oriented) and less on the Gestalt or Jungian side (self direction, self reflection, 
 self awareness).
