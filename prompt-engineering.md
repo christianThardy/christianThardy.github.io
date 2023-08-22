@@ -210,7 +210,7 @@ gr.Interface(
 2. I used concepts from the DiVeRSe method to improve the reliability of ChatGPTs responses by passing the transcription to a tf-idf weighted complement naive bayes 
    classifier where the transcription is labeled as `'is_fine'`, `'seek_help'`, or `'assess_further'`.
 
-3. A prompt and the classifiers output is passed to ChatGPT, which makes an ad hoc generation based on the transcription and label and displays it to the user.
+3. A prompt and the classifiers output is passed to ChatGPT, which makes an ad hoc generation based on the transcription and sentiment label and displays it to the user.
 
 <br>
 
