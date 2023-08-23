@@ -10,7 +10,7 @@ I present Emobot. Simply, the role of Emobot is to not be purely deductive.
 
 Users appreciated when Emobot could prioritize asking engaging, thoughtful, context driven questions that could help them express themselves and draw their own conclusions. When Emobot queried them back thoughtfully, many reported that its response felt more natural and helped them be more introspective.
 
-But before we get into the solution, lets look at the data used to help nudge ChatGPT in the right direction
+But before we get into the solution, lets look at the data used to help nudge ChatGPT in the right direction.
 
 <br>
 
@@ -46,7 +46,7 @@ With all mention and unmentioned features within the same dataset, the different
 
 Let's breakdown the logic behind the structure of the data. At the highest level, a given label can tell us there is some level of emotionality in the text, but what type of emotion is there? Does the response contain a range of emotion? Can function words, or words that would generally be discarded as stop words in the context of an NLP application, give us the meaning around the different contexts in which a person speaks?
 
-The lower level labels and their values allowed us to relabel the highest level labels so that when used in a classification task, they truthfully represented is the measured text was actually a text that `is_fine`, needs to `seek_help` or should be `assessed_further`.
+The lower level labels and their values allowed us to relabel the highest level labels so that when used in a classification task, they truthfully represented is the measured text was actually a text that `is_fine`, needs to `seek_help` or should be `assess_further`.
 
 What interesting is that for the example at index 0, what is labeled as `is_fine` by the model trained to detect emotion at the highest level is not actually fine for what the binary and probability based models consider a "joyful" piece of text. Given that I know the context, I know there are sarcastic undertones to the text. 
 
