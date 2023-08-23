@@ -117,7 +117,7 @@ The truthfulness of GPTs responses are questionable, but the line of questioning
 
 <br>
 
-# Application Code & Prompt
+# Application code & prompt
 
 ```
 import warnings
