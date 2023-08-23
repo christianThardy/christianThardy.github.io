@@ -1,18 +1,14 @@
-# LLMs, Prompt Engineering & Mental Health
+# LLMs: Towards Better Emotion & Mental Health Detection 
 
 6 months ago, ChatGPTs output applied to mental health was very helpful. But when testing it with a small group of people, it created information overload with many
 of its responses, which was paralyzing and caused a lack of action, motivation and pure dismissal from users. In certain contexts, it seems like its output heavily 
-leans on the cognitive behavioral therapy side of psychology (information based and goal oriented) and less on the Gestalt or Jungian side (self direction, self reflection, 
-self awareness).
+leans on the cognitive behavioral therapy side of psychology (information based and goal oriented) and less on the Gestalt or Jungian side (self direction, self reflection, self awareness).
 
-The majority of participants did not respond well to the deductive and analytical responses 
-and expressed they would appreciate a mix of reasoning and understanding. Which makes sense, sometimes the point of seeking help is about remembering and reminding 
-ourselves about the little things we already know. Things we give advice about all the time but sometimes forget to do for ourselves.
+The majority of participants did not respond well to the deductive and analytical responses and expressed they would appreciate a mix of reasoning and understanding. Which makes sense, sometimes the point of seeking help is about remembering and reminding ourselves about the little things we already know. Things we give advice about all the time but sometimes forget to do for ourselves.
 
 I present Emobot. Simply, the role of Emobot is to not be purely deductive. 
 
-Users appreciated when Emobot could prioritize asking engaging, thoughtful, context driven questions that could help them express themselves and draw their own 
-conclusions. When Emobot queried them back thoughtfully, many reported that its response felt more natural and helped them be more introspective.
+Users appreciated when Emobot could prioritize asking engaging, thoughtful, context driven questions that could help them express themselves and draw their own conclusions. When Emobot queried them back thoughtfully, many reported that its response felt more natural and helped them be more introspective.
 
 But before we get into the solution, lets look at the data used to help nudge ChatGPT in the right direction
 
@@ -20,14 +16,81 @@ But before we get into the solution, lets look at the data used to help nudge Ch
 
 # BT2000 dataset revisited
 
-In a <a href="https://xtian.ai/finding-similarities-between-friends" title="xtian.ai" rel="nofollow">previous post</a>, the bt2000 dataset was cultivated and used in an array of shallow and deep learning tasks to understand the mental health of a group of community users. The goal is to train a classifier that can nudge ChatGPT in a specific direction, which will allow us to better control ChatGPTs output for our purposes of generating thoughtful and meaningful questions to improve the quality of its mental health advice for users.
+In a <a href="https://xtian.ai/finding-similarities-between-friends" title="xtian.ai" rel="nofollow">previous post</a>, the bt2000 dataset was cultivated and used in an array of shallow and deep learning tasks to understand the mental health of a group of community users. The goal is to train a classifier that can nudge ChatGPT in a specific direction, which will allow us to better control ChatGPTs output for our purposes of generating thoughtful and meaningful questions to improve the quality of its mental health advice for users. To engineer features from user text, we were able to create a wide range of:
 
-To engineer features from user text, we were able to create a wide range of high and low level emotion based labels.
+High level emotion labels: 
 
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/c1ceac5d-04d3-44e5-955c-1dae9d9ba75b" width="480" height="180">
+</p>
 
+Binary based emotion labels:
 
-After using different lexical and neural network methods to create 
-, we were able to perform varying analysis to measure user emotional features.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/90120d12-d345-46a5-b0a4-b5b903fa0a1b" width="650" height="180">
+</p>
+
+Probability based emotion labels:
+
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/f6770131-4c77-4497-96ea-ec35eeb71f7e" width="660" height="180">
+</p>
+
+And lexical based emotion labels that span a wide range of topics from emotions & feelings, toxicity, wants and needs, motivators, communication and social dynamics and cognition: 
+
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d" width="1000" height="190">
+</p>
+
+With all mention and unmentioned features within the same dataset, the different machine learning, deep learning and lexical methods allowed us to perform analysis at 4 different levels to measure user emotion and help us determine if such features could be effectively learned by a model when they are correct and aligned.
+
+Let's breakdown the logic behind the structure of the data. At the highest level, a given label can tell us there is some level of emotionality in the text, but what type of emotion is there? Does the response contain a range of emotion? Can function words, or words that would generally be discarded as stop words in the context of an NLP application, give us the meaning around the different contexts in which a person speaks?
+
+The lower level labels and their values allowed us to relabel the highest level labels so that when used in a classification task, they truthfully represented is the measured text was actually a text that `is_fine`, needs to `seek_help` or should be `assessed_further`.
+
+What interesting is that for the example at index 0, what is labeled as `is_fine` by the model trained to detect emotion at the highest level is not actually fine for what the binary and probability based models consider a "joyful" piece of text. Given that I know the context, I know there are sarcastic undertones to the text. 
+
+The final lexical model picks up on the actual context, disproves positive emotion and allows us an opportunity to correct the label from the high level model from `is_fine` to `assess_further`. For context around the table below, `approach` classifies language related to emotions that motivate people to move towards an emotional trigger. We know that sarcasm can trigger emotions. `badfeel` is a summary label that classifies language that expresses negative, or typically “bad” emotions. `authentic` denotes the degree to which the communication style is personal, honest and unguarded, the higher the more authentic. `clout` denotes the degree to which communication reflects certainty and confidence. A high score reflects language that is highly confident, while a low score reflects a more tentative, humble, anxious style of communication.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/c41e8127-8865-4b66-82f7-c44c0c0bcc5d" width="600" height="190">
+</p>
+
+This ability to detect nuanced emotion is important because Emobot needs a way to be robust to counterfactual emotions. Not everything a person says that could be detected as positive is necessarily positive and updating the labels based on the lexical models' output allows us to train a high level classifier that can pick up on counterfactual sentiment and therefore give Emotbot the ability to parse particularly difficult text. This also gives us the ability to craft Emobot's prompt in a way that it provides nuanced questions that are great for introspection.
+
+After completing the label processing and label correction steps, taking a deeper look at the features reveal interesting things about the dataset. The first thing we notice was the class imbalance between high level emotion labels, but also the imbalance between users. We were able to handle both using the SMOTE function from the imblearn library.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/fde5e77b-35ba-4765-a1c6-ae0367084763" width="600" height="">
+</p>
+
+When sorting the dataset by month and year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous mental and emotional rough patches happening in this community around the time interaction declined.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/1a8c3da7-ada7-4327-851f-5f00a4b299cc">
+</p>
+
+Similar logic follows for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a sharp decrease in text that would be labeled `is_fine`. Almost the direct opposite to the behavior of the `seek_help` label.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/9d9f5c92-1817-4a1f-a6ce-d6ff46ca99ec">
+</p>
+
+...and then we have `assess_further`. The sentiment here has declined, but it also begins to level over time. So more text became ambiguous as time went on.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/8c2c9921-84ae-49cc-b878-7add2ed1da3a">
+</p>
+
+Besides looking at function words to determine levels of emotionality, we were also interested in which context words were used and how they would be classified at a high level. When looking at users individually, we could see lots of words associated to negative emotions properly picking up the `seek_help` label in the context the words are used. Interestingly there is overlap with the `is_fine` label.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
+</p>
+
+After relabeling the data based on the lexicon predictions, the final high level emotion model reached an F1 score of about 89%.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/518eb919-2282-4a75-a42c-61227f300dd8">
+</p>
+
+With varying degrees in precision and recall respectively:
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b5361b86-c886-4b8a-92fc-119398c58a32" width="350" height="200">
+</p>
 
 <br>
 
@@ -119,7 +182,7 @@ The truthfulness of GPTs responses are questionable, but the line of questioning
 
 # Application code & prompt
 
-```
+```python
 import warnings
 warnings.filterwarnings('ignore')
 
