@@ -82,7 +82,7 @@ Besides looking at function words to determine levels of emotionality, we were a
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
 </p>
 
-After relabeling the data based on the lexicon predictions, the final high level emotion model reached an F1 score of about 89%.
+After relabeling the data based on the lexicon predictions, and training a complement naive bayes classifier on all 4 levels of emotional data, the final high level emotion model reached an F1 score of about 89%.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/518eb919-2282-4a75-a42c-61227f300dd8">
 </p>
