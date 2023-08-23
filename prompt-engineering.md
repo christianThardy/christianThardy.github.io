@@ -20,7 +20,14 @@ But before we get into the solution, lets look at the data used to help nudge Ch
 
 # BT2000 dataset revisited
 
-In a previous post, the bt2000 dataset was cultivated and used in an array of shallow and deep learning tasks.
+In a <a href="https://xtian.ai/finding-similarities-between-friends" title="xtian.ai" rel="nofollow">previous post</a>, the bt2000 dataset was cultivated and used in an array of shallow and deep learning tasks to understand the mental health of a group of community users. The goal is to train a classifier that can nudge ChatGPT in a specific direction, which will allow us to better control ChatGPTs output for our purposes of generating thoughtful and meaningful questions to improve the quality of its mental health advice for users.
+
+To engineer features from user text, we were able to create a wide range of high and low level emotion based labels.
+
+
+
+After using different lexical and neural network methods to create 
+, we were able to perform varying analysis to measure user emotional features.
 
 <br>
 
