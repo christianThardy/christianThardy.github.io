@@ -7,6 +7,8 @@ navigation:
     url: /
   - title: towards better emotion & mental health detection
     url: llms-mental-health
+  - title: quantum machine learning limitations
+    url: quantum-machine-learning
   - title: text summarization on complex data using transformers
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
