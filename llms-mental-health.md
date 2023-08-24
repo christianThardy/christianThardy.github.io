@@ -39,7 +39,7 @@ Probability based emotion labels:
 And lexical based emotion labels that span a wide range of topics from emotions & feelings, toxicity, wants and needs, motivators, communication and social dynamics and cognition: 
 
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d" height="125">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d" height="110">
 </p>
 
 With all mentioned and unmentioned features within the same dataset, the different machine learning, deep learning and lexical methods allowed us to perform analysis at 4 different levels to measure user emotion and help us determine if such features could be effectively learned by a model when they are correct and aligned.
@@ -52,7 +52,7 @@ What's interesting is that for the example at index 0, what is labeled as `is_fi
 
 The final lexical model picks up on the actual context, disproves positive emotion and allows us an opportunity to correct the label from the high level model from `is_fine` to `assess_further`. For context around the table below, `approach` classifies language related to emotions that motivate people to move towards an emotional trigger. We know that sarcasm can trigger emotions. `badfeel` is a summary label that classifies language that expresses negative, or typically “bad” emotions. `authentic` denotes the degree to which the communication style is personal, honest and unguarded, the higher the more authentic. `clout` denotes the degree to which communication reflects certainty and confidence. A high score reflects language that is highly confident, while a low score reflects a more tentative, humble, anxious style of communication.
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/c41e8127-8865-4b66-82f7-c44c0c0bcc5d" height="85">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/c41e8127-8865-4b66-82f7-c44c0c0bcc5d" height="90">
 </p>
 
 This ability to detect nuanced emotion is important because Emobot needs a way to be robust to counterfactual emotions. Not everything a person says that could be detected as positive is necessarily positive and updating the labels based on the lexical models' output allows us to train a high level classifier that can pick up on counterfactual sentiment and therefore give Emotbot the ability to parse particularly difficult text. This also gives us the ability to craft Emobot's prompt in a way that it provides nuanced questions when it is uncertain about the emotional context, which is a great feature to have when prompting a user for introspection.
