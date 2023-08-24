@@ -87,17 +87,17 @@ We were able to handle both using the SMOTE function from the imblearn library.
 
 When sorting the dataset by month and year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous rough patches happening in this community around the time interaction declined.
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/1a8c3da7-ada7-4327-851f-5f00a4b299cc">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/ecb37f3c-9e4d-4caf-b05e-bbd4106bed20">
 </p>
 
 Similar logic follows for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a slight decrease in text that would be labeled `is_fine`. Almost the direct opposite to the behavior of the `seek_help` label.
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/9d9f5c92-1817-4a1f-a6ce-d6ff46ca99ec">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/3067b800-2eba-4a89-86db-7d83343ae217">
 </p>
 
 ...and then we have `assess_further`. The sentiment here has declined, but it also begins to level over time. So more text became ambiguous as time went on.
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/8c2c9921-84ae-49cc-b878-7add2ed1da3a">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/06020dc8-23a1-4e86-aef7-277a324f9c61">
 </p>
 
 Besides looking at function words to determine levels of emotionality, we were also interested in which context words were used and how they would be classified at a high level. When looking at users individually, we could see lots of words associated to negative emotions properly picking up the `seek_help` label in the context the words are used. Interestingly there is overlap with the `is_fine` label.
