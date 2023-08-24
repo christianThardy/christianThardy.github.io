@@ -51,6 +51,7 @@ The lower level labels and their values allowed us to relabel the highest level 
 What's interesting is that for the example at index 0, what is labeled as `is_fine` by the model trained to detect emotion at the highest level is not actually fine for what the binary and probability based models consider a "joyful" piece of text. Given that I know the context, I know there are sarcastic undertones to the text. 
 
 The final lexical model picks up on the actual context, disproves positive emotion and allows us an opportunity to correct the label from the high level model from `is_fine` to `assess_further`. For context around the table below, `approach` classifies language related to emotions that motivate people to move towards an emotional trigger. We know that sarcasm can trigger emotions. `badfeel` is a summary label that classifies language that expresses negative, or typically “bad” emotions. `authentic` denotes the degree to which the communication style is personal, honest and unguarded, the higher the more authentic. `clout` denotes the degree to which communication reflects certainty and confidence. A high score reflects language that is highly confident, while a low score reflects a more tentative, humble, anxious style of communication.
+
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/c41e8127-8865-4b66-82f7-c44c0c0bcc5d" width="90" height="90">
 </p>
