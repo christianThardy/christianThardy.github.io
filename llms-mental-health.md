@@ -101,7 +101,7 @@ Similar logic follows for the `is_fine` label. Where we can see a hump beginning
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/06020dc8-23a1-4e86-aef7-277a324f9c61">
 </p>
 
-Besides looking at function words to determine levels of emotionality, we were also interested in which context words were used and how they would be classified at a high level. When looking at users individually, we could see lots of words associated to negative emotions properly picking up the `seek_help` label in the context the words are used. Interestingly there is overlap with the `is_fine` label.
+Besides looking at function words to determine levels of emotionality, we were also interested in which content words were used and how they would be classified at a high level. When looking at users individually, we could see lots of words associated to negative emotions properly picking up the `seek_help` label in the context the words are used. Interestingly there is overlap with the `is_fine` label.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
 </p>
