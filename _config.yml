@@ -5,8 +5,6 @@ show_downloads: False
 navigation:
   - title: home
     url: /
-  - title: towards better emotion & mental health detection
-    url: llms-mental-health
   - title: text summarization on complex data using transformers
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
