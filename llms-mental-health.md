@@ -86,7 +86,7 @@ After completing the labeling processing and label correction steps, taking a de
 
 We were able to handle both using the SMOTE function from the imblearn library.
 
-When sorting the dataset by month and year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous rough patches happening in this community around the time interaction declined.
+When sorting the dataset by year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous rough patches happening in this community around the time interaction declined.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/ecb37f3c-9e4d-4caf-b05e-bbd4106bed20">
 </p>
