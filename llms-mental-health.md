@@ -10,7 +10,7 @@ I present Emobot. Simply, the role of Emobot is to not be purely deductive.
 
 Users appreciated when Emobot could prioritize asking engaging, thoughtful, context driven questions that could help them express themselves and draw their own conclusions. When Emobot queried them back thoughtfully, many reported that its response felt more natural and helped them be more introspective.
 
-But before we get into the solution, lets look at the data used to help nudge ChatGPT in the right direction.
+But before we get into the solution, lets look at the data used to help nudge these generative models in the right direction.
 
 <br>
 
