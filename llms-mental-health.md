@@ -64,31 +64,28 @@ In the English language, function words make up less than 0.04% of our vocabular
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/3e10fd7f-ce2a-432d-9b86-ecc2d7fc7f4e" width="350" height="250">
 </p>
 
-We're cognitively aware of the Wernicke's area, but we are not aware of the Broca's area. Broca's is always working in the background as we're processing language and is about as subconcious as eye movements. WAs processes content words and they usually have some emotional connection, BAs takes up less space because words like `a`, `and`, `the` take up less space in the brain. You don't have an emotion connection to a "filler" word. As words from the BAs are primarily subconcious, they are hard to manipulate unless you're acutely aware of how you're using them, so they reveal a lot about psychological states because in the context of the content words, they are relational and express relationships between objects and concepts. They also express relationships between your self, others, objects around you, how you view those interactions and how they are interacting with each other. 
+We're cognitively aware of the Wernicke's area, but we are not aware of the Broca's area. Broca's is always working in the background as we're processing language and is about as subconcious as eye movements. WAs processes content words and they usually have some emotional connection, BAs take up less space because words like `a`, `and`, `the` take up less space in the brain. You don't have an emotion connection to a "filler" word. As words from the BAs are primarily subconcious, they are hard to manipulate unless you're acutely aware of how you're using them, so they reveal a lot about psychological states because in the context of the content words, they are relational and express relationships between objects and concepts. They also express relationships between your self, others, objects around you, how you view those interactions and how they are interacting with each other. 
 
-For example, let's take the sentence *"I had a flashback of Craig studying that slide"*. Why are we using the word *that* instead of *this* or *the*? There are probably alot of reasons that we're consciously not thinking about. When we use *this* or *the* it implies some sort of spacial relationship, so *this* describes something that is closer to us whereas *that* expresses something that is farther away from us. So when we say *that slide* we're distancing ourselves from the slide and if we say *this slide* is metaphorically a slide that is closer to us in some way, whereas *the slide* puts the slide in some completely different space from where we are because we're not talking about any relationship that we have with that slide. So this makes function words useful when we want to model relationships between what a person expresses between themselves, others, objects around them in the world, and interactions between them and each other. 
+For example, let's take the sentence *"I had a flashback of Craig studying that slide"*. Why are we using the word *that* instead of *this* or *the*? There are probably alot of reasons that we're consciously not thinking about. When we use *this* or *the* it implies some sort of spacial relationship, so *this* describes something that is closer to us whereas *that* expresses something that is farther away from us. So when we say *that slide* we're distancing ourselves from the slide and if we say *this slide* it's metaphorically a slide that is closer to us in some way, whereas *the slide* puts the slide in some completely different space from where we are because we're not talking about any relationship that we have with that slide. So this makes function words useful when we want to model relationships between what a person expresses between themselves, others, objects around them in the world, and interactions between them and each other. 
 
 So for example in this dataset, we can see that `authenticity` on average is low, meaning people are trying to present a very specific, polished image to the group.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/13c2373b-ec85-49ca-8fb9-57155ad9083c">
 </p>
 
-After relabeling the high level emotion labels based on the lexicon predictions, and training a complement naive bayes classifier on all 4 levels of emotional data, the final emotion model reached an F1 score of about 89%.
-<p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/518eb919-2282-4a75-a42c-61227f300dd8">
-</p>
-
-With varying degrees in precision and recall respectively:
+After relabeling the high level emotion labels based on the lexicon predictions, and training a complement naive bayes classifier on 3 levels of emotional data, the final emotion model reached an F1 score of about 89%. With varying degrees in precision and recall respectively:
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b5361b86-c886-4b8a-92fc-119398c58a32" width="350" height="200">
 </p>
 
-After completing the label processing and label correction steps, taking a deeper look at the features reveal interesting things about the dataset. The first thing we notice was the class imbalance between high level emotion labels, but also the imbalance between users. We were able to handle both using the SMOTE function from the imblearn library.
+After completing the labeling processing and label correction steps, taking a deeper look at the features reveal interesting things about the dataset. The first thing we notice was the class imbalance between high level emotion labels, but also the imbalance between users.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/fde5e77b-35ba-4765-a1c6-ae0367084763" width="600" height="">
 </p>
 
-When sorting the dataset by month and year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous mental and emotional rough patches happening in this community around the time interaction declined.
+We were able to handle both using the SMOTE function from the imblearn library.
+
+When sorting the dataset by month and year, interestingly, we can see a decline in each high level emotion label. We thought this simply meant that as time progressed, the chat was used less and less, but the chat was used in the same proportion year over year up until 2020, where interaction declined dramatically. In this plot, represented by the `seek_help` label, the hump around 0.7 indicates a sharp increase in text that would be labeled as `seek_help`. Possibly indicating numerous rough patches happening in this community around the time interaction declined.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/1a8c3da7-ada7-4327-851f-5f00a4b299cc">
 </p>
@@ -108,7 +105,7 @@ Besides looking at function words to determine levels of emotionality, we were a
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
 </p>
 
-After creating a model to suit emotion preferences, for the next phase of the project we needed to learn more about ChatGPT before using it or a similar model to determine if they would be good candidates for the role of Emobot.
+After creating and validating our model to suit emotion preferences, for the next phase of the project we needed to learn more about large language models and ChatGPT before using it or a similar model to determine if they would be good candidates for the role of Emobot.
 
 <br>
 
