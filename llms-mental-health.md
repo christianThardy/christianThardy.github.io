@@ -74,7 +74,7 @@ So for example in this dataset, we can see that `authenticity` on average is low
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/13c2373b-ec85-49ca-8fb9-57155ad9083c">
 </p>
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/8e9999f3-21d0-4d9c-9b29-715826a890a6">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/38f45008-6dc5-4a8b-84a6-5351892e9ed2">
 </p>
 
 After relabeling the high level emotion labels based on the lexicon predictions, and training a complement naive bayes classifier on 3 levels of emotional data, the final emotion model reached an F1 score of about 89%. With varying degrees in precision and recall respectively:
