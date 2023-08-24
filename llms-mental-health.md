@@ -42,13 +42,13 @@ And lexical based emotion labels that span a wide range of topics from emotions 
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d" width="1000" height="190">
 </p>
 
-With all mention and unmentioned features within the same dataset, the different machine learning, deep learning and lexical methods allowed us to perform analysis at 4 different levels to measure user emotion and help us determine if such features could be effectively learned by a model when they are correct and aligned.
+With all mentioned and unmentioned features within the same dataset, the different machine learning, deep learning and lexical methods allowed us to perform analysis at 4 different levels to measure user emotion and help us determine if such features could be effectively learned by a model when they are correct and aligned.
 
 Let's breakdown the logic behind the structure of the data. At the highest level, a given label can tell us there is some level of emotionality in the text, but what type of emotion is there? Does the response contain a range of emotion? Can function words, or words that would generally be discarded as stop words in the context of an NLP application, give us the meaning around the different contexts in which a person speaks?
 
-The lower level labels and their values allowed us to relabel the highest level labels so that when used in a classification task, they truthfully represented is the measured text was actually a text that `is_fine`, needs to `seek_help` or should be `assess_further`.
+The lower level labels and their values allowed us to relabel the highest level labels so that when used in a classification task, they truthfully represent when a text is actually `is_fine`, needs to `seek_help` or should be `assess_further`.
 
-What interesting is that for the example at index 0, what is labeled as `is_fine` by the model trained to detect emotion at the highest level is not actually fine for what the binary and probability based models consider a "joyful" piece of text. Given that I know the context, I know there are sarcastic undertones to the text. 
+What's interesting is that for the example at index 0, what is labeled as `is_fine` by the model trained to detect emotion at the highest level is not actually fine for what the binary and probability based models consider a "joyful" piece of text. Given that I know the context, I know there are sarcastic undertones to the text. 
 
 The final lexical model picks up on the actual context, disproves positive emotion and allows us an opportunity to correct the label from the high level model from `is_fine` to `assess_further`. For context around the table below, `approach` classifies language related to emotions that motivate people to move towards an emotional trigger. We know that sarcasm can trigger emotions. `badfeel` is a summary label that classifies language that expresses negative, or typically “bad” emotions. `authentic` denotes the degree to which the communication style is personal, honest and unguarded, the higher the more authentic. `clout` denotes the degree to which communication reflects certainty and confidence. A high score reflects language that is highly confident, while a low score reflects a more tentative, humble, anxious style of communication.
 <p align="center">
@@ -56,6 +56,32 @@ The final lexical model picks up on the actual context, disproves positive emoti
 </p>
 
 This ability to detect nuanced emotion is important because Emobot needs a way to be robust to counterfactual emotions. Not everything a person says that could be detected as positive is necessarily positive and updating the labels based on the lexical models' output allows us to train a high level classifier that can pick up on counterfactual sentiment and therefore give Emotbot the ability to parse particularly difficult text. This also gives us the ability to craft Emobot's prompt in a way that it provides nuanced questions that are great for introspection.
+
+To correct the initial models predictions we used frameworks designed to capture specific phenomena related to the psychology of a person derived through their use of language. These frameworks allowed us to represent these phenomena quantitatively. In NLP, we usually discard function words, so things like prepositions, pronouns, articles, subordinating conjunctions etc. In psychological analysis, we keep these words because they are high in frequency, and this is where the Zipf distribution really gets to shine.
+
+In the English language, function words make up less than 0.04% of our vocabulary, but make up over half of the words that we use when communicating. Function words are important because one part of your brain focuses on content words(Wernicke's area of the brain) and the other focuses on function words(Broca's area of the brain).
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/3e10fd7f-ce2a-432d-9b86-ecc2d7fc7f4e" width="350" height="250">
+</p>
+
+We're cognitively aware of the Wernicke's area, but we are not aware of the Broca's area. Broca's is always working the background as we're processing language and is about as subconcious as eye movements. WAs processes content words and they usually have some emotional connection, BAs takes up less space because words like `a`, `and`, `the` take up less space in the brain. You don't have an emotion connection to a "filler" word. As words from the BAs are primarily subconcious, they are hard to manipulate unless you're acutely aware of how you're using them, so they reveal a lot about psychological states because in the context of the content words, they are relational and express relationships between objects and concepts. They also express relationships between your self, others, objects around you, how you view those interactions and how they are interacting with each other. 
+
+For example, let's take the sentence *"I had a flashback of Craig studying that slide"*. Why are we using the word *that* instead of *this* or *the*? There are probably alot of reasons that we're consciously not thinking about. When we use *this* or *the* it implies some sort of spacial relationship, so *this* describes something that is closer to us whereas *that* expresses something that is farther away from us. So when we say *that slide* we're distancing ourselves from the slide and if we say *this slide* is metaphorically a slide that is closer to us in some way, whereas *the slide* puts the slide in some completely different space from where we are because we're not talking about any relationship that we have with that slide. So this makes function words useful when we want to model relationships between what a person expresses between themselves, others, objects around them in the world, and interactions between them and each other. 
+
+So for example in this dataset, we can see that `authenticity` on average is low, meaning people are trying to present a very specific, polished image to the group.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/13c2373b-ec85-49ca-8fb9-57155ad9083c">
+</p>
+
+After relabeling the high level emotion labels based on the lexicon predictions, and training a complement naive bayes classifier on all 4 levels of emotional data, the final emotion model reached an F1 score of about 89%.
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/518eb919-2282-4a75-a42c-61227f300dd8">
+</p>
+
+With varying degrees in precision and recall respectively:
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b5361b86-c886-4b8a-92fc-119398c58a32" width="350" height="200">
+</p>
 
 After completing the label processing and label correction steps, taking a deeper look at the features reveal interesting things about the dataset. The first thing we notice was the class imbalance between high level emotion labels, but also the imbalance between users. We were able to handle both using the SMOTE function from the imblearn library.
 <p align="center">
@@ -67,7 +93,7 @@ When sorting the dataset by month and year, interestingly, we can see a decline 
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/1a8c3da7-ada7-4327-851f-5f00a4b299cc">
 </p>
 
-Similar logic follows for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a sharp decrease in text that would be labeled `is_fine`. Almost the direct opposite to the behavior of the `seek_help` label.
+Similar logic follows for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a slight decrease in text that would be labeled `is_fine`. Almost the direct opposite to the behavior of the `seek_help` label.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/9d9f5c92-1817-4a1f-a6ce-d6ff46ca99ec">
 </p>
@@ -82,15 +108,7 @@ Besides looking at function words to determine levels of emotionality, we were a
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
 </p>
 
-After relabeling the data based on the lexicon predictions, and training a complement naive bayes classifier on all 4 levels of emotional data, the final high level emotion model reached an F1 score of about 89%.
-<p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/518eb919-2282-4a75-a42c-61227f300dd8">
-</p>
-
-With varying degrees in precision and recall respectively:
-<p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b5361b86-c886-4b8a-92fc-119398c58a32" width="350" height="200">
-</p>
+After creating a model to suit emotion preferences, for the next phase of the project we needed to learn more about ChatGPT before using it or a similar model to determine if they would be good candidates for the role of Emobot.
 
 <br>
 
