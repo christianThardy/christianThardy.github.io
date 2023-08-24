@@ -33,7 +33,7 @@ Binary based emotion labels:
 Probability based emotion labels:
 
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/f6770131-4c77-4497-96ea-ec35eeb71f7e" width="660" height="180">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/f6770131-4c77-4497-96ea-ec35eeb71f7e" height="180">
 </p>
 
 And lexical based emotion labels that span a wide range of topics from emotions & feelings, toxicity, wants and needs, motivators, communication and social dynamics and cognition: 
