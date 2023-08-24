@@ -470,8 +470,6 @@ It started to reply with variations of this quite frequently if asked about its 
 *Hey there! I don't really have a "speaking style" per se, but I do try to keep things simple and easy to understand. I also like to ask a lot of 
 questions to get a good sense of what's going on with someone before giving any advice or info. How can I help you out?*
 
-<br>
-
 The hope in using 2 prompts to mitigate this behavior is to catch instances in one context where they may not be caught in another. 
 
 Previous ChatGPT responses helped me identify ways I could improve the prompt, and while I am happy with the current output, by no means do I think its complete. In the example above, specifically the last prompt and response, moderation is good advice but ideally I would like Emobot to suggest eating healthy foods like ChatGPT.
