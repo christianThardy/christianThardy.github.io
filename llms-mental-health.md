@@ -39,7 +39,7 @@ Probability based emotion labels:
 And lexical based emotion labels that span a wide range of topics from emotions & feelings, toxicity, wants and needs, motivators, communication and social dynamics and cognition: 
 
 <p align="center">
-<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d" width="1000" height="100">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/0adc568a-7fef-476e-b083-d80618a73b3d">
 </p>
 
 With all mentioned and unmentioned features within the same dataset, the different machine learning, deep learning and lexical methods allowed us to perform analysis at 4 different levels to measure user emotion and help us determine if such features could be effectively learned by a model when they are correct and aligned.
