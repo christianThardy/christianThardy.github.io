@@ -73,10 +73,10 @@ The make moons dataset is a great tool for when you want to experiment with or v
 
 This toy dataset consists of two interleaving half circles, or "moons," hence the name. If you plot the dataset, it looks like two shapes resembling crescent moons.
 
-This dataset is often used for binary classification problems, where the objective is to categorize data points into one of two classes or groups. Because the two "moons" are intertwined, this dataset is particularly useful for testing algorithms that can handle non-linear boundaries between classes.
+This dataset is often used for binary classification problems, where the objective is to categorize data points into one of two classes or groups. Because the two "moons" are intertwined, this dataset is particularly useful for testing algorithms that can handle non-linear boundaries between classes. Lets observe how logistic regression, a multi-layer perceptron and a hybrid quantum neural network classify the moon data:
 
 
-# Logistic regression
+## Logistic regression
 
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/b300f0ba-6a59-49c9-948f-c14eb6f03d4a" width="400" height="300">
@@ -120,9 +120,7 @@ plt.show()
 Accuracy of logistic regression model: 88.47%
 ```
 
-<br/>
-
-# Multi-layer perceptron
+## Multi-layer perceptron
 
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/f8d79691-e28c-49c4-a371-54e16c09ce66" width="440" height="330">
@@ -210,9 +208,7 @@ plt.show()
 Accuracy of neural network model: 94.99%
 ```
 
-<br/>
-
-# Quantum multi-layer perceptron
+## Quantum multi-layer perceptron
 
 <p align="center">
 <img src="https://github.com/christianThardy/christianThardy.github.io/assets/29679899/3a99e2aa-43d3-42aa-8e54-4f9cd4782e03" width="400" height="300">
@@ -223,46 +219,47 @@ Accuracy of neural network model: 94.99%
 data, target = make_moons(n_samples = 70000, noise = 0.1)
 
 # Normalization
-data = (data - np.mean(data, axis = 0)) / np.std(data, axis = 0)
+scaler = StandardScaler()
+data = scaler.fit_transform(data)
 
-# Split into training and test sets
-train_data, test_data = data[:160], data[160:]
-train_target, test_target = target[:160], target[160:]
+# Split data into training and test sets
+train_data, test_data, train_target, test_target = train_test_split(data, target, test_size = 0.2, random_state = 42)
 
 # Define a quantum device
 dev = qml.device('default.qubit', wires = 2)
 
 # Define a quantum layer
 def layer(W):
-    qml.Rot(W[0, 0], W[0, 1], W[0, 2], wires = 0)
-    qml.Rot(W[1, 0], W[1, 1], W[1, 2], wires = 1)
-    qml.CNOT(wires = [0, 1])
+    qml.Rot(W[0], W[1], W[2], wires=0)
+    qml.Rot(W[3], W[4], W[5], wires=1)
+    qml.CNOT(wires=[0, 1])
 
 # Quantum node
-@qml.qnode(dev, interface = 'torch')
-def quantum_net(features, weights):
-    padded_features = np.pad(features, (0, 2 - len(features)), constant_values = 0)
-    qml.templates.AngleEmbedding(padded_features, wires = [0, 1])
+@qml.qnode(dev, interface='torch')
+def quantum_net(features, *weights):
+    padded_features = np.pad(features, (0, 2 - len(features)), constant_values=0)
+    qml.templates.AngleEmbedding(padded_features, wires=[0, 1])
     for W in weights:
-        # Increases the number of repetitions of the layer
-        for _ in range(8): 
-            layer(W)
-        #layer(W)
+        layer(W)
     return qml.expval(qml.PauliZ(0))
 
 # Hybrid quantum-classical model
 def hybrid_model(x, weights):
-    pre_sigmoid_predictions = torch.tensor([quantum_net(x_, weights) for x_ in x], requires_grad = True)
-    return F.sigmoid(pre_sigmoid_predictions)
+    # Unpack the weight layers for passing to quantum_net
+    weight_layers = [weights[i] for i in range(weights.shape[0])]
+    pre_sigmoid_predictions = torch.tensor([quantum_net(x_, *weight_layers) for x_ in x], requires_grad=True)
+    return torch.sigmoid(pre_sigmoid_predictions)
 
 # Loss function
-loss_func = torch.nn.BCEWithLogitsLoss()
+#loss_func = torch.nn.BCEWithLogitsLoss()
+loss_func = torch.nn.BCELoss()
 
-# Define weights
-weights = torch.tensor(np.random.random(size = (2, 2, 3)), requires_grad = True)
+# Define weights for 5 layers
+num_layers = 5
+weights = torch.tensor(np.random.random(size=(num_layers, 6)), requires_grad=True)
 
 # Optimization Loop
-optimizer = torch.optim.AdamW([weights], lr = 0.1)
+optimizer = torch.optim.AdamW([weights], lr = 0.001)
 for epoch in range(10):
     optimizer.zero_grad()
     predictions = hybrid_model(train_data, weights).float()
@@ -293,3 +290,39 @@ plt.show()
 ```python
 Accuracy of neural quantum model: 45.69%
 ```
+
+<br>
+
+Quantum neural networks are simply computational models based on quantum mechanics and they derive principles from classical deep learning. Assuming we're all aware of the complexities of logistic regression and neural networks, the hybrid quantum neural network's qubits are analogous to ANN neurons(or circuits) and are connected by wires that act as unitaries, which are simply our gates that we covered earlier, to apply operations to the qubits. 
+
+Information is processed in HQNNs by all of the qubits in the network first being in a zero state. When information in passed to the input layer of the network, the qubits in this layers are passed to the next layer as tensors and are now in the hidden layers. The tensor is then passed to the output layer.
+
+<p align="center">
+<img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b79ce7f4-3d3b-47a7-b099-f4ce31f3be05">
+</p>
+
+<br>
+
+While trainable, HQNNs have a number of challenges that make them unreliable at the moment. 
+
+## 1. Current quantum devices are noisy and error-prone
+
+Even small quantum circuits on near-term quantum computers can be affected by noise, leading to inaccurate computations. Training a quantum neural network in an environment like this can be challenging because discerning whether a bad outcome is due to the noise or due to incorrect parameters of the model is hard to differentiate. The noise associated with longer computation makes deep quantum circuts unfeasible, so classical deep learning techniques suffer.  
+
+## 2. Manipulating and understanding high-dimensional quantum states can be very challenging
+
+Quantum gate design is nontrivial because they need to rotate in particular ways and this needs to be accounted for. Classical gradient-based optimization techniques very inefficient because in quantum optimization landscapes, regions known as "barren plateaus" make gradients nearly zero, which makes conventional gradient-based optimization techniques very inefficient since they rely on these gradients to guide the learning process.
+
+<br>
+
+# The near term
+
+In all honestly, while popular at the moment, I imagine quantum machine learning will go through an "AI winter" similar to what happened from 1974 to 1980. Lots of time, focus and research into these problems will need to happen before the innovation to make these techniques work will come. 
+
+I believe the poor performance in my particular case is because the network is running on a noisy intermediate-scale quantum (NISQ) device, and at the moment these simulators have limitations like limited qubit numbers, short coherence times, and gate errors. But my challenges are also algorithmic, so further tuning of the learning rate, network architecture, data encoding, and other hyperparameters will probably improve training convergence/ All of these factors contribute to the instability of HQNNs.
+
+Because quantum computing is inherentlty susceptible to error via noise because of the delicate nature of quantum states. A phenomenon known as "decoherence" causes information loss. If you're training a HQNN on a noisy quantum device, the errors can affect a multitude of things. From the gradient calculations, which lead to slow or non-convergent training, to the gradient scaling to almost zero because of the vast regions in the quantum optimization landscape. In these regions, standard gradient-based optimization techniques struggle to find a direction for improvement. A training process might get stuck in these plateaus, making it seem as though the network isn't learning.
+
+The way in which classical data is encoded into quantum states can be another source of instability. Some encoding strategies might not preserve the nuances of the data or might be sensitive to small perturbations. And while classical neural networks are also sensitive to hyperparameters like learning rate or architecture specifics, HQNNs introduce additional hyperparameters related to quantum operations, encoding strategies, and error mitigation techniques. The training dynamics can be quite sensitive to these parameters.
+
+Most if not all of these errors are reflected in my networks results, as when running the algorithm multiple times, on one run I could get a 20% classification accuracy, on the second run I could get a 45%, and on the third run I could get a 80% accuracy and so on. It seems to me they are just too unstable to be used for anything other than research at this point. For current industry problems we need scalability and generalization, and it looks like quantum deep learning algorithms are just not ready yet.
