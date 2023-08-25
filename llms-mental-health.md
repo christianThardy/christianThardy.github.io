@@ -491,8 +491,6 @@ While our case of prompt leakage was organic, it can be induced nefariously usin
   <b><img src = "https://user-images.githubusercontent.com/29679899/214606304-401bd6bd-cd43-483d-a876-a7fd80f3cfb7.PNG" width="455px"></b><br>
 </p>
 
-<br>
-
 But to drive the point home I can show you example output related to the project. It took lots of nudging because of the two soft prompts that are suppose to mitigate leakage, but when flurried with special characters, similarly to ChatGPT at the time, I illicited this response:
 
 ```
