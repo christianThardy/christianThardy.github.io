@@ -288,7 +288,7 @@ plt.show()
 ```
 
 ```python
-Accuracy of neural quantum model: 45.69%
+Accuracy of neural quantum model: 67.04%
 ```
 
 <br>
