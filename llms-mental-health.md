@@ -74,6 +74,8 @@ So for example in this dataset, we can see that `authenticity` on average is low
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/13c2373b-ec85-49ca-8fb9-57155ad9083c">
 </p>
 
+<br>
+
 And empathy is quite low on average for this particular user.
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/38f45008-6dc5-4a8b-84a6-5351892e9ed2">
