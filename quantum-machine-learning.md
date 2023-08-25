@@ -295,7 +295,7 @@ Accuracy of neural quantum model: 67.04%
 
 Quantum neural networks are simply computational models based on quantum mechanics and they derive principles from classical deep learning. Assuming we're all aware of the complexities of logistic regression and neural networks, the hybrid quantum neural network's qubits are analogous to ANN neurons(or circuits) and are connected by wires that act as unitaries, which are simply our gates that we covered earlier, to apply operations to the qubits. 
 
-Information is processed in HQNNs by all of the qubits in the network first being in a zero state. When information in passed to the input layer of the network, the qubits in this layers are passed to the next layer as tensors and are now in the hidden layers. The tensor is then passed to the output layer.
+Information is processed in HQNNs by all of the qubits in the network first being in a zero state. When information in passed to the input layer of the network, the qubits in this layer are passed to the next layer as tensors and are now in the hidden layers. The tensor is then passed to the output layer.
 
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b79ce7f4-3d3b-47a7-b099-f4ce31f3be05">
@@ -303,7 +303,7 @@ Information is processed in HQNNs by all of the qubits in the network first bein
 
 <br>
 
-While trainable, HQNNs have a number of challenges that make them unreliable at the moment. 
+While trainable, HQNNs have a number of challenges that make them unstable in the current quantum machine learning landscape. 
 
 ## 1. Current quantum devices are noisy and error-prone
 
