@@ -1,6 +1,6 @@
 # Quantum computing will change everything
 
-The findings of the South Korean physics researchers have been verified, and the significant physics discovery of our era that many of us thought had occured, has not happened yet. But the potential for superconductors that function at ambient pressure and room temperatures wil fundamentally change the qubit's role in quantum computing. This change will aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
+The findings of the South Korean physicists has been verified, and the significant physics discovery of our era that many of us thought had occured, has not happened yet. But the potential for superconductors that function at ambient pressure and room temperatures will fundamentally change the qubit's role in quantum computing. This change will aid in scalability, although higher temperatures can still affect quantum inaccuracies. Nevertheless, room temperature superconductors represent a crucial element of the quantum conundrum, simplifying the creation of hybrid systems capable of alternating between classical and quantum computation tasks.
 
 In the future, it might be feasible that quantum hardware and software will collaborate seamlessly with their classical counterparts, concentrating on calculations tailor-made for optimization challenges. Within the realms of machine learning and deep learning, this synergy could transform conventional AI paradigms.
 
@@ -60,7 +60,7 @@ In the context of quantum deep learning, replace this classical train set with o
 
 With the limitations of near-term quantum hardware potentially being a thing of the past soon as physics research advances, the maturity of classical algorithms is another matter that quantum algorithms will need to address. 
 
-Let's walk through an example. I have the make moons dataset and BLANK BLANK BLANK. We can illustrate how effective classical machine learning algorithms are, how much better neural networks are, and how far quantum neural networks need to go before we can begin using the technology in a meaningful way.
+Let's walk through an example with the make moons dataset. We can illustrate how effective classical machine learning algorithms are, how much better neural networks are, and how far quantum neural networks need to go before we can begin using the technology in a meaningful way.
 <br/>
 
 # Understanding the limits
@@ -73,7 +73,7 @@ The make moons dataset is a great tool for when you want to experiment with or v
 
 This toy dataset consists of two interleaving half circles, or "moons," hence the name. If you plot the dataset, it looks like two shapes resembling crescent moons.
 
-This dataset is often used for binary classification problems, where the objective is to categorize data points into one of two classes or groups. Because the two "moons" are intertwined, this dataset is particularly useful for testing algorithms that can handle non-linear boundaries between classes. Lets observe how logistic regression, a multi-layer perceptron and a hybrid quantum neural network classify the moon data:
+This dataset is often used for binary classification problems, where the objective is to categorize data points into one of two classes or groups. Because the two "moons" are intertwined, this dataset is particularly useful for testing algorithms that can handle non-linear boundaries between classes. Lets observe how logistic regression, a multi-layer perceptron and a hybrid quantum neural network classify the moon data(the code works, try it yourself!):
 
 
 ## Logistic regression
@@ -293,15 +293,13 @@ Accuracy of neural quantum model: 67.04%
 
 <br>
 
-Quantum neural networks are simply computational models based on quantum mechanics and they derive principles from classical deep learning. Assuming we're all aware of the complexities of logistic regression and neural networks, the hybrid quantum neural network's qubits are analogous to ANN neurons(or circuits) and are connected by wires that act as unitaries, which are simply our gates that we covered earlier, to apply operations to the qubits. 
+Assuming we're all aware of the complexities of logistic regression and artificial neural networks, quantum neural networks are simply computational models based on quantum mechanics and they derive principles from classical deep learning. The hybrid quantum neural network's qubits are analogous to ANN neurons(or circuits) and are connected by wires that act as unitaries, which are simply our gates that we covered earlier, to apply operations to the qubits. 
 
 Information is processed in HQNNs by all of the qubits in the network first being in a zero state. When information in passed to the input layer of the network, the qubits in this layer are passed to the next layer as tensors and are now in the hidden layers. The tensor is then passed to the output layer.
 
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b79ce7f4-3d3b-47a7-b099-f4ce31f3be05">
 </p>
-
-<br>
 
 While trainable, HQNNs have a number of challenges that make them unstable in the current quantum machine learning landscape. 
 
@@ -311,7 +309,7 @@ Even small quantum circuits on near-term quantum computers can be affected by no
 
 ## 2. Manipulating and understanding high-dimensional quantum states can be very challenging
 
-Quantum gate design is nontrivial because they need to rotate in particular ways and this needs to be accounted for. Classical gradient-based optimization techniques very inefficient because in quantum optimization landscapes, regions known as "barren plateaus" make gradients nearly zero, which makes conventional gradient-based optimization techniques very inefficient since they rely on these gradients to guide the learning process.
+Quantum gate design is nontrivial because they need to rotate in particular ways and this needs to be accounted for. Classical gradient-based optimization techniques are very inefficient because in quantum optimization landscapes, regions known as "barren plateaus" make gradients nearly zero, which makes conventional gradient-based optimization techniques very inefficient since they rely on these gradients to guide the learning process.
 
 <br>
 
@@ -319,10 +317,10 @@ Quantum gate design is nontrivial because they need to rotate in particular ways
 
 In all honestly, while popular at the moment, I imagine quantum machine learning will go through an "AI winter" similar to what happened from 1974 to 1980. Lots of time, focus and research into these problems will need to happen before the innovation to make these techniques work will come. 
 
-I believe the poor performance in my particular case is because the network is running on a noisy intermediate-scale quantum (NISQ) device, and at the moment these simulators have limitations like limited qubit numbers, short coherence times, and gate errors. But my challenges are also algorithmic, so further tuning of the learning rate, network architecture, data encoding, and other hyperparameters will probably improve training convergence/ All of these factors contribute to the instability of HQNNs. To be fair, I may just lack the resources for adequate epoch parameter tuning. I've only let the network run for 30 epochs, it's possible that more are needed for convergence.
+I believe the poor performance in my particular case is because the network is running on a noisy intermediate-scale quantum (NISQ) device, and at the moment these simulators have limitations like limited qubit numbers, short coherence times, and gate errors. But my challenges are also algorithmic, so further tuning of the learning rate, network architecture, data encoding, and other hyperparameters will probably improve training convergence/ All of these factors contribute to the instability of HQNNs. And to be fair, I may just lack the resources for adequate epoch parameter tuning. I've only let the network run for 30 epochs, it's possible that more are needed for convergence.
 
 But its known that quantum computing is inherentlty susceptible to error via noise because of the delicate nature of quantum states. A phenomenon known as "decoherence" causes information loss. If you're training a HQNN on a noisy quantum device, the errors can affect a multitude of things. From the gradient calculations, which lead to slow or non-convergent training, to the gradient scaling to almost zero because of the vast regions in the quantum optimization landscape. In these regions, standard gradient-based optimization techniques struggle to find a direction for improvement. A training process might get stuck in these plateaus, making it seem as though the network isn't learning.
 
 The way in which classical data is encoded into quantum states can be another source of instability. Some encoding strategies might not preserve the nuances of the data or might be sensitive to small perturbations. And while classical neural networks are also sensitive to hyperparameters like learning rate or architecture specifics, HQNNs introduce additional hyperparameters related to quantum operations, encoding strategies, and error mitigation techniques. The training dynamics can be quite sensitive to these parameters.
 
-Most if not all of these errors are reflected in my networks results, as when running the algorithm multiple times, on one run I could get a 20% classification accuracy, on the second run I could get a 45%, and on the third run I could get a 80% accuracy and so on. It seems to me they are just too unstable to be used for anything other than research at this point. For current industry problems we need scalability and generalization, and it looks like quantum deep learning algorithms are just not ready yet.
+Some of these errors are reflected in my networks results, as when running the algorithm multiple times, on one run I could get a 20% classification accuracy, on the second run I could get a 45%, and on the third run I could get a 80% accuracy and so on. It seems to me they are just too unstable to be used for anything other than research at this point. For current industry problems we need scalability and generalization, and it looks like quantum deep learning algorithms are just not ready yet.
