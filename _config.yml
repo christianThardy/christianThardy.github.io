@@ -5,7 +5,7 @@ show_downloads: False
 navigation:
   - title: home
     url: /
-  - title: towards better emotion & mental health detection
+  - title: towards better mental health detection
     url: llms-mental-health
   - title: quantum deep learning limitations
     url: quantum-machine-learning
