@@ -13,7 +13,7 @@ navigation:
     url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
     url: setup
-  - title: things I wish I knew about aws glue, spark and distributed systems
+  - title: things I wish I knew about aws glue, spark & distributed systems
     url: things-I-wish-I-knew
   - title: finding similarities between friends using shallow & deep nlp
     url: finding-similarities-between-friends
