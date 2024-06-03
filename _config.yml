@@ -9,8 +9,6 @@ navigation:
     url: llms-mental-health
   - title: quantum deep learning limitations
     url: quantum-machine-learning
-  - title: text summarization on complex data using transformers
-    url: text-summarization
   - title: deep learning can solve non-trivial problems in nlp
     url: setup
   - title: things I wish I knew about aws glue, spark & distributed systems
