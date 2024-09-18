@@ -35,7 +35,7 @@ FOL helps in maintaining the context and managing the state of a conversation by
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/bc033c3e-2d5c-47fc-89dc-fc609de90c88">
+<img src="https://github.com/user-attachments/assets/ec1cb248-120d-4443-96be-dce551e647ea">
 </p>
 
 <br>
