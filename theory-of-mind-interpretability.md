@@ -32,6 +32,14 @@ FOL helps in maintaining the context and managing the state of a conversation by
     Bring(John,Cake)\
     Expect(Jane,John,Bring(John,Cake))
 
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/fa03f9ec-4f91-4c8a-82f4-d6a30cdea719">
+</p>
+
+<br>
+
 This structure allows us capture meaning because of relationships and quantifiers, which are essential for capturing the nuanced meanings and mental states involved in ToM. It captures the internal structure of propositions, such as the belief that Jane expected John to bring something specific.
 
 So its possible that at some level, ToM prediction in LLMs aligns with first-order logic due to a models ability to represent complex relationships between entities and their properties, which are crucial for understanding and predicting human mental states and behaviors.
