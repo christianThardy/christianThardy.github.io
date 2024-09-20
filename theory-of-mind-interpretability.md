@@ -29,8 +29,8 @@ FOL helps in maintaining the context and managing the state of a conversation by
   - Sigh(Jane)\
     Empty(Plate)\
     Birthday(cake)\
-    Bring(John,Cake)\
-    Expect(Jane,John,Bring(John,Cake))
+    Bring(John, Cake)\
+    Expect(Jane, John, Bring(John, Cake))
 
 <br>
 
