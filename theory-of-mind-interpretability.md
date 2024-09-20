@@ -59,7 +59,7 @@ To do all of this we need to identify all entities and actions in the sentence.
     
   - Extract Relationships and Properties:
       - The plate is empty: E(plate)  
-      - Jane's actions and mental state: Sigh(Jane), Think(Jane,ifonlyJohnhadrememberedtobringthecake)
+      - Jane's actions and mental state: Sigh(Jane), Think(Jane, ifonlyJohnhadrememberedtobringthecake)
 
 <br>
 
