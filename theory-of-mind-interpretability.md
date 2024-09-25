@@ -107,4 +107,4 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 ### ToM Circuit Discovery: Identify Relavant Activations & Layers
 
-
+We can see this algorithm playing out in the attention patterns of layer 22 in the 14th attention head.
