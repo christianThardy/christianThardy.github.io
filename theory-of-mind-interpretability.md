@@ -12,30 +12,37 @@ Humans are capable of making inferences about the mental state of characters in 
 
 Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
 
-Let's take an example sentence: *Today is Jane's birthday. She looked at the empty plate and sighed. She thought, 'If only John had remembered to bring the...'*
+Let's take the sentence: *In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
-In the context of ToM, to make the correct prediction *cake*, the model needs to understand:
+In the context of ToM, to make the correct prediction *basket*, the model needs to understand:
 
-  - **Entities:** Jane, John, the empty plate.
+  - **Entities:** Mark, John, cat, basket and box.
 
-  - **Properties and Relations:** It is Jane's birthday, Jane's expectation about John bringing something, the state of the plate being empty, Jane's sigh indicating disappointment.
+  - **Properties and Relations:** John puts the cat on the basket, John remembering where he put the cat, John's expectation that the cat will be on the basket.
 
-  - **Mental States:** Jane's belief and expectation that John would bring the cake to her birthday.
+  - **Mental States:** John's belief and expectation that the cat will be on the basket after he returns.
 
 <br>
   
 FOL helps in maintaining the context and managing the state of a conversation by representing a dialogue state in logical terms. For example:
 
-  - Sigh(Jane)\
-    Empty(Plate)\
-    Birthday(cake)\
-    Bring(John, Cake)\
-    Expect(Jane, John, Bring(John, Cake))
+  - Take(John, cat)\
+    PutOn(John, cat, basket)\
+    Leave(John, room)\
+    GoTo(John, school)\
+    Take(Mark, cat)\
+    PutOn(Mark, cat, box)\
+    Leave(Mark, room)\
+    GoTo(Mark, work)\
+    ComeBack(John)\
+    Enter(John, room)\
+    Thinks(John, On(cat, basket))\
+    NotKnow(John, HappenedDuring(AwayTime))
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/ec1cb248-120d-4443-96be-dce551e647ea">
+<img src="https://github.com/user-attachments/assets/ff692b8a-8f6e-4e8a-9abf-68b36fe27d2a" width="800"/>
 </p>
 
 <br>
@@ -79,4 +86,25 @@ The remainder of this work will specifically focus on how GPT models will implem
 
 <br>
 
-# 
+# Theory of Mind Circuit Discovery
+
+In terms of the internal mechanisms of a language model, a feature is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM sentence). A circuit informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
+
+Humans make predictions about others' thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral observations. These processes are intricate and involve multiple steps, both at the neural and cognitive levels. At the level of a decoder-only transformer model, we can first broadly understand ToM prediction for this specific sentence structure through an interpretable algorithm largely dependent on John's mental state of where he put the cat: 
+
+       - Consider events the subjects have witnessed.
+       - Consider the location of objects based on the subject's last knowledge.
+       - Ignore events that occurred while the subject was absent.
+       - Predict subjects belief about the object's location based on the last event they witnessed.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/2755018d-dd41-4bf7-adb7-d1f3ed087310" width="800"/>
+</p>
+
+<br>
+
+### ToM Circuit Discovery: Identify Relavant Activations & Layers
+
+
