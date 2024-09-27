@@ -111,7 +111,9 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their prediction across layers. The approach will be applied to interpret activations in features, but first to circuit discovery.
 
-Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. The metric used here will be the logit difference, the difference in logit between the indirect object's name and the subject's name (eg, logit(Mary) - logit(John)).
+Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. 
+
+The metric used here will be the logit difference, the difference in logit between the indirect object's name and the subject's name (eg, logit(Mary) - logit(John)).
 
 When evaluating the importance of each model component for the ToM task, we can see interesting behavior in the attention patterns of the 14th attention head in layer 22.
 
