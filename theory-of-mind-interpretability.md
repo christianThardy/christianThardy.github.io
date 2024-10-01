@@ -80,15 +80,33 @@ Pragmatics, usually a key concept in semantics, is focused on how context influe
 
 To obtain contextual understanding we need to know situational context, so an empty plate, a sigh, it being Jane's birthday helps infer that something was expected on the plate on this day. A speakers intention and beliefs, so understanding Jane’s disappointment and what she believes John was supposed to bring, and we need the ability to infer the most likely item that fits Jane’s expectation and the context (e.g., a specific food item like "cake").
 
-ToM prediction heavily relies on the context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
+<br>
 
-The remainder of this work will specifically focus on how GPT models will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across many different heuristics and metrics.
+## So What?
+
+These concepts and processes can *help* explain how humans understand ToM, but are these concepts or processes mimicked in transformers? ToM prediction heavily relies on the context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
+
+The remainder of this work will specifically focus on how GPT models will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics.
 
 <br>
 
 # Theory of Mind Circuit Discovery
 
-The model used in this analysis is from Stanford's Center for Research on Foundation Models (Stanford CRFM) family. The *eowyn-gpt2-medium-x777* model to be exact. It is a decoder-only transformer that has 23 layers and 15 attention heads per attention layer. The focus is the circuit that successfully models the ToM task by understanding the behavior of the attention heads and mlps.
+The model used in this analysis is Gemma-2-2B from Google's family of Gemma models. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/1efe16c2-cf0b-40a3-90df-b190f68b2960" width="250"/>
+</p>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/ecec4cba-66c3-4b05-acfc-132c66804021" width="400"/>
+</p>
+
+<br>
+
+It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer. The broader focus of this analysis is identifying the circuit that successfully models the ToM task, and the narrow focus is indentifying that circuit by understanding the behavior of the attention heads and MLPs.
 
 In terms of the internal mechanisms of a language model, a feature is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM sentence). A circuit informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
 
@@ -107,15 +125,61 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
-### ToM Circuit Discovery: Identify Relavant Activations & Layers
+### ToM Circuit Discovery: Identify Relavant Layers & Activations to the Task
 
-Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied to interpret activations in features, but first to circuit discovery.
+Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to features and circuit discovery.
 
 Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. 
 
-The metric used here will be the logit difference, the difference in logit between the name of the actual location of the object and the name of the believed location of the object: `logit(basket) - logit(box)`.
+The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`.
 
-When deconstructing the residual stream, the logit-lens looks at the residual stream after each layer and calculates the logit difference from there. This simulates what happens if we delete all subsequence layers. The final layernorm are applied to the values in the residual stream and then project them in the logit difference directions.
+We can use the same framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, because indirect object-subject entities can be mapped to original-new location entities.
+
+<br>
+
+```python
+# Decoder-only model performing IOI
+Tokenized prompt: ['<bos>', 'After', ' John', ' and', ' Mary', ' went', ' to', ' the', ' store', ',', ' John', ' gave', ' a', ' bottle', ' of', ' milk', ' to']
+Tokenized answer: [' Mary']
+Performance on answer token:
+Rank: 0        Logit: 18.09 Prob: 70.07% Token: | Mary|
+Top 0th token. Logit: 18.09 Prob: 70.07% Token: | Mary|
+Top 1th token. Logit: 15.38 Prob:  4.67% Token: | the|
+Top 2th token. Logit: 15.35 Prob:  4.54% Token: | John|
+Top 3th token. Logit: 15.25 Prob:  4.11% Token: | them|
+Top 4th token. Logit: 14.84 Prob:  2.73% Token: | his|
+Top 5th token. Logit: 14.06 Prob:  1.24% Token: | her|
+Top 6th token. Logit: 13.54 Prob:  0.74% Token: | a|
+Top 7th token. Logit: 13.52 Prob:  0.73% Token: | their|
+Top 8th token. Logit: 13.13 Prob:  0.49% Token: | Jesus|
+Top 9th token. Logit: 12.97 Prob:  0.42% Token: | him|
+Ranks of the answer tokens: [(' Mary', 0)]
+```
+
+```python
+# Decoder-only model performing ToM
+Tokenized prompt: ['<bos>', 'In', ' the', ' room', ' there', ' are', ' John', ',', ' Mark', ',', ' a', ' cat', ',', ' a', ' box', ',', ' and', ' a', ' basket', '.', ' John', ' takes', ' the', ' cat', ' and', ' puts', ' it', ' on', ' the', ' basket', '.', ' He', ' leaves', ' the', ' room', ' and', ' goes', ' to', ' school', '.', ' While', ' John', ' is', ' away', ',', ' Mark', ' takes', ' the', ' cat', ' off', ' the', ' basket', ' and', ' puts', ' it', ' on', ' the', ' box', '.', ' Mark', ' leaves', ' the', ' room', ' and', ' goes', ' to', ' work', '.', ' John', ' comes', ' back', ' from', ' school', ' and', ' enters', ' the', ' room', '.', ' John', ' looks', ' around', ' the', ' room', '.', ' He', ' doesn', '’', 't', ' know', ' what', ' happened', ' in', ' the', ' room', ' when', ' he', ' was', ' away', '.', ' John', ' thinks', ' the', ' cat', ' is', ' on', ' the']
+Tokenized answer: [' basket']
+Performance on answer token:
+Rank: 0        Logit: 28.59 Prob: 63.25% Token: | basket|
+Top 0th token. Logit: 28.59 Prob: 63.25% Token: | basket|
+Top 1th token. Logit: 27.91 Prob: 32.20% Token: | box|
+Top 2th token. Logit: 24.56 Prob:  1.13% Token: | table|
+Top 3th token. Logit: 23.90 Prob:  0.58% Token: | floor|
+Top 4th token. Logit: 23.69 Prob:  0.47% Token: | cat|
+Top 5th token. Logit: 23.69 Prob:  0.47% Token: | bed|
+Top 6th token. Logit: 23.24 Prob:  0.30% Token: | desk|
+Top 7th token. Logit: 22.92 Prob:  0.22% Token: | ground|
+Top 8th token. Logit: 22.12 Prob:  0.10% Token: | top|
+Top 9th token. Logit: 22.10 Prob:  0.10% Token: | shelf|
+Ranks of the answer tokens: [(' basket', 0)]
+```
+
+<br>
+
+In the IOI task the model distinguishes between indirect and direct objects to predict the name that isn’t the subject of the last clause. In the ToM task, it distinguishes between believed locations of objects and actual locations of objects to understand scenarios involving actions and their sequences to predict the original and new locations of an object.
+
+When deconstructing the residual stream, the logit-lens looks at the residual stream after each layer and calculates the logit difference from there. This simulates what happens if we delete all subsequent layers. The final layernorm are applied to the values in the residual stream and then projected in the logit difference directions.
 
 <br>
 
@@ -125,11 +189,11 @@ When deconstructing the residual stream, the logit-lens looks at the residual st
 
 <br>
 
-What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse after that layer. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (moves information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting?
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting?
 
-In terms of narrowing, is where things get really fun, and now you can start isolating the mechanisms and digging into specific computations, which will give real insights into how the model solves ToM.
+This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model solves ToM.
 
 Repeating the previous analysis, but for each layer by activation reveals how to begin the narrowing process.
 
@@ -141,20 +205,35 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-It looks like only the attention layers matter here. The ToM task, similar to the IOI task is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal complex processing by the MLPs which warrents investivation, the emphasis is on the attention.
+It looks like only the attention layers matter here. The ToM task, similar to the IOI task is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
+<br>
 
+We can break down the output of each attention layer even further by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 12 heads, and each head acts independently and additively to influence the final result.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/3a62bf79-d9cc-4ccc-a455-fcf83bd86e04" width="650"/>
+</p>
+
+<br>
+
+Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads actually matter. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which explains why attention layer 22 is so crucial for performance. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
+
+These heads correspond to some of the name movers and negative name movers discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional name movers and backup name movers.
+
+There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
+
+Second, the presence of negative heads is really surprising—like head 7 at layer 23, which makes the incorrect logit seven times more likely. I don’t fully understand what’s happening there, but the IOI paper touches on a few potential explanations. It's definitely something worth digging into more.
 
 
 <br>
-<br>
-
-When evaluating the importance of each model component for the ToM task, we can see interesting behavior in the attention patterns of the 14th attention head in layer 22.
 
 
 
-<br>
+
 
 
