@@ -113,11 +113,45 @@ Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpretin
 
 Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. 
 
-The metric used here will be the logit difference, the difference in logit between the indirect object's name and the subject's name: `logit(Mary) - logit(John)`.
+The metric used here will be the logit difference, the difference in logit between the name of the actual location of the object and the name of the believed location of the object: `logit(basket) - logit(box)`.
 
-When evaluating the importance of each model component for the ToM task, we can see interesting behavior in the attention patterns of the 14th attention head in layer 22.
+When deconstructing the residual stream, the logit-lens looks at the residual stream after each layer and calculates the logit difference from there. This simulates what happens if we delete all subsequence layers. The final layernorm are applied to the values in the residual stream and then project them in the logit difference directions.
 
 <br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/40724e17-b54b-4d1b-aeff-0cdec72935a4" width="1700"/>
+</p>
+
+<br>
+
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse after that layer. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
+
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (moves information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting?
+
+In terms of narrowing, is where things get really fun, and now you can start isolating the mechanisms and digging into specific computations, which will give real insights into how the model solves ToM.
+
+Repeating the previous analysis, but for each layer by activation reveals how to begin the narrowing process.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/593f2793-f33a-4932-94be-d59a5d03a4d4" width="1700"/>
+</p>
+
+<br>
+
+It looks like only the attention layers matter here. The ToM task, similar to the IOI task is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal complex processing by the MLPs which warrents investivation, the emphasis is on the attention.
+
+What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
+
+
+
+
+<br>
+<br>
+
+When evaluating the importance of each model component for the ToM task, we can see interesting behavior in the attention patterns of the 14th attention head in layer 22.
 
 
 
