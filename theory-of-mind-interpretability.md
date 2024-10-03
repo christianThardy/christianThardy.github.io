@@ -263,7 +263,7 @@ Activation patching is a super useful technique that helps us track which layers
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
 
-This is where activation patching comes in. First introduced in David Bau and Kevin Meng’s ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
+This is where activation patching comes in. First introduced in the ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
 
 Here’s how it works: You run the model twice—once with a clean input that produces the correct answer, and once with a corrupted input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run. Basically, you replace the corrupted activation at a specific point with the corresponding clean activation and then let the model finish the run. The key insight here is that you can measure how much this patch shifts the output toward the correct answer.
 
