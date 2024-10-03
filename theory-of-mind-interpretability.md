@@ -276,7 +276,7 @@ The ability to localize computations like this is a huge win for mechanistic int
 <br>
 
 <p align="center">
-<img src="" width="400"/>
+<img src="https://github.com/user-attachments/assets/aa21ea4f-67e4-4ab6-a373-cac81c8a3ee5" width="700"/>
 <br>
 <small style="font-size: 10px;">Patching into a transformer can be done many different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). We can also get even more granular by patching at particular sequence positions (not shown).</a></small>
 </p>
