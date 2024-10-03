@@ -1,4 +1,4 @@
-# Theory of mind and GPT models
+# Theory of Mind and GPT models
 
 Mechanistic interpretability allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
