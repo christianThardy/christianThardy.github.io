@@ -207,7 +207,7 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-It looks like only the attention layers matter here. The ToM task, similar to the IOI task is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
+It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
@@ -225,11 +225,77 @@ We can break down the output of each attention layer even further by looking at 
 
 Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads actually matter. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which explains why attention layer 22 is so crucial for performance. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
 
-These heads correspond to some of the name movers and negative name movers discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional name movers and backup name movers.
+These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
 Second, the presence of negative heads is really surprising—like head 7 at layer 23, which makes the incorrect logit seven times more likely. I don’t fully understand what’s happening there, but the IOI paper touches on a few potential explanations. It's definitely something worth digging into more.
+
+<br>
+
+### ToM Circuit Discovery: Attention Analysis
+
+Attention heads are super valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
+
+To help with this, I used the circuitsvis library to visualize these attention patterns. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) based on their direct contribution to the logits.
+
+One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation.
+
+Understanding this distinction is key when studying how attention heads operate.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/527153fb-f75d-4ec2-a3e3-52a459740d41" width="1000"/>
+</p>
+
+<br>
+
+Looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
+
+We won’t dive into a full hypothesis about how the model works just yet—that’s coming up after the next section—but this is the kind of question that sets the stage for figuring out the underlying mechanisms.
+
+<br>
+
+### ToM Circuit Discovery: Activation Patching
+
+Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
+
+The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
+
+This is where activation patching comes in. First introduced in David Bau and Kevin Meng’s ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
+
+Here’s how it works: You run the model twice—once with a clean input that produces the correct answer, and once with a corrupted input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run. Basically, you replace the corrupted activation at a specific point with the corresponding clean activation and then let the model finish the run. The key insight here is that you can measure how much this patch shifts the output toward the correct answer.
+
+By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
+
+In other words, this is a noising algorithm (as opposed to the denoising focus we had in the last section).
+
+The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit that’s driving the behavior.
+
+<br>
+
+<p align="center">
+<img src="" width="400"/>
+<br>
+<small style="font-size: 10px;">Patching into a transformer can be done many different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). We can also get even more granular by patching at particular sequence positions (not shown).</a></small>
+</p>
+
+<br>
+
+We can think of this activation patching algorithm as a form of noising, since we’re running the model on a clean input and introducing noise by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean input, effectively removing noise.
+
+So, when would you use noising versus denoising? It really depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
+
+For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—it’s generally useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
+
+
+<br>
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/90a49f75-99a2-42ee-a619-5c9d4ec0d8a5" width="650"/>
+</p>
 
 
 <br>
