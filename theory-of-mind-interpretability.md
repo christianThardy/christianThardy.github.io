@@ -274,9 +274,63 @@ Understanding this distinction is key when studying how attention heads operate.
 
 Looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
-We won’t dive into a full hypothesis about how the model works just yet—that’s coming up after the next section—but this is the kind of question that sets the stage for figuring out the underlying mechanisms.
+We can also start to see how our earlier observations on FOL, semantics, and pragmatics play out within the mechanism.
 
-We can also infer our initial observations regarding FOL, semantics and pragmatics...
+Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/9a91c747-f3f6-47ad-8ecd-5124dbcbc79f"/>
+<img src="https://github.com/user-attachments/assets/0492e03e-66de-49f3-af70-45918d8efc93"/>
+<img src="https://github.com/user-attachments/assets/64a36cf9-5bc7-4212-ba60-08f08eb4a12a"/>
+<img src="https://github.com/user-attachments/assets/f680eed9-8fe9-4636-9bd2-736f4a10424c"/>
+</p>
+
+<br>
+
+As `the` is attending to basket with a high positive logit value, we can see that the model infers that `John` is aware of the room's initial state, but is not aware of what has changed when he was away. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/579881a9-045c-4938-8fe7-4da932456770"/>
+</p>
+
+<br>
+
+Semantically, in the second instance of the entity `John` in the sentence, we can see the model attends `John` to every existing entity in the initial state.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/fe668b4a-0b9f-411b-a1fd-93313c181c1c"/>
+</p>
+
+<br>
+
+The effects of the actions of `John`, taking and leaving on the models attention of the entities initially mentioned. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/7379cba1-9af1-48d4-94bc-e3e271c2650b"/>
+  <img src="https://github.com/user-attachments/assets/9d81a1aa-2a3e-4a26-8fea-26c02fde1f2e"/>
+</p>
+
+<br>
+
+How `from` in `...John comes back from...` attends to `school` and we can see how John coming back from school is attending to previous tokens that represent John's action state and the initial state of the room before he left.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/2a42142b-e522-4469-91b4-e8470dba85da"/>
+</p>
+
+<br>
+
+We won’t dive into a full hypothesis about how the model works just yet—that’s coming up after the next section—but these are the kind of questions and analysis that sets the stage for figuring out the underlying mechanisms.
 
 <br>
 
