@@ -266,22 +266,19 @@ To help with this, I used the circuitsvis library to visualize these attention p
 
 One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. 
 
-But I think its also important to consider that when an attention head attends to a token, it might be accessing abstract information associated with that position rather than the token itself. 
+More concretely, I think when an attention head is attending to a token, it might be accessing abstract information stored at that position.
 
-For example, The residual stream at the position of a period might store a summary representation of the entire sentence. When an attention head attends to the period, it's accessing this summary, not the punctuation mark itself.
+In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
-In transformer architectures, each token position maintains a residual stream—a vector that carries forward information through the layers. This stream aggregates not only the token embedding but also the outputs from previous attention heads and feedforward networks. By the later layers, the residual stream can encapsulate high-level abstractions, such as syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. Attention heads read from the residual streams at various positions and write to the residual stream at the target position. They can thus move complex, context-rich information from one position to another, independent of the literal token at those positions.
+So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
-The model builds representations that reflect the hierarchical nature of language (phrases within sentences, sentences within paragraphs). Temporal Sequences: It keeps track of event sequences, which is essential for tasks like ToM that depend on the order of events and character actions. Attention heads act as routers, directing specific pieces of information where they are needed for the task at hand.
-Abstracted Concepts: They can focus on and transfer concepts like "the last place John saw the cat," which are not tied to a single token but are encoded in the residual stream.
+While a period at the end of a sentence might carry a summary of the entire sentence in its residual stream, this stream holds not just the embedding of the token itself but also complex representations built up over multiple layers and attention blocks, and the information stored in the residual stream at that position should include syntactic roles, semantic meanings, or even summaries of larger text segments. 
 
-So while a period at the end of a sentence might carry a summary of the entire sentence in its residual stream, this stream holds not just the embedding of the token itself but also complex representations built up over multiple layers, and the information stored in the residual stream at that position can include syntactic roles, semantic meanings, or even summaries of larger text segments. 
+For example, take a period at the end of a sentence. By that point, the residual stream at that position might hold a summary of the entire sentence, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring syntactic structures, semantic roles, or higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are critical for tasks like ToM.
 
-So attention patterns can be viewed as mechanisms for transferring complex representations between positions, and this involves recognizing that the information being moved can be syntactic structures, semantic roles, or higher-level abstractions, such as hierarchical structures and temporal sequences, essential for tasks like ToM, and allows models to understand nested structures and dependencies.
+This kind of hierarchical, nested structure in the residual stream is also key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, ToM tasks require the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
 
-This relates to the IOI task, because it requires syntactic parsing to identify grammatical roles. The model must understand relationships between subjects, objects, and indirect objects, which involves hierarchical syntactic structures represented in the residual streams. And the ToM tasks involves tracking characters' knowledge states over time. The model must maintain and update representations of what each character knows or believes, which are abstract concepts stored in the residual streams.
-
-For these reasons, not being fooled by an attention analysis is tricking, and not only focusing on a single head paying attention to a token itself is key when studying how attention heads operate.
+In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. What we should be looking at is the information stored in the residual streams at that position—often abstract concepts or higher-level representations—rather than just assuming the attention head is simply "attending" to the token itself.
 
 <br>
 
@@ -351,7 +348,7 @@ What’s really interesting is how the actions of `John`—both taking and leavi
 
 It's entirely possible the model is balancing its handling of both semantic meaning and the logical relations between entities, and this is reflected in its attention patterns.
 
-We won’t dive into a full hypothesis about how the model works just yet—that’s coming up—but these are the kind of questions and observations that set the stage for figuring out the underlying mechanisms.
+We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and observations that set the stage for figuring out the underlying mechanisms.
 
 <br>
 
@@ -376,7 +373,7 @@ The ability to localize computations like this is a huge win for mechanistic int
 <p align="center">
 <img src="https://github.com/user-attachments/assets/aa21ea4f-67e4-4ab6-a373-cac81c8a3ee5" width="700"/>
 <br>
-<small style="font-size: 10px;">Patching into a transformer can be done many different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). We can also get even more granular by patching at particular sequence positions (not shown).</a></small>
+<small style="font-size: 10px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</a></small>
 </p>
 
 <br>
@@ -389,6 +386,9 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 
 <br>
+
+### ToM Circuit Discovery: ToM Circuit
+
 <br>
 
 <p align="center">
