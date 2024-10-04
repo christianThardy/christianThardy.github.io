@@ -268,6 +268,12 @@ One common mistake when interpreting attention patterns is to assume that the he
 
 More concretely, I think when an attention head is attending to a token, it might be accessing abstract information stored at that position.
 
+<br>
+
+<insert deconstructed transformer here highlighting attention, mlp, residual stream positions, use image from  Activation Patching section as a template>
+
+<br>
+
 In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
 So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
