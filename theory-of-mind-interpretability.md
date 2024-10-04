@@ -270,7 +270,9 @@ More concretely, I think when an attention head is attending to a token, it migh
 
 <br>
 
-<insert deconstructed transformer here highlighting attention, mlp, residual stream positions, use image from  Activation Patching section as a template>
+<p align="center">
+<img src="https://github.com/user-attachments/assets/c64273c7-5d0b-4efc-bbd1-b0ed05842aa5" width="280"/>
+</p>
 
 <br>
 
