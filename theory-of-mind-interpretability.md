@@ -2,7 +2,7 @@
 
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
-Given my current focus on LLMs and my interest in psychology, I've been asking myself how do decoder-only language models perform theory of mind tasks. I have a theory that some simplification of abstract reasoning tasks like the theory of mind (ToM) task can be interpreted from the inner mechanisms of a GPT model to understand its internal representations of ToM tasks. If the circuit (algorithm) that completes this task can be reverse engineered, what makes that possible in a GPT model?
+Given my current focus on LLMs and my interest in psychology, I've been asking myself, how do decoder-only language models perform theory of mind tasks? I have a theory that some simplification of abstract reasoning tasks like the theory of mind (ToM) task can be interpreted from the inner mechanisms of a GPT model to understand its internal representations of ToM tasks. If the circuit (algorithm) that completes this task can be reverse engineered, what makes that possible in a GPT model?
 
 Humans are capable of making inferences about the mental state of characters in a ToM sentence. These inferences require syntactic or prepositional logic, but what else? Let's first explore the linguistic principles of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
 
