@@ -276,13 +276,11 @@ Understanding this distinction is key when studying how attention heads operate.
 
 <br>
 
-Looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
+While keeping that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
-We can also start to see how our earlier observations on FOL, semantics, and pragmatics play out within the mechanism.
+We can also start to see how our earlier observations on FOL, semantics, and pragmatics could potentially play out within the mechanism. Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
 
-Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
-
-When it comes to FOL properties and relations, the model shows clear attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it’s representing a key relation between the subject, object and location anchored to specific instances of interaction.
+When it comes to FOL properties and relations, the model shows attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it could be representing a key relation between the subject, object and location anchored to specific instances of interaction.
 
 <br>
 
@@ -295,7 +293,7 @@ When it comes to FOL properties and relations, the model shows clear attention p
 
 <br>
 
-Next, the fact that `the` attends to `basket` with a high positive logit attribution shows that the model is inferring something about John’s awareness of the room's initial state, but also that he doesn’t have knowledge of what changed while he was away—this fits into a pragmatic understanding of the situation.
+Next, the fact that `the` attends to `basket` with a high positive logit attribution shows that the model could be inferring something about John’s awareness of the room's initial state, but also that he doesn’t have knowledge of what changed while he was away—this fits into a pragmatic understanding of the situation.
 
 <br>
 
@@ -305,7 +303,7 @@ Next, the fact that `the` attends to `basket` with a high positive logit attribu
 
 <br>
 
-Semantically, when the model processes the second mention of `John` in the sentence, we can see that it’s attending `John` to every entity in the initial state. This suggests the model is handling coreference resolution, linking `John` to the entities that were present at the start of the model's initial state of the scenario.
+Semantically, when the model processes the second mention of `John` in the sentence, we can see that it’s attending `John` to every entity in the initial state. This could suggest the model is handling coreference resolution, linking `John` to the entities that were present at the start of the model's initial state of the scenario.
 
 <br>
 
@@ -326,7 +324,7 @@ The effects of the actions of `John`, taking and leaving on the models attention
 
 <br>
 
-What’s really interesting is how the actions of `John`—both taking and leaving—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, showing how it integrates information across different parts of the sequence.
+What’s really interesting is how the actions of `John`—both taking and leaving—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
 
 <br>
 
@@ -336,9 +334,9 @@ What’s really interesting is how the actions of `John`—both taking and leavi
 
 <br>
 
-In other words, the model is balancing its handling of both semantic meaning and the logical relations between entities, and we can see this reflected in its attention patterns.
+It's entirely possible the model is balancing its handling of both semantic meaning and the logical relations between entities, and this is reflected in its attention patterns.
 
-We won’t dive into a full hypothesis about how the model works just yet—that’s coming up—but these are the kind of questions and analysis that sets the stage for figuring out the underlying mechanisms.
+We won’t dive into a full hypothesis about how the model works just yet—that’s coming up—but these are the kind of questions and observations that set the stage for figuring out the underlying mechanisms.
 
 <br>
 
