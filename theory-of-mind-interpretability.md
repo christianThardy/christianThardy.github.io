@@ -1,8 +1,8 @@
 # Theory of Mind and GPT models
 
-Mechanistic interpretability allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
+<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
-Given my current focus on LLMs and my interest in psychology, I've been asking myself how do decoder-only language models perform theory of mind tasks. I have a theory that some simplification of abstract reasoning tasks like the theory of mind (ToM) task can be interpreted from the inner mechanisms of a GPT model to understand its internal representations of ToM tasks. If the circuit (algorithm) that completes this task can be reverse engineered, what makes that possible in a GPT-2 model?
+Given my current focus on LLMs and my interest in psychology, I've been asking myself how do decoder-only language models perform theory of mind tasks. I have a theory that some simplification of abstract reasoning tasks like the theory of mind (ToM) task can be interpreted from the inner mechanisms of a GPT model to understand its internal representations of ToM tasks. If the circuit (algorithm) that completes this task can be reverse engineered, what makes that possible in a GPT model?
 
 Humans are capable of making inferences about the mental state of characters in a ToM sentence. These inferences require syntactic or prepositional logic, but what else? Let's first explore the linguistic phenomena of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
 
@@ -278,6 +278,8 @@ We can also start to see how our earlier observations on FOL, semantics, and pra
 
 Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
 
+When it comes to FOL properties and relations, the model shows clear attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it’s representing a key relation between the subject, object and location anchored to specific instances of interaction.
+
 <br>
 
 <p align="center">
@@ -289,7 +291,7 @@ Regarding FOL properties and relations, the model is attending to instances of `
 
 <br>
 
-As `the` is attending to basket with a high positive logit value, we can see that the model infers that `John` is aware of the room's initial state, but is not aware of what has changed when he was away. 
+Next, the fact that `the` attends to `basket` with a high positive logit attribution shows that the model is inferring something about John’s awareness of the room's initial state, but also that he doesn’t have knowledge of what changed while he was away—this fits into a pragmatic understanding of the situation.
 
 <br>
 
@@ -299,7 +301,7 @@ As `the` is attending to basket with a high positive logit value, we can see tha
 
 <br>
 
-Semantically, in the second instance of the entity `John` in the sentence, we can see the model attends `John` to every existing entity in the initial state.
+Semantically, when the model processes the second mention of `John` in the sentence, we can see that it’s attending `John` to every entity in the initial state. This suggests the model is handling coreference resolution, linking `John` to the entities that were present at the start of the model's initial state of the scenario.
 
 <br>
 
@@ -320,7 +322,7 @@ The effects of the actions of `John`, taking and leaving on the models attention
 
 <br>
 
-How `from` in `...John comes back from...` attends to `school` and we can see how John coming back from school is attending to previous tokens that represent John's action state and the initial state of the room before he left.
+What’s really interesting is how the actions of `John`—both taking and leaving—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, showing how it integrates information across different parts of the sequence.
 
 <br>
 
@@ -330,7 +332,9 @@ How `from` in `...John comes back from...` attends to `school` and we can see ho
 
 <br>
 
-We won’t dive into a full hypothesis about how the model works just yet—that’s coming up after the next section—but these are the kind of questions and analysis that sets the stage for figuring out the underlying mechanisms.
+In other words, the model is balancing its handling of both semantic meaning and the logical relations between entities, and we can see this reflected in its attention patterns.
+
+We won’t dive into a full hypothesis about how the model works just yet—that’s coming up—but these are the kind of questions and analysis that sets the stage for figuring out the underlying mechanisms.
 
 <br>
 
