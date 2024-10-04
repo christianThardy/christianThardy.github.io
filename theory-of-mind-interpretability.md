@@ -344,7 +344,7 @@ The effects of the actions of `John`, taking and leaving on the models attention
 
 <br>
 
-What’s really interesting is how the actions of `John`—both taking and leaving—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
+What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
 
 <br>
 
