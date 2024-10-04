@@ -14,7 +14,7 @@ Sentences where you can make inferences require FOL, semantics and pragmatics. I
 
 Let's take the sentence: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
-In the context of ToM, to make the correct prediction *basket*, the model needs to understand:
+In the context of ToM, to make the correct prediction `basket`, the model needs to understand:
 
   - **Entities:** Mark, John, cat, basket and box.
 
@@ -99,7 +99,11 @@ In the context of semantics, understanding and interpreting this passage require
 
 Pragmatics, a key concept in semantics, focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example sentence sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
 
-To obtain contextual understanding, we need to know the situational context—John placed the cat on the basket before leaving for school, and he is unaware that Mark moved the cat to the box while he was away. Understanding John's beliefs and what he expects to find upon his return is crucial. We need the ability to infer the most likely location that fits John's expectation and the context (e.g., the "basket"). This involves recognizing that John thinks the cat is still where he left it, demonstrating the importance of pragmatics in interpreting language and predicting intended meaning.
+To obtain contextual understanding, we need to know the situational context—
+
+`John` placed the `cat` on the `basket` before leaving for `school`, and he is unaware that `Mark` moved the `cat` to the `box` while he was away. 
+
+Understanding John's beliefs and what he expects to find upon his return is crucial. We need the ability to infer the most likely location that fits John's expectation and the context (e.g., the `basket`). This involves recognizing that `John` thinks the `cat` is still where he left it, demonstrating the importance of pragmatics in interpreting language and predicting intended meaning.
 
 <br>
 
@@ -156,7 +160,7 @@ Causal interventions in the context of this analysis give way to techniques so t
 
 The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`.
 
-We can use the same framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, because indirect object-subject entities can be mapped to original-new location entities.
+We can use the same circuit finding framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, because indirect object-subject entities can be mapped to original-new location entities.
 
 <br>
 
