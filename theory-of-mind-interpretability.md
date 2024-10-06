@@ -2,9 +2,9 @@
 
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
-Given my current focus on LLMs and my interest in psychology, I've been asking myself, how do decoder-only language models perform and solve theory of mind tasks? What is the model doing when it is performing and *solving* ToM tasks? 
+Given my current focus on transformer-based LLMs, I've been asking myself, how do decoder-only language models perform and solve theory of mind (ToM) tasks? What is the model doing when it is performing and *solving* ToM tasks? 
 
-I think that that some simplification (eg. distributional semantics, architecture specific) of abstract reasoning tasks like the theory of mind (ToM) task can be interpreted from the inner mechanisms of a GPT model to understand its internal representations of ToM tasks. If the circuit (algorithm) that completes this task can be reverse engineered, what makes that possible in a GPT model?
+I think that that some simplification of abstract reasoning tasks like ToM can be interpreted as an algorithm (circuit) from the inner mechanisms of a GPT model and we can understand its internal representations while it is performing this task.
 
 Humans are capable of making inferences about the mental state of characters in a ToM sentence. These inferences require syntactic or prepositional logic, but what else? Let's first explore the linguistic principles of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
 
@@ -12,9 +12,9 @@ Humans are capable of making inferences about the mental state of characters in 
 
 # First-Order Logic
 
-Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
+Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
 
-Let's take the sentence: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
+Let's take the passage: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
 In the context of ToM, to make the correct prediction `basket`, the model needs to understand:
 
@@ -59,7 +59,7 @@ So its possible that at some level, ToM prediction in LLMs aligns with first-ord
 
 Semantics refers to the study and representation of meaning in language. Semantics deals with how words, phrases, and sentences convey meaning, and how this meaning is interpreted by humans and machines. It focuses on the inherent meaning of words and sentences. Semantics encompasses a lot ranging from compositional semantics, semantic similarity and even word embeddings/distributional semantics. 
 
-For example, to understand the semantics of the following passage, we need to identify the entities, actions, relationships, and implied meanings. To do all of this we need to identify all entities and actions in the sentence.
+For example, to understand the semantics of the following passage linguistically, we need to identify the entities, actions, relationships, and implied meanings. To do all of this we need to identify all entities and actions in the sentence.
 
   - **Entities:** John, Mark, cat, basket, box, room
   - **Actions:** takes, puts, leaves, goes, comes back, enters, looks, doesn't know, thinks
@@ -99,7 +99,7 @@ In the context of semantics, understanding and interpreting this passage require
 
 # Pragmatics
 
-Pragmatics, a key concept in semantics, focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example sentence sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
+Pragmatics, a key concept in semantics, focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example passage sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
 
 To obtain contextual understanding, we need to know the situational context—
 
@@ -111,9 +111,11 @@ Understanding John's beliefs and what he expects to find upon his return is cruc
 
 ## So What?
 
-These concepts and processes can *help* explain how humans understand ToM, but are these concepts or processes mimicked in transformers? ToM prediction heavily relies on the context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
+These concepts and processes can *help* explain how humans understand ToM, but are these concepts or processes mimicked in transformers? 
 
-The remainder of this work will specifically focus on how GPT models will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics.
+ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
+
+The remainder of this work will specifically focus on how GPT models will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics, and whether or not these high level linguistic concepts are appropriate or not to think about how language models perform ToM.
 
 <br>
 
@@ -135,11 +137,11 @@ The model used in this analysis is Gemma-2-2B from Google's family of Gemma mode
 
 <br>
 
-It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer. The broader focus of this analysis is identifying the circuit that successfully models the ToM task, and the narrow focus is indentifying that circuit by understanding the behavior of the attention heads and MLPs.
+It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer. The broader focus of this analysis is identifying the circuit that successfully models the ToM task, and the narrow focus is indentifying that circuit by understanding the behavior of the attention heads, MLPs and residual streams.
 
-In terms of the internal mechanisms of a language model, a feature is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM sentence). A circuit informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
+In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM sentence). A **circuit** informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
 
-Humans make predictions about others' thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral observations. These processes are intricate and involve multiple steps, both at the neural and cognitive levels. At the level of a decoder-only transformer model, we can first broadly understand ToM prediction for this specific sentence structure through an interpretable algorithm largely dependent on John's mental state of where he put the cat: 
+Humans make predictions about others' thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral observations. These processes are intricate and involve multiple steps, both at the neural and cognitive levels. At the level of a decoder-only transformer model, we can first broadly begin to understand ToM prediction for this specific passage through a simple interpretable algorithm largely dependent on John's mental state of where he put the cat: 
 
        - Consider events the subjects have witnessed.
        - Consider the location of objects based on the subject's last knowledge.
@@ -162,7 +164,7 @@ Causal interventions in the context of this analysis give way to techniques so t
 
 The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`.
 
-We can use the same circuit finding framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, because indirect object-subject entities can be mapped to original-new location entities.
+We can use the same circuit finding framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, as indirect object-subject entities can be mapped to original-new location entities.
 
 <br>
 
@@ -218,11 +220,11 @@ When deconstructing the residual stream, the logit-lens looks at the residual st
 
 <br>
 
-What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
 
 So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting?
 
-This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model solves ToM.
+This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
 
 Repeating the previous analysis, but for each layer by activation reveals how to begin the narrowing process.
 
@@ -238,9 +240,7 @@ It looks like only the attention layers matter here. The ToM task, similar to th
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
-<br>
-
-We can break down the output of each attention layer even further by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 12 heads, and each head acts independently and additively to influence the final result.
+We can break down the output of each attention layer even further by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 7 heads, and each head acts independently and additively to influence the final result.
 
 <br>
 
@@ -264,7 +264,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 Attention heads are super valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
 
-To help with this, I used the circuitsvis library to visualize these attention patterns. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) based on their direct contribution to the logits.
+To help with this, I used the circuitsvis library to visualize attention patterns. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
 
 One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. 
 
@@ -278,7 +278,7 @@ More concretely, I think when an attention head is attending to a token, it migh
 
 <br>
 
-In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
+In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. In other words, there should be some rich compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
 So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
