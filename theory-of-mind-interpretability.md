@@ -14,7 +14,7 @@ Humans are capable of making inferences about the mental state of characters in 
 
 Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
 
-Let's take the passage: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
+Let's take this false belief passage: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
 In the context of ToM, to make the correct prediction `basket`, the model needs to understand:
 
