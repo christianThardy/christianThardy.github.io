@@ -2,15 +2,25 @@
 
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
-Given my current focus on transformer-based LLMs, I've been asking myself, how do decoder-only language models perform and solve theory of mind (ToM) tasks? What is the model doing when it is performing and *solving* ToM tasks? 
+Given my current focus on transformer-based LLMs and theory of mind (ToM), I've been asking myself many core questions:
 
-I think that that some simplification of abstract reasoning tasks like ToM can be interpreted as an algorithm (circuit) from the inner mechanisms of a GPT model and we can understand its internal representations while it is performing this task.
+How exactly do decoder-only language models (DOLMs) perform and solve ToM tasks? What is the model doing when it is performing and *solving* ToM tasks? What’s the model actually doing when it seems to be solving these tasks Given the algorithms that the model uses to enable ToM tasks to be solved, is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a human subject to determine its level of attained ToM? 
 
-Humans are capable of making inferences about the mental state of characters in a ToM sentence. These inferences require syntactic or prepositional logic, but what else? Let's first explore the linguistic principles of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
+One way to think about this is through frameworks like <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space, eg. beliefs, intentions, desires, emotions, knowledge, percepts and non-literal communication), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, percepts, and non-literal communication. But is this the best approach for understanding model behavior? Or can we gain more clarity by zooming in and analyzing the internal mechanisms of DOLMs that enable ToM capabilities?
+
+Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (I'm intentionally ignoring emotions and cultural norms)? And what’s the burden of proof here? If we find a clear algorithmic process that DOLMs implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM? Or could it be that the algorithm itself is just the way these models have learned to represent the abstract reasoning that ToM requires?
+
+Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve ToM tasks? 
+
+There's always the argument of how brittle data can be. That new, unseen ToM data could "break" the model—that it would struggle on data it hasn’t been explicitly trained on. But even beyond that, do the mechanisms for performing and solving ToM remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM in DOLMs may be harder to fully resolve due to our limited understanding of both ToM and the inherent limitations of DOLMs and datasets.
+
+While I'm skeptical about why models are not performing ToM and why models are performing ToM, my aim to show that some of the abstract reasoning involved in ToM tasks can be simplified into a form of interpretable algorithm (or circuit) derived from the internal mechanisms of a DOLM. By breaking down these mechanisms, we might better understand how these models engage with ToM tasks.
 
 <br>
 
 # First-Order Logic
+
+Humans are capable of making inferences about the mental state of characters in a ToM sentence. At a conceptual level, these inferences require syntactic or prepositional logic, but what else? Let's explore the linguistic principles of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
 
 Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
 
@@ -111,7 +121,7 @@ Understanding John's beliefs and what he expects to find upon his return is cruc
 
 ## So What?
 
-These concepts and processes can *help* explain how humans understand ToM, but are these concepts or processes mimicked in transformers? 
+These concepts and processes can *help* explain how humans can perform ToM linguistically, but are these concepts or processes mimicked in transformers? 
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
 
