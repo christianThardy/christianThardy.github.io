@@ -290,6 +290,14 @@ More concretely, I think when an attention head is attending to a token, it migh
 
 <br>
 
+
+
+(Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
+
+Atten and mlps read in information from the residual stream, apply edits to the input based on how it functions and then puts that edited information (new information) back into the residual stream. They only read and write from the stream with linear operations(addition), so the residual stream is the sun of the outputs of every layer. This means the input to any layer can be decomposed to the sim of a bunch of operations that correspond to different mechanisms inside the transformer
+
+
+
 In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers and must go through this stream. It captures everything the model has "thought" so far, so it will contain everything important going on in the model.
 
 This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. In other words, there should be some rich compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
