@@ -2,19 +2,21 @@
 
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
 
-Given my current focus on transformer-based LLMs and theory of mind (ToM), I've been asking myself many core questions:
+Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
-How exactly do decoder-only language models (DOLMs) perform and solve ToM tasks? What is the model doing when it is performing and *solving* ToM tasks? What’s the model actually doing when it seems to be solving these tasks Given the algorithms that the model uses to enable ToM tasks to be solved, is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a human subject to determine its level of attained ToM? 
+How exactly do decoder-only language models (DOLMs) perform and solve ToM tasks? What is the model doing when it is performing and *solving* ToM? What’s the model actually doing when it seems to be solving these tasks, given the algorithms that the model uses to enable ToM tasks to be solved, is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a human subject to determine its level of attained ToM? 
 
-One way to think about this is through frameworks like <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space, eg. beliefs, intentions, desires, emotions, knowledge, percepts and non-literal communication), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, percepts, and non-literal communication. But is this the best approach for understanding model behavior? Or can we gain more clarity by zooming in and analyzing the internal mechanisms of DOLMs that enable ToM capabilities?
+One way to think about this is through frameworks like <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. 
 
-Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (I'm intentionally ignoring emotions and cultural norms)? And what’s the burden of proof here? If we find a clear algorithmic process that DOLMs implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM? Or could it be that the algorithm itself is just the way these models have learned to represent the abstract reasoning that ToM requires?
+But is this the best approach for understanding model behavior? Or can we gain more clarity by zooming in and analyzing the internal mechanisms of DOLMs that enable ToM capabilities? What’s the real burden of proof for ToM? If we find a clear algorithmic process that DOLMs implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM? Or could it be that the algorithm itself is just the way these models have learned to represent the abstract reasoning that ToM requires?
 
-Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve ToM tasks? 
+Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. 
 
-There's always the argument of how brittle data can be. That new, unseen ToM data could "break" the model—that it would struggle on data it hasn’t been explicitly trained on. But even beyond that, do the mechanisms for performing and solving ToM remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM in DOLMs may be harder to fully resolve due to our limited understanding of both ToM and the inherent limitations of DOLMs and datasets.
+If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) at the cellular level of the brain? As it turns out we do, and guess what? Its compositional. Although, how linguistic and semantic information is represented at the basic computational level of individual neurons during natural language comprehension in the human brain, remains undefined.
 
-While I'm skeptical about why models are not performing ToM and why models are performing ToM, my aim to show that some of the abstract reasoning involved in ToM tasks can be simplified into a form of interpretable algorithm (or circuit) derived from the internal mechanisms of a DOLM. By breaking down these mechanisms, we might better understand how these models engage with ToM tasks.
+There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. That new, unseen ToM data could "break" the model—that it would struggle on data it hasn’t been explicitly trained on. But even beyond that, do the mechanisms for performing and solving ToM in DOLMs remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM in DOLMs may be harder to fully resolve due to our understanding of ToM and the inherent limitations of DOLMs and datasets.
+
+While I'm skeptical about why models are not performing ToM and why models are performing ToM, my aim to show that some of the abstract reasoning involved in ToM tasks can be simplified into an interpretable algorithm (or circuit) derived from the internal mechanisms of a DOLM. By breaking down these mechanisms, we might better understand how these models engage with ToM tasks.
 
 <br>
 
@@ -270,9 +272,9 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 <br>
 
-### ToM Circuit Discovery: Attention Analysis
+### ToM Circuit Discovery: Residual Stream and Attention Analysis
 
-Attention heads are super valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
+Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
 
 To help with this, I used the circuitsvis library to visualize attention patterns. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
 
@@ -419,6 +421,46 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 
 <br>
+
+<br>
+
+# references:
+
+Ullman, *Large Language Models Fail on Trivial Alterations to Theory-of-Mind Tasks.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Ullman" rel="nofollow">1</a>]
+
+Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">2</a>]
+
+Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>]
+
+Oguntola, *Deep Interpretable Models of Theory of Mind.*  CarnegieMellon University. 2021.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Oguntola" rel="nofollow">4</a>]
+
+Le, *Revisiting the Evaluation of Theory of Mind through Question Answering.* Facebook AI Research. 2019.[<a href="https://aclanthology.org/D19-1598.pdf" title="Le" rel="nofollow">5</a>]
+
+Ma, *Towards A Holistic Landscape of Situated Theory of Mind in Large Language Models.* University of Michigan. 2023.[<a href="https://arxiv.org/pdf/2310.19619" title="Ma" rel="nofollow">6</a>]
+
+Jamali, *Unveiling theory of mind in large language models: A parallel tosingle neurons in the human brain.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">7</a>]
+
+Nguyen, *Language Models are Bounded Pragmatic Speakers: Understanding RLHF from a Bayesian Cognitive Modeling Perspective.* 2024.[<a href="https://arxiv.org/pdf/2305.17760" title="Nguyen" rel="nofollow">8</a>]
+
+Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">9</a>] 
+
+Htut, *Do Attention Heads in BERT Track Syntactic Dependencies?* NYU. 2019.[<a href="https://arxiv.org/pdf/1911.12246" title="Htut" rel="nofollow">10</a>]
+
+Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">11</a>]
+
+Yun, *Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors.* Facebook AI Research, UC Berkley, NYU. 2023.[<a href="https://arxiv.org/pdf/2103.15949" title="Yun" rel="nofollow">12</a>]
+
+Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https://www.lesswrong.com/posts/Q76CpqHeEMykKpFdB/really-strong-features-found-in-residual-stream" title="Riggs" rel="nofollow">13</a>]
+
+Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">14</a>]
+
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">15</a>]
+
+Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">16</a>]
+
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">17</a>]
+
+
 
 
 
