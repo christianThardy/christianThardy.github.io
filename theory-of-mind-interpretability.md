@@ -12,7 +12,7 @@ But is this the best approach for understanding model behavior? Or can we gain m
 
 Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. 
 
-If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) at the cellular level of the brain? As it turns out we do, and guess what? Its compositional. Although, how linguistic and semantic information is represented at the basic computational level of individual neurons during natural language comprehension in the human brain, remains undefined.
+If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) at the cellular level of the brain? As it turns out we might, and guess what? Its compositional[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>].
 
 There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. That new, unseen ToM data could "break" the model—that it would struggle on data it hasn’t been explicitly trained on. But even beyond that, do the mechanisms for performing and solving ToM in DOLMs remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM in DOLMs may be harder to fully resolve due to our understanding of ToM and the inherent limitations of DOLMs and datasets.
 
@@ -295,6 +295,8 @@ More concretely, I think when an attention head is attending to a token, it migh
 (Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
 
 Atten and mlps read in information from the residual stream, apply edits to the input based on how it functions and then puts that edited information (new information) back into the residual stream. They only read and write from the stream with linear operations(addition), so the residual stream is the sun of the outputs of every layer. This means the input to any layer can be decomposed to the sim of a bunch of operations that correspond to different mechanisms inside the transformer
+
+(be mindful of directions in the residual stream space that influence which heads move information where and between mechanisms based on the similarity of those directions in other mechanisms and itself)
 
 
 
