@@ -1,6 +1,6 @@
 # Theory of Mind and GPT models
 
-<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks.
+<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path in a model that goes from the input to the output, identifying which paths through the model matter, and then try to decompose a path into pieces between different parts of the model that we expect to be interpretable. 
 
 Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
@@ -274,7 +274,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 <br>
 
-### ToM Circuit Discovery: Residual Stream and Attention Analysis
+### ToM Circuit Discovery: The Residual Stream and Attention Analysis
 
 Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
 
@@ -296,9 +296,28 @@ More concretely, I think when an attention head is attending to a token, it migh
 
 (Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
 
-Atten and mlps read in information from the residual stream, apply edits to the input based on how it functions and then puts that edited information (new information) back into the residual stream. They only read and write from the stream with linear operations(addition), so the residual stream is the sun of the outputs of every layer. This means the input to any layer can be decomposed to the sim of a bunch of operations that correspond to different mechanisms inside the transformer
+Atten and mlps read in information from the residual stream, apply edits to the input based on how it functions and then puts that edited information (new information) back into the residual stream. They only read and write from the stream with linear operations(addition), so the residual stream is the sun of the outputs of every layer. 
 
-(be mindful of directions in the residual stream space that influence which heads move information where and between mechanisms based on the similarity of those directions in other mechanisms and itself)
+We only read and write from the residual stream with linear operations (addition). This means the input to any layer can be decomposed to the sum of the output of a bunch of operations that correspond to different mechanisms inside the transformer.
+
+During the processing of a layer (mlp or attention) reading from the residual stream, the model has the ability to access all of the information from the previous layers, but the model is choosing to focus on a few meaningful directions by aligning the thing they read in with the information they care about, so the mechanism can make sure it mostly gets the information it cares about. So after a set of directions are chosen from the residual stream, they can be written to another mechanism.
+
+The directions in the residual stream space that influence which mechanism moves information where and between mechanisms, are based on the similarity of those residual stream directions and the directions of information in other mechanisms. More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>.
+
+Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation
+
+The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. For example there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
+
+ 
+
+
+
+<br>
+
+<br>
+
+
+
 
 
 
