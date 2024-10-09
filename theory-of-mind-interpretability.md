@@ -442,6 +442,57 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 <br>
 
+### ToM Circuit Discovery: Sparse Autoencoders, Dictionary Learning and Superposition
+
+The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697598-f4d78700-4204-11eb-837c-40fb733f52df.gif" width="550px">
+</p>
+
+<br/>
+
+This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about eg. what it's learned during training, and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
+
+Sparse autoencoders (SAEs) are a network to learn both the dictionary and learn the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix eg. the dictionary, learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
+
+The hope is that if there is an interpretable sparse decomposition eg. the output of the mechanism the autoencoder is learning from is now human interpretable.
+
+This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs are finding real structure in the model that is apart of how it is performing tasks.
+
+It's purpose here is to help decode the ToM circuit.
+
+
+
+
+
+
+
+<br>
+
+(make sure I mention superposition briefly when introducing SAE representations of the ToM passage. Basically neurons represent multiple different things and features are spread across multiple different neurons.)
+
+Because of superposition, we have a limited number of neurons for all our features, so lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
+
+<br>
+
+
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/688327b1-ae09-4481-9dec-791baf0896b8" width="275"/>
+</p>
+
+
+<br>
+
+So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
+
+<br>
+
 ### ToM Circuit Discovery: ToM Circuit
 
 <br>
