@@ -442,7 +442,7 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 <br>
 
-### ToM Circuit Discovery: Sparse Autoencoders, Dictionary Learning and Superposition
+### ToM Circuit Discovery: Dictionary Learning, Sparse Autoencoders and Superposition
 
 The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
 
