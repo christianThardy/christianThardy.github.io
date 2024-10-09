@@ -462,6 +462,10 @@ The hope is that if there is an interpretable sparse decomposition eg. the outpu
 
 This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs are finding real structure in the model that is apart of how it is performing tasks.
 
+we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
+
+we can see how the model goes from simple to more complex features
+
 It's purpose here is to help decode the ToM circuit.
 
 
