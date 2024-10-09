@@ -487,7 +487,7 @@ Because of superposition, we have a limited number of neurons for all our featur
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/314a8e2e-a196-4114-ac4a-474a8a77abb9" width="480"/>
+<img src="https://github.com/user-attachments/assets/e7869efd-bcaa-4d21-b49f-c0e1db1de148" width="480"/>
 </p>
 
 
