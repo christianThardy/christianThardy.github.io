@@ -325,12 +325,12 @@ The model is using the residual stream to achieve compositionality between diffe
 <br>
 
 <p align="center">
-<img src="Spacy example of sentence dependencies, see if I can also do relations" width="280"/>
+<img src="https://github.com/user-attachments/assets/950b47aa-675d-4a47-82c7-d7ce8b457552" width="7500"/>
 </p>
 
 <br>
 
-So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
+So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the events, the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
 This kind of hierarchical, nested structure in the residual stream is also key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, ToM tasks require the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
 
