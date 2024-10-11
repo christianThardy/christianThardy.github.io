@@ -325,7 +325,7 @@ The model is using the residual stream to achieve compositionality between diffe
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/950b47aa-675d-4a47-82c7-d7ce8b457552" width="7500"/>
+<img src="https://github.com/user-attachments/assets/950b47aa-675d-4a47-82c7-d7ce8b457552" width="7500"/>  
 </p>
 
 <br>
