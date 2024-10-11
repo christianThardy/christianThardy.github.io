@@ -1,6 +1,6 @@
 # Theory of Mind and GPT models
 
-<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path in a model that goes from the input to the output, identifying which paths through the model matter, and then try to decompose a path into pieces between different parts of the model that we expect to be interpretable. 
+<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can identify which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. 
 
 Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
