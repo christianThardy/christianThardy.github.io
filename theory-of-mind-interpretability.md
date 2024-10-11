@@ -276,13 +276,11 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 ### ToM Circuit Discovery: The Residual Stream and Attention Analysis
 
-Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
+Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
 
-To help with this, I used the circuitsvis library to visualize attention patterns. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
+One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. This makes it hard to asses what the attention heads are doing when tokens are being attended to. 
 
-One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. 
-
-More concretely, I think when an attention head is attending to a token, it might be accessing abstract information stored at that position.
+But at the same time, I think when an attention head is attending to a token, it is accessing abstract information stored at that position.
 
 <br>
 
@@ -292,44 +290,47 @@ More concretely, I think when an attention head is attending to a token, it migh
 
 <br>
 
+In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers and must go through this stream. It captures everything the model has "thought" so far, so it will contain everything important going on in the model.
 
+<br>
 
-(Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
+<p align="center">
+<img src="https://github.com/user-attachments/assets/d1590634-0cb0-42f5-b177-a17ee0203af1" width="280"/>
+</p>
 
-Atten and mlps read in information from the residual stream, apply edits to the input based on how it functions and then puts that edited information (new information) back into the residual stream. They only read and write from the stream with linear operations(addition), so the residual stream is the sun of the outputs of every layer. 
+<br>
 
-We only read and write from the residual stream with linear operations (addition). This means the input to any layer can be decomposed to the sum of the output of a bunch of operations that correspond to different mechanisms inside the transformer.
+This stream accumulates more than just the token embedding; it also aggregates output from previous attention heads and feedforward networks. Attention heads and mlps read in information from the residual stream, apply edits to the input based on how it functions, and then puts that edited (new) information back into the residual stream. They only read and write from the stream with linear operations (addition), this means the input to any layer can be decomposed to the sum of the output of a bunch of operations that correspond to different mechanisms of every layer inside the transformer.
 
-During the processing of a layer (mlp or attention) reading from the residual stream, the model has the ability to access all of the information from the previous layers, but the model is choosing to focus on a few meaningful directions by aligning the thing they read in with the information they care about, so the mechanism can make sure it mostly gets the information it cares about. So after a set of directions are chosen from the residual stream, they can be written to another mechanism.
+By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic structures, semantic relationships, or even summaries of entire phrases or sentences of larger text segments. In other words, there should be some rich compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
-The directions in the residual stream space that influence which mechanism moves information where and between mechanisms, are based on the similarity of those residual stream directions and the directions of information in other mechanisms. More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>.
+For example, take a period at the end of a sentence. By that point, the residual stream at that position might hold a summary of the entire sentence in its residual stream, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass over multiple attention blocks and mlps, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are critical for tasks like ToM.
 
-Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation
+During the processing of a layer (mlp or attention) reading from the residual stream, the model has the ability to access all of the information from the previous layers, but the model can choose to focus on a few meaningful directions by aligning the thing they read in with the information they care about, so the mechanism can make sure it mostly gets the information it cares about. So after a set of directions are chosen from the residual stream, they can be written to another mechanism.
+
+The directions in the residual stream space that influence which mechanism moves information where and between mechanisms, are based on the similarity of those residual stream directions and the directions of information in other mechanisms. More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/61e58090-4367-4a9d-b8bb-411fcb5f0e1b" width="280"/>
+</p>
+
+<br>
+
+Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
 The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. For example there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
 
- 
-
-
-
 <br>
 
+<p align="center">
+<img src="Spacy example of sentence dependencies, see if I can also do relations" width="280"/>
+</p>
+
 <br>
-
-
-
-
-
-
-In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers and must go through this stream. It captures everything the model has "thought" so far, so it will contain everything important going on in the model.
-
-This stream accumulates more than just the token embedding; it also aggregates outputs from previous attention heads and feedforward networks. By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic roles, semantic relationships, or even summaries of entire phrases or sentences. In other words, there should be some rich compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
 So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
-
-While a period at the end of a sentence might carry a summary of the entire sentence in its residual stream, this stream holds not just the embedding of the token itself but also complex representations built up over multiple layers and attention blocks, and the information stored in the residual stream at that position should include syntactic roles, semantic meanings, or even summaries of larger text segments. 
-
-For example, take a period at the end of a sentence. By that point, the residual stream at that position might hold a summary of the entire sentence, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring syntactic structures, semantic roles, or higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are critical for tasks like ToM.
 
 This kind of hierarchical, nested structure in the residual stream is also key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, ToM tasks require the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
 
@@ -343,7 +344,7 @@ In any case, it’s easy to get tricked if you think an attention head is just f
 
 <br>
 
-While keeping that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
+While keeping all of that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
 We can also start to see how our earlier observations on FOL, semantics, and pragmatics could potentially play out within the mechanism. Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
 
@@ -407,6 +408,65 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
+
+### ToM Circuit Discovery: Dictionary Learning, Sparse Autoencoders and Superposition
+
+The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
+
+<br/>
+
+<p align="center">
+  <img src = "https://user-images.githubusercontent.com/29679899/102697598-f4d78700-4204-11eb-837c-40fb733f52df.gif" width="550px">
+</p>
+
+<br/>
+
+This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about eg. what it's learned during training, and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
+
+Sparse autoencoders (SAEs) are a network to learn both the dictionary and learn the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix eg. the dictionary, learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
+
+The hope is that if there is an interpretable sparse decomposition eg. the output of the mechanism the autoencoder is learning from is now human interpretable.
+
+This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs are finding real structure in the model that is apart of how it is performing tasks.
+
+we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
+
+we can see how the model goes from simple to more complex features
+
+It's purpose here is to help decode the ToM circuit.
+
+(Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
+
+
+
+
+
+
+
+<br>
+
+(make sure I mention superposition briefly when introducing SAE representations of the ToM passage. Basically neurons represent multiple different things and features are spread across multiple different neurons.)
+
+Because of superposition, we have a limited number of neurons for all our features, so lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
+
+<br>
+
+
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/e7869efd-bcaa-4d21-b49f-c0e1db1de148" width="480"/>
+</p>
+
+
+<br>
+
+So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
+
+<br>
+
+
 ### ToM Circuit Discovery: Activation Patching
 
 Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
@@ -439,61 +499,6 @@ So, when would you use noising versus denoising? It really depends on your goals
 
 For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—it’s generally useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
 
-
-<br>
-
-### ToM Circuit Discovery: Dictionary Learning, Sparse Autoencoders and Superposition
-
-The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
-
-<br/>
-
-<p align="center">
-  <img src = "https://user-images.githubusercontent.com/29679899/102697598-f4d78700-4204-11eb-837c-40fb733f52df.gif" width="550px">
-</p>
-
-<br/>
-
-This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about eg. what it's learned during training, and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
-
-Sparse autoencoders (SAEs) are a network to learn both the dictionary and learn the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix eg. the dictionary, learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
-
-The hope is that if there is an interpretable sparse decomposition eg. the output of the mechanism the autoencoder is learning from is now human interpretable.
-
-This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs are finding real structure in the model that is apart of how it is performing tasks.
-
-we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
-
-we can see how the model goes from simple to more complex features
-
-It's purpose here is to help decode the ToM circuit.
-
-
-
-
-
-
-
-<br>
-
-(make sure I mention superposition briefly when introducing SAE representations of the ToM passage. Basically neurons represent multiple different things and features are spread across multiple different neurons.)
-
-Because of superposition, we have a limited number of neurons for all our features, so lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
-
-<br>
-
-
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/e7869efd-bcaa-4d21-b49f-c0e1db1de148" width="480"/>
-</p>
-
-
-<br>
-
-So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
 <br>
 
