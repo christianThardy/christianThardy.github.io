@@ -4,21 +4,19 @@
 
 Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
-How exactly do decoder-only language models (DOLMs) perform and solve ToM tasks? What is the model doing when it is performing and *solving* ToM? What’s the model actually doing when it seems to be solving these tasks, given the algorithms that the model uses to enable ToM tasks to be solved, is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a human subject to determine its level of attained ToM? 
+How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What is the model doing, and what algorithms is the model using when it is performing and solving ToM?
 
-One way to think about this is through frameworks like <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. 
+Is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a human subject to determine its level of attained ToM? One way they think about this is through frameworks like <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. But is this the best approach for understanding model behavior, or can we gain more clarity by zooming in and analyzing the internal mechanisms that enable ToM capabilities? 
 
-But is this the best approach for understanding model behavior? Or can we gain more clarity by zooming in and analyzing the internal mechanisms of DOLMs that enable ToM capabilities? What’s the real burden of proof for ToM? If we find a clear algorithmic process that DOLMs implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM? Or could it be that the algorithm itself is just the way these models have learned to represent the abstract reasoning that ToM requires?
+What’s the real burden of proof for ToM in DOLMs? If we find a clear algorithmic process that they implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? 
 
-Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. 
+Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? The left language-dominant prefrontal cortex encodes semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, which reveals a detailed organization of semantic representations at the cellular level during language comprehension. Which shows us that our brains use compositionality[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>] to process language.
 
-If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? 
+There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. New, unseen ToM data could always "break" the model—so it would struggle on data it hasn’t been explicitly trained on. 
 
-As it turns out, the left language-dominant prefrontal cortex encode semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, so neuron ensembles can accurately predict semantic categories and track sentence structure in real-time, revealing a detailed organization of semantic representations at the cellular level during language comprehension. And guess what? It shows us that our brains use compositionality[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>] to process language.
+But even beyond that, do the mechanisms for performing and solving ToM in DOLMs remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM may be harder to fully resolve due to our understanding of ToM and the inherent limitations of DOLMs and datasets.
 
-There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. That new, unseen ToM data could "break" the model—that it would struggle on data it hasn’t been explicitly trained on. But even beyond that, do the mechanisms for performing and solving ToM in DOLMs remain consistent across different samples? While it’s likely that updating the training data could lead to short-term improvements, the broader challenge of evaluating ToM in DOLMs may be harder to fully resolve due to our understanding of ToM and the inherent limitations of DOLMs and datasets.
-
-While I'm skeptical about why models are not performing ToM and why models are performing ToM, my aim to show that some of the abstract reasoning involved in ToM tasks can be simplified into an interpretable algorithm (or circuit) derived from the internal mechanisms of a DOLM. By breaking down these mechanisms, we might better understand how these models engage with ToM tasks.
+While I'm skeptical about why models are performing ToM or are not performing ToM, my aim to show that some of the abstract reasoning involved in ToM tasks can be simplified into an interpretable algorithm (or circuit) and mechanisms derived from the internal representations of a DOLM. By breaking down these representations, we might better understand and accept how these models engage with ToM tasks.
 
 <br>
 
@@ -63,15 +61,15 @@ FOL helps in maintaining the context and managing the state of a conversation by
 
 <br>
 
-This structure allows us capture meaning because of relationships and quantifiers, which are essential for capturing the nuanced meanings and mental states involved in ToM. It captures the internal structure of propositions, such as the belief that `John` expects the `cat` to be somewhere specific. 
+This structure allows us to capture meaning because of relationships and quantifiers, which are essential for capturing the nuanced meanings and mental states involved in ToM. It captures the internal structure of propositions, such as the belief that `John` expects the `cat` to be somewhere specific. 
 
-So its possible that at some level, ToM prediction in LLMs aligns with first-order logic due to a models ability to represent complex relationships between entities and their properties, which are crucial for understanding and predicting human mental states and behaviors.
+So its possible that at some level, ToM prediction in DOLMs aligns with first-order logic due to a models ability to represent complex relationships between entities and their properties, which are crucial for understanding and predicting human mental states and behaviors.
 
 <br>
 
 # Semantics
 
-Semantics refers to the study and representation of meaning in language. Semantics deals with how words, phrases, and sentences convey meaning, and how this meaning is interpreted by humans and machines. It focuses on the inherent meaning of words and sentences. Semantics encompasses a lot ranging from compositional semantics, semantic similarity and even word embeddings/distributional semantics. 
+Semantics refers to the study and representation of meaning in language. Semantics deals with how words, phrases, and sentences convey meaning, and how this meaning is interpreted by humans. It focuses on the inherent meaning of words and sentences. Semantics encompasses a lot ranging from compositional semantics, semantic similarity and even word embeddings, distributional semantics and distributed semantics. 
 
 For example, to understand the semantics of the following passage linguistically, we need to identify the entities, actions, relationships, and implied meanings. To do all of this we need to identify all entities and actions in the sentence.
 
@@ -107,7 +105,7 @@ For example, to understand the semantics of the following passage linguistically
                
 <br>
 
-In the context of semantics, understanding and interpreting this passage requires extracting the meaning of each sentence, identifying entities, their properties, and relationships—core goals of semantic parsing. Semantic parsing aids in comprehending context and inferring implied meanings, which is essential for accurate ToM predictions. ToM involves understanding and representing complex mental states and expectations. In this example, LLMs can grasp the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it is actually on the `box`. This involves understanding both the literal content and inferring the mental states and beliefs of the characters.
+In the context of semantics, understanding and interpreting this passage requires extracting the meaning of each sentence, identifying entities, their properties, and relationships—core goals of semantic parsing. Semantic parsing aids in comprehending context and inferring implied meanings, which is essential for accurate ToM predictions. ToM involves understanding and representing complex mental states and expectations. In this example, DOLMs can grasp the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it is actually on the `box`. This involves understanding both the literal content and inferring the mental states and beliefs of the characters.
 
 <br>
 
@@ -129,7 +127,7 @@ These concepts and processes can *help* explain how humans can perform ToM lingu
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
 
-The remainder of this work will specifically focus on how GPT models will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics, and whether or not these high level linguistic concepts are appropriate or not to think about how language models perform ToM.
+The remainder of this work will specifically focus on how a DOLM will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics, and whether or not these high level linguistic concepts are appropriate or not to think about how language models perform ToM.
 
 <br>
 
@@ -153,7 +151,7 @@ The model used in this analysis is Gemma-2-2B from Google's family of Gemma mode
 
 It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer. The broader focus of this analysis is identifying the circuit that successfully models the ToM task, and the narrow focus is indentifying that circuit by understanding the behavior of the attention heads, MLPs and residual streams.
 
-In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM sentence). A **circuit** informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
+In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning.
 
 Humans make predictions about others' thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral observations. These processes are intricate and involve multiple steps, both at the neural and cognitive levels. At the level of a decoder-only transformer model, we can first broadly begin to understand ToM prediction for this specific passage through a simple interpretable algorithm largely dependent on John's mental state of where he put the cat: 
 
@@ -236,7 +234,7 @@ When deconstructing the residual stream, the logit-lens looks at the residual st
 
 What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting?
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly?
 
 This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
 
@@ -302,11 +300,11 @@ In transformer architectures, each token position has a residual stream—a vect
 
 This stream accumulates more than just the token embedding; it also aggregates output from previous attention heads and feedforward networks. Attention heads and mlps read in information from the residual stream, apply edits to the input based on how it functions, and then puts that edited (new) information back into the residual stream. They only read and write from the stream with linear operations (addition), this means the input to any layer can be decomposed to the sum of the output of a bunch of operations that correspond to different mechanisms of every layer inside the transformer.
 
-By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic structures, semantic relationships, or even summaries of entire phrases or sentences of larger text segments. In other words, there should be some rich compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
+By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic structures, semantic relationships, or even summaries of entire phrases or sentences of larger text segments. In other words, there should be observable compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
-For example, take a period at the end of a sentence. By that point, the residual stream at that position might hold a summary of the entire sentence in its residual stream, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass over multiple attention blocks and mlps, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are critical for tasks like ToM.
+Going back to our period example, for that period at the end of a sentence, the residual stream at that position might hold a summary of the entire sentence in its residual stream, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass over multiple attention blocks and mlps, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are assumed to be critical for tasks like ToM.
 
-During the processing of a layer (mlp or attention) reading from the residual stream, the model has the ability to access all of the information from the previous layers, but the model can choose to focus on a few meaningful directions by aligning the thing they read in with the information they care about, so the mechanism can make sure it mostly gets the information it cares about. So after a set of directions are chosen from the residual stream, they can be written to another mechanism.
+During the process of a layer (mlp or attention) reading from the residual stream, the model has the ability to access all of the information from the previous layers, but the model can choose to focus on a few meaningful directions by aligning the thing they read in with the information they care about, so the mechanism can make sure it mostly gets the information it cares about. So after a set of directions are chosen from the residual stream, they can be written to another mechanism.
 
 The directions in the residual stream space that influence which mechanism moves information where and between mechanisms, are based on the similarity of those residual stream directions and the directions of information in other mechanisms. More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>
 
@@ -318,9 +316,9 @@ The directions in the residual stream space that influence which mechanism moves
 
 <br>
 
-Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism as not every piece of the input will receive an activation.
+Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
-The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. For example there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
+The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
 
 <br>
 
@@ -330,9 +328,9 @@ The model is using the residual stream to achieve compositionality between diffe
 
 <br>
 
-So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the events, the order of events and character actions is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
+So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the events, the order of events, character actions and possibly even directional or spatial information is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
-This kind of hierarchical, nested structure in the residual stream is key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, ToM tasks require the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
+This kind of hierarchical, nested structure in the residual stream is key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, the ToM task requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
 
 In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. What we should be looking at is the information stored in the residual streams at that position—often abstract concepts or higher-level representations—rather than just assuming the attention head is simply "attending" to the token itself.
 
@@ -346,9 +344,7 @@ In any case, it’s easy to get tricked if you think an attention head is just f
 
 While keeping all of that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
-We can also start to see how our earlier observations on FOL, semantics, and pragmatics could potentially play out within the mechanism. Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. 
-
-When it comes to FOL properties and relations, the model shows attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it could be representing a key relation between the subject, object and location anchored to specific instances of interaction.
+We can also start to see how our earlier observations on FOL, semantics, and pragmatics could potentially play out within the attention. Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. The model also shows attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it could be representing a key relation between the subject, object and location anchored to specific instances of interaction.
 
 <br>
 
@@ -381,7 +377,7 @@ Semantically, when the model processes the second mention of `John` in the sente
 
 <br>
 
-The effects of the actions of `John`, taking and leaving on the models attention of the entities initially mentioned. 
+What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially. 
 
 <br>
 
@@ -392,7 +388,7 @@ The effects of the actions of `John`, taking and leaving on the models attention
 
 <br>
 
-What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially. For instance, we can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
+We can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
 
 <br>
 
@@ -404,7 +400,7 @@ What’s really interesting is how the actions of `John`—both "taking" and "le
 
 It's entirely possible the model is balancing its handling of both semantic meaning and the logical relations between entities. 
 
-We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and observations that set the stage for figuring out the underlying mechanisms.
+We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and iterative attention analysis that set the stage for figuring out the underlying circuit.
 
 <br>
 
@@ -421,13 +417,13 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about eg. what it's learned during training, and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
+This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
 
-Sparse autoencoders (SAEs) are a network to learn both the dictionary and learn the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix eg. the dictionary, learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
+Sparse autoencoders (SAEs) are neural networks that learn both the dictionary and the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix—the dictionary—learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
 
-The hope is that if there is an interpretable sparse decomposition eg. the output of the mechanism the autoencoder is learning from is now human interpretable.
+The hope is that if there is an interpretable sparse decomposition—the output of the mechanism the autoencoder is learning from—it is now human interpretable.
 
-This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs are finding real structure in the model that is apart of how it is performing tasks.
+This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs find real structure in the model that shows us how it is performing a task.
 
 we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
 
