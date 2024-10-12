@@ -1,6 +1,6 @@
 # Theory of Mind and GPT models
 
-<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can identify which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. 
+<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can trace which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. 
 
 Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
@@ -425,6 +425,14 @@ The hope is that if there is an interpretable sparse decomposition—the output 
 
 This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs find real structure in the model that shows us how it is performing a task.
 
+Even simpler, we can think of them as microscopes that lets us see inside language models to better understand how they work.
+
+<br>
+
+SAEs are based on the hypothesis that models have a big list of concepts they "know" about, w/ associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and mlps)
+
+<br>
+
 we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
 
 we can see how the model goes from simple to more complex features
@@ -459,6 +467,23 @@ Because of superposition, we have a limited number of neurons for all our featur
 <br>
 
 So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
+
+<br>
+
+The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope.</a> Its a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B.
+
+
+
+
+<br>
+
+The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive -- black ops intelligence, keep secrets from friends etc -- you could increase that features activation and the model will plot about how it should keep things secret
+
+What this shows us is that gradient descent --the optimization algorithm used to train modern language models-- is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
+
+<br>
+
+Using the trained SAE on the ToM passage (input to Gemma 2 2B), we can see which features in the model are activated.
 
 <br>
 
