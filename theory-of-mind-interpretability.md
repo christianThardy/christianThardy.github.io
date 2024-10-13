@@ -491,9 +491,9 @@ The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discove
 
 <br>
 
-The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive -- black ops intelligence, keep secrets from friends etc -- you could increase that features activation and the model will plot about how it should keep things secret
+The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive—black ops intelligence, keep secrets from friends etc—you could increase that features activation and the model will plot about how it should keep things secret
 
-What this shows us is that gradient descent --the optimization algorithm used to train modern language models-- is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
+What this shows us is that gradient descent—the optimization algorithm used to train modern language models—is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
 
 <br>
 
