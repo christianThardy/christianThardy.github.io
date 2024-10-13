@@ -404,7 +404,6 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-
 ### ToM Circuit Discovery: Dictionary Learning, Sparse Autoencoders and Superposition
 
 The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
@@ -417,7 +416,9 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-This means there is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
+Dictionary learning is closely related to the linear representation hypothesis, which suggests that complex data can be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
+
+There is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
 
 Sparse autoencoders (SAEs) are neural networks that learn both the dictionary and the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix—the dictionary—learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
 
@@ -425,18 +426,16 @@ The hope is that if there is an interpretable sparse decomposition—the output 
 
 This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs find real structure in the model that shows us how it is performing a task.
 
-Even simpler, we can think of them as microscopes that lets us see inside language models to better understand how they work.
+Even simpler, we can think of them as microscopes that combat the curse of dimensionality and lets us see inside language models to better understand how they work.
 
-<br>
-
-SAEs are based on the hypothesis that models have a big list of concepts they "know" about, w/ associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and mlps). 
+SAEs are based on the hypothesis that models have a big list of concepts they "know" about, with associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and mlps). 
 
 There are many directions to find because of 1) polysemanticity, where many neurons fire for multiple, often times unrelated features.
 
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/068f4903-6b4f-4afe-9d8b-9ace61c16fc9" width="950px">
+  <img src = "https://github.com/user-attachments/assets/16ce1f4b-32dd-486d-920b-ae2394cea058" width="950px">
 </p>
 
 <br/>
@@ -447,60 +446,23 @@ Basically neurons represent multiple different things and features are spread ac
 
 <br>
 
-we relate the input to an intermediate value (SAE feature) or relate some intermediate values to the output
-
-we can see how the model goes from simple to more complex features
-
-It's purpose here is to help decode the ToM circuit.
-
-(Figure out where this should go): SAEs give us a microscope that combats the curse of dimensionally and let’s us have a look inside of the internal mechanisms of transformers
-
-
-
-
-
-
-
-<br>
-
-(make sure I mention superposition briefly when introducing SAE representations of the ToM passage. Basically neurons represent multiple different things and features are spread across multiple different neurons.)
-
-Because of superposition, we have a limited number of neurons for all our features, so lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
-
-<br>
-
-
-
-<br>
-
 <p align="center">
 <img src="https://github.com/user-attachments/assets/e7869efd-bcaa-4d21-b49f-c0e1db1de148" width="480"/>
 </p>
-
 
 <br>
 
 So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
-<br>
+The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope.</a> Its a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma 2 2B out of superposition, and see which features in the model are activated.
 
-The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope.</a> Its a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B.
-
-
-
-
-<br>
+**(start neuronpedia and SAELens/TransformerLens analysis here)**
 
 The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive—black ops intelligence, keep secrets from friends etc—you could increase that features activation and the model will plot about how it should keep things secret
 
 What this shows us is that gradient descent—the optimization algorithm used to train modern language models—is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
 
 <br>
-
-Using the trained SAE on the ToM passage (input to Gemma 2 2B), we can see which features in the model are activated.
-
-<br>
-
 
 ### ToM Circuit Discovery: Activation Patching
 
