@@ -441,7 +441,7 @@ There are many directions to find because of 1) polysemanticity, where many neur
 
 <br/>
 
-And 2) superposition, so neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
+And 2) superposition, neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
 
 Basically neurons represent multiple different things and features are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
