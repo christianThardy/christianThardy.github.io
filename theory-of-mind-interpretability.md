@@ -416,7 +416,7 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning is closely related to the linear representation hypothesis, which suggests that complex data can be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
+Dictionary learning is closely related to the linear representation hypothesis, and allows complex data can be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
 
 There is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
 
