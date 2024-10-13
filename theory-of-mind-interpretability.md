@@ -429,7 +429,21 @@ Even simpler, we can think of them as microscopes that lets us see inside langua
 
 <br>
 
-SAEs are based on the hypothesis that models have a big list of concepts they "know" about, w/ associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and mlps)
+SAEs are based on the hypothesis that models have a big list of concepts they "know" about, w/ associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and mlps). 
+
+There are many directions to find because of 1) polysemanticity, where many neurons fire for multiple, often times unrelated features.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/068f4903-6b4f-4afe-9d8b-9ace61c16fc9" width="950px">
+</p>
+
+<br/>
+
+And 2) superposition, so neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
+
+Basically neurons represent multiple different things and features are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
 <br>
 
@@ -538,13 +552,13 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 # references:
 
-Ullman, *Large Language Models Fail on Trivial Alterations to Theory-of-Mind Tasks.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Ullman" rel="nofollow">1</a>]
+Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">1</a>]
 
-Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">2</a>]
+Ullman, *Large Language Models Fail on Trivial Alterations to Theory-of-Mind Tasks.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Ullman" rel="nofollow">2</a>]
 
 Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>]
 
-Oguntola, *Deep Interpretable Models of Theory of Mind.*  CarnegieMellon University. 2021.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Oguntola" rel="nofollow">4</a>]
+Oguntola, *Deep Interpretable Models of Theory of Mind.*  Carnegie Mellon University. 2021.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Oguntola" rel="nofollow">4</a>]
 
 Le, *Revisiting the Evaluation of Theory of Mind through Question Answering.* Facebook AI Research. 2019.[<a href="https://aclanthology.org/D19-1598.pdf" title="Le" rel="nofollow">5</a>]
 
