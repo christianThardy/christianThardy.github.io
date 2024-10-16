@@ -504,9 +504,21 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/90a49f75-99a2-42ee-a619-5c9d4ec0d8a5" width="650"/>
+<img src="https://github.com/user-attachments/assets/8ca453dd-00e9-45bf-8fb9-85ec3e5e372e" width="650"/>
+<br>
+<br>
+
+<img src="https://github.com/user-attachments/assets/236a463a-2d6a-40a6-b66a-9e3bda7cadbe" width="650"/>
+<br>
+<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
 
+
+<br>
+
+<br>
+
+### ToM Circuit Discovery: Copy Supression in ToM Circuit
 
 <br>
 
