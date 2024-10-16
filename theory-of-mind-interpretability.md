@@ -272,7 +272,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 <br>
 
-### ToM Circuit Discovery: The Residual Stream and Attention Analysis
+### ToM Circuit Discovery: Initial Residual Stream and Attention Analysis
 
 Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
 
@@ -300,7 +300,7 @@ In transformer architectures, each token position has a residual stream—a vect
 
 This stream accumulates more than just the token embedding; it also aggregates output from previous attention heads and feedforward networks. Attention heads and mlps read in information from the residual stream, apply edits to the input based on how it functions, and then puts that edited (new) information back into the residual stream. They only read and write from the stream with linear operations (addition), this means the input to any layer can be decomposed to the sum of the output of a bunch of operations that correspond to different mechanisms of every layer inside the transformer.
 
-By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic structures, semantic relationships, or even summaries of entire phrases or sentences of larger text segments. In other words, there should be observable compositionality in the residual stream. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
+By the time we get to the later layers, the residual stream should be holding rich, high-level abstractions, like syntactic structures, semantic relationships, or even summaries of entire phrases or sentences of larger text segments. In other words, there should be observable compositionality in the residual stream where the model is mapping syntax onto semantics. Attention heads don't just read from tokens—they read from the residual streams at specific positions and write new information into the residual stream at the target position. This allows them to move contextually rich, abstract information from one position to another, independent of the specific token at those positions.
 
 Going back to our period example, for that period at the end of a sentence, the residual stream at that position might hold a summary of the entire sentence in its residual stream, not just the token embedding of the period itself. It’s a complex, multi-layered representation that has been built up over the entire forward pass over multiple attention blocks and mlps, containing information about syntactic roles, semantic meanings, and even the overall structure of the sentence. So attention patterns are essentially mechanisms for moving these complex representations between positions, often transferring higher-level abstractions like hierarchical structures and temporal sequences. This is why models can handle nested structures and dependencies, which are assumed to be critical for tasks like ToM.
 
@@ -499,6 +499,12 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 <br>
 
+### ToM Circuit Discovery: Iterative Attention Head Analysis
+
+
+
+<br>
+
 ### ToM Circuit Discovery: ToM Circuit
 
 <br>
@@ -513,12 +519,25 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
 
+<br>
+
+The circuit as a whole is made up of various attention heads (induction and copy supression heads) that perform algorithms to move information from the context of the sentence 
 
 <br>
 
-<br>
+### ToM Circuit Discovery: Copy Supression in the ToM Circuit
 
-### ToM Circuit Discovery: Copy Supression in ToM Circuit
+Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and calibrating the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
+
+More technically, copy surpression is an algorithm applied to the unembedding space of the model. An induction head (belief state emphasis) sees that `John put the cat on the basket`, the current token is `the` and it starts to output `basket`. This is written to the residual stream and will be mapped to the logits, but then copy supression performs post-processing on this logit space by supressing any output it has seen before that is not relevant to the induction heads context. So we can see heads that do task specific things and then heads that are responding to the previous predictions which is a more general and less specific sub task.
+
+The amount of copy supression is mediated by the amount of attention paid to the copied token. Which makes sense, DOLMs iteratively refine their predictions by learning iteratively, being trained iteratively, then they represent information iteratively though each of its layers as information approaches the final layers.  
+
+There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to copy surpress information and when it is bad. 
+
+(Replicate overconfidence metric analysis to test copy supression heads)
+
+(Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
 
 <br>
 
@@ -562,10 +581,4 @@ Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language 
 
 Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">18</a>]
 
-
-
-
-
-
-
-
+McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>]
