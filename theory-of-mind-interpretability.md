@@ -416,6 +416,40 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
+### ToM Circuit Discovery: Activation Patching & Iterative Attention Head Analysis
+
+Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
+
+The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
+
+This is where activation patching comes in. First introduced in the ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
+
+Here’s how it works: You run the model twice—once with a clean input that produces the correct answer, and once with a corrupted input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run. Basically, you replace the corrupted activation at a specific point with the corresponding clean activation and then let the model finish the run. The key insight here is that you can measure how much this patch shifts the output toward the correct answer.
+
+By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
+
+In other words, this is a noising algorithm (as opposed to the denoising focus we had in the last section).
+
+The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit that’s driving the behavior.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/aa21ea4f-67e4-4ab6-a373-cac81c8a3ee5" width="700"/>
+<br>
+<small style="font-size: 8px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</a></small>
+</p>
+
+<br>
+
+We can think of this activation patching algorithm as a form of noising, since we’re running the model on a clean input and introducing noise by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean input, effectively removing noise.
+
+So, when would you use noising versus denoising? It really depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
+
+For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—it’s generally useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
+
+<br>
+
 ### ToM Circuit Discovery: Dictionary Learning, Sparse Autoencoders and Superposition
 
 The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
@@ -476,57 +510,16 @@ What this shows us is that gradient descent—the optimization algorithm used to
 
 <br>
 
-### ToM Circuit Discovery: Activation Patching
-
-Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
-
-The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
-
-This is where activation patching comes in. First introduced in the ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
-
-Here’s how it works: You run the model twice—once with a clean input that produces the correct answer, and once with a corrupted input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run. Basically, you replace the corrupted activation at a specific point with the corresponding clean activation and then let the model finish the run. The key insight here is that you can measure how much this patch shifts the output toward the correct answer.
-
-By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
-
-In other words, this is a noising algorithm (as opposed to the denoising focus we had in the last section).
-
-The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit that’s driving the behavior.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/aa21ea4f-67e4-4ab6-a373-cac81c8a3ee5" width="700"/>
-<br>
-<small style="font-size: 8px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output.). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</a></small>
-</p>
-
-<br>
-
-We can think of this activation patching algorithm as a form of noising, since we’re running the model on a clean input and introducing noise by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean input, effectively removing noise.
-
-So, when would you use noising versus denoising? It really depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
-
-For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—it’s generally useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
-
-
-<br>
-
-### ToM Circuit Discovery: Iterative Attention Head Analysis
-
-
-
-<br>
-
 ### ToM Circuit Discovery: ToM Circuit
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/8ca453dd-00e9-45bf-8fb9-85ec3e5e372e" width="650"/>
+<img src="https://github.com/user-attachments/assets/fce9cd60-88e7-4c8c-890c-86565ff8cea2" width="650"/>
 <br>
 <br>
 
-<img src="https://github.com/user-attachments/assets/236a463a-2d6a-40a6-b66a-9e3bda7cadbe" width="650"/>
+<img src="https://github.com/user-attachments/assets/80ef8228-7da7-4140-8c98-8858d5e53040" width="650"/>
 <br>
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
