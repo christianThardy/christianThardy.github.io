@@ -195,7 +195,7 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
-### Principal Component Analysis
+### Principal component analysis
 
 
 
@@ -207,7 +207,7 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
-### Identify Relavant Layers and Activations
+### Identify relavant layers and activations
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to features and circuit discovery.
 
@@ -311,7 +311,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 <br>
 
-### Residual Stream and Multi-Head Attention
+### Residual stream and multi-head attention
 
 Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
 
@@ -443,7 +443,7 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Activation Patching and Iterative Attention Head Analysis
+### Activation patching and iterative attention head analysis
 
 Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
 
@@ -477,7 +477,7 @@ For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse acros
 
 <br>
 
-### Dictionary Learning, Sparse Autoencoders and Superposition
+### Dictionary learning, sparse autoencoders and superposition
 
 The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
 
@@ -537,7 +537,7 @@ What this shows us is that gradient descent—the optimization algorithm used to
 
 <br>
 
-### ToM Circuit
+### ToM circuit
 
 <br>
 
@@ -557,7 +557,7 @@ The circuit as a whole is made up of various attention heads (induction and copy
 
 <br>
 
-### Copy Supression in the ToM Circuit
+### Copy supression in the ToM circuit
 
 Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and calibrating the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
 
@@ -573,7 +573,7 @@ There's a lot more we do not know about these heads and they probably have more 
 
 <br>
 
-### Ablation Studies
+### Ablation studies
 
 <br>
 
