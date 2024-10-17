@@ -168,6 +168,18 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
+### ToM Circuit Discovery: Principal Component Analysis
+
+
+
+
+
+
+
+
+
+<br>
+
 ### ToM Circuit Discovery: Identify Relavant Layers & Activations to the Task
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to features and circuit discovery.
@@ -538,6 +550,10 @@ There's a lot more we do not know about these heads and they probably have more 
 (Replicate overconfidence metric analysis to test copy supression heads)
 
 (Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
+
+<br>
+
+### ToM Circuit Discovery: Ablation Studies
 
 <br>
 
