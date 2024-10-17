@@ -1,4 +1,4 @@
-# things I wish I knew about aws glue, spark and distributed systems
+# Things I wish I knew about aws glue, spark and distributed systems
 
 From November 2019 to July 2020 I was working with a subscription based e-learning platform. With our subscription metrics on the rise, we needed new internal processes to keep up with the wealth of information we had on hand and were accumulating every day. This translated to reporting options that would allow management to have more autonomy in mining the data to support their initiatives so that our engineering team could focus on collecting cleaner data, and the principles, processes and techniques required to change the fundamental structure of our data driven initiatives. 
 
@@ -16,7 +16,7 @@ The design was simple...
 
 <br/>
 
-## aws glue is not a one size fits all solution 
+## Aws glue is not a one size fits all solution 
 
 Glue is managed in Apache Spark, and it's not a fully mature ETL framework like Pentaho or Talend. There is a limit to the scalability of AWS Glue unless you're defining your logic in something more functional like pure Spark or Scala rather than Glue specific syntax, which is what we needed to do.
 
@@ -24,7 +24,7 @@ Glue also has issues its not entirely upfront about, such as their code structur
 
 <br/>
 
-## for file formatting, always use parquet over csv
+## For file formatting, always use parquet over csv
 
 To build scalable data pipelines, we need to switch from using local files, like CSVs, to distributed data sources, such as Parquet files on S3. We were loading tables from an OLTP database, which is a row store, to Redshift, which is a columnar database, so we needed the data to represent this optimization.
 
@@ -32,7 +32,7 @@ While the tools used across cloud platforms to load data vary significantly, the
 
 <br/>
 
-## avoid expensive transformations and functions when validating your pipeline across large scale dataframes
+## Avoid expensive transformations and functions when validating your pipeline across large scale dataframes
 
 When scaling our pipeline we ran into a few nontrivial issues. One of which required us to sift through Spark code and unit test their data partitioning functions. We needed to run a few jobs with dataframes at 75 to 100 million records a pop and when using native spark functions to handle our partitioning and the size of our clusters, we ran into speed efficiency issues. Each job was taking upwards of 24 to 48 hours to complete and some of them would just flat out stall.
 
@@ -52,13 +52,13 @@ At that point the problem was as easy as removing the MD5 function so the modulu
 
 <br/>
 
-## always tune your number of partitions
+## Always tune your number of partitions
 
 The number by which you partition your data will always be unique to your datasets. There is no one size fits all and for our use case we were only dealing with millions of comparisons so between 120 and 144 partitions got our larger jobs done. We also saw savings in cost by dynamically changing our workers and cores during job runs.
 
 <br/>
 
-## partition on evenly distributed fields
+## Partition on evenly distributed fields
 
 A Spark application is executed in 3 steps:
 
@@ -72,12 +72,12 @@ Shuffle boundaries are important because they dictate how the data between worke
 
 <br/>
 
-## visualizing the movement of your data will save you time
+## Visualizing the movement of your data will save you time
 
 Not only will it save you time, but it will save you money and help you optimize your jobs. Diagnostic visualizations will give you insight into why jobs are failing, you can see how your data is distributed across your executors, how your data is moving, the shuffle of your partitions, and the cpu load between your driver and executors.
 
 <br/>
 
-## conclusion
+## Conclusion
 
 I honestly wish I had some of the insight here when I was asking myself, *"What am I doing wrong?"* or *"How can I make this run more efficiently"*. It reminds me of that saying, *"Experience is something you don't get until just after you need it"*. Regardless, the experience was great and we were able to deliver. While data engineering is sort of an under appreciated layer in the data science stack, I think businesses are realizing that without the correct plumbing they'll quickly find themselves in a classic garbage in garbage out scenario. 
