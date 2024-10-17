@@ -2,18 +2,15 @@
 
 <br>
 
-### Table of Contents
-1. [Introduction](#introduction)
-2. [First-Order Logic](#example2)
-3. [Semantics](#third-example)
-4. [Pragmatics](#fourth-examplehttpwwwfourthexamplecom)
-5. 
+#### Contents
+- [Introduction](#introduction)
+- [First-Order Logic](#first-order-logic)
+- [Semantics](#semantics)
+- [Pragmatics](#pragmatics)
+- [So What?](#so-what)
+- [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
+    - [Principal Component Analysis](#principal-component-analysis)
 
-
-## Example
-## Example2
-## Third Example
-## [Fourth Example](http://www.fourthexample.com) 
 
 <br>
 
@@ -187,7 +184,7 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
-### ToM Circuit Discovery: Principal Component Analysis
+### Principal Component Analysis
 
 
 
