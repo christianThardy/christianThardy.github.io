@@ -1,8 +1,8 @@
-# finding similarities between friends by way of social media using shallow and deep natural language processing
+# Finding similarities between friends by way of social media using shallow and deep natural language processing
 
 <br/>
 
-# abstract
+# Abstract
 
 With the surge of social media, the internet has become an interesting and spirited domain in which billions of individuals from all around the world interact, share, post and conduct many daily activities. The immense size of social media data makes it notably different from classic data sources, and the mainly user generated data can be unbelievably noisy and unstructured. In social media mining, social media is considered a world of social atoms (i.e. *individuals*), and entities (e.g. *content, sites, networks etc.*) signaling interactions between social atoms and entities (et al. *Zafarani, Abbasi and Liu*). In this analysis I propose a way of looking at interactions governed solely between social atoms by collecting, mining and measuring the interactions between these social atoms to discover whatever salient patterns reside in each atom as they are projected through the lens of social media.
 
@@ -14,7 +14,7 @@ During the text extraction about 25,251 instances from the sum of each users nam
 
 <br/>
 
-# introduction
+# Introduction
 
 The overall objective is to be able to convert questions about the text...
 
@@ -105,7 +105,7 @@ Generally, linguistics is centered around how sentences are basic units of thoug
 
 <br/>
 
-# 1. collecting, and extracting the data
+# 1. Collecting, and extracting the data
 
 The text that I will be using came from Facebook.
 
@@ -215,7 +215,7 @@ for data_message in data_message:
 ```
 <br/>
 
-# 2. initial data exploration 
+# 2. Initial data exploration 
 
 Datasets are like a good satirical bildungsroman[<a href="https://en.wikipedia.org/wiki/Bildungsroman" title="What is a bildungsroman" rel="nofollow">'</a>]. They will give you many ambiguous ideas, and sometimes they will even have an interesting story to tell. Exploring your data is a very important pillar of data analysis, because it gives a sense of what can be done with it and what may be possible. The first few reduction methods in this post will attempt to deconstruct the signal in our dataset into a set of features that will help our algorithms learn something meaningful. The only way you can handcraft good features for your data is by visualizing it, and after extracting the text from the html file and exporting everything into a nice tabular format, our first visualization is just a matter of several dependencies and less than 10 lines of code.
 
@@ -314,7 +314,7 @@ Notice how the tail decay in the plot above starts to fatten and get heavier aro
 
 <br/>
 
-# power laws
+# Power laws
 
 We can define PLs as a relationship between two things. A respective change in one thing results in a proportional respective change in the other thing, and they're both independent of size. More simply, they imply that a small number of events, or in our case words for each user are frequent (common words), while a large number of words are infrequent (rare words).
 
@@ -340,7 +340,7 @@ An important takeaway is that a small number of frequent words in each document 
 
 <br/>
 
-# zipf's law
+# Zipf's law
 
 In commonly used words, whether they be in a New York Times bestseller, an ancient script or a random newspaper article, a pattern emerges. The law that dictates this phenomena follows a discrete distribution that says that given a corpus of natural language, the frequency of any word is inversely relative to its rank[']. Thus the second most used word will appear half as often as the most used word. The third, one third as often, the fourth, one fourth as often and so on, which means the amount of times a word is used is proportional to 1/rank. The phenomena dictates that word frequency and ranking plotted logarithmically on the x and y axis of a graph will follow a straight line, which is governed by the power law, and its called Zipf's Law. 
 
@@ -406,7 +406,7 @@ Essentially this helps us understand how words are distributed across documents.
 
 <br/>
 
-# pareto distribution
+# Pareto distribution
 
 According to Wikipedia, *"A probability distribution is a mathematical function that provides the probabilities of occurrence of different possible outcomes in an experiment"*. This isn't fake news[<a href="https://www.newsweek.com/riemann-hypothesis-million-dollar-math-mystery-michael-atiyah-1146244" title="Facepalm or headesk" rel="nofollow">'</a>], its true. Certain things that we do as humans are quantifiable and even mundane tasks are capable of having their own probability distribution. As an unrelated example, let's define the variable `X` as the number of times you pull a penny from a jar full of pennies with the probability of that penny being from the year 1995. Thinking at a lower level, what are the other possible values for this random variable? To figure this out we would need to plot every penny from the jar and see how the distribution is spread out among those possible outcomes.  
 
@@ -502,7 +502,7 @@ The Pareto distribution is continuous, but our main variable is a counted number
 
 <br/>
 
-# zipf distribution
+# Zipf distribution
 
 The Zipf distribution, is the discrete version of the continuous Pareto distribution. The linguistic intricacies of text varies significantly with the size of the corpus, the domain/context, and the medium of communication, but it's safe to assume that the most frequent 150 words usually account for about half of the words in a corpus. This distribution provides a threshold model for the expected occurrence of target words, which can help us answer questions regarding a words role in the corpus.
 
@@ -698,7 +698,7 @@ So if the greatest frequency of words in `bt_4`'s sample are words that provide 
 
 <br/>
 
-# feature extraction
+# Feature extraction
 
 Whether we use shallow or deep methods, most of the learning tasks in this post can be boiled down to supervised learning. It requires us to define what the important concepts are for the problem and label those concepts to the data. In order to understand what feature extraction is, let's illustrate an example.
 
@@ -722,7 +722,7 @@ This provides 6 features that we can use to model our inference. If we wanted to
 
 <br/>
 
-# feature selection:
+# Feature selection:
 
 I'll use a series of violin plots to visualize the distribution of each feature for every user, but before we dive in let's try to understand violin plots.
 
@@ -999,7 +999,7 @@ existential words
 
 <br/>
 
-# 3. cleaning & refining the sample
+# 3. Cleaning & refining the sample
 
  
 In this section, `bt_4` will undergo further preprocessing to reduce her corpus from its previous shape of `(38945, 4)`--which still contains a considerable amount of stop words--into something easy to visualize so that we can begin passing the text through the proposed shallow and deep learning models.
@@ -1038,7 +1038,7 @@ When looking at the previous code examples, while you may be aware of what regex
 
 <br/>
 
-# regular expressions
+# Regular expressions
  
 Or regex, is basically a specialized text based programming language native to python that allows you to define text patterns. With this pattern you can use regex commands to find or find and replace text. Simply put, you can define instructions for the set of possible strings that you want to match, and you can change them by deconstructing them in various ways. 
  
@@ -1066,7 +1066,7 @@ The pattern of the regular expression as seen in the example are used to specify
 
 <br/>
 
-# cleaning the sample
+# Cleaning the sample
 
 To illustrate how each cleaning technique works, at random we'll sample the 1000th document from `bt_4`'s corpus. 
 
@@ -1159,7 +1159,7 @@ The `corpus` is initialized as an empty list `[]`, the `i` after `for` will be t
 
 <br/>
 
-# word2vec
+# Word2vec
 
 For as smart as computers seem, the easiest way to understand what they do is to become as stupid as they are. This is a bit tongue in cheek, but when comparing how a 2 year old can comprehend and understand language and the tremendous effort that scientists and engineers must go through so that a machine can do the same is pretty astonishing. When a 2 year old is learning to speak and recognize letters, she's learning what are called symbolic expressions.
  
@@ -1551,7 +1551,7 @@ To visualize the one-dimensional embeddings, we'll need to transform them into t
 
 <br/>
 
-# restatement
+# Restatement
 
 I started this version of the project, so all of the work in this post, in August of 2017. It was completed in April of 2018 and was posted to my old blog the following year. The platform I was using at the time to host my content had many problems and in November of 2020 I lost the next 5 sections of the project. As mentioned in the introduction, the next sections would have included working with deep learning based algorithms to classify each member of the dataset to their respective text where the label was lost. 
 
@@ -1602,13 +1602,13 @@ There's no hope of recovering the work and I regret not having a backup. Lesson 
 
 <br/>
 
-# 9. shallow algorithms 
+# 9. Shallow algorithms 
 
 In the context of machine learning, the essence of deep learning is associated with network architectures containing many layers and their ability to learn hierarchical distributed representations with little to no prior knowledge of the target problem. Traditional *shallow* machine learning algorithms usually lack a multitude of layers and require a large number of features to be engineered for them so they can learn the representations in the target problem (although feature engineering is not exclusive to shallow learning). The first shallow learners trained on our data are count vectorization and TF-IDF.
 
 <br/>
 
-# sparse count vectorization & term frequency, inverse document frequency 
+# Sparse count vectorization & term frequency, inverse document frequency 
  
 `CountVectorizer` is a bag-of-words (BOWs) model from the sklearn open-source library. A bag-of-words is a way of simplifying the representation of a given sentence by breaking it down into a token.
  
@@ -2134,7 +2134,7 @@ In the next section I will explain the defining aspects of the gradient boosted 
 
 <br/>
 
-# boosting
+# Boosting
  
 Boosting algorithms are based on decision trees and random forests. They make their predictions by searching for the best point at which the algorithm divides the training data at the root into multiple small-scale pieces of data (leaves) based on correlated variables in the data and eventually the split with the greatest advancement is chosen as the strongest predictor.
 
@@ -2208,7 +2208,7 @@ Randomization increases bias and variance of trees individually, but decreases t
 
 <br/>
 
-# naive bayes
+# Naive bayes
 
 You can imagine the function of a support vector machine or even logistic regression drawing a line between or through some blob of data to separate the classes and classify them.
 
@@ -2332,7 +2332,7 @@ The semantic vectors preserve a fair amount of information about the text with r
 
 <br/>
 
-# 10. topic modeling
+# 10. Topic modeling
  
 Earlier in the post we covered what distributions are, but before we can understand what topic modeling is and how its done, we should first make ourselves familiar, as qualitatively possible, with the dirichlet distribution. In order to illustrate the unique nature of the dirichlet, lets consider the properties of a continuous normal distribution. Belonging to the same family of continuous probability distributions whose members include the t, logistic, and Laplace distributions, the ND... 
 
@@ -2552,7 +2552,7 @@ We can see a bunch of inside jokes in the blue center cluster, disdain for unful
 
 <br/>
 
-# conclusion
+# Conclusion
  
 *"What can we say about the relationship between users and their topics?"*
  
@@ -2569,7 +2569,7 @@ This encoding may require more than an approximation to learn what's happening w
 <br/>
 <br/>
 
-# references
+# References
  
 Jones, *A statistical interpretation of term specificity and its application in retrieval.* Computer Laboratory of the University of Cambridge. 1972.[<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.115.8343&rep=rep1&type=pdf" title="Jones" rel="nofollow">1</a>] 
 
