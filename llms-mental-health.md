@@ -1,4 +1,4 @@
-# LLMs: Towards Better Mental Health Detection 
+# LLMs: Towards better mental health detection 
 
 6 months ago, ChatGPTs output applied to mental health was very helpful. But when testing it with a small group of people, it created information overload with many
 of its responses, which was paralyzing and caused a lack of action, motivation and pure dismissal from users. In certain contexts, it seems like its output heavily 
