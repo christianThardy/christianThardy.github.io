@@ -1,4 +1,4 @@
-# deep learning can solve non-trival problems in nlp
+# Deep learning can solve non-trival problems in nlp
 
 Deep learning is thought of as the ability of a class of algorithms to learn a hierarchical set of representations from lots of data, which means it can learn low, mid and high level features. You specify the input/output and your networks optimization algorithm updates the weights that determine how each input feature will affect the output prediction. 
 
@@ -20,7 +20,7 @@ We can rely on 3 strengths of applying deep learning to this problem space.
 
 <br/>
 
-## theory
+## Theory
 
 Theoretically, many layers should enrich the levels of the features.
 
@@ -59,7 +59,7 @@ More layers do allow the network to learn more fine grained features, but in rea
 
 <br/>
 
-## application
+## Application
 
 The best approach to this would be to use a network architecture that can take advantage of having many layers and not be affected by the vanishing gradients during gradient descent as the network gets deeper.
 
@@ -321,7 +321,7 @@ Resources to train these models can also present potential bottlenecks, because 
 
 <br/>
 
-### references
+### References
 
 Lample, Ballesteros, Subramanian, Kawakami, Dyer, *Neural architectures for named entity recognition*, Carnegie Mellon University, The NLP Group at Pompeu Fabra University, 2016.[<a href="https://arxiv.org/pdf/1603.01360.pdf" title="arxiv.org" rel="nofollow">1</a>]   
 
