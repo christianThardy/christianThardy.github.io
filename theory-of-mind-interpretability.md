@@ -1,5 +1,24 @@
 # Theory of Mind and GPT models
 
+<br>
+
+### Table of Contents
+1. [Introduction](#introduction)
+2. [First-Order Logic](#example2)
+3. [Semantics](#third-example)
+4. [Pragmatics](#fourth-examplehttpwwwfourthexamplecom)
+5. 
+
+
+## Example
+## Example2
+## Third Example
+## [Fourth Example](http://www.fourthexample.com) 
+
+<br>
+
+# Introduction
+
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can trace which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. 
 
 Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
