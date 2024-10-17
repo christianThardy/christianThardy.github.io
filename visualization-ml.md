@@ -1,4 +1,4 @@
-# two realities
+# Two realities
 
 Paradoxically, mathematical reality exists independently of us and it is our role to uncover and observe it.
 
@@ -120,7 +120,7 @@ Things like neural ordinary differential equations, optimization algorithm devel
 
 <br/>
 
-## references:
+## References:
 
 Vellido, Martin, Rossi, Lisboa. *Seeing is Believing: The Importance of Visualization in real-world machine learning applications.* 2011.[<a href="https://www.elen.ucl.ac.be/Proceedings/esann/esannpdf/es2011-3.pdf" title="elen.ucl.ac.be" rel="nofollow">1</a>] 
 
