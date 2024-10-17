@@ -158,7 +158,7 @@ The remainder of this work will specifically focus on how a DOLM will implement 
 
 <br>
 
-# Theory of Mind Circuit Discovery
+# Theory of mind circuit discovery
 
 The model used in this analysis is Gemma-2-2B from Google's family of Gemma models. 
 
