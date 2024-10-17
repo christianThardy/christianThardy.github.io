@@ -10,7 +10,7 @@
 - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
-    - [Identify Relavant Layers and Activations to the Task](#identify-relavant-layers-and-activations-to-the-task)
+    - [Identify Relavant Layers and Activations](#identify-relavant-layers-and-activations)
     - [Residual Stream and Multi-Head Attention](#residual-stream-and-multi-head-attention)
     - [Activation Patching and Iterative Attention Head Analysis](#activation-patching-and-iterative-attention-head-analysis)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
@@ -207,7 +207,7 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 <br>
 
-### Identify Relavant Layers and Activations to the Task
+### Identify Relavant Layers and Activations
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to features and circuit discovery.
 
