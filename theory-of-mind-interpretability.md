@@ -1,4 +1,4 @@
-# Deconstructing Theory of Mind in GPT Models
+# Deconstructing theory of mind in GPT models
 
 <br>
 
