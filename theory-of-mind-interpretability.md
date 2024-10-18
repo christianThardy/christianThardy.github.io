@@ -207,7 +207,17 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 ### Principal component analysis
 
+<br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/608b51e2-9ac2-4ced-a97c-9648d5d5cde0" width="950"/>
+<img src="https://github.com/user-attachments/assets/904aeee2-0796-4da9-8296-148071f46217" width="950"/>
+<img src="https://github.com/user-attachments/assets/b3db3185-0cbc-4454-8460-dc5cf539f51d" width="950"/>
+<br>
+<small style="font-size: 8px;">Early, middle and late MLP layers.</a></small>
+</p>
+
+<br>
 
 
 
