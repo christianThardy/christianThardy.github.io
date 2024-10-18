@@ -4,9 +4,7 @@
 
 #### Table of Contents
 - [Introduction](#introduction)
-- [First-Order Logic](#first-order-logic)
-- [Semantics](#semantics)
-- [Pragmatics](#pragmatics)
+- [Relation between theory of mind and language](#relation-between-theory-of-mind-and-language)
 - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
@@ -37,7 +35,7 @@ Is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a h
 
 What’s the real burden of proof for ToM in DOLMs? If we find a clear algorithmic process that they implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? 
 
-Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? The left language-dominant prefrontal cortex encodes semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, which reveals a detailed organization of semantic representations at the cellular level during language comprehension. Which shows us that our brains use compositionality[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>] to process language.
+Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? The left language-dominant prefrontal cortex encodes semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, which reveals a detailed organization of semantic representations at the cellular level during language comprehension. Which shows us that our brains use compositionality<sub>[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">1</a>]</sub> to process language.
 
 There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. New, unseen ToM data could always "break" the model—so it would struggle on data it hasn’t been explicitly trained on. 
 
@@ -47,9 +45,17 @@ While I'm skeptical about why models are performing ToM or are not performing To
 
 <br>
 
-# First-Order Logic
+# Relation between theory of mind and language
 
-Humans are capable of making inferences about the mental state of characters in a ToM sentence. At a conceptual level, these inferences require syntactic or prepositional logic, but what else? Let's explore the linguistic principles of **First-Order Logic** (FOL), **Semantics** and **Pragmatics**.
+In the human brain, the language network<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]</sub> is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
+
+Humans have this amazing ability to infer the mental states of others using ToM. But conceptually, how could we represent ToM in a way that’s understandable for an algorithm? How might we frame it linguistically to help an algorithm get closer to understanding the mental states of others?
+
+To explore how ToM could be represented algorithmically, let’s dig into a few key linguistic principles: **First-Order Logic** (FOL), **Semantics**, and **Pragmatics**.
+
+<br>
+
+### First-Order Logic
 
 Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
 
@@ -94,7 +100,7 @@ So its possible that at some level, ToM prediction in DOLMs aligns with first-or
 
 <br>
 
-# Semantics
+### Semantics
 
 Semantics refers to the study and representation of meaning in language. Semantics deals with how words, phrases, and sentences convey meaning, and how this meaning is interpreted by humans. It focuses on the inherent meaning of words and sentences. Semantics encompasses a lot ranging from compositional semantics, semantic similarity and even word embeddings, distributional semantics and distributed semantics. 
 
@@ -136,7 +142,7 @@ In the context of semantics, understanding and interpreting this passage require
 
 <br>
 
-# Pragmatics
+### Pragmatics
 
 Pragmatics, a key concept in semantics, focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example passage sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
 
@@ -150,9 +156,13 @@ Understanding John's beliefs and what he expects to find upon his return is cruc
 
 ## So What?
 
-These concepts and processes can *help* explain how humans can perform ToM linguistically, but are these concepts or processes mimicked in transformers? 
+These principles and operations can *help* interpret how humans perform ToM linguistically, but can these concepts transfer to large language models? 
 
-ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words, and the final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Pragmatics encompasses understanding social interactions, cognitive states, understanding that others have mental states, beliefs, desires, intentions, and perspectives—that are different from one's own, which are key to ToM.
+By being trained for next word prediction, LLMs end up learning a lot about the structure of language, including linguistic features that were, until recently, thought to be out of reach for statistical models.
+
+A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]</sub>.
+
+ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
 The remainder of this work will specifically focus on how a DOLM will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics, and whether or not these high level linguistic concepts are appropriate or not to think about how language models perform ToM.
 
@@ -213,53 +223,9 @@ Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpretin
 
 Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. 
 
-The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`.
+The ToM task, distinguishes between believed locations of objects and actual locations of objects to understand scenarios involving actions and their sequences to predict the original and new locations of an object.
 
-We can use the same circuit finding framework as the <a href="https://arxiv.org/pdf/2211.00593" title="Interpretability In The Wild: A Circuit For Indirect Object Identification In GPT-2 Small" rel="nofollow">Indirect Object Identification</a> (IOI) task as a basis for understanding ToM, as indirect object-subject entities can be mapped to original-new location entities.
-
-<br>
-
-```python
-# Decoder-only model performing IOI
-Tokenized prompt: ['<bos>', 'After', ' John', ' and', ' Mary', ' went', ' to', ' the', ' store', ',', ' John', ' gave', ' a', ' bottle', ' of', ' milk', ' to']
-Tokenized answer: [' Mary']
-Performance on answer token:
-Rank: 0        Logit: 18.09 Prob: 70.07% Token: | Mary|
-Top 0th token. Logit: 18.09 Prob: 70.07% Token: | Mary|
-Top 1th token. Logit: 15.38 Prob:  4.67% Token: | the|
-Top 2th token. Logit: 15.35 Prob:  4.54% Token: | John|
-Top 3th token. Logit: 15.25 Prob:  4.11% Token: | them|
-Top 4th token. Logit: 14.84 Prob:  2.73% Token: | his|
-Top 5th token. Logit: 14.06 Prob:  1.24% Token: | her|
-Top 6th token. Logit: 13.54 Prob:  0.74% Token: | a|
-Top 7th token. Logit: 13.52 Prob:  0.73% Token: | their|
-Top 8th token. Logit: 13.13 Prob:  0.49% Token: | Jesus|
-Top 9th token. Logit: 12.97 Prob:  0.42% Token: | him|
-Ranks of the answer tokens: [(' Mary', 0)]
-```
-
-```python
-# Decoder-only model performing ToM
-Tokenized prompt: ['<bos>', 'In', ' the', ' room', ' there', ' are', ' John', ',', ' Mark', ',', ' a', ' cat', ',', ' a', ' box', ',', ' and', ' a', ' basket', '.', ' John', ' takes', ' the', ' cat', ' and', ' puts', ' it', ' on', ' the', ' basket', '.', ' He', ' leaves', ' the', ' room', ' and', ' goes', ' to', ' school', '.', ' While', ' John', ' is', ' away', ',', ' Mark', ' takes', ' the', ' cat', ' off', ' the', ' basket', ' and', ' puts', ' it', ' on', ' the', ' box', '.', ' Mark', ' leaves', ' the', ' room', ' and', ' goes', ' to', ' work', '.', ' John', ' comes', ' back', ' from', ' school', ' and', ' enters', ' the', ' room', '.', ' John', ' looks', ' around', ' the', ' room', '.', ' He', ' doesn', '’', 't', ' know', ' what', ' happened', ' in', ' the', ' room', ' when', ' he', ' was', ' away', '.', ' John', ' thinks', ' the', ' cat', ' is', ' on', ' the']
-Tokenized answer: [' basket']
-Performance on answer token:
-Rank: 0        Logit: 28.59 Prob: 63.25% Token: | basket|
-Top 0th token. Logit: 28.59 Prob: 63.25% Token: | basket|
-Top 1th token. Logit: 27.91 Prob: 32.20% Token: | box|
-Top 2th token. Logit: 24.56 Prob:  1.13% Token: | table|
-Top 3th token. Logit: 23.90 Prob:  0.58% Token: | floor|
-Top 4th token. Logit: 23.69 Prob:  0.47% Token: | cat|
-Top 5th token. Logit: 23.69 Prob:  0.47% Token: | bed|
-Top 6th token. Logit: 23.24 Prob:  0.30% Token: | desk|
-Top 7th token. Logit: 22.92 Prob:  0.22% Token: | ground|
-Top 8th token. Logit: 22.12 Prob:  0.10% Token: | top|
-Top 9th token. Logit: 22.10 Prob:  0.10% Token: | shelf|
-Ranks of the answer tokens: [(' basket', 0)]
-```
-
-<br>
-
-In the IOI task the model distinguishes between indirect and direct objects to predict the name that isn’t the subject of the last clause. In the ToM task, it distinguishes between believed locations of objects and actual locations of objects to understand scenarios involving actions and their sequences to predict the original and new locations of an object.
+The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
 
 When deconstructing the residual stream, the logit-lens looks at the residual stream after each layer and calculates the logit difference from there. This simulates what happens if we delete all subsequent layers. The final layernorm are applied to the values in the residual stream and then projected in the logit difference directions.
 
@@ -581,40 +547,42 @@ There's a lot more we do not know about these heads and they probably have more 
 
 # References:
 
-Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">1</a>]
+Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">1</a>]
 
-Ullman, *Large Language Models Fail on Trivial Alterations to Theory-of-Mind Tasks.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Ullman" rel="nofollow">2</a>]
+Mahowald, *Dissociating Language And Thought In Large Language Models.* University of Texas at Austin, Georgia Institute of Technology, UCLA, MIT. 2024.[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]
 
-Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">3</a>]
+Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">3</a>]
 
-Oguntola, *Deep Interpretable Models of Theory of Mind.*  Carnegie Mellon University. 2021.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Oguntola" rel="nofollow">4</a>]
+Ullman, *Large Language Models Fail on Trivial Alterations to Theory-of-Mind Tasks.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Ullman" rel="nofollow">4</a>]
 
-Le, *Revisiting the Evaluation of Theory of Mind through Question Answering.* Facebook AI Research. 2019.[<a href="https://aclanthology.org/D19-1598.pdf" title="Le" rel="nofollow">5</a>]
+Oguntola, *Deep Interpretable Models of Theory of Mind.*  Carnegie Mellon University. 2021.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Oguntola" rel="nofollow">5</a>]
 
-Ma, *Towards A Holistic Landscape of Situated Theory of Mind in Large Language Models.* University of Michigan. 2023.[<a href="https://arxiv.org/pdf/2310.19619" title="Ma" rel="nofollow">6</a>]
+Le, *Revisiting the Evaluation of Theory of Mind through Question Answering.* Facebook AI Research. 2019.[<a href="https://aclanthology.org/D19-1598.pdf" title="Le" rel="nofollow">6</a>]
 
-Jamali, *Unveiling theory of mind in large language models: A parallel tosingle neurons in the human brain.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">7</a>]
+Ma, *Towards A Holistic Landscape of Situated Theory of Mind in Large Language Models.* University of Michigan. 2023.[<a href="https://arxiv.org/pdf/2310.19619" title="Ma" rel="nofollow">7</a>]
 
-Nguyen, *Language Models are Bounded Pragmatic Speakers: Understanding RLHF from a Bayesian Cognitive Modeling Perspective.* 2024.[<a href="https://arxiv.org/pdf/2305.17760" title="Nguyen" rel="nofollow">8</a>]
+Jamali, *Unveiling theory of mind in large language models: A parallel tosingle neurons in the human brain.* Harvard. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">8</a>]
 
-Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">9</a>] 
+Nguyen, *Language Models are Bounded Pragmatic Speakers: Understanding RLHF from a Bayesian Cognitive Modeling Perspective.* 2024.[<a href="https://arxiv.org/pdf/2305.17760" title="Nguyen" rel="nofollow">9</a>]
 
-Htut, *Do Attention Heads in BERT Track Syntactic Dependencies?* NYU. 2019.[<a href="https://arxiv.org/pdf/1911.12246" title="Htut" rel="nofollow">10</a>]
+Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>] 
 
-Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">11</a>]
+Htut, *Do Attention Heads in BERT Track Syntactic Dependencies?* NYU. 2019.[<a href="https://arxiv.org/pdf/1911.12246" title="Htut" rel="nofollow">11</a>]
 
-Yun, *Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors.* Facebook AI Research, UC Berkley, NYU. 2023.[<a href="https://arxiv.org/pdf/2103.15949" title="Yun" rel="nofollow">12</a>]
+Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]
 
-Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https://www.lesswrong.com/posts/Q76CpqHeEMykKpFdB/really-strong-features-found-in-residual-stream" title="Riggs" rel="nofollow">13</a>]
+Yun, *Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors.* Facebook AI Research, UC Berkley, NYU. 2023.[<a href="https://arxiv.org/pdf/2103.15949" title="Yun" rel="nofollow">13</a>]
 
-Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">14</a>]
+Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https://www.lesswrong.com/posts/Q76CpqHeEMykKpFdB/really-strong-features-found-in-residual-stream" title="Riggs" rel="nofollow">14</a>]
 
-Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">15</a>]
+Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">15</a>]
 
-Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">16</a>]
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">16</a>]
 
-Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">17</a>]
+Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]
 
-Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">18</a>]
+Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">18</a>]
 
-McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>]
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">19</a>]
+
+McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]
