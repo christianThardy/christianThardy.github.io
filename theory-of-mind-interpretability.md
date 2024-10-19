@@ -33,9 +33,9 @@ Is it appropriate to evaluate DOLMs at the level of a psychologist analyzing a h
 
 If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, if we find a clear algorithmic process that they implement to solve ToM tasks in a way that heavily relies on the structure of language, does that automatically mean the model isn’t really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
 
-Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If compositionality is exploited by the model to solve ToM, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? 
+Another key question is whether ToM tasks are solvable purely by leveraging syntactic structures and linguistic properties via compositionality. If functional compotence<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub> (formal and social reasoning, world knowledge, situation modeling) can be achieved from exploiting linguistic signals that sufficiently represent its compositionality, are these just "shortcuts" that "give answers away", or are they core features that DOLMs rely on to perform *and* solve these tasks? 
 
-Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? The left language-dominant prefrontal cortex encodes semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, which reveals a detailed organization of semantic representations at the cellular level during language comprehension. Which shows us that our brains use compositionality<sub>[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">1</a>]</sub> to process language.
+Do we have an interpretable algorithm that clearly explains how humans solve ToM tasks that is outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? The left language-dominant prefrontal cortex encodes semantic information during speech processing. These neural responses are dynamic, reflecting the contextual meanings of words rather than fixed memory representations, which reveals a detailed organization of semantic representations at the cellular level during language comprehension. Which shows us that our brains use compositionality<sub>[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">2</a>]</sub> to process language.
 
 There's always the argument of how brittle data can be. Even datasets of hundreds of billions of tokens will not cover every word, clause or preposition that may be encountered in the future. New, unseen ToM data could always "break" the model—so it would struggle on data it hasn’t been explicitly trained on. 
 
@@ -47,7 +47,7 @@ While I'm skeptical about why models are performing ToM or are not performing To
 
 # Relation between theory of mind and language
 
-In the human brain, the language network<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]</sub> is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
+In the human brain, the language network is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
 
 Humans have this amazing ability to infer the mental states of others using ToM. But conceptually, how could we represent ToM in a way that’s understandable for an algorithm? How might we frame it linguistically to help an algorithm get closer to understanding the mental states of others?
 
@@ -138,7 +138,9 @@ For example, to understand the semantics of the following passage linguistically
                
 <br>
 
-In the context of semantics, understanding and interpreting this passage requires extracting the meaning of each sentence, identifying entities, their properties, and relationships—core goals of semantic parsing. Semantic parsing aids in comprehending context and inferring implied meanings, which is essential for accurate ToM predictions. ToM involves understanding and representing complex mental states and expectations. In this example, DOLMs can grasp the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it is actually on the `box`. This involves understanding both the literal content and inferring the mental states and beliefs of the characters.
+In the context of semantics, understanding and interpreting this passage requires extracting the meaning of each sentence, identifying entities, their properties, and relationships—core goals of semantic parsing. Semantic parsing aids in comprehending context and inferring implied meanings, which is essential for accurate ToM predictions. 
+
+ToM involves understanding and representing complex mental states and expectations. In this example, DOLMs can grasp the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it is actually on the `box`. This, to some degree, involves understanding both the literal content and inferring the mental states and beliefs of the characters.
 
 <br>
 
@@ -160,11 +162,11 @@ These principles and operations can *help* interpret how humans perform ToM ling
 
 By being trained for next word prediction, LLMs end up learning a lot about the structure of language, including linguistic features that were, until recently, thought to be out of reach for statistical models.
 
-A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]</sub>.
+A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub>.
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
-The remainder of this work will specifically focus on how a DOLM will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics, and whether or not these high level linguistic concepts are appropriate or not to think about how language models perform ToM.
+The remainder of this work will specifically focus on how a DOLM will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics.
 
 <br>
 
@@ -557,9 +559,9 @@ There's a lot more we do not know about these heads and they probably have more 
 
 # References:
 
-Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">1</a>]
+Mahowald, *Dissociating Language And Thought In Large Language Models.* University of Texas at Austin, Georgia Institute of Technology, UCLA, MIT. 2024.[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]
 
-Mahowald, *Dissociating Language And Thought In Large Language Models.* University of Texas at Austin, Georgia Institute of Technology, UCLA, MIT. 2024.[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">2</a>]
+Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2023.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">2</a>]
 
 Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">3</a>]
 
