@@ -209,23 +209,64 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 ### Principal component analysis
 
+Before diving too deep, PCA can provide a way to reduce the dimensionality of activations across MLP, attention, and residual stream patterns for the main entities (John, Mark, cats), locations (basket, box) and actions (takes, puts, leaves, comes) of the ToM passage to find directions that might reveal how the model is structuring the text internally. 
+
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/608b51e2-9ac2-4ced-a97c-9648d5d5cde0" width="950"/>
-<img src="https://github.com/user-attachments/assets/904aeee2-0796-4da9-8296-148071f46217" width="950"/>
-<img src="https://github.com/user-attachments/assets/b3db3185-0cbc-4454-8460-dc5cf539f51d" width="950"/>
-<br>
-<small style="font-size: 8px;">Early, middle and late MLP layers.</a></small>
 </p>
 
 <br>
 
+In the early MLP layers, distinct clusters of tokens are starting to form. 
 
+<br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/904aeee2-0796-4da9-8296-148071f46217" width="950"/>
+</p>
 
+<br>
 
+In the middle layers, as the clusters become more distinct, they are spreading out more. 
 
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/b3db3185-0cbc-4454-8460-dc5cf539f51d" width="950"/>
+</p>
+
+<br>
+
+And the later layers show the most spread. Progressing through the layers, it seems tokens are clustering based on formal similarities. Showing clear seperation of key tokens (John, cat, basket, box) and having close proximity to one another in later layers (John, cat, basket).
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/58e26654-1090-4b81-a21c-a2eedf450697" width="950"/>
+</p>
+
+<br>
+
+The same can be said for the attention mechanisms.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/add53282-d7dc-4522-a433-92efef5f8ade" width="950"/>
+<img src="https://github.com/user-attachments/assets/3196c713-d8d0-4cec-b382-4a8025863452" width="950"/>
+</p>
+
+<br>
+
+Where distinct clusters emerge and the later layers suggest refined attention focus and more complex patterns of clusters maybe indicating specialization, while the residual stream seems to capture different aspects of information or perhaps showing a more continuous evolution of representations in broader contexts.
+
+Across the later layers, the plots suggest the model is combining information from different parts of the input sequence denoted by the mix of colors in various clusters, factoring in some temporal relationship in the sequence. Perhaps the positioning of these key elements relative to each other in the later layers might reflect the model's understanding of their roles in the story.
+
+It seems that there is a reason to believe there is a progression from simple representations in early layers to complex, structured representations in later layers. This evolution reflects the model's increasing ability to distinguish between concepts, integrate contextual information, and focus on task-relevant features. The differences between attention and residual stream plots highlight how different components of the model contribute to this evolving representation, with attention mechanisms playing a key role in creating distinct, task-relevant clusters of information.
+
+It seems pretty clear that there's a progression from simple representations in the early layers to more complex, structured ones in the later layers. The differences between attention patterns and residual stream plots show how different components contribute to this. Attention heads, in particular, seem to be key in forming distinct, task-relevant clusters of information as the model processes deeper into the task. Whereas the residual stream, pre and post processing show how infomration is transformed before flowing to the next mechanism/layer. But more on this later.
 
 <br>
 
