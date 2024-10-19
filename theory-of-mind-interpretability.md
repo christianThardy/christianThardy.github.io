@@ -546,9 +546,97 @@ Basically neurons represent multiple different things and features are spread ac
 
 So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
-The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope.</a> Its a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma 2 2B out of superposition, and see which features in the model are activated.
+The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma 2 2B out of superposition, and see which features in the model are activated.
 
 **(start neuronpedia and SAELens/TransformerLens analysis here)**
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/2c554f22-7de0-4b2b-9f5e-2a30faef77b3" width="480"/>
+<img src="https://github.com/user-attachments/assets/323a6cb4-e431-4e3b-96f5-cb7073839dbd" width="480"/>
+</p>
+
+<br>
+
+Looking at the residual stream features activated for the ToM passage, it seems the model has dedicated features for representing the narrative and its elements. For example, at a granular level, feature 61 focuses on "references to positions and locations in a narrative", feature 2704 on "phrases or contexts involving going to a place or location", and feature 3 relates to "objects or items typically associated with or placed on surfaces". All with high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/285680ab-c15e-46f6-9c3d-f963430fe969" width="480"/>
+<img src="https://github.com/user-attachments/assets/73540c29-3935-4b85-aeff-7a2b65a738f7" width="480"/>
+</p>
+
+<br>
+
+These features suggest that the model builds an internal representation of the physical setup described in the passage, tracking the locations of objects and characters. Several features also keep track of John and Mark's movements and actions throughout the narrative. Feature 11013 captures "mentions of specific individuals and their actions or states in the context of personal narratives", and feature 9665 relates to "phrases that emphasize ongoing actions or conditions".
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/5382e695-ca33-4ede-9440-461bbc902bce" width="480"/>
+<img src="https://github.com/user-attachments/assets/2662e86c-7bd7-4abb-b9bc-b59033d72044" width="480"/>
+</p>
+
+<br>
+
+The model also has features representing changes in the scene. Feature 4308 is about "phrases related to the concept of taking action or steps", feature 6169 focuses on "words related to leaving or departure".
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/545661b6-e6b5-46c0-b20a-5101d50c93a9" width="480"/>
+<img src="https://github.com/user-attachments/assets/1864263d-e072-4c1b-8e87-c3104e70334b" width="480"/>
+</p>
+
+<br>
+
+Further changes to the scene are evident in the model's temporal sequencing where the model keeps track of the sequence of events. Feature 21706 relates to "statements involving returning or coming back from a situation or an event" and feature 10097 captures "the verb 'look' as part of phrases encouraging or denoting attention".
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/b4bbc79f-f7d2-45de-a4f0-ca0582e204b7" width="480"/>
+<img src="https://github.com/user-attachments/assets/ad4edeea-8b8f-4898-8712-12565522aece" width="280"/>
+</p>
+
+<br>
+
+It appears the model also has features related to "uncertainty" and "lacking knowledge". Feature 9414 is about "phrases that begin with 'what' used in rhetorical or exclamatory contexts". Potentially signaling John's lack of knowledge about what happened while he was away.
+
+Given these internal representations were all recovered from the residual stream, we can see how it acts as a persistent information highway throughout the model's layers, most probably further modified by the MLPs to capture more specialized information. 
+
+It seems that key information about the scene, characters, and their actions remains accessible throughout the network and can be accessed by either MLP or attention mechanisms. The residual stream typically carries information relevant to multiple aspects of language processing. The presence of ToM features here suggests that the model is learning linguistic features for cognitive, spatial, temporal and causal processes related to ToM.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/dd981a3c-34df-44f4-8ac1-9f5089fd7d6e" width="480"/>
+<img src="https://github.com/user-attachments/assets/7d762b3c-00ad-4ce6-b18b-e66e38631068" width="480"/>
+</p>
+
+<br>
+
+The nature of the residual stream allows for continuous updating of information. This is particularly relevant for ToM scenarios, where belief states may need to be updated as new information is processed. Features like 10427 (related to capabilities and possibilities) and 11271 (about inquiries or questions) being in the residual stream suggests that the model can dynamically adjust its representation of characters' belief states throughout the processing of the input.
+
+The presence of ToM-related features in the residual stream suggests that Gemma 2 2B's approach to ToM is highly integrated, distributed, and dynamic.
+
+<br>
+
+<p align="center">
+<img src="" width="480"/>
+<img src="" width="480"/>
+</p>
+
+<br>
+
+The MLP features show a high degree of feature specialization.
+
+
+
+
+
 
 The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive—black ops intelligence, keep secrets from friends etc—you could increase that features activation and the model will plot about how it should keep things secret
 
