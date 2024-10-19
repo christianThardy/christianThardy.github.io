@@ -625,22 +625,81 @@ The presence of ToM-related features in the residual stream suggests that Gemma 
 <br>
 
 <p align="center">
-<img src="" width="480"/>
-<img src="" width="480"/>
+<img src="https://github.com/user-attachments/assets/35024155-99d1-4595-9ed1-2ab162c7580f" width="480"/>
+<img src="https://github.com/user-attachments/assets/428ae4e5-c003-4404-a124-260cc593988e" width="480"/>
 </p>
 
 <br>
 
-The MLP features show a high degree of feature specialization.
+In regards to the MLP features, feature 11284 relates to "verbs related to actions and states in narrative context", which likely helps in processing the actions of John and Mark (e.g., taking the cat, putting it on objects, leaving the room). Feature 5852 relates to "Verbs and phrases associated with physical observation or visual engagement", which could be important for processing John's final action of looking around the room.
 
+<br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/0b9644d0-f7e7-4bc1-b483-71b45f8eecf8" width="480"/>
+<img src="https://github.com/user-attachments/assets/8b9c0fbf-9350-4b08-b2e0-f029e157bef7" width="480"/>
+<img src="https://github.com/user-attachments/assets/c3ed915f-da78-4777-8c63-cdc206218901" width="480"/>
+</p>
 
+<br>
 
+Feature 13597 might be involved in representing the individual experiences of John and Mark, feature 7929 could be processing the characters' movements in and out of the room with special attention, and feature 12442 likely helps in maintaining the spatial representation of the room and objects within it.
 
+<br>
 
-The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. For example, if there were a secrecy feature that represents various ways in which you could be secretive—black ops intelligence, keep secrets from friends etc—you could increase that features activation and the model will plot about how it should keep things secret
+<p align="center">
+<img src="https://github.com/user-attachments/assets/7479b1e5-edc3-47f8-a6e6-151a8cf0469f" width="480"/>
+<img src="https://github.com/user-attachments/assets/73123c93-98f3-43c5-845d-25b3f9c7b6b8" width="480"/>
+<img src="https://github.com/user-attachments/assets/4e48f9d9-1a81-472a-a21b-b058be9335c3" width="480"/>
+</p>
 
-What this shows us is that gradient descent—the optimization algorithm used to train modern language models—is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
+<br>
+
+Several features also appear to be directly related to representing belief states and knowledge. Feature 13597 is likely crucial for representing John's lack of knowledge about what happened in the room. Feature 5107 is probably signaling the model's awareness of John's ignorance and potential uncertainty and doubt, feature 12703 could be involved in modeling John's thought process when he returns to the room.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/69849c3b-1005-487f-8e7c-679d0d8a0ee8" width="480"/>
+<img src="https://github.com/user-attachments/assets/ee4d1867-9512-4804-9f92-076db60ed459" width="480"/>
+</p>
+
+<br>
+
+A recurring theme in the way the model processes the passage, the temporal sequencing of events and their relationships are present, in feature 10766 the model seems to be tracking states or conditions related to timing of events or actions. Feature 3402 indicating abstract temporal concepts. Feature 4320 might be identifying key moments in the narrative that lead to changes in the scene or characters' beliefs.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/d4171c64-b7af-4ff9-83fa-36f8a4c0f03f" width="480"/>
+<img src="https://github.com/user-attachments/assets/76a45f20-be69-4f2f-a1e7-d1e2a5f70eee" width="480"/>
+<img src="https://github.com/user-attachments/assets/cf95b8e5-09ff-4753-8d9d-63575417fe1b" width="480"/>
+<img src="https://github.com/user-attachments/assets/ac9db7c7-255a-4bf7-ae70-868f23c5a19d" width="280"/>
+</p>
+
+<br>
+
+Another crucial feature for the ToM task, spatial reasoning. Feature 12441 is likely involved in tracking the positions of the cat, box, and basket, and feature 346 could be processing how subjects and objects are moved around the room.
+
+It's pretty clear, the MLP features show a high degree of feature specialization, with ToM related features being distributed across multiple specialized features in the MLPs, suggesting that the model doesn't have a single "ToM module" but rather integrates various aspects of *reasoning* to achieve ToM understanding.
+
+The features seem to range from low-level (e.g., tracking object positions) to high-level (e.g., representing uncertainty and beliefs), indicating a hierarchical processing of the ToM scenario. The model also appears to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is crucial for ToM reasoning.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/02fec28d-0770-40d3-9546-c2375a4c9c7c" width="480"/>
+</p>
+
+<br>
+
+Features like 13313 show that the model is capable of integrating contextual information to inform its ToM abilities.
+
+Gemma 2 2B shows very sophisticated and distributed behavior for processing ToM scenarios. The model appears to have developed specialized concepts for handling various aspects of ToM processing including belief representation, spatial processing, temporal sequencing and integration of contradictory information.
+
+All of this allows the model to maintain multiple representations simultaneously (reality vs. belief) and process complex ToM scenarios by integrating information across these various specialized features. The presence of these features in the MLPs suggests that much of the complex processing for ToM is happening in the DOLMs feed-forward networks, complementing the information flow in the residual stream.
+
+The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. What this shows us is that gradient descent—the optimization algorithm used to train modern language models—is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
 
 <br>
 
