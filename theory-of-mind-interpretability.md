@@ -4,7 +4,7 @@
 
 #### Table of Contents
 - [Introduction](#introduction)
-- [Relation between theory of mind and language](#relation-between-theory-of-mind-and-language)
+- [The relationship between theory of mind and language](#the-relationship-between-theory-of-mind-and-language)
 - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
@@ -45,7 +45,7 @@ While I'm skeptical about why models are performing ToM or are not performing To
 
 <br>
 
-# Relation between theory of mind and language
+# The relationship between theory of mind and language
 
 In the human brain, the language network is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
 
