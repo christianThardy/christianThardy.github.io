@@ -546,9 +546,7 @@ Basically neurons represent multiple different things and features are spread ac
 
 So we can take the activation vectors from attention, an mlp or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, mlp and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
-The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma 2 2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma 2 2B out of superposition, and see which features in the model are activated.
-
-**(start neuronpedia and SAELens/TransformerLens analysis here)**
+The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma-2-2B out of superposition, and see which features in the model are activated.
 
 <br>
 
@@ -620,7 +618,7 @@ It seems that key information about the scene, characters, and their actions rem
 
 The nature of the residual stream allows for continuous updating of information. This is particularly relevant for ToM scenarios, where belief states may need to be updated as new information is processed. Features like 10427 (related to capabilities and possibilities) and 11271 (about inquiries or questions) being in the residual stream suggests that the model can dynamically adjust its representation of characters' belief states throughout the processing of the input.
 
-The presence of ToM-related features in the residual stream suggests that Gemma 2 2B's approach to ToM is highly integrated, distributed, and dynamic.
+The presence of ToM-related features in the residual stream suggests that Gemma-2-2B's approach to ToM is highly integrated, distributed, and dynamic.
 
 <br>
 
@@ -695,7 +693,7 @@ The features seem to range from low-level (e.g., tracking object positions) to h
 
 Features like 13313 show that the model is capable of integrating contextual information to inform its ToM abilities.
 
-Gemma 2 2B shows very sophisticated and distributed behavior for processing ToM scenarios. The model appears to have developed specialized concepts for handling various aspects of ToM processing including belief representation, spatial processing, temporal sequencing and integration of contradictory information.
+Gemma-2-2B shows very sophisticated and distributed behavior for processing ToM scenarios. The model appears to have developed specialized concepts for handling various aspects of ToM processing including belief representation, spatial processing, temporal sequencing and integration of contradictory information.
 
 All of this allows the model to maintain multiple representations simultaneously (reality vs. belief) and process complex ToM scenarios by integrating information across these various specialized features. The presence of these features in the MLPs suggests that much of the complex processing for ToM is happening in the DOLMs feed-forward networks, complementing the information flow in the residual stream.
 
