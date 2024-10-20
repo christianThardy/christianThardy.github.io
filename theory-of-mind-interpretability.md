@@ -306,7 +306,7 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is all about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
+It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is primarily about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
