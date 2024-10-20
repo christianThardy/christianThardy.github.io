@@ -25,7 +25,9 @@
 
 # Introduction
 
-<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can trace which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
+<a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> allows us to reverse engineer the inner workings and representations learned by neural networks into understandable algorithms and concepts that provide a granular, causal understanding of neural networks. We can conceptualize this as some path inside a model that goes from the input to the output where we can trace which paths in the model matter, and decompose a path between different parts of the model that we expect to be interpretable. 
+
+Given my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been asking myself many core questions:
 
 How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What is the model doing, and what algorithms is the model using when it is performing and solving ToM?
 
@@ -207,7 +209,7 @@ Humans make predictions about others' thoughts and feelings —a key component o
 
 ### Principal component analysis
 
-Before diving too deep, PCA can provide a way to reduce the dimensionality of activations across MLP, attention, and residual stream patterns for the main entities (John, Mark, cats), locations (basket, box) and actions (takes, puts, leaves, comes) of the ToM passage to find directions that might reveal how the model is structuring the text internally. 
+PCA provides a way to reduce the dimensionality of activations across MLP, attention, and residual stream patterns for the main entities (John, Mark, cats), locations (basket, box) and actions (takes, puts, leaves, comes) of the ToM passage to find directions that reveal how the model is structuring the text internally. 
 
 <br>
 
@@ -258,11 +260,11 @@ The same can be said for the attention mechanisms, where distinct clusters emerg
 
 <br>
 
-The later layers suggest a refined focus in attention and more complex clustering patterns, which likely indicates specialization. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
+The later layers suggest a refined focus in attention and more complex clustering patterns. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
 
 In the later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
-It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. This evolution shows how the model becomes increasingly capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers.
+It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. I think this shows how the model becomes increasingly capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers.
 
 And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
 
