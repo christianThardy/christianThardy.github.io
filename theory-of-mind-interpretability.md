@@ -508,7 +508,7 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning is closely related to the linear representation hypothesis, and allows complex data can be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
+Dictionary learning is closely related to the linear representation hypothesis, and allows complex data to be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
 
 There is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
 
@@ -557,7 +557,7 @@ The SAE suite I used for this analysis is Google Deepmind's <a href="https://dee
 
 <br>
 
-Looking at the residual stream features activated for the ToM passage, it seems the model has dedicated features for representing the narrative and its elements. For example, at a granular level, feature 61 focuses on "references to positions and locations in a narrative", feature 2704 on "phrases or contexts involving going to a place or location", and feature 3 relates to "objects or items typically associated with or placed on surfaces". All with high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>.
+Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on "references to positions and locations in a narrative," feature 2704 captures "phrases or contexts involving going to a place or location," and feature 3 seems tied to "objects or items typically associated with or placed on surfaces." Each of these has high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is isolating different narrative elements through distinct features.
 
 <br>
 
@@ -568,7 +568,7 @@ Looking at the residual stream features activated for the ToM passage, it seems 
 
 <br>
 
-These features suggest that the model builds an internal representation of the physical setup described in the passage, tracking the locations of objects and characters. Several features also keep track of John and Mark's movements and actions throughout the narrative. Feature 11013 captures "mentions of specific individuals and their actions or states in the context of personal narratives", and feature 9665 relates to "phrases that emphasize ongoing actions or conditions".
+These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 11013 captures "mentions of specific individuals and their actions or states in personal narratives," while feature 9665 focuses on "phrases that emphasize ongoing actions or conditions." This shows how the model segments and organizes different narrative elements through distinct features.
 
 <br>
 
@@ -590,7 +590,7 @@ The model also has features representing changes in the scene. Feature 4308 is a
 
 <br>
 
-Further changes to the scene are evident in the model's temporal sequencing where the model keeps track of the sequence of events. Feature 21706 relates to "statements involving returning or coming back from a situation or an event" and feature 10097 captures "the verb 'look' as part of phrases encouraging or denoting attention".
+The model’s ability to track changes to the scene is especially clear in how it handles temporal sequencing, keeping a detailed record of the order of events. For example, feature 21706 captures "statements involving returning or coming back from a situation or event," while feature 10097 tracks "the verb 'look' as part of phrases that encourage or denote attention." This shows the model’s mechanism for understanding not just static states, but the flow of actions over time.
 
 <br>
 
@@ -601,11 +601,11 @@ Further changes to the scene are evident in the model's temporal sequencing wher
 
 <br>
 
-It appears the model also has features related to "uncertainty" and "lacking knowledge". Feature 9414 is about "phrases that begin with 'what' used in rhetorical or exclamatory contexts". Potentially signaling John's lack of knowledge about what happened while he was away.
+It seems like the model also has features dedicated to representing "uncertainty" or "lacking knowledge." For instance, feature 9414 focuses on "phrases that begin with 'what' used in rhetorical or exclamatory contexts," which could signal John’s lack of knowledge about what happened while he was away.
 
-Given these internal representations were all recovered from the residual stream, we can see how it acts as a persistent information highway throughout the model's layers, most probably further modified by the MLPs to capture more specialized information. 
+Since these representations were all recovered from the residual stream, we can see how it acts as a persistent information highway throughout the model’s layers, likely being further refined by the MLPs to capture more specialized information.
 
-It seems that key information about the scene, characters, and their actions remains accessible throughout the network and can be accessed by either MLP or attention mechanisms. The residual stream typically carries information relevant to multiple aspects of language processing. The presence of ToM features here suggests that the model is learning linguistic features for cognitive, spatial, temporal and causal processes related to ToM.
+What’s interesting is that key information about the scene, characters, and their actions remains accessible across layers and can be picked up by either MLPs or attention heads. The residual stream typically carries a mix of information relevant to various aspects of language processing, and the presence of ToM-related features suggests the model is learning linguistic patterns tied to cognitive, spatial, temporal, and causal processes—core components of ToM tasks.
 
 <br>
 
@@ -616,9 +616,9 @@ It seems that key information about the scene, characters, and their actions rem
 
 <br>
 
-The nature of the residual stream allows for continuous updating of information. This is particularly relevant for ToM scenarios, where belief states may need to be updated as new information is processed. Features like 10427 (related to capabilities and possibilities) and 11271 (about inquiries or questions) being in the residual stream suggests that the model can dynamically adjust its representation of characters' belief states throughout the processing of the input.
+The residual stream's nature allows for continuous updating of information, which is especially important in ToM scenarios, where belief states need to update as new information comes in. Features like 10427 (related to "capabilities and possibilities") and 11271 (focused on "inquiries or questions") being present in the residual stream suggest the model can dynamically adjust its representation of characters' belief states as it processes input.
 
-The presence of ToM-related features in the residual stream suggests that Gemma-2-2B's approach to ToM is highly integrated, distributed, and dynamic.
+The fact that ToM-related features show up in the residual stream points to Gemma-2-2B's approach to ToM as being highly integrated, distributed across layers, and dynamic. The model’s ability to update belief states on the fly is a key part of how it handles ToM tasks.
 
 <br>
 
@@ -630,6 +630,9 @@ The presence of ToM-related features in the residual stream suggests that Gemma-
 <br>
 
 In regards to the MLP features, feature 11284 relates to "verbs related to actions and states in narrative context", which likely helps in processing the actions of John and Mark (e.g., taking the cat, putting it on objects, leaving the room). Feature 5852 relates to "Verbs and phrases associated with physical observation or visual engagement", which could be important for processing John's final action of looking around the room.
+
+
+
 
 <br>
 
