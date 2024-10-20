@@ -104,7 +104,7 @@ It’s possible that, at some level, ToM prediction in DOLMs aligns with FOL. Th
 
 Semantics is all about representing meaning in language. It focuses on how words, phrases, and sentences convey meaning, and how humans interpret that meaning. It’s not just about the surface-level meaning of words, but also how those meanings combine and interact in context. Semantics covers a lot of ground, including things like compositional semantics, semantic similarity, word embeddings, distributional semantics, and distributed semantics.
 
-For example, to linguistically understand the semantics of the following passage, we need to identify the entities, actions, relationships, and any implied meanings. To do this, we need to break down the sentence into all its entities and actions and map out how they interact. This is crucial for making sense of what's happening, especially when dealing with more abstract reasoning like ToM.
+For example, to linguistically understand the semantics of the ToM passage, we need to identify the entities, actions, relationships, and any implied meanings. To do this, we need to break down the sentence into all its entities and actions and map out how they interact. This is crucial for making sense of what's happening, especially when dealing with more abstract reasoning like ToM.
 
   - **Entities:** John, Mark, cat, basket, box, room
   - **Actions:** takes, puts, leaves, goes, comes back, enters, looks, doesn't know, thinks
