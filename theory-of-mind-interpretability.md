@@ -629,10 +629,7 @@ The fact that ToM-related features show up in the residual stream points to Gemm
 
 <br>
 
-In regards to the MLP features, feature 11284 relates to "verbs related to actions and states in narrative context", which likely helps in processing the actions of John and Mark (e.g., taking the cat, putting it on objects, leaving the room). Feature 5852 relates to "Verbs and phrases associated with physical observation or visual engagement", which could be important for processing John's final action of looking around the room.
-
-
-
+Looking at the MLP features, feature 11284 is tied to "verbs related to actions and states in a narrative context." This likely helps the model process actions like John and Mark taking the cat, putting it on objects, and leaving the room. Feature 5852, on the other hand, is focused on "verbs and phrases related to physical observation or visual engagement," which probably plays a key role in handling John’s final action of looking around the room. These MLP features seem to help the model handle specific actions and observations, grounding narrative events in a way that's useful for tasks like ToM.
 
 <br>
 
@@ -644,7 +641,7 @@ In regards to the MLP features, feature 11284 relates to "verbs related to actio
 
 <br>
 
-Feature 13597 might be involved in representing the individual experiences of John and Mark, feature 7929 could be processing the characters' movements in and out of the room with special attention, and feature 12442 likely helps in maintaining the spatial representation of the room and objects within it.
+Feature 13597 seems to play a role in representing the individual experiences of John and Mark, while feature 7929 likely processes the characters' movements in and out of the room, potentially with a focus on tracking these transitions. Feature 12442 appears to be responsible for maintaining the spatial representation of the room and the objects within it. These features all contribute to how the model tracks and processes the physical and experiential aspects of the scene, which is key for understanding the dynamics of the narrative.
 
 <br>
 
@@ -656,7 +653,7 @@ Feature 13597 might be involved in representing the individual experiences of Jo
 
 <br>
 
-Several features also appear to be directly related to representing belief states and knowledge. Feature 13597 is likely crucial for representing John's lack of knowledge about what happened in the room. Feature 5107 is probably signaling the model's awareness of John's ignorance and potential uncertainty and doubt, feature 12703 could be involved in modeling John's thought process when he returns to the room.
+Several features seem to be directly tied to representing belief states and knowledge. Feature 13597 is likely crucial for capturing John's lack of knowledge about what happened in the room while he was away. Feature 5107 probably signals the model’s awareness of John’s ignorance, potentially reflecting uncertainty and doubt. Feature 12703 could be involved in modeling John’s thought process when he returns to the room, helping the model represent how John updates his beliefs. These features seem key for understanding how the model processes ToM scenarios, especially when tracking characters’ evolving mental states.
 
 <br>
 
@@ -667,7 +664,7 @@ Several features also appear to be directly related to representing belief state
 
 <br>
 
-A recurring theme in the way the model processes the passage, the temporal sequencing of events and their relationships are present, in feature 10766 the model seems to be tracking states or conditions related to timing of events or actions. Feature 3402 indicating abstract temporal concepts. Feature 4320 might be identifying key moments in the narrative that lead to changes in the scene or characters' beliefs.
+A recurring theme in the model’s processing of the passage is its focus on temporal sequencing and how events relate to one another. Feature 10766 seems to track states or conditions related to the timing of events or actions, while feature 3402 appears to deal with abstract temporal concepts. Feature 4320 likely identifies key moments in the narrative that trigger shifts in the scene or changes in the characters’ beliefs. These features suggest the model has mechanisms for keeping track of when things happen and how they influence the broader context—crucial for understanding the evolving dynamics.
 
 <br>
 
@@ -680,27 +677,27 @@ A recurring theme in the way the model processes the passage, the temporal seque
 
 <br>
 
-Another crucial feature for the ToM task, spatial reasoning. Feature 12441 is likely involved in tracking the positions of the cat, box, and basket, and feature 346 could be processing how subjects and objects are moved around the room.
+Another key aspect for the ToM task is spatial processing. Feature 12441 likely tracks the positions of the cat, box, and basket, while feature 346 seems to process how subjects and objects move around the room.
 
-It's pretty clear, the MLP features show a high degree of feature specialization, with ToM related features being distributed across multiple specialized features in the MLPs, suggesting that the model doesn't have a single "ToM module" but rather integrates various aspects of *reasoning* to achieve ToM understanding.
+What’s pretty clear from this is that the MLP features show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single “ToM module.” Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
 
-The features seem to range from low-level (e.g., tracking object positions) to high-level (e.g., representing uncertainty and beliefs), indicating a hierarchical processing of the ToM scenario. The model also appears to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is crucial for ToM reasoning.
+The features range from low-level tasks (like tracking object positions) to high-level abstractions (like representing uncertainty and beliefs), showing a hierarchical approach to processing the ToM scenario. The model also seems to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is key for solid processing of ToM tasks.
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/02fec28d-0770-40d3-9546-c2375a4c9c7c" width="480"/>
+    <br>
+<small style="font-size: 8px;">Features like 13313 show that the model is capable of integrating contextual information to support its ToM abilities.</a></small>
 </p>
 
 <br>
 
-Features like 13313 show that the model is capable of integrating contextual information to inform its ToM abilities.
+Gemma-2-2B demonstrates a highly sophisticated and distributed approach to processing ToM scenarios. The model seems to have developed specialized concepts for handling various aspects of ToM processing, including belief representation, spatial awareness, temporal sequencing, and integrating contradictory information.
 
-Gemma-2-2B shows very sophisticated and distributed behavior for processing ToM scenarios. The model appears to have developed specialized concepts for handling various aspects of ToM processing including belief representation, spatial processing, temporal sequencing and integration of contradictory information.
+This allows the model to maintain multiple representations simultaneously (like reality vs. belief) and handle complex ToM scenarios by integrating information across these specialized features. The fact that these features appear in the MLPs suggests that a lot of the heavy lifting for ToM is happening within the model’s feed-forward networks, which complement the information flowing through the residual stream.
 
-All of this allows the model to maintain multiple representations simultaneously (reality vs. belief) and process complex ToM scenarios by integrating information across these various specialized features. The presence of these features in the MLPs suggests that much of the complex processing for ToM is happening in the DOLMs feed-forward networks, complementing the information flow in the residual stream.
-
-The features found here represents cases where the model learned about a specific behavior and it can then represent or replicate that feature. What this shows us is that gradient descent—the optimization algorithm used to train modern language models—is very smart and will learn things that we wouldn't even think to look for. SAEs are helpful here because we do not need to guess at what features gradient descent taught the model.
+What’s especially interesting is that these features represent cases where the model has learned specific behaviors it can then replicate. This highlights how powerful gradient descent is—it finds solutions and learns patterns that we wouldn’t even think to look for. That’s why SAEs are so useful here: they let us uncover the features gradient descent has already taught the model without needing to guess.
 
 <br>
 
