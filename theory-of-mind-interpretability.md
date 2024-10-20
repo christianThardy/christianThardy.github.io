@@ -249,7 +249,7 @@ And the later layers show the most spread. Progressing through the layers, it se
 
 <br>
 
-The same can be said for the attention mechanisms.
+The same can be said for the attention mechanisms, where distinct clusters emerge.
 
 <br>
 
@@ -260,13 +260,13 @@ The same can be said for the attention mechanisms.
 
 <br>
 
-Where distinct clusters emerge and the later layers suggest refined attention focus and more complex patterns of clusters maybe indicating specialization, while the residual stream seems to capture different aspects of information or perhaps showing a more continuous evolution of representations in broader contexts.
+The later layers suggest a refined focus in attention and more complex clustering patterns, which likely indicates specialization. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
 
-Across the later layers, the plots suggest the model is combining information from different parts of the input sequence denoted by the mix of colors in various clusters, factoring in some temporal relationship in the sequence. Perhaps the positioning of these key elements relative to each other in the later layers might reflect the model's understanding of their roles in the story.
+In the later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
-It seems that there is a reason to believe there is a progression from simple representations in early layers to complex, structured representations in later layers. This evolution reflects the model's increasing ability to distinguish between concepts, integrate contextual information, and focus on task-relevant features. The differences between attention and residual stream plots highlight how different components of the model contribute to this evolving representation, with attention mechanisms playing a key role in creating distinct, task-relevant clusters of information.
+It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. This evolution shows how the model becomes increasingly capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers.
 
-It seems pretty clear that there's a progression from simple representations in the early layers to more complex, structured ones in the later layers. The differences between attention patterns and residual stream plots show how different components contribute to this. Attention heads, in particular, seem to be key in forming distinct, task-relevant clusters of information as the model processes deeper into the task. Whereas the residual stream, pre and post processing show how infomration is transformed before flowing to the next mechanism/layer. But more on this later.
+And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
 
 <br>
 
