@@ -94,7 +94,7 @@ FOL helps in maintaining the context and managing the state of a conversation by
 
 <br>
 
-is useful for capturing meaning because it allows us to formalize relationships and quantifiers, which are essential for understanding nuanced meanings and mental states in Theory of Mind (ToM). FOL lets us break down the internal structure of propositions—like representing that `John` believes the `cat` should be in a specific place.
+FOL is useful for capturing meaning because it allows us to formalize relationships and quantifiers, which are essential for understanding nuanced meanings and mental states in ToM. FOL lets us break down the internal structure of propositions—like representing that `John` believes the `cat` should be in a specific place.
 
 It’s possible that, at some level, ToM prediction in DOLMs aligns with FOL. This could be because models are able to represent complex relationships between entities and their properties, which is key for predicting human mental states and behaviors. Essentially, while DOLMs aren’t explicitly FOL machines, they might still capture the logic-like structure necessary for understanding how entities relate to each other in ToM tasks.
 
