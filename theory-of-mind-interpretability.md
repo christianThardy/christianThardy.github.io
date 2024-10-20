@@ -57,7 +57,7 @@ To explore how ToM could be represented algorithmically, let’s dig into a few 
 
 ### First-Order Logic
 
-Sentences where you can make inferences require FOL, semantics and pragmatics. It provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping syntactic structures of natural language sentences to their corresponding semantic representations.
+FOL provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping natural language sentences to their corresponding semantic representations.
 
 Let's take this false belief passage: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
@@ -94,17 +94,17 @@ FOL helps in maintaining the context and managing the state of a conversation by
 
 <br>
 
-This structure allows us to capture meaning because of relationships and quantifiers, which are essential for capturing the nuanced meanings and mental states involved in ToM. It captures the internal structure of propositions, such as the belief that `John` expects the `cat` to be somewhere specific. 
+is useful for capturing meaning because it allows us to formalize relationships and quantifiers, which are essential for understanding nuanced meanings and mental states in Theory of Mind (ToM). FOL lets us break down the internal structure of propositions—like representing that `John` believes the `cat` should be in a specific place.
 
-So its possible that at some level, ToM prediction in DOLMs aligns with first-order logic due to a models ability to represent complex relationships between entities and their properties, which are crucial for understanding and predicting human mental states and behaviors.
+It’s possible that, at some level, ToM prediction in DOLMs aligns with FOL. This could be because models are able to represent complex relationships between entities and their properties, which is key for predicting human mental states and behaviors. Essentially, while DOLMs aren’t explicitly FOL machines, they might still capture the logic-like structure necessary for understanding how entities relate to each other in ToM tasks.
 
 <br>
 
 ### Semantics
 
-Semantics refers to the study and representation of meaning in language. Semantics deals with how words, phrases, and sentences convey meaning, and how this meaning is interpreted by humans. It focuses on the inherent meaning of words and sentences. Semantics encompasses a lot ranging from compositional semantics, semantic similarity and even word embeddings, distributional semantics and distributed semantics. 
+Semantics is all about representing meaning in language. It focuses on how words, phrases, and sentences convey meaning, and how humans interpret that meaning. It’s not just about the surface-level meaning of words, but also how those meanings combine and interact in context. Semantics covers a lot of ground, including things like compositional semantics, semantic similarity, word embeddings, distributional semantics, and distributed semantics.
 
-For example, to understand the semantics of the following passage linguistically, we need to identify the entities, actions, relationships, and implied meanings. To do all of this we need to identify all entities and actions in the sentence.
+For example, to linguistically understand the semantics of the following passage, we need to identify the entities, actions, relationships, and any implied meanings. To do this, we need to break down the sentence into all its entities and actions and map out how they interact. This is crucial for making sense of what's happening, especially when dealing with more abstract reasoning like ToM.
 
   - **Entities:** John, Mark, cat, basket, box, room
   - **Actions:** takes, puts, leaves, goes, comes back, enters, looks, doesn't know, thinks
@@ -138,9 +138,9 @@ For example, to understand the semantics of the following passage linguistically
                
 <br>
 
-In the context of semantics, understanding and interpreting this passage requires extracting the meaning of each sentence, identifying entities, their properties, and relationships—core goals of semantic parsing. Semantic parsing aids in comprehending context and inferring implied meanings, which is essential for accurate ToM predictions. 
+In semantics, understanding and interpreting this passage means extracting the meaning of each sentence, identifying entities, their properties, and relationships—core tasks of semantic parsing. Semantic parsing helps the model comprehend the context and infer implied meanings, which is essential for making accurate ToM predictions.
 
-ToM involves understanding and representing complex mental states and expectations. In this example, DOLMs can grasp the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it is actually on the `box`. This, to some degree, involves understanding both the literal content and inferring the mental states and beliefs of the characters.
+ToM involves representing complex mental states and expectations. For example, in this case, DOLMs can grasp both the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it's actually on the `box`. This requires the model to go beyond the literal content, inferring the beliefs and mental states of the characters—key to performing ToM tasks.
 
 <br>
 
