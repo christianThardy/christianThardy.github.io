@@ -166,8 +166,6 @@ A common way to test linguistic abstraction in LLMs is through probing. This inv
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
-The remainder of this work will specifically focus on how a DOLM will implement this task and in the end understand in a tractable way, the mechanisms responsible for completing the task across different heuristics and metrics.
-
 <br>
 
 # Theory of mind circuit discovery
