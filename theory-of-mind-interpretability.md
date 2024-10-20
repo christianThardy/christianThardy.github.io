@@ -219,7 +219,7 @@ Before diving too deep, PCA can provide a way to reduce the dimensionality of ac
 
 <br>
 
-In the early MLP layers, distinct clusters of tokens are starting to form. 
+In the early MLP layers, clusters of tokens are starting to form. 
 
 <br>
 
