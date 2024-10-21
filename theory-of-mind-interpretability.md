@@ -194,7 +194,7 @@ It is a decoder-only transformer that has 25 layers and 7 attention heads per at
 
 In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g., reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-Humans predict others’ thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral cues. These processes are complex and involve multiple layers of cognitive and neural activity. When we look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning.: 
+Humans predict others’ thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral cues. These processes are complex and involve multiple layers of cognitive and neural activity. When we look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
        - Consider events the subjects have witnessed.
        - Consider the location of objects based on the subject's last knowledge.
@@ -483,6 +483,12 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 ### Activation patching and iterative attention head analysis
 
+To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
+
+One approach is tracking the activations of key tokens (John, basket, box, cat) across layers, showing how their representations evolve. Another approach is pinpointing which layers and attention heads contribute most to predicting "basket."
+
+By combining these methods and comparing the results, we can zero in on heads that attend to both the initial state and John’s final action. Iterative head analysis and activation patching will help us refine our understanding.
+
 Activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
@@ -512,6 +518,121 @@ We can think of activation patching as a form of noising. In this approach, we r
 So, when would you use noising versus denoising? It depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
 
 Take MLP0 in Gemma-2-2B, for instance. If you ablate it, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
+
+In output similar to this:
+
+```python
+Analyzing layer 22, head 4
+Top 5 attended tokens:
+1. <bos>: 0.2610
+2.  basket: 0.1841
+3.  basket: 0.1257
+4.  basket: 0.1067
+5.  box: 0.0726
+```
+
+We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens:
+
+- **Early Layers 0-10:**
+    - **Layer 0, Head 3:** Attends to "cat" and "John"
+    - **L5, H2:** Focuses on "basket" and "box"
+    - **L0, H0, H7:** Strong focus on "on"
+    - **L5, H0:** Attention to "on" and "is"
+    - **L10, H0:** Strong focus on "<bos>", "is", "on", and "cat", consolidating scene representation
+    - **L10, H1:** High attention to "on" and "cat"
+    - **L10, H4:** Begins to differentiate between "box" and "basket"
+    - **L10, H5:** Increased attention to "basket", starting to emphasize belief state
+ 
+Early encodings suggest relations between grammar, spatial relationships,  and initial object/subject encodings. 
+
+- **Middle Layers 10-17:**
+    - **L14, H0:** Attention to "basket", "box", and "cat", showing clear object differentiation
+    - **L14, H3:** Very high attention to "box", possibly encoding the actual state.
+    - **L14, H6:** Balanced attention to "box", "<bos>", and "basket", suggesting comparison
+    - **L16, H0:** Focuses on room
+    - **L16, H2:** Focus on "box", "basket", and "cat", refining object relationships
+    - **L16, H3:** High attention to "cat" and "on"
+    - **L16, H7:** Very strong attention to "box" and "basket", possibly comparing locations.
+    - **L17, H0:** Balanced attention to "box" and "basket", maintaining scenario context
+    - **L17, H1:** Very high attention to "on", reinforcing spatial relationships
+    - **L17, H4:** Increased focus on "basket", beginning to emphasize the belief state
+    - **L17, H7:** Extremely high attention to "on" and "is", solidifying relationship encoding
+
+- **Later Layers 22-25:**
+    - **L22, H2:** Very high attention to "<bos>" and some to "basket", maintaining initial context and belief state
+    - **L22, H4:** Strong attention to "basket", crucial for belief state maintenance (highest impact in activation patching)
+    - **L22, H5:** Negative attention to "box" and positive attention "basket", possibly final comparison
+    - **L23, H5:** Very high attention to "basket" and "cat", reinforcing the belief state
+    - **L23, H6:** Strong focus on "basket" and some on "box", final comparison and belief state emphasis
+    - **L25, H2:** Attention to "on", "cat", and "basket", finalizing the belief state representation
+    - **L25, H4:** Focus on "on" and "the", structuring the final output
+    - **L25, H7:**  Extremely high attention to "the", preparing the grammatical structure of the output
+
+The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state and supress irrelevant information.
+
+The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on "basket" in the final layers. The token "basket" shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (cat on basket) despite contradictory information introduced later in the passage.
+
+We can also see the suppression of the actual current state (cat on box) in favor of the believed state (cat on basket). The suppression head seems to primarily operate in layer 22, head 4 playing a crucial role. This head maintains the activation of "basket" while relatively suppressing "box", which would be preserving John's false belief about the cat's location. This can be observed in several ways:
+
+**Attention patterns:**
+
+- Many heads in layers 22-25 show high attention to "basket" and relatively lower attention to "box".
+- Layer 23, head 5 and head 6 show particularly strong attention to "basket".
+
+**Activation patterns:**
+
+- In the final layers (22-25), "basket" consistently has higher activation than "box", despite "box" being the actual current location of the cat.
+
+**Activation Patching:**
+
+- Layer 22, head 4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of "basket".
+- This suggests that layer 22, head 4 could be a key component of a suppression circuit, focusing on maintaining the believed state.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/e9680ec6-8c8e-4afe-90a6-0b20c59c53d4" width="500">
+</p>
+
+<br/>
+
+This shows us that the model is encoding initial information about objects and characters in early layers, building up a representation of the scene and actions in middle layers, and strongly emphasizing the believed state (cat on basket) in later layers, particularly from layer 22 onwards.
+
+It's important to know that these functions are distributed and overlapping. For example multiple heads contribute to each representation of the heads contributing to "mental state", and some heads contribute to multiple functions. The supression activity, for example, isn't a single head but emerges from the interaction of several heads in the late layers.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/8bc0fae4-7915-49ef-a3b7-38f05277431d" width="900">
+</p>
+
+<br/>
+
+Going deeper into the activation patching results, in the residual stream/midstream, there's significant activity in the early layers (0-5) and later layers (20-25), which could indicate the model is using both early context and later processing to form its prediction. The activity around position 100 (near the end of the sequence) is particularly strong, suggesting the model is paying special attention to the final context when making its prediction.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/b4d4f65b-6628-42a3-bb4b-de89915c8b82" width="950">
+</p>
+
+<br/>
+
+The residual stream shows strong activity in the early layers, indicating the importance of initial context. The attention output section shows scattered activity across layers, with some concentration in the middle layers (10-20), suggesting that attention mechanisms throughout the network contribute to the final prediction. The MLP output section shows activity mainly in the later layers (20-25), indicating that the final layers are crucial for integrating information and making the prediction.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/cf67fbe1-e894-4118-9473-52c98f41d881" width="1000">
+</p>
+
+<br/>
+
+This plot represents the decomposing the attention heads. An attention head consists of two semi-independent operations - calculating where to move information from and to (represented by the attention pattern and implemented via the QK-circuit) and calculating what information to move (represented by the value vectors and implemented by the OV circuit). We can disentangle which of these is important by patching in just the attention pattern or the value vectors.
+
+This plot has some striking features. For instance, this shows us that we have at least three different groups of heads:
+
+For 'z' (output), we see strong activations in layers 15-20, particularly in heads 4-6, suggesting these are crucial for the final output. The 'q' (query) activations are more scattered but show some concentration in the middle layers. The 'k' (key) activations are strongest in the early to middle layers, particularly in heads 0-2. The 'v' (value) activations show a pattern similar to 'z', with strong activations in layers 15-20 and heads 4-6.
 
 <br>
 
@@ -565,7 +686,7 @@ Basically neurons represent multiple different things and features are spread ac
 
 So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, MLP and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
-The SAE suite I used for this analysis is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from Gemma-2-2B out of superposition, and see which features in the model are activated.
+The SAE suite I used for this analysis is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
 <br>
 
