@@ -274,15 +274,14 @@ And of course, pre- and post-processing in the residual stream gives us a view i
 
 ### Identify relavant layers and activations
 
-Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens. So we can determine how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to features and circuit discovery.
+Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —which allows tracking how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
-Causal interventions in the context of this analysis give way to techniques so that model components can be manipulated to understand or influence how different parts of the model contribute to the final output. In order to evaluate how model performance changes when performing causal interventions, we need a metric to measure model performance. 
+Causal interventions in the context refer to techniques where we manipulate model components to understand or influence how different parts contribute to the final output. Also, to evaluate how performance shifts during these interventions, we need a clear metric to measure model performance.
 
-The ToM task, distinguishes between believed locations of objects and actual locations of objects to understand scenarios involving actions and their sequences to predict the original and new locations of an object.
+For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. In this case:
+`logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
 
-The metric used here will be the logit difference, the difference in logit between the entity of the believed location of the object and the entity of the actual location of the object to gauge the accuracy of the models answers: `logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
-
-When deconstructing the residual stream, the logit-lens looks at the residual stream after each layer and calculates the logit difference from there. This simulates what happens if we delete all subsequent layers. The final layernorm are applied to the values in the residual stream and then projected in the logit difference directions.
+When we deconstruct the residual stream using the logit-lens, we look at the residual stream after each layer and calculate the logit difference at that point. This simulates what would happen if we “deleted” all subsequent layers, giving us a snapshot of the model's evolving prediction. The final layernorm is applied to the residual stream values, which are then projected in the direction of the logit difference to measure the model's performance at each layer.
 
 <br>
 
@@ -324,11 +323,29 @@ We can break down the output of each attention layer even further by looking at 
 
 Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads actually matter. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which explains why attention layer 22 is so crucial for performance. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
 
+**REMOVE BELOW. REMOVE BELOW. REMOVE BELOW.**
 These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
+**REMOVE ABOVE. REMOVE ABOVE. REMOVE ABOVE.**
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
 Second, the presence of negative heads is really surprising—like head 7 at layer 23, which makes the incorrect logit seven times more likely. I don’t fully understand what’s happening there, but the IOI paper touches on a few potential explanations. It's definitely something worth digging into more.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/ed9c8613-8bce-4a35-a2b0-025b8c735011" width="950"/>
+</p>
+
+<br>
+
+Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. The model is distinguishing between characters, objects and honing in on story elements that are crucial for ToM processing.
+
+The progression as you move from the residual stream pre (the input to the layer), to MLP output, and to the residual stream post (the layers output after its done processing) shows how the model integrates information and refines its representations. In the residual stream pre, we can see the model focusing on locations like the room the narrative is taking place in and the school. By the residual stream post, we see a clear organization of tighter clusters of related concepts. This alignment with ToM processing is obvious—characters, key objects (like the "cat", "basket", and "box"), and mental state verbs (like "thinks" and "knows") are all grouped together in a way that suggests the model is zoning in on the most relevant elements.
+
+The tighter clustering of "cat", "basket", and "box" in the post stream suggests that layer 22 is particularly focused on these objects, which are central to the characters belief states. Similarly, the mental state words are coming closer together.
+
+It seems like layer 22 is helping maintain John’s belief state, focusing on his initial understanding (like the "cat on the basket") while potentially ignoring other events that aren’t directly relevant. Integrating character, object, and action info, and might even be suppressing distractions to keep the belief state clear.
 
 <br>
 
@@ -386,9 +403,9 @@ The model is using the residual stream to achieve compositionality between diffe
 
 <br>
 
-So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like Theory of Mind (ToM), where understanding the events, the order of events, character actions and possibly even directional or spatial information is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
+So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the events, the order of events, character actions and possibly even directional or spatial information is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
-This kind of hierarchical, nested structure in the residual stream is key to solving the IOI task. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, the ToM task requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
+This kind of hierarchical, nested structure in the residual stream is key to solving the IOI task<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>. The task requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, the ToM task requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
 
 In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. What we should be looking at is the information stored in the residual streams at that position—often abstract concepts or higher-level representations—rather than just assuming the attention head is simply "attending" to the token itself.
 
