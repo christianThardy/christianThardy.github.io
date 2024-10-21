@@ -596,19 +596,28 @@ We can also see the suppression of the actual current state (cat on box) in favo
 
 <br/>
 
-This shows us that the model is encoding initial information about objects and characters in early layers, building up a representation of the scene and actions in middle layers, and strongly emphasizing the believed state (cat on basket) in later layers, particularly from layer 22 onwards.
+The model seems to start by encoding initial information about objects and characters in the early layers. As we move into the middle layers, it builds up a more detailed representation of the scene and the actions taking place. By the later layers, particularly from layer 22 onwards, it focuses heavily on the believed state of the world (e.g., the cat on the basket).
 
-It's important to know that these functions are distributed and overlapping. For example multiple heads contribute to each representation of the heads contributing to "mental state", and some heads contribute to multiple functions. The supression activity, for example, isn't a single head but emerges from the interaction of several heads in the late layers.
+An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple attention heads. For instance, several heads work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads in the later layers.
 
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/8bc0fae4-7915-49ef-a3b7-38f05277431d" width="900">
+  <img src = "https://github.com/user-attachments/assets/a424bb3e-90f7-4992-ab3f-3fd26ba45ebe" width="900">
+  <img src = "https://github.com/user-attachments/assets/1670b458-7601-4449-b901-3df3e706dfac" width="900">
 </p>
 
 <br/>
 
-Going deeper into the activation patching results, in the residual stream/midstream, there's significant activity in the early layers (0-5) and later layers (20-25), which could indicate the model is using both early context and later processing to form its prediction. The activity around position 100 (near the end of the sequence) is particularly strong, suggesting the model is paying special attention to the final context when making its prediction.
+Diving deeper into the activation patching results, focusing on the residual stream/midstream, we can see that blue regions indicate that patching helped the model get closer to the clean run (i.e., improved its predictions), while red regions show that patching made things worse.
+
+Most of the significant logit differences happen in layers 0 to 5, suggesting these layers play a key role in the initial understanding of the narrative. Later on, around layer 21 and beyond, the logit difference for the box drops dramatically. This tells us that the later layers are crucial for computing John’s false belief—essentially, whether the model correctly tracks that John still thinks the cat is on the basket. These late layers are where the decision-making really finalizes for the ToM task.
+
+So, the early layers set up the initial scene, middle layers seem to track object movement, and the later layers focus on resolving John’s false belief based on the sequence of events.
+
+The midstream plot looks similar to the first one but centers on patching activations mid-stream. Here, we see significant improvements, especially in layers 20 and beyond, where the logit difference for the box decreases further. This suggests that the earlier layers are transferring critical information about the room’s state—like Mark moving the cat—and these mid-stream activations are key to encoding that change in the cat’s location (whether it ends up on the basket or the box).
+
+This lines up with the previous attention analysis: early layers set up the initial scene, middle layers handle object movement and maintaining the scene, and late layers resolve John’s false belief based on the sequence of events.
 
 <br/>
 
@@ -618,7 +627,11 @@ Going deeper into the activation patching results, in the residual stream/midstr
 
 <br/>
 
-The residual stream shows strong activity in the early layers, indicating the importance of initial context. The attention output section shows scattered activity across layers, with some concentration in the middle layers (10-20), suggesting that attention mechanisms throughout the network contribute to the final prediction. The MLP output section shows activity mainly in the later layers (20-25), indicating that the final layers are crucial for integrating information and making the prediction.
+The results are pretty consistent with the previous findings: early layers show significant activation, reflecting their role in tracking the initial setup, while the late layers kick in to resolve the false belief.
+
+In the attention output section, activity is scattered across layers, but there’s a notable concentration in the middle layers (around 10-20). This suggests that attention mechanisms across the network play a distributed role in driving the final prediction, with some heads in these middle layers contributing heavily.
+
+Meanwhile, in the MLP output section, most of the activity is happening in the later layers (20-25). This points to the idea that these final layers are where the model integrates everything it’s learned, refining the decision-making process and locking in its final prediction.
 
 <br/>
 
@@ -628,11 +641,15 @@ The residual stream shows strong activity in the early layers, indicating the im
 
 <br/>
 
-This plot represents the decomposing the attention heads. An attention head consists of two semi-independent operations - calculating where to move information from and to (represented by the attention pattern and implemented via the QK-circuit) and calculating what information to move (represented by the value vectors and implemented by the OV circuit). We can disentangle which of these is important by patching in just the attention pattern or the value vectors.
+This plot breaks down what’s happening inside attention heads. Each attention head is doing two pretty distinct things: first, figuring out where to move information (done by the attention pattern, which is driven by the QK-circuit), and second, figuring out what information to move (handled by the value vectors, which are controlled by the OV circuit). To figure out which part matters more, we can patch in just the attention pattern or the value vectors. The results here are interesting. 
 
-This plot has some striking features. For instance, this shows us that we have at least three different groups of heads:
+The value vectors in L16H2 H3, L17H0 H3, L22H1 H2, L23H3, L24H1, and L25H1 H2, show strong activations. This suggests that these heads are important for transmitting key information about object movements—the cat’s move from the basket to the box. With the strongest activations in the mid to late layers with the exception of L2H2.
 
-For 'z' (output), we see strong activations in layers 15-20, particularly in heads 4-6, suggesting these are crucial for the final output. The 'q' (query) activations are more scattered but show some concentration in the middle layers. The 'k' (key) activations are strongest in the early to middle layers, particularly in heads 0-2. The 'v' (value) activations show a pattern similar to 'z', with strong activations in layers 15-20 and heads 4-6.
+The query vectors at L6H2 H3, L8H5, L9H5, L10H1 H5, L16H6, L17H0 H4, L20H6 showing significant impact in query vectors, suggesting that they are used to focus the model’s attention on the relevant aspect of the narrative—John’s false belief about the cat’s location. The strongest signals are in the early to mid layers, where the model starts to pick up on the false belief.
+
+The key vectors, on the other hand, take center stage in the middle layers, where they seem crucial for tracking changes in the room's state, like Mark moving the cat. Comparing the query vectors (which capture John’s view) with these key vectors (which capture what’s really going on) is how the model figures out John’s false belief.
+
+This indicates that value vectors are responsible for carrying the actual facts (like the cat’s location), the query vectors are handling John’s perspective (where he thinks the cat is), and the key vectors make sure the model is comparing John’s belief to the real situation, allowing it to work out the contradiction.
 
 <br>
 
