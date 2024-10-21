@@ -483,19 +483,19 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 ### Activation patching and iterative attention head analysis
 
-Activation patching is a super useful technique that helps us track which layers and sequence positions in the residual stream are storing and processing the critical information we care about.
+Activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
 
-This is where activation patching comes in. First introduced in the ROME paper (where they called it causal tracing), activation patching lets us dig deeper into the model’s internal computations.
+This is where activation patching comes in. First introduced in the ROME paper (where they called it *causal tracing*), activation patching lets us dig deeper into the model’s internal computations.
 
-Here’s how it works: You run the model twice—once with a clean input that produces the correct answer, and once with a corrupted input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run. Basically, you replace the corrupted activation at a specific point with the corresponding clean activation and then let the model finish the run. The key insight here is that you can measure how much this patch shifts the output toward the correct answer.
+Here’s how it works: You run the model twice—once with a *clean* input that produces the correct answer, and once with a *corrupted* input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run at a specific point in the network. Basically, you replace the corrupted activation at a certain layer and position with the corresponding clean activation and then let the model continue its computation. The key insight here is that you can measure how much this patch shifts the output toward the correct answer, we can assess the importance of that particular activation.
 
 By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
 
-In other words, this is a noising algorithm (as opposed to the denoising focus we had in the last section).
+In other words, activation patching functions as a noising algorithm, contrasting with the denoising approaches we've previously focused on.
 
-The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit that’s driving the behavior.
+The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit responsible for the observed behavior.
 
 <br>
 
@@ -507,11 +507,11 @@ The ability to localize computations like this is a huge win for mechanistic int
 
 <br>
 
-We can think of this activation patching algorithm as a form of noising, since we’re running the model on a clean input and introducing noise by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean input, effectively removing noise.
+We can think of activation patching as a form of noising. In this approach, we run the model on a clean input but introduce "noise" by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean run, effectively removing noise.
 
-So, when would you use noising versus denoising? It really depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
+So, when would you use noising versus denoising? It depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
 
-For example, if you ablate MLP0 in Gemma-2-2B, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—it’s generally useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
+Take MLP0 in Gemma-2-2B, for instance. If you ablate it, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
 
 <br>
 
