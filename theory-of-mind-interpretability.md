@@ -419,7 +419,9 @@ In any case, it’s easy to get tricked if you think an attention head is just f
 
 While keeping all of that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
-We can also start to see how our earlier observations on FOL, semantics, and pragmatics could potentially play out within the attention. Regarding FOL properties and relations, the model is attending to instances of `basket` where only `John` interacted with it. The model also shows attention patterns to instances of `basket` where it is the only entity `John` interacted with where the positive logit attribution score is high. This suggests that it could be representing a key relation between the subject, object and location anchored to specific instances of interaction.
+We can start to connect some dots between our earlier observations on FOL, semantics, and pragmatics, and how they might show up in the model's attention patterns. When it comes to FOL properties and relations, we see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. What’s particularly interesting is that when John’s interaction with the `basket` is isolated, we also see a high positive logit attribution score. This hints at the model potentially locking onto a key relation—between the subject (John), the object (basket), and the location—tied to those specific interaction moments.
+
+This attention pattern suggests the model might be encoding this relation in a way that reflects the logical structure we’re interested in, with the subject-object-location connection becoming more prominent in cases where the interaction is clear and exclusive to John.
 
 <br>
 
@@ -432,7 +434,7 @@ We can also start to see how our earlier observations on FOL, semantics, and pra
 
 <br>
 
-Next, the fact that `the` attends to `basket` with a high positive logit attribution shows that the model could be inferring something about John’s awareness of the room's initial state, but also that he doesn’t have knowledge of what changed while he was away—this fits into a pragmatic understanding of the situation.
+The fact that `the` attends to `basket` with a high positive logit attribution is pretty telling. It suggests that the model might be inferring John’s awareness of the room’s initial state, specifically the location of the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model picks up on the gap between what he knows and what’s actually changed.
 
 <br>
 
@@ -442,7 +444,7 @@ Next, the fact that `the` attends to `basket` with a high positive logit attribu
 
 <br>
 
-Semantically, when the model processes the second mention of `John` in the sentence, we can see that it’s attending `John` to every entity in the initial state. This could suggest the model is handling coreference resolution, linking `John` to the entities that were present at the start of the model's initial state of the scenario.
+Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks a lot like coreference resolution in action—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight.
 
 <br>
 
