@@ -172,7 +172,9 @@ ToM prediction heavily relies on context to make sense of the mental states and 
 
 # Theory of mind circuit discovery
 
-The model used in this analysis is Gemma-2-2B from Google's family of Gemma models. 
+The broader goal of this analysis is to identify the circuit responsible for modeling the ToM task, with the more narrow focus being to pinpoint that circuit by understanding the behavior of attention heads, MLPs, and residual streams.
+
+The model used for this analysis is Gemma-2-2B from Google's family of Gemma models. 
 
 <br>
 
@@ -188,11 +190,11 @@ The model used in this analysis is Gemma-2-2B from Google's family of Gemma mode
 
 <br>
 
-It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer. The broader focus of this analysis is identifying the circuit that successfully models the ToM task, and the narrow focus is indentifying that circuit by understanding the behavior of the attention heads, MLPs and residual streams.
+It is a decoder-only transformer that has 25 layers and 7 attention heads per attention layer.
 
-In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in a model's activation (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to implement specific language model behaviors (e.g., reasoning), which gives us an algorithmic understanding of the models reasoning. First we understand the features, use those features to understand the circuits which connect those features and once we understand more circuits we can understand the model.
+In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g., reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-Humans make predictions about others' thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral observations. These processes are intricate and involve multiple steps, both at the neural and cognitive levels. At the level of a decoder-only transformer model, we can first broadly begin to understand ToM prediction for this specific passage through a simple, interpretable, theoretical algorithm largely dependent on John's mental state of where he put the cat: 
+Humans predict others’ thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral cues. These processes are complex and involve multiple layers of cognitive and neural activity. When we look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning.: 
 
        - Consider events the subjects have witnessed.
        - Consider the location of objects based on the subject's last knowledge.
