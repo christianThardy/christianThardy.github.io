@@ -748,7 +748,7 @@ The SAE suite I used for this analysis is Google Deepmind's <a href="https://dee
 
 <br>
 
-Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on "references to positions and locations in a narrative," feature 2704 captures "phrases or contexts involving going to a place or location," and feature 3 seems tied to "objects or items typically associated with or placed on surfaces." Each of these has high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is isolating different narrative elements through distinct features.
+Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on *references to positions and locations in a narrative*, feature 2704 captures *phrases or contexts involving going to a place or location*, and feature 3 seems tied to *objects or items typically associated with or placed on surfaces*. Each of these has high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is isolating different narrative elements through distinct features.
 
 <br>
 
@@ -759,7 +759,7 @@ Looking at the residual stream features activated for the ToM passage, it seems 
 
 <br>
 
-These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 11013 captures "mentions of specific individuals and their actions or states in personal narratives," while feature 9665 focuses on "phrases that emphasize ongoing actions or conditions." This shows how the model segments and organizes different narrative elements through distinct features.
+These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 11013 captures *mentions of specific individuals and their actions or states in personal narratives*, while feature 9665 focuses on *phrases that emphasize ongoing actions or conditions*. This shows how the model segments and organizes different narrative elements through distinct features.
 
 <br>
 
@@ -770,7 +770,7 @@ These features suggest that the model is building an internal representation of 
 
 <br>
 
-The model also has features representing changes in the scene. Feature 4308 is about "phrases related to the concept of taking action or steps", feature 6169 focuses on "words related to leaving or departure".
+The model also has features representing changes in the scene. Feature 4308 is about *phrases related to the concept of taking action or steps*, feature 6169 focuses on *words related to leaving or departure*.
 
 <br>
 
@@ -781,7 +781,7 @@ The model also has features representing changes in the scene. Feature 4308 is a
 
 <br>
 
-The model’s ability to track changes to the scene is especially clear in how it handles temporal sequencing, keeping a detailed record of the order of events. For example, feature 21706 captures "statements involving returning or coming back from a situation or event," while feature 10097 tracks "the verb 'look' as part of phrases that encourage or denote attention." This shows the model’s mechanism for understanding not just static states, but the flow of actions over time.
+The model’s ability to track changes to the scene is especially clear in how it handles temporal sequencing, keeping a detailed record of the order of events. For example, feature 21706 captures *statements involving returning or coming back from a situation or event*, while feature 10097 tracks *the verb 'look' as part of phrases that encourage or denote attention*. This shows the model’s mechanism for understanding not just static states, but the flow of actions over time.
 
 <br>
 
@@ -792,7 +792,7 @@ The model’s ability to track changes to the scene is especially clear in how i
 
 <br>
 
-It seems like the model also has features dedicated to representing "uncertainty" or "lacking knowledge." For instance, feature 9414 focuses on "phrases that begin with 'what' used in rhetorical or exclamatory contexts," which could signal John’s lack of knowledge about what happened while he was away.
+It seems like **the model also has features dedicated to representing "uncertainty" or "lacking knowledge"**. For instance, feature 9414 focuses on *phrases that begin with 'what' used in rhetorical or exclamatory contexts*, which could signal John’s lack of knowledge about what happened while he was away.
 
 Since these representations were all recovered from the residual stream, we can see how it acts as a persistent information highway throughout the model’s layers, likely being further refined by the MLPs to capture more specialized information.
 
@@ -820,7 +820,7 @@ The fact that ToM-related features show up in the residual stream points to Gemm
 
 <br>
 
-Looking at the MLP features, feature 11284 is tied to "verbs related to actions and states in a narrative context." This likely helps the model process actions like John and Mark taking the cat, putting it on objects, and leaving the room. Feature 5852, on the other hand, is focused on "verbs and phrases related to physical observation or visual engagement," which probably plays a key role in handling John’s final action of looking around the room. These MLP features seem to help the model handle specific actions and observations, grounding narrative events in a way that's useful for tasks like ToM.
+Looking at the MLP features, feature 11284 is tied to *verbs related to actions and states in a narrative context*. This likely helps the model process actions like John and Mark taking the cat, putting it on objects, and leaving the room. Feature 5852, on the other hand, is focused on *verbs and phrases related to physical observation or visual engagement*, which probably plays a key role in handling John’s final action of looking around the room. These MLP features seem to help the model handle specific actions and observations, grounding narrative events in a way that's useful for tasks like ToM.
 
 <br>
 
@@ -870,7 +870,7 @@ A recurring theme in the model’s processing of the passage is its focus on tem
 
 Another key aspect for the ToM task is spatial processing. Feature 12441 likely tracks the positions of the cat, box, and basket, while feature 346 seems to process how subjects and objects move around the room.
 
-What’s pretty clear from this is that the MLP features show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single “ToM module.” Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
+What’s pretty clear from this is that the MLP features show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single "ToM module". Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
 
 The features range from low-level tasks (like tracking object positions) to high-level abstractions (like representing uncertainty and beliefs), showing a hierarchical approach to processing the ToM scenario. The model also seems to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is key for solid processing of ToM tasks.
 
