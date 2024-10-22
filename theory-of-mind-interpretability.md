@@ -267,7 +267,7 @@ The later layers suggest a refined focus in attention and more complex clusterin
 
 In the later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
-It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. With the ToM task in mind, in the later layers it looks like locations important to `John` and `Mark`, semantically similar words in the attention space, and `basket` in the residual stream hierarchy being higher than `box`, are all clustering together in their respective mechanism.
+In the earlier layers, we’re seeing simpler, lower-level features, but as we move through the model, it’s clear the representations are getting more complex and structured. By the later layers, especially in the context of the ToM task, we’re picking up on some cool patterns: locations relevant to `John` and `Mark` seem to cluster, semantically similar words in the attention heads are grouping up, and interestingly, `basket` is ranked higher than `box` in the residual stream hierarchy.
 
 This could possibly show how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features, denoting ToM directions in each mechanism. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers. And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
 
@@ -275,9 +275,9 @@ This could possibly show how the model is capable of distinguishing concepts, in
 
 ### Identify relavant layers and activations
 
-Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —which allows tracking how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
+Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
-Causal interventions in the context refer to techniques where we manipulate model components to understand or influence how different parts contribute to the final output. Also, to evaluate how performance shifts during these interventions, we need a clear metric to measure model performance.
+This technique is essentially a causal intervention – we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
 
 For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. In this case:
 `logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
@@ -292,9 +292,9 @@ When we deconstruct the residual stream using the logit-lens, we look at the res
 
 <br>
 
-What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly?
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compared with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly?
 
 This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
 
@@ -308,7 +308,7 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is primarily about moving information around, pulling John's believed location of the cat into focus while ignoring the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
+It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is primarily about moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
