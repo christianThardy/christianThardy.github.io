@@ -1,6 +1,6 @@
 # Hi, I'm Christian
 
-I’m a data scientist with a focus on applied natural language processing, and a professional background that covers a range of projects. From one-off analyses and applied research to building software around AI-based solutions.
+I’m a data scientist with a focus on applied natural language processing. My professional background has covered a range of projects, from one-off analyses and applied research to building software around AI-based solutions.
 
 My expertise in AI, machine learning, and NLP lie at the convergence of my interest in neuroscience and psychology.
 
