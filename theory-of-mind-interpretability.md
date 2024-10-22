@@ -713,7 +713,7 @@ Even simpler, we can think of them as microscopes that combat the curse of dimen
 
 SAEs are based on the hypothesis that models have a big list of concepts they "know" about, with associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and MLPs). 
 
-There are many directions to find because of 1) polysemanticity, where many neurons fire for multiple, often times unrelated features.
+There are many directions to find because of **1)** polysemanticity, where many neurons fire for multiple, often times unrelated features.
 
 <br/>
 
@@ -723,7 +723,7 @@ There are many directions to find because of 1) polysemanticity, where many neur
 
 <br/>
 
-And 2) superposition, neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
+And **2)** superposition, neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
 
 Basically neurons represent multiple different things and features are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
