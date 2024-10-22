@@ -28,13 +28,13 @@
 
 <a href="https://www.neelnanda.io/mechanistic-interpretability/quickstart" title="www.neelnanda.io" rel="nofollow">Mechanistic interpretability</a> gives us a way to reverse engineer the internal workings of neural networks, turning the representations they learn into understandable algorithms. This helps us trace which parts of the model matter for a given task and decompose paths within the model into interpretable components.
 
-With my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been wrestling myself many core questions:
+With my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been wrestling with many core questions:
 
-How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What's happening under the hood when the model is performing and solving ToM? What kinds of algorithms is the model relying on?
+How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What's happening under the hood? What kinds of algorithms is the model relying on?
 
-Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. But is that the best way to understand model behavior? Or can we contextualize this by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
+Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. But is that the best way to understand model behavior? Can we contextualize this by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
 
-If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process to solve ToM tasks—an algorithm that leans heavily on the structure of language—does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
+If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language— to solve ToM tasks does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
 
 Another key question is whether ToM tasks can be solved purely by leveraging linguistic properties and syntactic structures via compositionality. If functional compotence<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub> (formal and social reasoning, world knowledge, situation modeling) can be achieved from exploiting linguistic signals that represent this compositionality, are these just "shortcuts" that "give answers away", or are they fundamental features that DOLMs rely on to perform and solve these tasks? 
 
@@ -99,7 +99,7 @@ FOL helps in maintaining the context and managing the state of a conversation by
 
 FOL is useful for capturing meaning because it allows us to formalize relationships and quantifiers, which are essential for understanding nuanced meanings and mental states in ToM. FOL lets us break down the internal structure of propositions—like representing that `John` believes the `cat` should be in a specific place.
 
-It’s possible that, at some level, ToM prediction in DOLMs aligns with FOL. This could be because models are able to represent complex relationships between entities and their properties, which is key for predicting human mental states and behaviors. Essentially, while DOLMs aren’t explicitly FOL machines, they might still capture the logic-like structure necessary for understanding how entities relate to each other in ToM tasks.
+It’s possible that, at some level, ToM predictions from DOLMs align with FOL. This could be because models are able to represent complex relationships between entities and their properties, which is key for predicting human mental states and behaviors. Essentially, while DOLMs aren’t explicitly FOL machines, they might still capture the logic-like structure necessary for understanding how entities relate to each other in ToM tasks.
 
 <br>
 
@@ -143,13 +143,13 @@ For example, to linguistically understand the semantics of the ToM passage, we n
 
 In semantics, understanding and interpreting this passage means extracting the meaning of each sentence, identifying entities, their properties, and relationships—core tasks of semantic parsing. Semantic parsing helps the model comprehend the context and infer implied meanings, which is essential for making accurate ToM predictions.
 
-ToM involves representing complex mental states and expectations. For example, in this case, DOLMs can grasp both the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it's actually on the `box`. This requires the model to go beyond the literal content, inferring the beliefs and mental states of the characters—key to performing ToM tasks.
+ToM involves representing complex mental states and expectations. For example, in this case, DOLMs can grasp both the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it's actually on the `box`. This requires the model to go beyond the literal content, inferring the beliefs and mental states of the characters—key to performing these tasks.
 
 <br>
 
 ### Pragmatics
 
-Pragmatics, a key concept in semantics, focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example passage sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
+A key concept in semantics, pragmatics focuses on how context influences the interpretation of meaning in language. This includes factors like speaker intent, conversational implicature, and situational context. To predict the final word in the example passage sequence, a model must understand not just the literal meaning of the words but also John's mental state, his expectations, and the context in which he is making the statement.
 
 To obtain contextual understanding, we need to know the situational context—
 
@@ -165,7 +165,7 @@ These principles and operations can *help* interpret how humans perform ToM ling
 
 By being trained for next word prediction, LLMs end up learning a lot about the structure of language, including linguistic features that were, until recently, thought to be out of reach for statistical models.
 
-A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub>.
+A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers.
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
@@ -195,7 +195,7 @@ It is a decoder-only transformer that has 25 layers and 7 attention heads per at
 
 In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g., reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-Humans predict others’ thoughts and feelings —a key component of ToM— through a combination of neurological processes and behavioral cues. These processes are complex and involve multiple layers of cognitive and neural activity. When we look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
+To look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
        - Consider events the subjects have witnessed.
        - Consider the location of objects based on the subject's last knowledge.
@@ -212,7 +212,7 @@ Humans predict others’ thoughts and feelings —a key component of ToM— thro
 
 ### Principal component analysis
 
-PCA provides a way to reduce the dimensionality of activations across MLP, attention, and residual stream patterns for the main entities (John, Mark, cats), locations (basket, box) and actions (takes, puts, leaves, comes) of the ToM passage to find directions that reveal how the model is structuring the text internally. 
+Fitting PCA to the activations across MLP, attention, and residual stream patterns for the main entities, locations, and actions of the ToM passage reveals directions that show how the model is structuring the text internally. 
 
 <br>
 
@@ -267,9 +267,9 @@ The later layers suggest a refined focus in attention and more complex clusterin
 
 In the later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
-It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. I think this shows how the model becomes increasingly capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers.
+It’s pretty clear that there’s a progression from simple representations in the early layers to more complex, structured ones in the later layers. With the ToM task in mind, in the later layers it looks like locations important to `John` and `Mark`, semantically similar words in the attention space, and `basket` in the residual stream hierarchy being higher than `box`, are all clustering together in their respective mechanism.
 
-And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
+This could possibly show how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features, denoting ToM directions in each mechanism. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers. And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
 
 <br>
 
@@ -936,6 +936,8 @@ There's a lot more we do not know about these heads and they probably have more 
 # Conclusion
 
 The results should be taken with a grain of salt, as the model was only evaluated on one ToM passage. In a future update, goal is to run a proper ablation study on multiple passages to validate or invalidate the proposed circuit.
+
+Grab the most compelling insights from each section and reiterate on them here
 
 <br>
 
