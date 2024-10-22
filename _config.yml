@@ -5,6 +5,8 @@ show_downloads: False
 navigation:
   - title: home
     url: /
+  - title: about
+    url: about
   - title: towards better mental health detection
     url: llms-mental-health
   - title: deep learning can solve non-trivial problems in nlp
@@ -17,5 +19,3 @@ navigation:
     url: visualization-ml
   - title: millennial noir
     url: millennial-noir
-  - title: about
-    url: about
