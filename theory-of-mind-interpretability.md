@@ -534,58 +534,58 @@ Top 5 attended tokens:
 We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens:
 
 - **Early Layers 0-10:**
-    - **Layer 0, Head 3:** Attends to "cat" and "John"
-    - **L5, H2:** Focuses on "basket" and "box"
-    - **L0, H0, H7:** Strong focus on "on"
-    - **L5, H0:** Attention to "on" and "is"
-    - **L10, H0:** Strong focus on "<bos>", "is", "on", and "cat", consolidating scene representation
-    - **L10, H1:** High attention to "on" and "cat"
-    - **L10, H4:** Begins to differentiate between "box" and "basket"
-    - **L10, H5:** Increased attention to "basket", starting to emphasize belief state
+    - **Layer 0, Head 3:** Attends to `cat` and `John`
+    - **L5, H2:** Focuses on `basket` and `box`
+    - **L0, H0, H7:** Strong focus on `on`
+    - **L5, H0:** Attention to `on` and `is`
+    - **L10, H0:** Strong focus on `<bos>`, `is`, `on`, and `cat`, consolidating scene representation
+    - **L10, H1:** High attention to `on` and `cat`
+    - **L10, H4:** Begins to differentiate between `box` and `basket`
+    - **L10, H5:** Increased attention to `basket`, starting to emphasize belief state
  
 Early encodings suggest relations between grammar, spatial relationships,  and initial object/subject encodings. 
 
 - **Middle Layers 10-17:**
-    - **L14, H0:** Attention to "basket", "box", and "cat", showing clear object differentiation
-    - **L14, H3:** Very high attention to "box", possibly encoding the actual state.
-    - **L14, H6:** Balanced attention to "box", "<bos>", and "basket", suggesting comparison
-    - **L16, H0:** Focuses on room
-    - **L16, H2:** Focus on "box", "basket", and "cat", refining object relationships
-    - **L16, H3:** High attention to "cat" and "on"
-    - **L16, H7:** Very strong attention to "box" and "basket", possibly comparing locations.
-    - **L17, H0:** Balanced attention to "box" and "basket", maintaining scenario context
-    - **L17, H1:** Very high attention to "on", reinforcing spatial relationships
-    - **L17, H4:** Increased focus on "basket", beginning to emphasize the belief state
-    - **L17, H7:** Extremely high attention to "on" and "is", solidifying relationship encoding
+    - **L14, H0:** Attention to "basket", `box`, and `cat`, showing clear object differentiation
+    - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
+    - **L14, H6:** Balanced attention to `box`, `<bos>`, and `basket`, suggesting comparison
+    - **L16, H0:** Focuses on `room`
+    - **L16, H2:** Focus on `box`, `basket`, and `cat`, refining object relationships
+    - **L16, H3:** High attention to `cat` and `on`
+    - **L16, H7:** Very strong attention to `box` and `basket`, possibly comparing locations
+    - **L17, H0:** Balanced attention to `box` and `basket`, maintaining scenario context
+    - **L17, H1:** Very high attention to `on`, reinforcing spatial relationships
+    - **L17, H4:** Increased focus on `basket`, beginning to emphasize the belief state
+    - **L17, H7:** Extremely high attention to `on` and `is`, solidifying relationship encoding
 
 - **Later Layers 22-25:**
-    - **L22, H2:** Very high attention to "<bos>" and some to "basket", maintaining initial context and belief state
-    - **L22, H4:** Strong attention to "basket", crucial for belief state maintenance (highest impact in activation patching)
-    - **L22, H5:** Negative attention to "box" and positive attention "basket", possibly final comparison
-    - **L23, H5:** Very high attention to "basket" and "cat", reinforcing the belief state
-    - **L23, H6:** Strong focus on "basket" and some on "box", final comparison and belief state emphasis
-    - **L25, H2:** Attention to "on", "cat", and "basket", finalizing the belief state representation
-    - **L25, H4:** Focus on "on" and "the", structuring the final output
-    - **L25, H7:**  Extremely high attention to "the", preparing the grammatical structure of the output
+    - **L22, H2:** Very high attention to `<bos>` and some to `basket`, maintaining initial context and belief state
+    - **L22, H4:** Strong attention to `basket`, crucial for belief state maintenance (highest impact in activation patching)
+    - **L22, H5:** Negative attention to `box` and positive attention `basket`, possibly final comparison
+    - **L23, H5:** Very high attention to `basket` and `cat`, reinforcing the belief state
+    - **L23, H6:** Strong focus on `basket` and some on `box`, final comparison and belief state emphasis
+    - **L25, H2:** Attention to `on`, `cat`, and `basket`, finalizing the belief state representation
+    - **L25, H4:** Focus on `on` and `the`, structuring the final output
+    - **L25, H7:**  Extremely high attention to `the`, preparing the grammatical structure of the output
 
 The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state and supress irrelevant information.
 
-The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on "basket" in the final layers. The token "basket" shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (cat on basket) despite contradictory information introduced later in the passage.
+The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
 
-We can also see the suppression of the actual current state (cat on box) in favor of the believed state (cat on basket). The suppression head seems to primarily operate in layer 22, head 4 playing a crucial role. This head maintains the activation of "basket" while relatively suppressing "box", which would be preserving John's false belief about the cat's location. This can be observed in several ways:
+We can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layer 22, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
 
 **Attention patterns:**
 
-- Many heads in layers 22-25 show high attention to "basket" and relatively lower attention to "box".
-- Layer 23, head 5 and head 6 show particularly strong attention to "basket".
+- Many heads in layers 22-25 show high attention to `basket` and relatively lower attention to `box`.
+- Layer 23, head 5 and head 6 show particularly strong attention to `basket`.
 
 **Activation patterns:**
 
-- In the final layers (22-25), "basket" consistently has higher activation than "box", despite "box" being the actual current location of the cat.
+- In the final layers (22-25), `basket` consistently has higher activation than `box`, despite `box` being the actual current location of the `cat`.
 
 **Activation Patching:**
 
-- Layer 22, head 4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of "basket".
+- Layer 22, head 4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
 - This suggests that layer 22, head 4 could be a key component of a suppression circuit, focusing on maintaining the believed state.
 
 <br/>
@@ -596,7 +596,7 @@ We can also see the suppression of the actual current state (cat on box) in favo
 
 <br/>
 
-The model seems to start by encoding initial information about objects and characters in the early layers. As we move into the middle layers, it builds up a more detailed representation of the scene and the actions taking place. By the later layers, particularly from layer 22 onwards, it focuses heavily on the believed state of the world (e.g., the cat on the basket).
+The model seems to start by encoding initial information about objects and characters in the early layers. As we move into the middle layers, it builds up a more detailed representation of the scene and the actions taking place. By the later layers, particularly from layer 22 onwards, it focuses heavily on the believed state of the world (e.g., `the cat on the basket`).
 
 An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple attention heads. For instance, several heads work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads in the later layers.
 
@@ -611,15 +611,15 @@ An important thing to note is that these functions are not neatly isolated but d
 
 Diving deeper into the activation patching results, focusing on the residual stream/midstream, blue regions indicate where patching helped the model get closer to the correct prediction (basket), while red regions show where patching hurt (pushing it towards box). The clean run is the uncorrupted input—where the model gets things right ("John thinks the cat is on the box"). The corrupted run comes from swapping adjacent tokens, which messes up the sentence’s meaning and leads to wrong answers. The goal is to patch activations from the clean run into the corrupted one at various layers and sequence positions and see how much it improves the model’s logit difference (i.e., how much closer it gets to predicting the correct answer).
 
-Patching the "box" token at layer 1 gives a massive boost, almost recovering full performance. But, as we move to later layers, the most impactful patching happens at the final "the" token before the blank. This shift hints at something important: the model first focuses on where the cat was (on the box), and later on, it shifts to what word needs to be filled in (basket vs. box). There’s a super interesting pattern—starting from the "box" token in layer 0 and running up to the final "the" token in layer 25. This implies a distinct computational flow across the model’s layers. Early on, (layers 0-5) it’s all about the "box" token (likely where the model locks in the idea that the cat was on the box).
+Patching the `box` token at layer 1 gives a massive boost, almost recovering full performance. But, as we move to later layers, the **most impactful patching** happens at the final `the` token before the blank. **This shift hints at something important:** the model first focuses on where the `cat` was (`on the box`), and later on, it shifts to what word needs to be filled in (`basket` vs. `box`). There’s a super interesting pattern—starting from the `box` token in layer 0 and running up to the final `the` token in layer 25. This implies a distinct computational flow across the model’s layers. Early on, (layers 0-5) it’s all about the `box` token (likely where the model locks in the idea that the cat was on the box).
 
- Between layers 5-20, the patching impact spreads more evenly across tokens. This is probably where the model’s pulling everything together, building up a complete understanding of what’s going on. Then, by layers 20-25, the focus shifts hard onto the final "the" token—this is where the model's deciding which word (basket vs. box) to predict. While patching "box" is super helpful in early layers, it starts to hurt later on (negative blue regions). It seems like the model needs to remember the original cat position (box) early on but then "forget" it by the end to make the right call (basket). This shows how the model's thinking evolves layer by layer.
+ Between layers 5-20, the patching impact spreads more evenly across tokens. This is probably where the model’s pulling everything together, building up a complete understanding of what’s going on. Then, by layers 20-25, the focus shifts hard onto the final `the` token—this is where the model's deciding which word (`basket` vs. `box`) to predict. While patching `box` is super helpful in early layers, it starts to hurt later on (negative blue regions). It seems like **the model needs to remember the original cat position** (`box`) early on but **then "forget" it** by the end to make the right call (`basket`). This shows how the model's thinking evolves layer by layer.
 
- One cool takeaway is how localized the effect is—patching just a few tokens or layers can fix a lot of the model’s mistakes. It’s not spreading out the info evenly across the whole network. Instead, there’s a very directed flow of information from "box" to "the" over time.
+One cool takeaway is how localized the effect is—patching just a few tokens or layers can fix a lot of the model’s mistakes. It’s not spreading out the info evenly across the whole network. Instead, there’s a very directed flow of information from `box` to `the` over time.
 
-The midstream plot looks similar but now we’re patching activations midstream. Here, the biggest improvements show up in layers 20+, where the logit difference for the box drops more. The overall patterns match the first plot, but the intensity is lower, suggesting that patching mid-layer activations has a more diffuse effect compared to early residual streams.
+The midstream plot looks similar but now we’re patching activations midstream. Here, the biggest improvements show up in layers 20+, where the logit difference for the `box` drops more. The overall patterns match the first plot, but the intensity is lower, suggesting that patching mid-layer activations has a more diffuse effect compared to early residual streams.
 
-This fits with the bigger picture: earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while midstream activations are key for representing changes in location (whether the cat ends up on the basket or box).
+**This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while midstream activations are key for representing changes in location (whether the cat ends up on the basket or box).
 
 The whole process aligns with previous attention analysis—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on resolving John’s false belief.
 
@@ -631,9 +631,9 @@ The whole process aligns with previous attention analysis—early layers set up 
 
 <br/>
 
-This plot shows the effect of patching attention head outputs at each layer and head. The color shows how much patching that specific head shifts the model's prediction from "box" to "basket."
+This plot shows the effect of patching attention head outputs at each layer and head. The color shows how much patching that specific head shifts the model's prediction from `box` to `basket`.
 
-The biggest takeaway? The last few layers, especially layers 21 through 25, matter the most. Specifically, layer 25 drives a huge shift towards the correct prediction (basket). This fits the pattern we’d expect—later layers are where the model locks in its final decision. Small tweaks to attention outputs here can dramatically change the model’s output, whereas earlier layers are more about building up representations.
+The biggest takeaway? The last few layers, especially layers 21 through 25, matter the most. Specifically, layer 25 drives a huge shift towards the correct prediction (`basket`). This fits the pattern we’d expect—later layers are where the model locks in its final decision. Small tweaks to attention outputs here can dramatically change the model’s output, whereas earlier layers are more about building up representations.
 
 What’s really interesting is that the important heads in layer 25 weren’t necessarily important in earlier layers. This suggests that the role of each head evolves over time—it’s not just a linear transformation from layer to layer. Instead, heads are integrating new information from other heads and the residual stream in complex ways. 
 
@@ -651,13 +651,13 @@ Just a few heads at a few layers carry most of the critical information needed f
 
 <br/>
 
-This plot gives us a deep dive into what’s happening inside attention heads. Each attention head does two key things: 1) deciding where to move information (this is governed by the attention pattern, which the QK circuit handles) and 2) deciding what information to move (handled by the value vectors, controlled by the OV circuit). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
+This plot gives us a deep dive into what’s happening inside attention heads. Each attention head does two key things: **1)** deciding where to move information (this is governed by the attention pattern, which the QK circuit handles) and **2)** deciding what information to move (handled by the value vectors, controlled by the OV circuit). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
 
 Let’s start with the 'z' plot (the head's output). Patching outputs from certain heads has a noticeable effect, shifting the model’s output from “box” to “basket,” particularly in the last 5-10 layers. Specifically, head 2 in layer 20 and head 5 in layers 15 and 20 have the largest impact.
 
-Now, looking at the 'q' plot (query vectors), we see a similar pattern. Heads like head 4 in layers 15 and 20 stand out. This suggests that adjusting which queries these heads focus on is pretty important for guiding the model toward the correct outcome. The strongest signals here are in the early to mid layers, where the model is starting to grapple with the false belief.
+Now, looking at the 'q' plot (query vectors), we see a similar pattern. Heads like head 4 in layers 15 and 20 stand out. This suggests that **adjusting which queries these heads focus on** is pretty important for guiding the model toward the correct outcome. The strongest signals here are in the early to mid layers, where the model is starting to grapple with the false belief.
 
-The 'k' plot (keys) is less clear, though head 4 at layer 15 and head 3 at layer 20 still seem to matter. The queries and keys work together to determine which parts of the input each head attends to, so it’s not surprising that they both play a role. Comparing query vectors (which represent John’s perspective) with key vectors (which capture what’s actually happening) helps the model reconcile John’s false belief. The value vectors, on the other hand, carry the ground truth (like where the cat really is), while query vectors handle John’s perspective (where he thinks the cat is). The key vectors ensure that the model compares John’s belief to reality, helping it detect the contradiction.
+The 'k' plot (keys) is less clear, though head 4 at layer 15 and head 3 at layer 20 still seem to matter. The queries and keys work together to determine which parts of the input each head attends to, so it’s not surprising that they both play a role. **Comparing query vectors** (which represent John’s perspective) **with key vectors** (which capture what’s actually happening) **helps the model reconcile John’s false belief**. The value vectors, on the other hand, carry the ground truth (like where the cat really is), while query vectors handle John’s perspective (where he thinks the cat is). The key vectors ensure that the model compares John’s belief to reality, helping it detect the contradiction.
 
 Finally, in the 'v' plot (value vectors), certain heads like head 3 in layers 15 and 25 are particularly important. Values are the actual information passed on after attention, so heads with impactful value vectors directly shape the model’s final output.
 
@@ -669,19 +669,19 @@ The temporal pattern is also worth noting—patching heads in the last 5-10 laye
 
 ## So What?
 
-The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like "cat on box"), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (that the cat should be in the basket). This structured approach suggests the model has learned a robust, step-by-step strategy.
+The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like `cat on box`), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (that the cat should be in the basket). This structured approach suggests the model has learned a robust, step-by-step strategy.
 
 We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic token-level dependencies in the early layers, while deeper layers focus on more complex, context-driven reasoning. This pattern aligns with how transformers generally handle more intricate reasoning tasks—processing simple relationships early, and refining the understanding in later stages.
 
-The computation is sparse and localized. A small number of key tokens (like “box” and “the”) and just a few attention heads across specific layers carry most of the important information. The model isn’t relying on a diffuse, distributed representation across all tokens and heads. This sparsity signals efficiency and specialization in how the model processes the task.
+The computation is sparse and localized. A small number of key tokens (like `box` and `the`) and just a few attention heads across specific layers carry most of the important information. The model isn’t relying on a diffuse, distributed representation across all tokens and heads. This sparsity signals efficiency and specialization in how the model processes the task.
 
-Different heads specialize in distinct functions. Some focus on attending to the right tokens (through queries and keys), while others are more important for aggregating and passing on information (through values and outputs). This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
+Different heads specialize in distinct functions. **Some focus on attending to the right tokens** (through queries and keys), **while others are more important for aggregating and passing on information** (through values and outputs). This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
 What’s interesting is that a head’s role evolves over the layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers.
 
 The last few layers are particularly important for the final output—small tweaks here can shift the model’s prediction. This fits with the idea that earlier layers are mainly focused on feature extraction and building a representation, while the later layers are more about making the final decision. The model has learned how to transform its input into a form where making the final classification becomes straightforward.
 
-Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is often enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be “nudged” in the right direction by fixing a few critical pieces.
+Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is often enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces.
 
 The model breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
 
