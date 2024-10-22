@@ -935,6 +935,8 @@ There's a lot more we do not know about these heads and they probably have more 
 
 # Conclusion
 
+The results should be taken with a grain of salt, as the model was only evaluated on one ToM passage. In a future update, goal is to run a proper ablation study on multiple passages to validate or invalidate the proposed circuit.
+
 <br>
 
 <br>
