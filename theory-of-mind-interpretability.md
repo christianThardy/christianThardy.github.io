@@ -546,7 +546,7 @@ We can see the model builds up its representation across layers, with later laye
 Early encodings suggest relations between grammar, spatial relationships,  and initial object/subject encodings. 
 
 - **Middle Layers 10-17:**
-    - **L14, H0:** Attention to "basket", `box`, and `cat`, showing clear object differentiation
+    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation
     - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
     - **L14, H6:** Balanced attention to `box`, `<bos>`, and `basket`, suggesting comparison
     - **L16, H0:** Focuses on `room`
