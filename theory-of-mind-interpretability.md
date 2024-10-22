@@ -32,7 +32,7 @@ With my current focus on transformer-based LLMs, theory of mind (ToM), and mecha
 
 How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What's happening under the hood? What kinds of algorithms is the model relying on?
 
-Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. But is that the best way to understand model behavior? Can we contextualize this by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
+Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. Can we contextualize this behavior by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
 
 If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language— to solve ToM tasks does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
 
@@ -322,11 +322,11 @@ We can break down the output of each attention layer even further by looking at 
 
 <br>
 
-Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads actually matter. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which explains why attention layer 22 is so crucial for performance. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
+Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute, but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
 
-**REMOVE BELOW. REMOVE BELOW. REMOVE BELOW.**
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
 These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
-**REMOVE ABOVE. REMOVE ABOVE. REMOVE ABOVE.**
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
@@ -342,11 +342,11 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. The model is distinguishing between characters, objects and honing in on story elements that are crucial for ToM processing.
 
-The progression as you move from the residual stream pre (the input to the layer), to MLP output, and to the residual stream post (the layers output after its done processing) shows how the model integrates information and refines its representations. In the residual stream pre, we can see the model focusing on locations like the room the narrative is taking place in and the school. By the residual stream post, we see a clear organization of tighter clusters of related concepts. This alignment with ToM processing is obvious—characters, key objects (like the "cat", "basket", and "box"), and mental state verbs (like "thinks" and "knows") are all grouped together in a way that suggests the model is zoning in on the most relevant elements.
+The progression as you move from the residual stream pre (the input to the layer), to MLP output, and to the residual stream post (the layers output after its done processing) shows how the model integrates information and refines its representations. In the residual stream pre, we can see the model focusing on locations like the `room` the narrative is taking place in and the `school`. By the residual stream post, we see a clear organization of tighter clusters of related concepts. This alignment with ToM processing is obvious—characters (`John` and `Mark`), key objects (like the `cat`, `basket`, and `box`), and mental state verbs (like `thinks` and `knows`) are all grouped together in a way that suggests the model is zoning in on the most relevant elements.
 
-The tighter clustering of "cat", "basket", and "box" in the post stream suggests that layer 22 is particularly focused on these objects, which are central to the characters belief states. Similarly, the mental state words are coming closer together.
+The tighter clustering of `cat`, `basket`, and `box` in the post stream suggests that layer 22 is particularly focused on these objects, which are central to the characters belief states. Similarly, the mental state words are coming closer together.
 
-It seems like layer 22 is helping maintain John’s belief state, focusing on his initial understanding (like the "cat on the basket") while potentially ignoring other events that aren’t directly relevant. Integrating character, object, and action info, and might even be suppressing distractions to keep the belief state clear.
+It seems like layer 22 is helping maintain John’s belief state, focusing on his initial understanding (like the `cat on the basket`) while potentially ignoring other events that aren’t directly relevant. Integrating character, object, and action info, and might even be suppressing contradicting information to keep the belief state clear.
 
 <br>
 
@@ -674,7 +674,9 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic token-level dependencies in the early layers, while deeper layers focus on more complex, context-driven reasoning. This pattern aligns with how transformers generally handle more intricate reasoning tasks—processing simple relationships early, and refining the understanding in later stages.
 
+**DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE**
 The computation is sparse and localized. A small number of key tokens (like `box` and `the`) and just a few attention heads across specific layers carry most of the important information. The model isn’t relying on a diffuse, distributed representation across all tokens and heads. This sparsity signals efficiency and specialization in how the model processes the task.
+**DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE**
 
 Different heads specialize in distinct functions. **Some focus on attending to the right tokens** (through queries and keys), **while others are more important for aggregating and passing on information** (through values and outputs). This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
