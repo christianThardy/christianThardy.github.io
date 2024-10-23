@@ -3,10 +3,10 @@ title: artifacts
 description: thoughts and things I've learned along the way 👋
 show_downloads: False
 navigation:
-  - title: about
-    url: about
   - title: home
     url: /
+  - title: about
+    url: about
   - title: towards better mental health detection
     url: llms-mental-health
   - title: deep learning can solve non-trivial problems in nlp
