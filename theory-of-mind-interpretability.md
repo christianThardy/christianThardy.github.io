@@ -356,7 +356,7 @@ It seems like layer 22 is helping maintain John’s belief state, focusing on hi
 
 <br>
 
-Furthermore, there appears to be compelling evidence that the ToM task is closely tied to the linear representation hypothesis –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+Furthermore, there appears to be compelling evidence that the ToM task is closely tied to the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
 
 The PCA breaks down into three clusters of concepts:
 
@@ -596,7 +596,7 @@ Early encodings suggest relations between grammar, spatial relationships,  and i
     - **L22, H5:** Negative attention to `box` and positive attention `basket`, possibly final comparison
     - **L23, H5:** Very high attention to `basket` and `cat`, reinforcing the belief state
     - **L23, H6:** Strong focus on `basket` and some on `box`, final comparison and belief state emphasis
-    - **L25, H2:** Attention to `on`, `cat`, and `basket`, finalizing the belief state representation
+    - **L25, H2:** Attention to `on`, `cat`, and `basket`, in that order, finalizing the belief state representation
     - **L25, H4:** Focus on `on` and `the`, structuring the final output
     - **L25, H7:**  Extremely high attention to `the`, preparing the grammatical structure of the output
 
@@ -936,7 +936,7 @@ What’s especially interesting is that these features represent cases where the
 
 <br>
 
-Iterative analysis of attention patterns and activation patching has revealed a lot about how ToM is represented and processed in a DOLM. The model performs a complex, but interpretable algorithm to performing this particular false-belief task, and it's based on a circuit involving 16 attention heads.
+Iterative analysis of attention patterns and activation patching has revealed a lot about how ToM is represented and processed in a DOLM. The model performs a complex, but interpretable algorithm to perform this particular false-belief task, and it's based on a circuit involving 16 attention heads.
 
 The circuit shows a clear hierarchical structure, breaking down into these components:
 
@@ -967,10 +967,15 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
 
 This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
 
+We can see a clear hierarchical pattern from low-level object tracking to high-level belief representation. The circuit structure matches up with what we see from attention head analysis. Certain heads attend strongly to tokens tied to the initial state (`room`), actions and spatial relationships (`on`, `basket`, `box`), and the key entities (`John`, `cat`). Heads often focus on the `cat` in connection to other objects and prepositions, confirming that the model is actively tracking these relationships.
 
-We can see a clear hierarchical pattern from low-level object tracking to high-level belief representation. This structure matches up with what we see from attention head analysis. Certain heads attend strongly to tokens tied to the initial state (`room`), actions and spatial relationships (`on`, `basket`, `box`), and the key entities (`John`, `cat`). Heads often focus on the `cat` in connection to other objects and prepositions, confirming that the model is actively tracking these relationships.
+Interestingly, later layers pay little attention to "Mark" or his actions, beyond what the belief state emphasis heads track. This suggests those heads are purposefully down-weighting the intermediate events once the belief state is set. They appear to be "inducing" John's belief based on his last known action and maintaining this belief even when it no longer matches reality.
 
-Interestingly, later layers pay little attention to "Mark" or his actions, beyond what the belief state emphasis heads track. This suggests those heads are purposefully down-weighting the intermediate events once the belief state is set.
+**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit**
+
+WE CAN SEE THE BASKET ATTENTION WEIGHTS DOMINATING OVER BOX ATTENTION WEIGHTS CONSISTENTLY AFTER LAYER 22!
+
+In the last layer the model wants to focus on facts, but the facts are supressed
 
 
 
@@ -1035,22 +1040,24 @@ Nguyen, *Language Models are Bounded Pragmatic Speakers: Understanding RLHF from
 
 Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>] 
 
-Htut, *Do Attention Heads in BERT Track Syntactic Dependencies?* NYU. 2019.[<a href="https://arxiv.org/pdf/1911.12246" title="Htut" rel="nofollow">11</a>]
+Park, *The Linear Representation Hypothesis and the Geometry of Large Language Models.* 2024.[<a href="https://arxiv.org/pdf/2211.00593" title="Park" rel="nofollow">11</a>] 
 
 Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]
 
-Yun, *Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors.* Facebook AI Research, UC Berkley, NYU. 2023.[<a href="https://arxiv.org/pdf/2103.15949" title="Yun" rel="nofollow">13</a>]
+Htut, *Do Attention Heads in BERT Track Syntactic Dependencies?* NYU. 2019.[<a href="https://arxiv.org/pdf/1911.12246" title="Htut" rel="nofollow">13</a>]
 
-Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https://www.lesswrong.com/posts/Q76CpqHeEMykKpFdB/really-strong-features-found-in-residual-stream" title="Riggs" rel="nofollow">14</a>]
+Yun, *Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors.* Facebook AI Research, UC Berkley, NYU. 2023.[<a href="https://arxiv.org/pdf/2103.15949" title="Yun" rel="nofollow">14</a>]
 
-Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">15</a>]
+Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https://www.lesswrong.com/posts/Q76CpqHeEMykKpFdB/really-strong-features-found-in-residual-stream" title="Riggs" rel="nofollow">15</a>]
 
-Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">16</a>]
+Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">16</a>]
 
-Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">17</a>]
 
-Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">18</a>]
+Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">18</a>]
 
-Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">19</a>]
+Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">19</a>]
 
-McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">20</a>]
+
+McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">21</a>]
