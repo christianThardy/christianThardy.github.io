@@ -350,6 +350,37 @@ It seems like layer 22 is helping maintain John’s belief state, focusing on hi
 
 <br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/408baaa6-9596-41ac-94d1-098df04d129d" width="750"/>
+</p>
+
+<br>
+
+Furthermore, there appears to be compelling evidence that the ToM task is closely tied to the linear representation hypothesis –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+
+The PCA breaks down into three clusters of concepts:
+
+- Location tokens (`basket`, `box`, `room`)
+- Actor tokens (`John`, `Mark`, `cat`)
+- Mental state tokens (`thinks`, `knows`)
+
+Looking at the residual stream post-PCA, we can see stronger associations between:
+
+- `John` and `thinks"
+- `basket` and initial state
+- `box` and current state
+
+When we compare the PCA with the linear map constructed earlier, it becomes clear that the model is keeping two separate but parallel "tracks":
+
+- Reality track (blue): represents actual events
+- Belief track (red): represents John's belief state
+
+The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to simultaneously track reality and belief simultaneously, keeping them separate but interrelated to maintain parallel states. Even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
+
+What’s also cool is that the PCA clusters related tokens spatially, keeping clear distances between the conceptual groups. So, there’s this clear linearity across time, the temporal sequence, belief state maintenance, subject-action links, and object-location associations.
+
+<br>
+
 ### Residual stream and multi-head attention
 
 Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
@@ -644,6 +675,8 @@ It’s interesting to compare this to the attention breakdown by query, key, val
 
 Just a few heads at a few layers carry most of the critical information needed for the model’s final prediction. But these heads take on different roles at different layers, and their importance can shift dramatically. The model is clearly doing a complex, multi-step computation—transforming representations layer by layer to reach the right conclusion.
 
+The residual stream shows strong activity in the early layers, indicating the importance of initial context.
+
 <br/>
 
 <p align="center">
@@ -897,28 +930,31 @@ What’s especially interesting is that these features represent cases where the
 
 ### ToM circuit
 
-Iterative analysis of attention patterns and activation patching have given light to many important clues for how ToM is represented and processed in a DOLM.
+Iterative analysis of attention patterns and activation patching has revealed a lot about how ToM is represented and processed in a DOLM. The model performs a complex, but interpretable algorithm to performing this particular false-belief task, and it's based on a circuit involving 16 attention heads.
 
-The model performs a complex, but interpretable algorithm to performing this particular false-belief task, using a circuit of 16 heads.
-
-The circuit shows a clear hierarchical structure:
+The circuit shows a clear hierarchical structure, breaking down into these components:
 
 - **Initial State Heads** identify initial state of locations and subject positions.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room, room
       
-- **Action State Heads** identify subject actions and relationships to objects.
+- **Action State Heads** identify subject actions and their relationships to objects.
     - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
       
-- **Scene Representation** takes state of initial heads and actions heads and looks at them in context.
+- **Scene Representation** integrates the initial states and actions, placing them in the context of the ongoing scene
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room
       
 - **Belief State Emphasis Heads** maintain subject's mental state from subjects initial state.
-    - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box
+    - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
       
 - **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
     - e.g., John+++, Mark+, cat on basket++++, cat on box--
 
-This aligns with our observation of hierarchical processing in the MLP features, from low-level object tracking to high-level belief representation.
+This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
+
+
+We can see a clear hierarchical pattern from low-level object tracking to high-level belief representation. This structure matches up with what we see from attention head analysis. Certain heads attend strongly to tokens tied to the initial state (`room`), actions and spatial relationships (`on`, `basket`, `box`), and the key entities (`John`, `cat`). Heads often focus on the `cat` in connection to other objects and prepositions, confirming that the model is actively tracking these relationships.
+
+Interestingly, later layers pay little attention to "Mark" or his actions, beyond what the belief state emphasis heads track. This suggests those heads are purposefully down-weighting the intermediate events once the belief state is set.
 
 
 
@@ -928,11 +964,11 @@ This aligns with our observation of hierarchical processing in the MLP features,
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/fce9cd60-88e7-4c8c-890c-86565ff8cea2" width="650"/>
+<img src="https://github.com/user-attachments/assets/12c9823a-da6c-4080-ad7b-0feeb4d30c39" width="650"/>
 <br>
 <br>
 
-<img src="https://github.com/user-attachments/assets/80ef8228-7da7-4140-8c98-8858d5e53040" width="650"/>
+<img src="https://github.com/user-attachments/assets/e2c6f600-a07e-4d0b-9550-679403a8493b" width="650"/>
 <br>
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
@@ -968,6 +1004,8 @@ There's a lot more we do not know about these heads and they probably have more 
 The results should be taken with a grain of salt, as the model was only evaluated on one ToM passage. In a future update, goal is to run a proper ablation study on multiple passages to validate or invalidate the proposed circuit.
 
 Grab the most compelling insights from each section and reiterate on them here
+
+The activation patching plots show that the output prediction is strongly influenced by the attention heads that focus on John's last known action and the initial state of the room. Those attention heads are..........
 
 <br>
 
