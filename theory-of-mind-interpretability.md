@@ -946,7 +946,7 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
 - **Action State Heads** identify subject actions and their relationships to objects.
     - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
       
-- **Scene Representation** integrates the initial states and actions, placing them in the context of the ongoing scene
+- **Scene Representation** integrates the initial states and actions, placing them in the context of the ongoing scene, and integrates location changes
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room
       
 - **Belief State Emphasis Heads** maintain subject's mental state from subjects initial state.
@@ -965,6 +965,36 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
 
 <br>
 
+Diving deeper in the heads associated with each component, we can explore the roles of query (Q), key (K), and value (V) components across different layers.
+
+The DOLMs attention mechanisms weigh the importance of different parts of the ToM passage. Each attention head computes three components:
+
+- **Query (Q):** Determines which positions to attend to.
+- **Key (K):** Represents the content at each position.
+- **Value (V):** Contains the information to be propagated forward.
+
+The way key/value/query attention works is sort of like how a search engine operates. 
+
+Imagine you’re looking for a video on YouTube: 
+
+- The text you type in the search bar is your query
+
+The search engine then compares that query to a bunch of keys.
+
+- Like video titles, descriptions, tags—that are stored in its database
+
+Finally, it retrieves and ranks the best-matching videos.
+
+- Which are the values.
+
+So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
+
+
+Layers 0-5: Establishing Basic Structure
+
+
+
+
 This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
 
 We can see a clear hierarchical pattern from low-level object tracking to high-level belief representation. The circuit structure matches up with what we see from attention head analysis. Certain heads attend strongly to tokens tied to the initial state (`room`), actions and spatial relationships (`on`, `basket`, `box`), and the key entities (`John`, `cat`). Heads often focus on the `cat` in connection to other objects and prepositions, confirming that the model is actively tracking these relationships.
@@ -976,6 +1006,10 @@ Interestingly, later layers pay little attention to "Mark" or his actions, beyon
 WE CAN SEE THE BASKET ATTENTION WEIGHTS DOMINATING OVER BOX ATTENTION WEIGHTS CONSISTENTLY AFTER LAYER 22!
 
 In the last layer the model wants to focus on facts, but the facts are supressed
+
+The query/key/value logit differences provide the evidence of the circuit
+
+In layer 22 head 2 suggests global context consideration in prediction as the earlier mentioned basket tokens are heavily attended to by the key vectors (I think)
 
 
 
