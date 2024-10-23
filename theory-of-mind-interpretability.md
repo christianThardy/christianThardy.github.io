@@ -930,6 +930,12 @@ What’s especially interesting is that these features represent cases where the
 
 ### ToM circuit
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/12c9823a-da6c-4080-ad7b-0feeb4d30c39" width="650"/>
+</p>
+
+<br>
+
 Iterative analysis of attention patterns and activation patching has revealed a lot about how ToM is represented and processed in a DOLM. The model performs a complex, but interpretable algorithm to performing this particular false-belief task, and it's based on a circuit involving 16 attention heads.
 
 The circuit shows a clear hierarchical structure, breaking down into these components:
@@ -948,6 +954,16 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
       
 - **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
     - e.g., John+++, Mark+, cat on basket++++, cat on box--
+ 
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/e2c6f600-a07e-4d0b-9550-679403a8493b" width="650"/>
+<br>
+<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
+</p>
+
+<br>
 
 This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
 
@@ -960,20 +976,6 @@ Interestingly, later layers pay little attention to "Mark" or his actions, beyon
 
 
 **Do not forget to show the linguistic parallels**
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/12c9823a-da6c-4080-ad7b-0feeb4d30c39" width="650"/>
-<br>
-<br>
-
-<img src="https://github.com/user-attachments/assets/e2c6f600-a07e-4d0b-9550-679403a8493b" width="650"/>
-<br>
-<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
-</p>
-
-<br>
 
 The circuit as a whole is made up of various attention heads (induction and copy supression heads) that perform algorithms to move information from the context of the sentence 
 
