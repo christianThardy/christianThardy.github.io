@@ -989,10 +989,58 @@ Finally, it retrieves and ranks the best-matching videos.
 
 So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
 
+**Layers 0-5:**
+- Layer 0, Head 0:
+  - Q head 0 → K head 0 → V head 0:
+    - Q (0.0217) and K (0.3150) attends to function words
+    - V0 outputs match this with high activations for:
+      - `on` (7.0023)
+      - `is` (1.3056)
+      - `<bos>` (0.4996)
+      - `the` (0.3767)
+      - `a` (0.0120)
+      - `and` (0.0108)
+        
+- Layer 0, Head 2:
+  - Q head 2 → K head 1 → V head 1:
+    - Q (0.0050) and K (-0.0251) attends to function words and beginning of sequence
+    - V1 outputs match this with high activations for:
+      - `the` (1.5980)
+      - `<bos>` (1.5793)
+        
+- Layer 0, Head 3
+  - Q head 7 → K head 3 → V head 1:
+    - Q (-0.0025) and K (-0.0251) attends to nsubj 1 and nsubj 2
+    - V1 outputs match this with high activations for:
+      - `cat` (0.4732)
+      - `John` (0.4663)
+      - `school` (0.3311)
+      - `John` (0.3288)
+      - `room` (0.2772)
+      - `thinks` (0.2281)
 
-Layers 0-5: Establishing Basic Structure
+- Layer 0, Head 7
+  - Q head 5 → K head 2 → V head 3:
+    - Q (0.0479) and K (0.1090) attends to prepositions and auxiliary verbs
+    - V1 outputs match this with high activations for:
+      - `on` (11.2133)
+      - `the` (0.2834)
+      - `is` (0.2126)
+      - `<bos>` (0.0587)
+      - `the` (0.0472)
+      - `what` (0.0353)
+      - `the` (0.0292)
+      - `room` (0.0283)
+        
+- Q/K select positional/functional words, V writes functional information.
+  - Attention Pattern: Attends to function words like `when`, `while`, and `happened`.
+    - These layers lay the groundwork for understanding the sentence's structure by focusing on positional and functional words.
 
 
+ ^ Should be broken down even further, should be able to say which mech reads/attends then writes
+
+
+<br>
 
 
 This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
@@ -1003,7 +1051,7 @@ Interestingly, later layers pay little attention to "Mark" or his actions, beyon
 
 **Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit**
 
-WE CAN SEE THE BASKET ATTENTION WEIGHTS DOMINATING OVER BOX ATTENTION WEIGHTS CONSISTENTLY AFTER LAYER 22!
+WE CAN SEE THE BASKET ATTENTION WEIGHTS DOMINATING OVER BOX ATTENTION WEIGHTS CONSISTENTLY AFTER LAYER 22! (in the attention weight plots)
 
 In the last layer the model wants to focus on facts, but the facts are supressed
 
