@@ -1039,7 +1039,7 @@ So, attention is basically about mapping a query to the most relevant keys and p
 
  ^ Should be broken down even further, should be able to say which mech reads/attends then writes
 
-
+Use the example here in the post, and link to the rest of the results in a different .md file
 <br>
 
 
