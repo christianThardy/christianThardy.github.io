@@ -897,6 +897,34 @@ What’s especially interesting is that these features represent cases where the
 
 ### ToM circuit
 
+Iterative analysis of attention patterns and activation patching have given light to many important clues for how ToM is represented and processed in a DOLM.
+
+The model performs a complex, but interpretable algorithm to performing this particular false-belief task, using a circuit of 16 heads.
+
+The circuit shows a clear hierarchical structure:
+
+- **Initial State Heads** identify initial state of locations and subject positions.
+    - e.g., cat in room, box in room, basket in room, John in room, Mark in room, room
+      
+- **Action State Heads** identify subject actions and relationships to objects.
+    - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
+      
+- **Scene Representation** takes state of initial heads and actions heads and looks at them in context.
+    - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room
+      
+- **Belief State Emphasis Heads** maintain subject's mental state from subjects initial state.
+    - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box
+      
+- **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
+    - e.g., John+++, Mark+, cat on basket++++, cat on box--
+
+This aligns with our observation of hierarchical processing in the MLP features, from low-level object tracking to high-level belief representation.
+
+
+
+
+**Do not forget to show the linguistic parallels**
+
 <br>
 
 <p align="center">
