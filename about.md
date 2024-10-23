@@ -6,4 +6,4 @@ My expertise in AI, machine learning, and NLP lie at the convergence of my inter
 
 I'm currently interested in independent interpretability research, specifically on understanding how transformers develop an internal model of theory of mind. This line of research sits within mechanistic interpretability, where I’m exploring how we can break open transformers to reverse-engineer how they represent and *reason* about beliefs, desires, and intentions.
 
-Outside of my work, I love traveling, making music, sports, and occasionally tossing around a yo-yo.
+Outside of my work, I love traveling, making music, sports, and occasionally tossing around yo-yos.
