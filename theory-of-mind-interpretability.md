@@ -922,7 +922,7 @@ The features range from low-level tasks (like tracking object positions) to high
 
 Gemma-2-2B demonstrates a highly sophisticated and distributed approach to processing ToM scenarios. The model seems to have developed specialized concepts for handling various aspects of ToM processing, including belief representation, spatial awareness, temporal sequencing, and integrating contradictory information.
 
-This allows the model to maintain multiple representations simultaneously (like reality vs. belief) and handle complex ToM scenarios by integrating information across these specialized features. The fact that these features appear in the MLPs suggests that a lot of the heavy lifting for ToM is happening within the model’s feed-forward networks, which complement the information flowing through the residual stream.
+This allows the model to maintain multiple token representations simultaneously (like reality vs. belief) within each layer which enables it to maintain and update representations throughout the entire sequence globally, and handle complex ToM scenarios by integrating information across these specialized features. The fact that these features appear in the MLPs suggests that a lot of the heavy lifting for ToM is happening within the model’s feed-forward networks, which complement the information flowing through the residual stream.
 
 What’s especially interesting is that these features represent cases where the model has learned specific behaviors it can then replicate. This highlights how powerful gradient descent is—it finds solutions and learns patterns that we wouldn’t even think to look for. That’s why SAEs are so useful here: they let us uncover the features gradient descent has already taught the model without needing to guess.
 
@@ -1015,30 +1015,76 @@ happened (0.2166) Logit difference after zeroing value vector: 0.9611
 - These layers likely capture structural aspects of sentences and help set up temporal relations and linking between ideas.
 ```
 
-Its clear these layers focus on basic linguistic structures and spatial relationships. 
+Its clear this layer focuses on basic function words and spatial relationships. 
 
-This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic structures (determiners, puncuation, prepositions) with stronger key vector contributions suggesting information gathering. In the middle layers, the actions state heads start integrating information from the initial state heads and we start to see object tracking, action understanding, and structural processing that builds the model's context —here we start to see more balance query-key vector contributions, indicating information integration. This starts to influence the model's belief state heads for `John` and `Mark` —where we start to see complex subject-object relationships and tracking of belief states— while continuing to maintain the context of all previously attended to text.
+This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic elements (parts-of-speech: puncuation, determiners, conjugations. syntactic dependencies). Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
+
+As we move into the middle layers, things get more interesting. The actions state heads and scene representation heads start integrating information from the initial state heads. This is where object tracking, action understanding, and structural processing starts to form. The attention mechanism becomes more balanced between the query and key vectors, reflecting how the model is integrating information and refining its contextual understanding of the scene.
+
+This integration feeds into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up from earlier layers. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
+
+At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, working to manage information propagation. The value mechanism here kicks in to inhibit outdated or irrelevant information, ensuring only the relevant aspects—like a false belief about an object’s location—end up influencing the final prediction.
+
+For instance, we can break down how the model builds a subject's false belief about an object’s location by: 1) Establishing John as the belief holder. 2) Tracking the cat's movement. 3) Updating object locations. 4) Integrating these elements into John's belief state. 5) Suppressing outdated or irrelevant information.
+
+```markdown
+### Tracking the Belief Holder ("John")
+
+Initial State:
+    - Layer 0, Head 3:
+      - Q/K: Attends to "John."
+      - V: Writes entity information.
+
+Belief Construction:
+    - Layer 14, Head 0:
+      - Q/K: Integrates "John thinks."
+      - V: Outputs "basket," linking John's perspective to the object's location.
+
+### Moving Location Information
+
+Initial Location Tracking:
+    - Layer 0, Head 7:
+      - Q/K: Focuses on prepositions.
+      - V: High activation for "on," establishing spatial relationships.
+
+Movement Tracking:
+    - Layer 10, Head 1:
+      - Q/K: Attends to location changes.
+      - V: Outputs "on" and "cat," tracking movement.
+
+State Updates:
+    - Layer 16, Head 3:
+      - Q/K: Focuses on "cat" and locations.
+      - V: Updates object-location bindings.
+
+### Final Belief State Integration
+
+    - Layer 22, Head 4:
+      - Q/K: Selects crucial context for John's belief.
+      - V: Writes strong "basket" activations, solidifying the incorrect belief.
+
+Copy Suppression:
+    - Layer 23, Head 5:
+      - Q/K: Applies negative modulation.
+      - V: Inhibits outdated information.
+```
+
+Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers, and it integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations to interpret and refine later events correctly. For example, the initial identification of "John" as the belief holder is established early but remains relevant throughout the processing.
+
+Across each set of heads, the model relies on earlier representations as foundational anchors that it keeps referring back to, updating and refining them as it moves through later layers. Heads in each layer pull from earlier encoded information to track the narrative and piece together context from different positions in the sequence. For instance, when the model identifies "John" as the belief holder early on, it continues to integrate that information across layers to correctly interpret events in later parts of the narrative. The same goes for any linguistic element.
 
 
-Attention Evolution
-Early Layers: Broad attention patterns.
-Middle Layers: More focused, object-specific attention.
-Later Middle Layers: Integration of object states and relationships.
 
 
 
 
- ^ Should be broken down even further, should be able to say which mech reads/attends then writes
+
+
+
+ ^ Should be broken down even further, should be able to say which mech reads/attends then writes. It feels like I'm lacking specificity on how the QKV are interacting in the circuit during prediction.
 
 Use the example here in the post, and link to the rest of the results in a different .md file
 <br>
-
-
-This interpretation aligns with the observations from the attention head analysis, where heads attend to tokens related to the initial state (e.g., "room"), the actions and relationships (e.g., "on", "basket", "box"), and the entities involved (e.g., "John", "cat"). The frequent attention to tokens like "cat" in relation to other objects and prepositions suggests that the model is indeed tracking the relationships between these entities. We can see a hierarchical pattern from low-level object tracking to high-level belief representation.
-
-We can see a clear hierarchical pattern from low-level object tracking to high-level belief representation. The circuit structure matches up with what we see from attention head analysis. Certain heads attend strongly to tokens tied to the initial state (`room`), actions and spatial relationships (`on`, `basket`, `box`), and the key entities (`John`, `cat`). Heads often focus on the `cat` in connection to other objects and prepositions, confirming that the model is actively tracking these relationships.
-
-Interestingly, later layers pay little attention to "Mark" or his actions, beyond what the belief state emphasis heads track. This suggests those heads are purposefully down-weighting the intermediate events once the belief state is set. They appear to be "inducing" John's belief based on his last known action and maintaining this belief even when it no longer matches reality.
 
 **Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit**
 
