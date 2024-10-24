@@ -1193,7 +1193,7 @@ Logit difference after zeroing value vector: 0.6426
 Layer 17, Head 3:
 Q head 3 → K head 1 → V head 1:
 Q (1.1774) and K (1.0032) attends to: nobj1, nobj2 and sentence structure
-1. <bos> (0.1668)
+1. `<bos>` (0.1668)
 2. , (0.1120)
 3. box (0.1101)
 4. basket (0.0852)
@@ -1210,7 +1210,7 @@ V1 outputs match this with high activations for:
 3. basket (1.1530)
 4. basket (0.9921)
 5. In (0.7664)
-6. <bos> (0.6831)
+6. `<bos>` (0.6831)
 7. box (0.6386)
 8. basket (0.6383)
 9. . (0.4601)
@@ -1225,7 +1225,7 @@ Logit difference after zeroing value vector: 2.1010
 
 Layer 17, Head 4:
 Q head 4 → K head 2 → V head 2:
-Q (-0.6372) and K (-0.4563) attends to:
+Q (-0.6372) and K (-0.4563) attends to: nobj1, nobj2 and function words
 1. <bos> (0.1984)
 2. basket (0.0994)
 3. box (0.0526)
@@ -1250,11 +1250,15 @@ V2 outputs match this with high activations for:
 10. box (0.2930)
 Logit difference after zeroing value vector: 0.2356
 
+- Q/K attends to objects like `basket`, `box`, and function words like `the`.
+  - Attention Pattern: Tracks objects and sentence structuring elements.
+  - Likely helps maintain focus on key objects and their relationships in the sentence. Possibly maintaining focus on the context of later mentioned objects, earlier in the sequence.
+
 <br>
 
 Layer 17, Head 6:
 Q head 6 → K head 3 → V head 3:
-Q (-0.6828) and K (0.3939) attends to:
+Q (-0.6828) and K (0.3939) attends to: function words and determiners
 1. the (0.1646)
 2. the (0.1054)
 3. the (0.0813)
@@ -1279,11 +1283,15 @@ V3 outputs match this with high activations for:
 10. <bos> (0.2347)
 Logit difference after zeroing value vector: 0.0837
 
+- Q/K focuses on function words like `the`, as well as `<bos>`.
+  - Attention Pattern: Attends to grammatical structure, especially with determiners.
+  - Likely supports sentence cohesion by focusing on low-content words.
+
 <br>
 
 Layer 17, Head 7:
 Q head 7 → K head 3 → V head 3:
-Q (1.6770) and K (0.3939) attends to:
+Q (1.6770) and K (0.3939) attends to: verbs and prepositions
 1. off (0.0799)
 2. on (0.0717)
 3. on (0.0559)
@@ -1308,11 +1316,15 @@ V3 outputs match this with high activations for:
 10. it (0.2720)
 Logit difference after zeroing value vector: 0.0837
 
+- Q/K attends to verbs like `off`, `on`, and auxiliary words (`it`).
+  - Attention Pattern: Focuses on actions and auxiliary verbs.
+  - Likely tracks actions related to object manipulation and movement.
+
 <br>
 
 Layer 20, Head 2:
 Q head 2 → K head 1 → V head 1:
-Q (-0.1035) and K (0.3810) attends to:
+Q (-0.1035) and K (0.3810) attends to: nobj1, nobj2 and function words
 1. basket (0.1123)
 2. box (0.0844)
 3. basket (0.0803)
@@ -1324,7 +1336,7 @@ Q (-0.1035) and K (0.3810) attends to:
 9. the (0.0242)
 10. room (0.0237)
     
-V1 outputs match this with high activations for:
+V1 outputs match this with high activations for: nobj1, nobj2, nobj3 and function words
 1. basket (1.1895)
 2. box (0.9763)
 3. basket (0.6426)
@@ -1337,11 +1349,15 @@ V1 outputs match this with high activations for:
 10. room (0.1792)
 Logit difference after zeroing value vector: 0.1956
 
+- Q/K attends to objects like `basket`, `box`, and function words (`the`).
+  - Attention Pattern: Tracks key objects and sentence structure.
+  - Likely helps maintain the presence of key objects in the sentence context.
+
 <br>
 
 Layer 20, Head 3:
 Q head 3 → K head 1 → V head 1:
-Q (0.5209) and K (0.3810) attends to:
+Q (0.5209) and K (0.3810) attends to: nobj1, nobj2, dobj1, locations and spatial references
 1. <bos> (0.0622)
 2. basket (0.0489)
 3. box (0.0421)
@@ -1353,7 +1369,7 @@ Q (0.5209) and K (0.3810) attends to:
 9. the (0.0260)
 10. on (0.0225)
     
-V1 outputs match this with high activations for:
+V1 outputs match this with high activations for: nobj1, nobj2, nobj3, dobj1, locations and spatial references
 1. basket (0.5405)
 2. basket (0.5180)
 3. box (0.4871)
@@ -1365,6 +1381,10 @@ V1 outputs match this with high activations for:
 9. cat (0.2264)
 10. on (0.2052)
 Logit difference after zeroing value vector: 0.1956
+
+- Q/K focuses on objects like `basket`, `box`, and locations (`room`, `school`).
+  - Attention Pattern: Attends to objects and spatial references.
+  - Likely maintains attention on key objects and their spatial positioning in locations.
 
 <br>
 
