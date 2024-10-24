@@ -598,7 +598,7 @@ Logit difference after zeroing value vector: 0.5932
 
 Layer 11, Head 4:
 Q head 4 → K head 2 → V head 2:
-Q (-0.1289) and K (-0.2740) attends to: nobj1, nobj2, nsubj1 and transitions
+Q (-0.1289) and K (-0.2740) attends to: nobj1, nobj2, nsubj1, verbs and transitions
 1. box (0.0601)
 2. and (0.0393)
 3. basket (0.0384)
@@ -623,7 +623,7 @@ V2 outputs match this with high activations for:
 10. the (0.2348)
 Logit difference after zeroing value vector: 0.5752
 
-- Q/K focuses on objects like `box`, `basket`, and transitions like `and`, `off`.
+- Q/K focuses on objects like `box`, `basket`, verbs like `takes` and transitions like `and`, `off`.
   - Attention Pattern: Attends to object manipulation and conjunctions.
   - Likely helps track actions related to objects and subjects and their transitions in context.
 
@@ -1316,7 +1316,7 @@ V3 outputs match this with high activations for:
 10. it (0.2720)
 Logit difference after zeroing value vector: 0.0837
 
-- Q/K attends to verbs like `off`, `on`, and auxiliary words (`it`).
+- Q/K attends to verbs like `is`, `takes`, and auxiliary words (`it`).
   - Attention Pattern: Focuses on actions and auxiliary verbs.
   - Likely tracks actions related to object manipulation and movement.
 
