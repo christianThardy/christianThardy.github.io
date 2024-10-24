@@ -1,4 +1,4 @@
-# Query, Key, Value Attention Mechanism Output from Interpretability analysis
+# Query, Key, Value Attention Mechanism Output from Interpretability Analysis
 
 <br>
 
@@ -400,8 +400,8 @@ Logit difference after zeroing value vector: 0.3815
 
 Layer 8, Head 1:
 Q head 1 → K head 0 → V head 0:
-Q (0.2042) and K (-0.0510) attends to:
-1. <bos> (0.6773)
+Q (0.2042) and K (-0.0510) attends to: determiners and beginnings of sentences
+1. `<bos>` (0.6773)
 2. the (0.0750)
 3. the (0.0650)
 4. . (0.0242)
@@ -413,7 +413,7 @@ Q (0.2042) and K (-0.0510) attends to:
 10. doesn (0.0062)
     
 V0 outputs match this with high activations for:
-1. <bos> (3.9955)
+1. `<bos>` (3.9955)
 2. the (0.9917)
 3. the (0.8217)
 4. . (0.3411)
@@ -425,11 +425,15 @@ V0 outputs match this with high activations for:
 10. doesn (0.0802)
 Logit difference after zeroing value vector: 0.3815
 
+- Q/K strongly attends to `<bos>`, `the`, and punctuation marks.
+  - Attention Pattern: Tracks sequence beginnings and articles.
+  - This head contributes to maintaining sentence structure by anchoring positions in sequences.
+
 <br>
 
 Layer 9, Head 5:
 Q head 5 → K head 2 → V head 2:
-Q (0.0558) and K (-0.3323) attends to:
+Q (0.0558) and K (-0.3323) attends to: beginning of sequences, nobj1, nobj2 and punctuation
 1. <bos> (0.2913)
 2. box (0.1733)
 3. basket (0.0641)
@@ -454,11 +458,15 @@ V2 outputs match this with high activations for:
 10. and (0.1361)
 Logit difference after zeroing value vector: 0.0839
 
+- Q/K focuses on objects like `box` and `basket`.
+  - Attention Pattern: Attends to objects and their relationships.
+  - Likely helps with identifying key elements of the sentence by focusing on objects early in the context.
+
 <br>
 
 Layer 10, Head 0:
 Q head 0 → K head 0 → V head 0:
-Q (0.0706) and K (1.0309) attends to:
+Q (0.0706) and K (1.0309) attends to: dobj1, locations, proper nouns and functional words
 1. school (0.0370)
 2. away (0.0325)
 3. know (0.0322)
@@ -483,12 +491,16 @@ V0 outputs match this with high activations for:
 10. room (0.2799)
 Logit difference after zeroing value vector: 0.9721
 
+- Q/K attends to nouns like `school` and `room` while also catching verbs like `thinks` and `happened`.
+  - Attention Pattern: Tracks subjects and key actions.
+  - Likely important for identifying key entity locations and their actions within the sentence.
+
 <br>
 
 Layer 10, Head 1:
 Q head 1 → K head 0 → V head 0:
-Q (0.1451) and K (1.0309) attends to:
-1. <bos> (0.0796)
+Q (0.1451) and K (1.0309) attends to: prepositions, articles, and nobj1, nobj2, dobj1
+1. `<bos>` (0.0796)
 2. on (0.0521)
 3. on (0.0477)
 4. the (0.0407)
@@ -505,19 +517,23 @@ V0 outputs match this with high activations for:
 3. the (0.6107)
 4. box (0.6087)
 5. basket (0.5753)
-6. <bos> (0.5240)
+6. `<bos>` (0.5240)
 7. basket (0.5199)
 8. room (0.4277)
 9. . (0.3573)
 10. and (0.3221)
 Logit difference after zeroing value vector: 0.9721
 
+- Q/K focuses on function words such as `on`, `the`, and key objects like `box` and `basket`.
+  - Attention Pattern: Attends to prepositions and object references.
+  - Likely sets up spatial relations between locations and objects in the context of the sentence.
+
 <br>
 
 Layer 10, Head 4:
 Q head 4 → K head 2 → V head 2:
-Q (-0.0295) and K (0.6719) attends to:
-1. <bos> (0.4844)
+Q (-0.0295) and K (0.6719) attends to: sentence beginnings and determiners
+1. `<bos>` (0.4844)
 2. the (0.1378)
 3. the (0.0906)
 4. box (0.0580)
@@ -529,7 +545,7 @@ Q (-0.0295) and K (0.6719) attends to:
 10. . (0.0179)
     
 V2 outputs match this with high activations for:
-1. <bos> (3.1027)
+1. `<bos>` (3.1027)
 2. the (1.5454)
 3. the (1.0155)
 4. box (0.7331)
@@ -541,12 +557,16 @@ V2 outputs match this with high activations for:
 10. . (0.1986)
 Logit difference after zeroing value vector: 0.5932
 
+- Q/K focuses on the `<bos>` token and common articles like `the` as well as object markers (`box`, `basket`).
+  - Attention Pattern: Attends to function words and object references.
+  - Plays a role in grounding the sentence with positional tokens and object identification.
+
 <br>
 
 Layer 10, Head 5:
 Q head 5 → K head 2 → V head 2:
-Q (0.2333) and K (0.6719) attends to:
-1. <bos> (0.7480)
+Q (0.2333) and K (0.6719) attends to: beginnings of sequences, determiners, nobj1, nobj2
+1. `<bos>` (0.7480)
 2. the (0.1450)
 3. box (0.0181)
 4. the (0.0158)
@@ -558,7 +578,7 @@ Q (0.2333) and K (0.6719) attends to:
 10. on (0.0065)
     
 V2 outputs match this with high activations for:
-1. <bos> (4.7910)
+1. `<bos>` (4.7910)
 2. the (1.6268)
 3. box (0.2286)
 4. the (0.1773)
@@ -570,11 +590,15 @@ V2 outputs match this with high activations for:
 10. on (0.0826)
 Logit difference after zeroing value vector: 0.5932
 
+- Q/K attends to the start of sentences, articles, and key objects (`box`, `basket`).
+  - Attention Pattern: Focuses on sentence structuring elements like `<bos>`, `the`.
+  - Likely helps maintain grammatical structure while grounding references to objects.
+
 <br>
 
 Layer 11, Head 4:
 Q head 4 → K head 2 → V head 2:
-Q (-0.1289) and K (-0.2740) attends to:
+Q (-0.1289) and K (-0.2740) attends to: nobj1, nobj2, nsubj1 and transitions
 1. box (0.0601)
 2. and (0.0393)
 3. basket (0.0384)
@@ -599,11 +623,15 @@ V2 outputs match this with high activations for:
 10. the (0.2348)
 Logit difference after zeroing value vector: 0.5752
 
+- Q/K focuses on objects like `box`, `basket`, and transitions like `and`, `off`.
+  - Attention Pattern: Attends to object manipulation and conjunctions.
+  - Likely helps track actions related to objects and subjects and their transitions in context.
+
 <br>
 
 Layer 11, Head 5:
 Q head 5 → K head 2 → V head 2:
-Q (0.1241) and K (-0.2740) attends to:
+Q (0.1241) and K (-0.2740) attends to: nobj1, nobj2, nobj3, nsubj2, dobj1, locations and nouns
 1. box (0.1410)
 2. basket (0.0725)
 3. <bos> (0.0471)
@@ -628,12 +656,16 @@ V2 outputs match this with high activations for:
 10. Mark (0.3538)
 Logit difference after zeroing value vector: 0.5752
 
+- Q/K attends to key objects (`box`, `basket`, `cat`) and locations (`room`, `school`).
+  - Attention Pattern: Focuses on nouns and key objects in the scene.
+  - Helps maintain attention on primary subjects and locations, likely for entity tracking.
+
 <br>
 
 Layer 12, Head 0:
 Q head 0 → K head 0 → V head 0:
-Q (-0.1377) and K (-0.2866) attends to:
-1. <bos> (0.2039)
+Q (-0.1377) and K (-0.2866) attends to: beginnings of sequences and nobj1, nobj2
+1. `<bos>` (0.2039)
 2. box (0.1777)
 3. basket (0.0517)
 4. . (0.0397)
@@ -646,7 +678,7 @@ Q (-0.1377) and K (-0.2866) attends to:
     
 V0 outputs match this with high activations for:
 1. box (2.4872)
-2. <bos> (1.0572)
+2. `<bos>` (1.0572)
 3. basket (0.6934)
 4. . (0.5244)
 5. . (0.4804)
@@ -657,12 +689,16 @@ V0 outputs match this with high activations for:
 10. happened (0.2122)
 Logit difference after zeroing value vector: -0.2895
 
+- Q/K focuses on `<bos>`, object markers like `box`, `basket`, and actions (`happened`).
+  - Attention Pattern: Tracks objects and beginnings of sentences.
+  - Likely helps set up initial references to objects while maintaining sentence structure.
+
 <br>
 
 Layer 12, Head 1:
 Q head 1 → K head 0 → V head 0:
-Q (0.0589) and K (-0.2866) attends to:
-1. <bos> (0.5332)
+Q (0.0589) and K (-0.2866) attends to: sentence beginnings and nobj1, nobj2, dobj1
+1. `<bos>` (0.5332)
 2. box (0.1805)
 3. basket (0.0939)
 4. In (0.0402)
@@ -674,7 +710,7 @@ Q (0.0589) and K (-0.2866) attends to:
 10. on (0.0054)
     
 V0 outputs match this with high activations for:
-1. <bos> (2.7641)
+1. `<bos>` (2.7641)
 2. box (2.5271)
 3. basket (1.2585)
 4. In (0.6191)
@@ -686,14 +722,18 @@ V0 outputs match this with high activations for:
 10. room (0.0685)
 Logit difference after zeroing value vector: -0.2895
 
+- Q/K attends to the `<bos>` token, along with key object markers (`box`, `basket`).
+  - Attention Pattern: Focuses on positional and object references.
+  - Likely supports maintaining sentence flow and object presence in locations in the scene.
+
 <br>
 
 Layer 12, Head 2:
 Q head 2 → K head 1 → V head 1:
-Q (-0.1736) and K (0.2436) attends to:
+Q (-0.1736) and K (0.2436) attends to: nobj1, nobj2, dobj1 and function words
 1. box (0.2667)
 2. basket (0.1405)
-3. <bos> (0.0749)
+3. `<bos>` (0.0749)
 4. basket (0.0713)
 5. the (0.0434)
 6. on (0.0261)
@@ -709,20 +749,24 @@ V1 outputs match this with high activations for:
 4. the (0.5641)
 5. In (0.4808)
 6. on (0.3964)
-7. <bos> (0.3930)
+7. `<bos>` (0.3930)
 8. . (0.3355)
 9. . (0.2892)
 10. room (0.2569)
 Logit difference after zeroing value vector: 0.7521
 
+- Q/K focuses on key objects (`box`, `basket`) and prepositions (`on`, `the`).
+  - Attention Pattern: Attends to objects and their positions in the sentence.
+  - Likely tracks object placement and movements.
+
 <br>
 
 Layer 12, Head 3:
 Q head 3 → K head 1 → V head 1:
-Q (0.5318) and K (0.2436) attends to:
+Q (0.5318) and K (0.2436) attends to: nobj1, nobj2 and positional words
 1. box (0.4318)
 2. basket (0.1340)
-3. <bos> (0.1219)
+3. `<bos>` (0.1219)
 4. In (0.0399)
 5. the (0.0298)
 6. . (0.0252)
@@ -735,7 +779,7 @@ V1 outputs match this with high activations for:
 1. box (6.5370)
 2. basket (1.9179)
 3. In (1.3363)
-4. <bos> (0.6396)
+4. `<bos>` (0.6396)
 5. the (0.3877)
 6. basket (0.3426)
 7. . (0.3293)
@@ -744,11 +788,15 @@ V1 outputs match this with high activations for:
 10. the (0.1899)
 Logit difference after zeroing value vector: 0.7521
 
+- Q/K attends to object markers (`box`, `basket`) and some positional words (`In`, `the`).
+  - Attention Pattern: Focuses on object references and sentence structure.
+  - Likely helps ground objects in the context of their positions.
+
 <br>
 
 Layer 12, Head 5:
 Q head 5 → K head 2 → V head 2:
-Q (-0.0198) and K (1.0940) attends to:
+Q (-0.0198) and K (1.0940) attends to: nobj1, nobj2, determiners and transitions
 1. <bos> (0.1973)
 2. basket (0.1519)
 3. . (0.0662)
@@ -773,11 +821,15 @@ V2 outputs match this with high activations for:
 10. and (0.2159)
 Logit difference after zeroing value vector: 1.2017
 
+- Q/K focuses on objects (`basket`, `box`) and transition words (`In`, `and`).
+  - Attention Pattern: Tracks objects and their relationships.
+  - Likely helps with connecting objects to actions and transitions in the narrative.
+
 <br>
 
 Layer 12, Head 6:
 Q head 6 → K head 3 → V head 3:
-Q (0.1502) and K (0.4634) attends to:
+Q (0.1502) and K (0.4634) attends to: nobj1, nobj2, nobj3, dobj1 and actions
 1. box (0.0367)
 2. the (0.0349)
 3. around (0.0338)
@@ -802,13 +854,17 @@ V3 outputs match this with high activations for:
 10. cat (0.2725)
 Logit difference after zeroing value vector: 2.4706
 
+- Q/K focuses on objects (`box`, `basket`) and related actions (`around`, `happened`).
+  - Attention Pattern: Attends to objects and their associated actions.
+  - Likely supports tracking of object manipulation or state changes.
+
 <br>
 
 Layer 14, Head 0:
 Q head 0 → K head 0 → V head 0:
-Q (0.7226) and K (1.0781) attends to:
+Q (0.7226) and K (1.0781) attends to: nobj1, nobj2, nobj3, dobj1, beginning of sequences and named entities
 1. basket (0.2567)
-2. <bos> (0.2215)
+2. `<bos>` (0.2215)
 3. box (0.1451)
 4. cat (0.0826)
 5. basket (0.0764)
@@ -823,7 +879,7 @@ V0 outputs match this with high activations for:
 2. box (1.5552)
 3. basket (0.8440)
 4. cat (0.7962)
-5. <bos> (0.7445)
+5. `<bos>` (0.7445)
 6. cat (0.4364)
 7. basket (0.3038)
 8. room (0.2216)
@@ -831,15 +887,19 @@ V0 outputs match this with high activations for:
 10. room (0.1249)
 Logit difference after zeroing value vector: 1.3846
 
+- Q/K attends to objects like `basket`, `box`, and named entities (`cat`).
+  - Attention Pattern: Focuses on key objects and entities.
+  - Likely helps identify the main actors and their relations and locations in the sentence.
+
 <br>
 
 Layer 14, Head 2:
 Q head 2 → K head 1 → V head 1:
-Q (0.2178) and K (1.0469) attends to:
+Q (0.2178) and K (1.0469) attends to: nobj1, nobj2 and functional words
 1. box (0.3327)
 2. basket (0.1104)
 3. basket (0.0382)
-4. <bos> (0.0376)
+4. `<bos>` (0.0376)
 5. basket (0.0359)
 6. . (0.0313)
 7. and (0.0298)
@@ -860,11 +920,15 @@ V1 outputs match this with high activations for:
 10. . (0.2492)
 Logit difference after zeroing value vector: 1.3439
 
+- Q/K attends to objects (`box`, `basket`) and function words (`and`, `off`).
+  - Attention Pattern: Tracks object-related tokens and transitions.
+  - Likely supports maintaining relationships between objects and actions.
+
 <br>
 
 Layer 14, Head 3:
 Q head 3 → K head 1 → V head 1:
-Q (0.2165) and K (1.0469) attends to:
+Q (0.2165) and K (1.0469) attends to: nobj1, nobj2, nobj3 and function words
 1. box (0.5125)
 2. basket (0.1575)
 3. basket (0.1092)
@@ -889,15 +953,19 @@ V1 outputs match this with high activations for:
 10. on (0.0999)
 Logit difference after zeroing value vector: 1.3439
 
+- Q/K attends to objects like `box`, `basket`, and some function words (`and`, `the`).
+  - Attention Pattern: Focuses on object tracking and sentence structure.
+  - Likely maintains references to objects while setting up sentence flow.
+
 <br>
 
 Layer 14, Head 6:
 Q head 6 → K head 3 → V head 3:
-Q (-0.1490) and K (-0.0532) attends to:
+Q (-0.1490) and K (-0.0532) attends to: nobj1, nobj2, dobj1 and positional words
 1. box (0.2976)
 2. basket (0.1650)
 3. basket (0.1040)
-4. <bos> (0.0603)
+4. `<bos>` (0.0603)
 5. the (0.0215)
 6. on (0.0197)
 7. room (0.0185)
@@ -909,7 +977,7 @@ V3 outputs match this with high activations for:
 1. box (4.1308)
 2. basket (2.4444)
 3. basket (1.4092)
-4. <bos> (0.3255)
+4. `<bos>` (0.3255)
 5. on (0.2812)
 6. room (0.2639)
 7. the (0.2600)
@@ -918,12 +986,16 @@ V3 outputs match this with high activations for:
 10. basket (0.1978)
 Logit difference after zeroing value vector: 0.6501
 
+- Q/K attends to objects like `box`, `basket`, and function words like `the`.
+  - Attention Pattern: Tracks object-related tokens and some positional markers.
+  - Likely helps establish where objects are positioned in the sentence.
+
 <br>
 
 Layer 16, Head 0:
 Q head 0 → K head 0 → V head 0:
-Q (-0.0574) and K (-0.1461) attends to:
-1. <bos> (0.1350)
+Q (-0.0574) and K (-0.1461) attends to: spatial references, locations and nobj1
+1. `<bos>` (0.1350)
 2. room (0.0542)
 3. room (0.0503)
 4. around (0.0363)
@@ -939,7 +1011,7 @@ V0 outputs match this with high activations for:
 2. room (0.5263)
 3. around (0.4157)
 4. room (0.3747)
-5. <bos> (0.2750)
+5. `<bos>` (0.2750)
 6. leaves (0.2519)
 7. box (0.2441)
 8. the (0.2381)
@@ -947,11 +1019,15 @@ V0 outputs match this with high activations for:
 10. basket (0.2072)
 Logit difference after zeroing value vector: -0.0320
 
+- Q/K focuses on spatial terms like `room`, `around`, and objects like `box`.
+  - Attention Pattern: Attends to spatial positioning of objects in locations.
+  - Likely supports establishing spatial relations of objects in specific locations within the sentence.
+
 <br>
 
 Layer 16, Head 2:
 Q head 2 → K head 1 → V head 1:
-Q (0.4225) and K (0.8446) attends to:
+Q (0.4225) and K (0.8446) attends to: nobj1, nobj2, nobj3, and determiners
 1. box (0.1286)
 2. basket (0.1185)
 3. basket (0.1012)
@@ -976,11 +1052,15 @@ V1 outputs match this with high activations for:
 10. the (0.2663)
 Logit difference after zeroing value vector: 0.8602
 
+- Q/K attends to key objects (`box`, `basket`) and named entities like `cat`.
+  - Attention Pattern: Tracks objects and actors.
+  - Likely helps set up the relationships between entities and objects.
+
 <br>
 
 Layer 16, Head 3:
 Q head 3 → K head 1 → V head 1:
-Q (0.2005) and K (0.8446) attends to:
+Q (0.2005) and K (0.8446) attends to: nobj1, nobj2, nobj3 and named entities
 1. cat (0.0956)
 2. basket (0.0575)
 3. box (0.0550)
@@ -1005,13 +1085,17 @@ V1 outputs match this with high activations for:
 10. on (0.3277)
 Logit difference after zeroing value vector: 0.8602
 
+- Q/K focuses on object markers (`box`, `basket`) and named entities (`cat`).
+  - Attention Pattern: Tracks objects and entities.
+  - Likely maintains attention on important actors and their relations with objects.
+
 <br>
 
 Layer 16, Head 6:
 Q head 6 → K head 3 → V head 3:
-Q (-0.0548) and K (1.1467) attends to:
+Q (-0.0548) and K (1.1467) attends to: nobj1, nobj2 and function words
 1. basket (0.1278)
-2. <bos> (0.1263)
+2. `<bos>` (0.1263)
 3. basket (0.0527)
 4. the (0.0491)
 5. box (0.0443)
@@ -1025,7 +1109,7 @@ V3 outputs match this with high activations for:
 1. basket (1.5707)
 2. basket (0.6091)
 3. box (0.5324)
-4. <bos> (0.5215)
+4. `<bos>` (0.5215)
 5. the (0.4484)
 6. the (0.3474)
 7. . (0.3452)
@@ -1034,11 +1118,15 @@ V3 outputs match this with high activations for:
 10. , (0.2858)
 Logit difference after zeroing value vector: 2.5824
 
+- Q/K attends to objects like `basket`, `box`, and function words (`the` `,` `.`).
+  - Attention Pattern: Tracks objects and their positioning within the sentence.
+  - Likely helps maintain object references and sentence structure.
+
 <br>
 
 Layer 16, Head 7:
 Q head 7 → K head 3 → V head 3:
-Q (0.1890) and K (1.1467) attends to:
+Q (0.1890) and K (1.1467) attends to: nobj1, nobj2 and function words
 1. box (0.2632)
 2. <bos> (0.1595)
 3. basket (0.1206)
@@ -1063,13 +1151,17 @@ V3 outputs match this with high activations for:
 10. on (0.1365)
 Logit difference after zeroing value vector: 2.5824
 
+- Q/K focuses on objects like `box`, `basket`, and function words (`the`).
+  - Attention Pattern: Attends to object references and sentence flow.
+  - Likely helps establish relationships between objects and the overall sentence structure.
+
 <br>
 
 Layer 17, Head 0:
 Q head 0 → K head 0 → V head 0:
-Q (0.3508) and K (0.8263) attends to:
+Q (0.3508) and K (0.8263) attends to: nobj1, nobj2, nobj3, dobj1 and locations
 1. basket (0.2003)
-2. <bos> (0.1993)
+2. `<bos>` (0.1993)
 3. box (0.1580)
 4. basket (0.0726)
 5. room (0.0326)
@@ -1084,7 +1176,7 @@ V0 outputs match this with high activations for:
 2. box (1.6071)
 3. basket (0.7909)
 4. room (0.3902)
-5. <bos> (0.3314)
+5. `<bos>` (0.3314)
 6. cat (0.3022)
 7. cat (0.1795)
 8. room (0.1781)
@@ -1092,11 +1184,15 @@ V0 outputs match this with high activations for:
 10. the (0.1527)
 Logit difference after zeroing value vector: 0.6426
 
+- Q/K attends to objects like `basket`, `box`, and locations like `room`.
+  - Attention Pattern: Tracks objects and spatial relations.
+  - Likely helps maintain attention on key objects and their spatial context in locations.
+
 <br>
 
 Layer 17, Head 3:
 Q head 3 → K head 1 → V head 1:
-Q (1.1774) and K (1.0032) attends to:
+Q (1.1774) and K (1.0032) attends to: nobj1, nobj2 and sentence structure
 1. <bos> (0.1668)
 2. , (0.1120)
 3. box (0.1101)
@@ -1120,6 +1216,10 @@ V1 outputs match this with high activations for:
 9. . (0.4601)
 10. the (0.2586)
 Logit difference after zeroing value vector: 2.1010
+
+- Q/K focuses on objects like `box`, `basket`, and function words (`In`, `the`).
+  - Attention Pattern: Tracks objects and sets up sentence structure.
+  - Likely helps ground key objects in the overall sentence flow.
 
 <br>
 
