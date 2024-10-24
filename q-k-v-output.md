@@ -1,4 +1,4 @@
-# Query, Key, Value Attention Mechanism Output from Interpretability Analysis
+# Query, Key, Value Attention Mechanism Output from ToM Interpretability Analysis
 
 <br>
 
@@ -1226,7 +1226,7 @@ Logit difference after zeroing value vector: 2.1010
 Layer 17, Head 4:
 Q head 4 → K head 2 → V head 2:
 Q (-0.6372) and K (-0.4563) attends to: nobj1, nobj2 and function words
-1. <bos> (0.1984)
+1. `<bos>` (0.1984)
 2. basket (0.0994)
 3. box (0.0526)
 4. the (0.0510)
@@ -1239,7 +1239,7 @@ Q (-0.6372) and K (-0.4563) attends to: nobj1, nobj2 and function words
     
 V2 outputs match this with high activations for:
 1. basket (1.1608)
-2. <bos> (0.7739)
+2. `<bos>` (0.7739)
 3. box (0.6273)
 4. the (0.5138)
 5. basket (0.4946)
@@ -1264,7 +1264,7 @@ Q (-0.6828) and K (0.3939) attends to: function words and determiners
 3. the (0.0813)
 4. the (0.0747)
 5. the (0.0668)
-6. <bos> (0.0495)
+6. `<bos>` (0.0495)
 7. the (0.0370)
 8. the (0.0367)
 9. the (0.0243)
@@ -1280,7 +1280,7 @@ V3 outputs match this with high activations for:
 7. the (0.3643)
 8. the (0.3315)
 9. the (0.2641)
-10. <bos> (0.2347)
+10. `<bos>` (0.2347)
 Logit difference after zeroing value vector: 0.0837
 
 - Q/K focuses on function words like `the`, as well as `<bos>`.
@@ -1330,7 +1330,7 @@ Q (-0.1035) and K (0.3810) attends to: nobj1, nobj2 and function words
 3. basket (0.0803)
 4. the (0.0468)
 5. the (0.0439)
-6. <bos> (0.0391)
+6. `<bos>` (0.0391)
 7. the (0.0319)
 8. the (0.0246)
 9. the (0.0242)
@@ -1358,7 +1358,7 @@ Logit difference after zeroing value vector: 0.1956
 Layer 20, Head 3:
 Q head 3 → K head 1 → V head 1:
 Q (0.5209) and K (0.3810) attends to: nobj1, nobj2, dobj1, locations and spatial references
-1. <bos> (0.0622)
+1. `<bos>` (0.0622)
 2. basket (0.0489)
 3. box (0.0421)
 4. basket (0.0389)
@@ -1390,8 +1390,8 @@ Logit difference after zeroing value vector: 0.1956
 
 Layer 20, Head 7:
 Q head 7 → K head 3 → V head 3:
-Q (0.7354) and K (0.1601) attends to:
-1. <bos> (0.3885)
+Q (0.7354) and K (0.1601) attends to: nobj1, nobj2, dobj1, locations and sentence beginnings
+1. `<bos>` (0.3885)
 2. basket (0.1074)
 3. basket (0.1029)
 4. box (0.0558)
@@ -1402,9 +1402,9 @@ Q (0.7354) and K (0.1601) attends to:
 9. room (0.0145)
 10. the (0.0110)
     
-V3 outputs match this with high activations for:
+V3 outputs match this with high activations for: nobj1, nobj2, nobj3, dobj1, and sentence beginnings
 1. basket (1.5529)
-2. <bos> (1.4056)
+2. `<bos>` (1.4056)
 3. basket (1.3173)
 4. box (0.7195)
 5. basket (0.5218)
@@ -1414,6 +1414,10 @@ V3 outputs match this with high activations for:
 9. room (0.1861)
 10. cat (0.1154)
 Logit difference after zeroing value vector: -0.1561
+
+- Q/K attends to objects like `basket`, `box`, and sequence markers (`<bos>`).
+  - Attention Pattern: Focuses on object references and sentence structuring.
+  - Likely helps establish sentence context and object-location relationships.
 
 <br>
 
