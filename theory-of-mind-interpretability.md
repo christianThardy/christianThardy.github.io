@@ -553,7 +553,7 @@ Take MLP0 in Gemma-2-2B in the logit difference from each head plot above for in
 
 In output similar to this:
 
-```python
+```markdown
 Analyzing layer 22, head 4
 Top 5 attended tokens:
 1. <bos>: 0.2610
@@ -931,7 +931,7 @@ What’s especially interesting is that these features represent cases where the
 ### ToM circuit
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/12c9823a-da6c-4080-ad7b-0feeb4d30c39" width="650"/>
+<img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
 </p>
 
 <br>
@@ -958,7 +958,7 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e2c6f600-a07e-4d0b-9550-679403a8493b" width="650"/>
+<img src="https://github.com/user-attachments/assets/4169d5a0-b678-4971-b9df-cd421eeceadf" width="650"/>
 <br>
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
@@ -969,72 +969,63 @@ Diving deeper in the heads associated with each component, we can explore the ro
 
 The DOLMs attention mechanisms weigh the importance of different parts of the ToM passage. Each attention head computes three components:
 
-- **Query (Q):** Determines which positions to attend to.
-- **Key (K):** Represents the content at each position.
+- **Query (Q):** Determines which token positions to attend to.
+- **Key (K):** Represents the tokens considered for attention at each position.
 - **Value (V):** Contains the information to be propagated forward.
 
-The way key/value/query attention works is sort of like how a search engine operates. 
-
-Imagine you’re looking for a video on YouTube: 
-
-- The text you type in the search bar is your query
-
-The search engine then compares that query to a bunch of keys.
-
-- Like video titles, descriptions, tags—that are stored in its database
-
-Finally, it retrieves and ranks the best-matching videos.
-
-- Which are the values.
+The way key/value/query attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
 
 So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
 
-**Layers 0-5:**
-- Layer 0, Head 0:
-  - Q head 0 → K head 0 → V head 0:
-    - Q (0.0217) and K (0.3150) attends to function words
-    - V0 outputs match this with high activations for:
-      - `on` (7.0023)
-      - `is` (1.3056)
-      - `<bos>` (0.4996)
-      - `the` (0.3767)
-      - `a` (0.0120)
-      - `and` (0.0108)
-        
-- Layer 0, Head 2:
-  - Q head 2 → K head 1 → V head 1:
-    - Q (0.0050) and K (-0.0251) attends to function words and beginning of sequence
-    - V1 outputs match this with high activations for:
-      - `the` (1.5980)
-      - `<bos>` (1.5793)
-        
-- Layer 0, Head 3
-  - Q head 7 → K head 3 → V head 1:
-    - Q (-0.0025) and K (-0.0251) attends to nsubj 1 and nsubj 2
-    - V1 outputs match this with high activations for:
-      - `cat` (0.4732)
-      - `John` (0.4663)
-      - `school` (0.3311)
-      - `John` (0.3288)
-      - `room` (0.2772)
-      - `thinks` (0.2281)
+In somewhat technical terms, the values for the query (Q) and key (K) vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The values (V) hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
 
-- Layer 0, Head 7
-  - Q head 5 → K head 2 → V head 3:
-    - Q (0.0479) and K (0.1090) attends to prepositions and auxiliary verbs
-    - V1 outputs match this with high activations for:
-      - `on` (11.2133)
-      - `the` (0.2834)
-      - `is` (0.2126)
-      - `<bos>` (0.0587)
-      - `the` (0.0472)
-      - `what` (0.0353)
-      - `the` (0.0292)
-      - `room` (0.0283)
-        
-- Q/K select positional/functional words, V writes functional information.
-  - Attention Pattern: Attends to function words like `when`, `while`, and `happened`.
-    - These layers lay the groundwork for understanding the sentence's structure by focusing on positional and functional words.
+However, it's important to note that the relative sizes of Q and K don't directly determine who is "doing the attending." Instead, both vectors interact through dot-product attention: Q represents the token initiating the attention (the one trying to find relevant content), and K represents the token being attended to (the potential source of relevant information). The attention scores are computed based on the interaction between Q and K, meaning both vectors play a role in deciding where attention is focused. The difference in their values might offer clues about the roles of specific tokens in the attention process, but both vectors contribute to the overall mechanism.
+
+The data extracted from the attention mechanism looks something like this<sub>[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">22</a>]</sub>:
+
+```markdown
+Layer 0, Head 0: Q head 0 → K head 0 → V head 0: Q (0.0217) and K (0.3150) attends to: conjunctions and discourse markers
+
+when (0.0241)
+While (0.0240)
+<bos> (0.0240)
+happened (0.0228)
+thinks (0.0203)
+and (0.0195)
+and (0.0195)
+and (0.0195)
+and (0.0195)
+and (0.0195)
+
+V0 outputs match this with high activations for:
+
+when (0.2626)
+While (0.2623)
+thinks (0.2260)
+and (0.2189)
+and (0.2189)
+and (0.2189)
+and (0.2189)
+and (0.2189)
+and (0.2189)
+happened (0.2166) Logit difference after zeroing value vector: 0.9611
+
+- Q/K select connecting words, setting up discourse relations between clauses.
+- Attention Pattern: Attends to function words like when, while, and happened.
+- These layers likely capture structural aspects of sentences and help set up temporal relations and linking between ideas.
+```
+
+Its clear these layers focus on basic linguistic structures and spatial relationships. 
+
+This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic structures (determiners, puncuation, prepositions) with stronger key vector contributions suggesting information gathering. In the middle layers, the actions state heads start integrating information from the initial state heads and we start to see object tracking, action understanding, and structural processing that builds the model's context —here we start to see more balance query-key vector contributions, indicating information integration. This starts to influence the model's belief state heads for `John` and `Mark` —where we start to see complex subject-object relationships and tracking of belief states— while continuing to maintain the context of all previously attended to text.
+
+
+Attention Evolution
+Early Layers: Broad attention patterns.
+Middle Layers: More focused, object-specific attention.
+Later Middle Layers: Integration of object states and relationships.
+
+
 
 
  ^ Should be broken down even further, should be able to say which mech reads/attends then writes
@@ -1058,6 +1049,8 @@ In the last layer the model wants to focus on facts, but the facts are supressed
 The query/key/value logit differences provide the evidence of the circuit
 
 In layer 22 head 2 suggests global context consideration in prediction as the earlier mentioned basket tokens are heavily attended to by the key vectors (I think)
+
+The model is taking John and Marks actions into consideration
 
 
 
@@ -1095,6 +1088,8 @@ The results should be taken with a grain of salt, as the model was only evaluate
 Grab the most compelling insights from each section and reiterate on them here
 
 The activation patching plots show that the output prediction is strongly influenced by the attention heads that focus on John's last known action and the initial state of the room. Those attention heads are..........
+
+The circuit is not very clean, its a cyclical/recursive task
 
 <br>
 
