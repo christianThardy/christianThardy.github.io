@@ -600,13 +600,19 @@ Formally this is for each token position we have QKV vectors,
 
 <code>Q<sub>i</sub></code> <code>K<sub>i</sub></code> <code>V<sub>i</sub></code>
 
+<br>
+
 and the attention score for the position attention to another positions,
 
 score(<code>i,j</code>) = softmax((<code>Q<sub>i</sub></code> · <code>K<sub>j</sub></code>) / √<code>d<sub>k</sub></code>)
 
+<br>
+
 And output for position `i` is
 
 out<code><sub>i</sub></code> = Σ<sub>j</sub>(score(<code>i,j</code>) × <code>V<sub>j</sub></code>
+
+<br>
 
 This shows for the 4th head of layer 22 , the QKV vectors for the attention mechanism will look something like this,
 
