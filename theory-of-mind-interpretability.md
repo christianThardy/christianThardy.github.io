@@ -356,7 +356,7 @@ It seems like layer 22 is helping maintain John’s belief state, focusing on hi
 
 <br>
 
-Furthermore, there appears to be compelling evidence that the ToM task is closely tied to the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+Furthermore, there appears to be evidence that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
 
 The PCA breaks down into three clusters of concepts:
 
