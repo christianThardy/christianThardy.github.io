@@ -521,6 +521,120 @@ One approach is tracking the activations of key tokens (John, basket, box, cat) 
 
 By combining these methods and comparing the results, we can zero in on heads that attend to both the initial state and John’s final action. Iterative head analysis and activation patching will help us refine our understanding.
 
+Looking at the most basic units of computation in the attentions heads will give the most fine-grained account of what is happen when the models is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), and value (V) vectors across the heirarchy of layers.
+
+The DOLMs attention mechanisms weigh the importance of different parts of the ToM passage. Each attention head computes three components:
+
+- **Query (Q):** Determines which token positions to attend to.
+- **Key (K):** Represents the tokens considered for attention at each position.
+- **Value (V):** Contains the information to be propagated forward.
+
+The way key/value/query attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
+
+So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
+
+In somewhat technical terms, the values for the query (Q) and key (K) vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The values (V) hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
+
+However, it's important to note that the relative sizes of Q and K don't directly determine who is "doing the attending." Instead, both vectors interact through dot-product attention: Q represents the token initiating the attention (the one trying to find relevant content), and K represents the token being attended to (the potential source of relevant information). The attention scores are computed based on the interaction between Q and K, meaning both vectors play a role in deciding where attention is focused. The difference in their values might offer clues about the roles of specific tokens in the attention process, but both vectors contribute to the overall mechanism.
+
+Selecting a few heads across layers, we can see how things are playing out in the context of the last token `basket` being predicted.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/2f657659-d0eb-4385-98e1-fb0b984441b5" width="700"/>
+<img src="https://github.com/user-attachments/assets/c4909dbf-f729-458c-9de9-b742cfdbffbf" width="700"/>
+<img src="https://github.com/user-attachments/assets/d801aeb9-36f4-4ef4-95ae-958a80081bc6" width="700"/>
+<br>
+</p>
+
+<br>
+
+- **Early Layers & Heads 0-10:**
+    - **Layer 0, Head 7:** Attends to elements like `in` and `on` and other adpositions
+    - **L5, H2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
+    - **L8, H0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
+    - **L10, H0:** Strong focus on `<bos>`, `is`, `on`, and `cat`, consolidating scene representation
+    - **L10, H1:** High attention to `on` and `cat`, primarily focused on retrieving information rather combining, minimal key activations, query vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs
+      <br>
+    - **L10, H4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases —`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong value spikes for verb-object agreement (`takes the cat`, `puts it`). Highest value spikes around complete action sequences (`takes the cat and puts it on`)
+
+- **Middle Layers & Heads 10-17:**
+    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
+    - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
+    - **L14, H6:** Increasing attention to `basket` compared to `box`, suggesting comparison
+    - **L16, H0:** Focuses on `room` with moderate attention to objects and spatial relationships
+    - **L16, H2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
+    - **L16, H3:** High attention to `cat` and `on`, objects and spatial relationships
+    - **L16, H7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
+    - **L17, H0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context.
+    - **L17, H3:** Very high attention to `box`, reinforcing possibly reinforcing where the cat is actually located
+    - **L17, H4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
+    - **L17, H6:** Attends to mainly determiners, especially the final one at the end of the sequence
+    - **L17, H7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
+
+We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens. Early encodings suggest relations between grammar, spatial relationships, and initial object/subject integration. The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state.
+
+We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in layer 0 head 7 and layer 10 head 1. Both showing rigid, position-based patterns, clean isolated spikes. The former shows strong Q spikes at regular intervals with minimal KV interference, it seems to be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. The latter shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
+
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. In the former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
+
+Specifically, in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket. This suggests the model is strongly querying the initial state of where the cat was placed. The Value vectors (green) show strong contributions around `basket` early in the sequence, another significant spike, but certainly lower than basket around `box`, and several medium-height spikes around key events in the story (like when the cat is moved). Overall the patterns are very asymmetric.
+
+The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial "basket" placement suggests the model understands this is relevant to John's belief state. The value contributions from both "basket" and "box" mentions show the model is tracking both possible locations of the cat. It's tracking both the real state (cat on box) and John's believed state (cat on basket). The strong attention to the initial state makes sense since that's what John last saw before leaving and the model appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely part of a collection of heads attending to John's false belief. 
+
+Formally this is for each token position we have QKV vectors, 
+
+<code>Q<sub>i</sub></code> <code>K<sub>i</sub></code> <code>V<sub>i</sub></code>
+
+and the attention score for the position attention to another positions,
+
+score(<code>i,j</code>) = softmax((<code>Q<sub>i</sub></code> · <code>K<sub>j</sub></code>) / √<code>d<sub>k</sub></code>)
+
+And output for position `i` is
+
+out<code><sub>i</sub></code> = Σ<sub>j</sub>(score(<code>i,j</code>) × <code>V<sub>j</sub></code>
+
+This shows for the 4th head of layer 22 , the QKV vectors for the attention mechanism will look something like this,
+
+<code>Q<sub>basket</sub></code> ≈ 1.0 (tall blue spike)
+<code>K<sub>basket</sub></code> ≈ 0.3 (red line)
+<code>V<sub>basket</sub></code> ≈ 0.8 (tall green spike)
+
+<code>K<sub>box</sub></code> ≈ 0.2 (red line)
+<code>V<sub>box</sub></code> ≈ 0.4 (medium green spike)
+
+score(<code>basket,basket</code>) = softmax((<code>Q<sub>basket</sub></code> · <code>K<sub>basket</sub></code>) / √<code>d<sub>k</sub></code>)
+≈ softmax((1.0 × 0.3) / √64)
+
+score(<code>basket,box</code>) = softmax((<code>Q<sub>basket</sub></code> · <code>K<sub>box</sub></code>) / √<code>d<sub>k</sub></code>)
+≈ softmax((1.0 × 0.2) / √64)
+
+out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
+
+out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
+
+Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, which helps the model focus on John's initial information state. The strong green spikes for both `basket` and `box` positions V vectors carries location information. The moderate red activity combines both states, weighted by attention scores, allowing the model to maintain a strong representation of John's initial state (basket location), track current state (box location), and weight them appropriately for belief state tracking.
+
+In terms of linguistic representations, notice the attention patterns around "He" - there are small but noticeable spikes in both query and value contributions when pronouns need to be resolved back to their referents (John/Mark). There are signs of temporal sequence markers, attention spikes around temporal transition phrases like "while" and "when", helping track the sequence of events and time periods (before/during/after John's absence). Attention patterns showing action-verb state agreements, tracking state changes through verbs. Small but consistent attention to prepositions like "on" and "off" that describe spatial relationships, which work together with the objects (basket/box) to establish location states. And there's attention around verbs that relate to mental states like "knows" and "thinks", marking belief states.
+
+Overall it appears by this layer the model has integrated information from earlier layers and focuses on more complex semantic relationships!
+
+The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
+
+In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layers 22 and 23, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
+
+**Attention patterns:**
+
+- Many heads in layers 22-25 show high attention to `basket` and relatively lower attention to `box`.
+- Layer 23, head 5 and head 6 show particularly strong attention to `basket` over all instances of the token in the sequence, where `box` activations are relatively low.
+
+**Activation patterns:**
+
+- In the final layers (22-25), `basket` consistently has higher activation than `box`, despite `box` being the actual current location of the `cat`.
+
+<br>
+
 Activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
@@ -550,104 +664,6 @@ We can think of activation patching as a form of noising. In this approach, we r
 So, when would you use noising versus denoising? It depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
 
 Take MLP0 in Gemma-2-2B in the logit difference from each head plot above for instance. If you ablate it, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
-
-Looking at the most basic units of computation in the attentions heads will give the most fine-grained account of what is happen when the models is processing information to be sent to the MLP. So we need to explore the roles of the query (Q), key (K), and value (V) vectors across the heirarchy of layers.
-
-The DOLMs attention mechanisms weigh the importance of different parts of the ToM passage. Each attention head computes three components:
-
-- **Query (Q):** Determines which token positions to attend to.
-- **Key (K):** Represents the tokens considered for attention at each position.
-- **Value (V):** Contains the information to be propagated forward.
-
-The way key/value/query attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
-
-So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
-
-In somewhat technical terms, the values for the query (Q) and key (K) vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The values (V) hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
-
-However, it's important to note that the relative sizes of Q and K don't directly determine who is "doing the attending." Instead, both vectors interact through dot-product attention: Q represents the token initiating the attention (the one trying to find relevant content), and K represents the token being attended to (the potential source of relevant information). The attention scores are computed based on the interaction between Q and K, meaning both vectors play a role in deciding where attention is focused. The difference in their values might offer clues about the roles of specific tokens in the attention process, but both vectors contribute to the overall mechanism.
-
-Selecting a few heads across layers, we can see how things are playing out.
-
-![Untitled design](https://github.com/user-attachments/assets/e1d8b4be-6106-47d6-8e89-623f5e559ffe)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens:
-
-- **Early Layers & Heads 0-10:**
-    - **Layer 0, Head 7:** Attends to elements like `in` and `on` and other adpositions
-    - **L5, H2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
-    - **L8, H0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
-    - **L10, H0:** Strong focus on `<bos>`, `is`, `on`, and `cat`, consolidating scene representation
-    - **L10, H1:** High attention to `on` and `cat`, primarily focused on retrieving information rather combining, minimal key activations, query vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs
-      <br>
-    - **L10, H4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases —`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong value spikes for verb-object agreement (`takes the cat`, `puts it`). Highest value spikes around complete action sequences (`takes the cat and puts it on`)
-
-- **Middle Layers & Heads 10-17:**
-    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
-    - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
-    - **L14, H6:** Increasing attention to `basket` compared to `box`, suggesting comparison
-    - **L16, H0:** Focuses on `room` with moderate attention to objects and spatial relationships
-    - **L16, H2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
-    - **L16, H3:** High attention to `cat` and `on`, objects and spatial relationships
-    - **L16, H7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
-    - **L17, H0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context.
-    - **L17, H3:** Very high attention to `box`, reinforcing possibly reinforcing where the cat is actually located
-    - **L17, H4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
-    - **L17, H6:** Attends to mainly determiners, especially the final one at the end of the sequence
-    - **L17, H7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
-
-- **Later Layers & Heads 22-25:**
-    - **L22, H2:** Very high attention to `<bos>`, some to `basket`, virtually none to `box`, maintaining initial context, belief state and more complex semantic relationships
-    - **L22, H4:** Strong attention to `basket` at all positions in the sequence, minor attention to `box`, crucial for belief state maintenance (highest impact in activation patching)
-    - **L22, H5:** Negative attention to `box` and overwelmingly positive attention `basket`
-    - **L23, H5:** Very high attention to `basket` and `cat`, reinforcing the belief state, increasingly diminished attention to `box` from previous layers
-    - **L23, H6:** Strong focus on `basket` and some on `box`, final comparison and belief state emphasis
-    - **L25, H2:** Less specialized head, but strongest attention to `on`, `cat`, and `basket`, in that order
-    - **L25, H4:** Strong focus on determiners, adpositions, verbs, objects, locations associated with John'f final action, structuring the final output
-    - **L25, H7:**  Extremely high attention to `the`, preparing the grammatical structure of the output
-
-Early encodings suggest relations between grammar, spatial relationships, and initial object/subject integration. The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state and supress irrelevant information.
-
-The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
-
-We can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layers 22 and 23, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
-
-**Attention patterns:**
-
-- Many heads in layers 22-25 show high attention to `basket` and relatively lower attention to `box`.
-- Layer 23, head 5 and head 6 show particularly strong attention to `basket`.
-
-**Activation patterns:**
-
-- In the final layers (22-25), `basket` consistently has higher activation than `box`, despite `box` being the actual current location of the `cat`.
 
 **Activation Patching:**
 
@@ -741,9 +757,7 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic token-level dependencies in the early layers, while deeper layers focus on more complex, context-driven reasoning. This pattern aligns with how transformers generally handle more intricate reasoning tasks—processing simple relationships early, and refining the understanding in later stages.
 
-**DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE**
-The computation is sparse and localized. A small number of key tokens (like `box` and `the`) and just a few attention heads across specific layers carry most of the important information. The model isn’t relying on a diffuse, distributed representation across all tokens and heads. This sparsity signals efficiency and specialization in how the model processes the task.
-**DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE DELETE**
+The sparse and localized computation in the activation patching plots show us that a few key tokens (like `box` and `the`) and a few attention heads across specific layers carry most of the important information. This sparsity signals efficiency and specialization in how the model processes the task, which was evident from the attention analysis.
 
 Different heads specialize in distinct functions. **Some focus on attending to the right tokens** (through queries and keys), **while others are more important for aggregating and passing on information** (through values and outputs). This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
@@ -751,9 +765,57 @@ What’s interesting is that a head’s role evolves over the layers. The output
 
 The last few layers are particularly important for the final output—small tweaks here can shift the model’s prediction. This fits with the idea that earlier layers are mainly focused on feature extraction and building a representation, while the later layers are more about making the final decision. The model has learned how to transform its input into a form where making the final classification becomes straightforward.
 
-Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is often enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces.
+Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces.
 
 The model breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
+
+From the current observations we can begin to theorize how the model is performing ToM.
+
+```markdown
+### Tracking the Belief Holder ("John")
+
+Initial State:
+    - Layer 0, Head 3:
+      - Q/K: Attends to "John."
+      - V: Writes entity information.
+
+Belief Construction:
+    - Layer 14, Head 0:
+      - Q/K: Integrates "John thinks."
+      - V: Outputs "basket," linking John's perspective to the object's location.
+
+### Moving Location Information
+
+Initial Location Tracking:
+    - Layer 0, Head 7:
+      - Q/K: Focuses on prepositions.
+      - V: High activation for "on," establishing spatial relationships.
+
+Movement Tracking:
+    - Layer 10, Head 1:
+      - Q/K: Attends to location changes.
+      - V: Outputs "on" and "cat," tracking movement.
+
+State Updates:
+    - Layer 16, Head 3:
+      - Q/K: Focuses on "cat" and locations.
+      - V: Updates object-location bindings.
+
+### Belief State Integration
+
+    - Layer 22, Head 4:
+      - Q/K: Selects crucial context for John's belief.
+      - V: Writes strong "basket" activations, solidifying the incorrect belief.
+
+Copy Suppression:
+    - Layer 23, Head 5:
+      - Q/K: Applies negative modulation.
+      - V: Inhibits outdated information.
+```
+
+Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers, and it integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations to interpret and refine later events correctly. For example, the initial identification of "John" as the belief holder is established early but remains relevant throughout the processing.
+
+Across each set of heads, the model relies on earlier representations as foundational anchors that it keeps referring back to, updating and refining them as it moves through later layers. Heads in each layer pull from earlier encoded information to track the narrative and piece together context from different positions in the sequence. For instance, when the model identifies "John" as the belief holder early on, it continues to integrate that information across layers to correctly interpret events in later parts of the narrative. The same goes for any linguistic element.
 
 <br>
 
@@ -1003,37 +1065,7 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
 
 The data extracted from the attention mechanism looks something like this<sub>[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">22</a>]</sub>:
 
-```markdown
-Layer 0, Head 0: Q head 0 → K head 0 → V head 0: Q (0.0217) and K (0.3150) attends to: conjunctions and discourse markers
 
-when (0.0241)
-While (0.0240)
-<bos> (0.0240)
-happened (0.0228)
-thinks (0.0203)
-and (0.0195)
-and (0.0195)
-and (0.0195)
-and (0.0195)
-and (0.0195)
-
-V0 outputs match this with high activations for:
-
-when (0.2626)
-While (0.2623)
-thinks (0.2260)
-and (0.2189)
-and (0.2189)
-and (0.2189)
-and (0.2189)
-and (0.2189)
-and (0.2189)
-happened (0.2166) Logit difference after zeroing value vector: 0.9611
-
-- Q/K select connecting words, setting up discourse relations between clauses.
-- Attention Pattern: Attends to function words like when, while, and happened.
-- These layers likely capture structural aspects of sentences and help set up temporal relations and linking between ideas.
-```
 
 Its clear this layer focuses on basic function words and spatial relationships. 
 
@@ -1047,51 +1079,7 @@ At the final stages, the copy suppression heads play a key role. These heads sho
 
 For instance, we can break down how the model builds a subject's false belief about an object’s location by: 1) Establishing John as the belief holder. 2) Tracking the cat's movement. 3) Updating object locations. 4) Integrating these elements into John's belief state. 5) Suppressing outdated or irrelevant information.
 
-```markdown
-### Tracking the Belief Holder ("John")
 
-Initial State:
-    - Layer 0, Head 3:
-      - Q/K: Attends to "John."
-      - V: Writes entity information.
-
-Belief Construction:
-    - Layer 14, Head 0:
-      - Q/K: Integrates "John thinks."
-      - V: Outputs "basket," linking John's perspective to the object's location.
-
-### Moving Location Information
-
-Initial Location Tracking:
-    - Layer 0, Head 7:
-      - Q/K: Focuses on prepositions.
-      - V: High activation for "on," establishing spatial relationships.
-
-Movement Tracking:
-    - Layer 10, Head 1:
-      - Q/K: Attends to location changes.
-      - V: Outputs "on" and "cat," tracking movement.
-
-State Updates:
-    - Layer 16, Head 3:
-      - Q/K: Focuses on "cat" and locations.
-      - V: Updates object-location bindings.
-
-### Final Belief State Integration
-
-    - Layer 22, Head 4:
-      - Q/K: Selects crucial context for John's belief.
-      - V: Writes strong "basket" activations, solidifying the incorrect belief.
-
-Copy Suppression:
-    - Layer 23, Head 5:
-      - Q/K: Applies negative modulation.
-      - V: Inhibits outdated information.
-```
-
-Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers, and it integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations to interpret and refine later events correctly. For example, the initial identification of "John" as the belief holder is established early but remains relevant throughout the processing.
-
-Across each set of heads, the model relies on earlier representations as foundational anchors that it keeps referring back to, updating and refining them as it moves through later layers. Heads in each layer pull from earlier encoded information to track the narrative and piece together context from different positions in the sequence. For instance, when the model identifies "John" as the belief holder early on, it continues to integrate that information across layers to correctly interpret events in later parts of the narrative. The same goes for any linguistic element.
 
 
 
@@ -1108,11 +1096,11 @@ Use the example here in the post, and link to the rest of the results in a diffe
 
 **Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit**
 
-WE CAN SEE THE BASKET ATTENTION WEIGHTS DOMINATING OVER BOX ATTENTION WEIGHTS CONSISTENTLY AFTER LAYER 22! (in the attention weight plots)
+
 
 In the last layer the model wants to focus on facts, but the facts are supressed
 
-The query/key/value logit differences provide the evidence of the circuit
+
 
 In layer 22 head 2 suggests global context consideration in prediction as the earlier mentioned basket tokens are heavily attended to by the key vectors (I think)
 
