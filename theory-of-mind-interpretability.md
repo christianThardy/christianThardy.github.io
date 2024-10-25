@@ -594,6 +594,8 @@ Specifically, in layer 22 head 4, the highest Q attention (blue spike) is at the
 
 The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial "basket" placement suggests the model understands this is relevant to John's belief state. The value contributions from both "basket" and "box" mentions show the model is tracking both possible locations of the cat. It's tracking both the real state (cat on box) and John's believed state (cat on basket). The strong attention to the initial state makes sense since that's what John last saw before leaving and the model appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely part of a collection of heads attending to John's false belief. 
 
+<br>
+
 Formally this is for each token position we have QKV vectors, 
 
 <code>Q<sub>i</sub></code> <code>K<sub>i</sub></code> <code>V<sub>i</sub></code>
@@ -624,6 +626,8 @@ score(<code>basket,box</code>) = softmax((<code>Q<sub>basket</sub></code> · <co
 out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
 
 out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
+
+<br>
 
 Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, which helps the model focus on John's initial information state. The strong green spikes for both `basket` and `box` positions V vectors carries location information. The moderate red activity combines both states, weighted by attention scores, allowing the model to maintain a strong representation of John's initial state (basket location), track current state (box location), and weight them appropriately for belief state tracking.
 
