@@ -10,7 +10,7 @@
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identify Relavant Layers and Activations](#identify-relavant-layers-and-activations)
     - [Residual Stream and Multi-Head Attention](#residual-stream-and-multi-head-attention)
-    - [Activation Patching and Iterative Attention Head Analysis](#activation-patching-and-iterative-attention-head-analysis)
+    - [Iterative Attention Head Analysis and Activation Patching](#iterative-attention-head-analysis-and-activation-patching)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
     - [Copy Supression in the ToM Circuit](#copy-supression-in-the-tom-circuit)
@@ -513,7 +513,7 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Activation patching and iterative attention head analysis
+### Iterative attention head analysis and activation patching
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
 
