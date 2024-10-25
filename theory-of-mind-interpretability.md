@@ -445,6 +445,7 @@ In any case, it’s easy to get tricked if you think an attention head is just f
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/527153fb-f75d-4ec2-a3e3-52a459740d41" width="1000"/>
+    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending.</a></small>
 </p>
 
 <br>
@@ -508,6 +509,16 @@ We can see how `from` in the phrase `...John comes back from...` attends to `sch
 <br>
 
 It's entirely possible the model is balancing its handling of both semantic meaning and the logical relations between entities. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a1ff26f7-85ff-42f5-8cbf-7028cd6ff6a5"/>
+</p>
+
+<br>
+
+We can also color everything from source token to output token to see how much every token effects every other token. These are all the tokens that have their probabilities increased by the attention heads. We can see that `the` attended back to `box`, `basket`, `cat` which increased the probability that the next token should be `room`, suggesting noun phrases and more complex compositional patterns in the future.
 
 We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and iterative attention analysis that set the stage for figuring out the underlying circuit.
 
