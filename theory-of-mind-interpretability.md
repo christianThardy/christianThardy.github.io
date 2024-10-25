@@ -566,45 +566,43 @@ Top 5 attended tokens:
 We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens:
 
 - **Early Layers 0-10:**
-    - **Layer 0, Head 3:** Attends to `cat` and `John`
-    - **L5, H2:** Focuses on `basket` and `box`
-    - **L0, H0, H7:** Strong focus on `on`
-    - **L5, H0:** Attention to `on` and `is`
+    - **Layer 0, Head 7:** Attends to elements like `in` and `on` and other adpositions
+    - **L5, H2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
     - **L10, H0:** Strong focus on `<bos>`, `is`, `on`, and `cat`, consolidating scene representation
     - **L10, H1:** High attention to `on` and `cat`
     - **L10, H4:** Begins to differentiate between `box` and `basket`
-    - **L10, H5:** Increased attention to `basket`, starting to emphasize belief state
  
-Early encodings suggest relations between grammar, spatial relationships,  and initial object/subject encodings. 
+Early encodings suggest relations between grammar, spatial relationships,  and initial object/subject integration. 
 
 - **Middle Layers 10-17:**
-    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation
+    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
     - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
-    - **L14, H6:** Balanced attention to `box`, `<bos>`, and `basket`, suggesting comparison
-    - **L16, H0:** Focuses on `room`
-    - **L16, H2:** Focus on `box`, `basket`, and `cat`, refining object relationships
-    - **L16, H3:** High attention to `cat` and `on`
-    - **L16, H7:** Very strong attention to `box` and `basket`, possibly comparing locations
-    - **L17, H0:** Balanced attention to `box` and `basket`, maintaining scenario context
-    - **L17, H1:** Very high attention to `on`, reinforcing spatial relationships
-    - **L17, H4:** Increased focus on `basket`, beginning to emphasize the belief state
-    - **L17, H7:** Extremely high attention to `on` and `is`, solidifying relationship encoding
+    - **L14, H6:** Increasing attention to `basket` compared to `box`, suggesting comparison
+    - **L16, H0:** Focuses on `room` with moderate attention to objects and spatial relationships
+    - **L16, H2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
+    - **L16, H3:** High attention to `cat` and `on`, objects and spatial relationships
+    - **L16, H7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
+    - **L17, H0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context.
+    - **L17, H3:** Very high attention to `box`, reinforcing possibly reinforcing where the cat is actually located
+    - **L17, H4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
+    - **L17, H6:** Attends to mainly determiners, especially the final one at the end of the sequence
+    - **L17, H7:** Extremely high attention to `on`, `is`, `off` solidifying relationship encoding via adpositions
 
 - **Later Layers 22-25:**
-    - **L22, H2:** Very high attention to `<bos>` and some to `basket`, maintaining initial context and belief state
-    - **L22, H4:** Strong attention to `basket`, crucial for belief state maintenance (highest impact in activation patching)
-    - **L22, H5:** Negative attention to `box` and positive attention `basket`, possibly final comparison
-    - **L23, H5:** Very high attention to `basket` and `cat`, reinforcing the belief state
+    - **L22, H2:** Very high attention to `<bos>`, some to `basket`, virtually none to `box`, maintaining initial context and belief state
+    - **L22, H4:** Strong attention to `basket` at all positions in the sequence, minor attention to `box`, crucial for belief state maintenance (highest impact in activation patching)
+    - **L22, H5:** Negative attention to `box` and overwelmingly positive attention `basket`
+    - **L23, H5:** Very high attention to `basket` and `cat`, reinforcing the belief state, increasingly diminished attention to `box` from previous layers
     - **L23, H6:** Strong focus on `basket` and some on `box`, final comparison and belief state emphasis
-    - **L25, H2:** Attention to `on`, `cat`, and `basket`, in that order, finalizing the belief state representation
-    - **L25, H4:** Focus on `on` and `the`, structuring the final output
+    - **L25, H2:** Less specialized head, but strongest attention to `on`, `cat`, and `basket`, in that order
+    - **L25, H4:** Strong focus on determiners, adpositions, verbs, objects, locations associated with John'f final action, structuring the final output
     - **L25, H7:**  Extremely high attention to `the`, preparing the grammatical structure of the output
 
 The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state and supress irrelevant information.
 
 The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
 
-We can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layer 22, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
+We can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layers 22 and 23, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
 
 **Attention patterns:**
 
@@ -1017,7 +1015,7 @@ happened (0.2166) Logit difference after zeroing value vector: 0.9611
 
 Its clear this layer focuses on basic function words and spatial relationships. 
 
-This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic elements (parts-of-speech: puncuation, determiners, conjugations. syntactic dependencies). Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
+This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic elements (parts-of-speech: puncuation, determiners, conjugations. syntactic dependencies) in specialized later heads. Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
 
 As we move into the middle layers, things get more interesting. The actions state heads and scene representation heads start integrating information from the initial state heads. This is where object tracking, action understanding, and structural processing starts to form. The attention mechanism becomes more balanced between the query and key vectors, reflecting how the model is integrating information and refining its contextual understanding of the scene.
 
