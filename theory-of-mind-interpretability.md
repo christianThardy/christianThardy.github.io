@@ -8,7 +8,7 @@
 - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
-    - [Identify Relavant Layers and Activations](#identify-relavant-layers-and-activations)
+    - [Identify Relevant Layers and Activations](#identify-relevant-layers-and-activations)
     - [Residual Stream and Multi-Head Attention](#residual-stream-and-multi-head-attention)
     - [Iterative Attention Head Analysis and Activation Patching](#iterative-attention-head-analysis-and-activation-patching)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
@@ -273,7 +273,7 @@ This could possibly show how the model is capable of distinguishing concepts, in
 
 <br>
 
-### Identify relavant layers and activations
+### Identify relevant layers and activations
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
