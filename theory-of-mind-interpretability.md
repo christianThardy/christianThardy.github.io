@@ -24,6 +24,10 @@
 
 <br>
 
+*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="" title="" rel="nofollow">1</a>]</sub><sub>[<a href="" title="" rel="nofollow">2</a>]</sub><sub>[<a href="" title="" rel="nofollow">3</a>]</sub>.*
+
+<br>
+
 # Introduction
 
 <a href="https://arxiv.org/pdf/2407.02646" title="arxiv" rel="nofollow">Mechanistic interpretability</a> gives us a way to reverse engineer the internal workings of neural networks, turning the representations they learn into understandable algorithms. This helps us trace which parts of the model matter for a given task and decompose paths within the model into interpretable components.
@@ -34,7 +38,7 @@ How exactly do decoder-only language models (DOLMs) perform and *solve* ToM task
 
 Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. Can we contextualize this behavior by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
 
-If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language— to solve these tasks, does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
+If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language—to solve these tasks, does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
 
 Another key question is whether ToM tasks can be solved purely by leveraging linguistic properties and syntactic structures via compositionality. If functional compotence<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub> (formal and social reasoning, world knowledge, situation modeling) can be achieved from exploiting linguistic signals that represent this compositionality, are these just "shortcuts" that "give answers away", or are they fundamental features that DOLMs rely on to perform and solve these tasks? 
 
@@ -44,7 +48,7 @@ Neural responses are dynamic and context-dependent, as seen in how the left pref
 
 There’s always the argument that model brittleness is inevitable—no dataset, no matter how large, will cover every possible scenario. New, unseen ToM data could always "break" a model. But even beyond that, do the internal mechanisms for solving this problem remain consistent across different samples? While retraining on updated datasets could lead to short-term improvements, there’s still the broader challenge of evaluating the task effectively, given both our incomplete understanding of ToM and the limitations of DOLMs.
 
-While I'm skeptical about why models are performing ToM or are not performing ToM, I think there’s value in breaking down the abstract reasoning involved in ToM tasks into interpretable algorithms or circuits. By understanding the internal representations in DOLMs, we can start to see how these models structure and approach ToM tasks —or more specifically false belief tasks. Even if they aren’t doing it like humans, we can still gain insights into the mechanisms they’ve learned for processing mental states.
+While I'm skeptical about why models are performing ToM or are not performing ToM, I think there’s value in breaking down the abstract reasoning involved in ToM tasks into interpretable algorithms or circuits. By understanding the internal representations in DOLMs, we can start to see how these models structure and approach ToM tasks—or more specifically false belief tasks. Even if they aren’t doing it like humans, we can still gain insights into the mechanisms they’ve learned for processing mental states.
 
 <br>
 
@@ -122,7 +126,7 @@ By being trained for next word prediction, LLMs end up learning a lot about the 
 
 For example, a common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers.
 
-ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
+ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings (implicature) and inferred intentions (presupposition), which are central to pragmatics. Given the literature, even if the phenomena just statistical, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
 <br>
 
@@ -233,7 +237,7 @@ Even from this limited perspective, you can see how the model is capable of dist
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
-This technique is essentially a causal intervention —we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. 
+This technique is essentially a causal intervention—we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. 
 
 To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
 
@@ -252,7 +256,7 @@ When we deconstruct the residual stream using the logit-lens, we look at the res
 
 What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then worse right after layer 24. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific —writing to the residual stream in a way that allows the model to solve the task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (process information) in their contribution to this spike? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly? What can we learn from the MLPs?
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (process information) in their contribution to this spike? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly? What can we learn from the MLPs?
 
 This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
 
@@ -268,7 +272,7 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 Its clear that attention layers matter a lot. I'm not too surprised. I would imagine that the ToM task is centered around moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
-What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
+What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn—MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
 We can break down the output of each attention layer even further by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 7 heads, and each head acts independently and additively to influence the final result.
 
@@ -280,7 +284,7 @@ We can break down the output of each attention layer even further by looking at 
 
 <br>
 
-Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute —its possible that this distributed behavior is somehow important— but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
+Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute—its possible that this distributed behavior is somehow important—but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
@@ -306,7 +310,7 @@ At this layer the residual stream pre is passing basic scence understanding to t
 
 <br>
 
-Based on what I know and have seen so far, its possible there's evidence that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+Based on what I saw with PCA, I think its possible that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
 
 The PCA breaks down into three clusters of concepts:
 
@@ -316,7 +320,7 @@ The PCA breaks down into three clusters of concepts:
 
 Looking at the residual stream post-PCA, we can see stronger associations between:
 
-- `John` and `thinks"
+- `John` and `thinks`
 - `basket` and initial state
 - `box` and current state
 
@@ -327,15 +331,15 @@ When we compare the PCA with the linear plot above, its clear that the model is 
 
 The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to simultaneously track reality and belief simultaneously, keeping them separate but interrelated to maintain parallel states. Even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
 
-What’s also cool is that the PCA clusters related tokens spatially, keeping clear distances between the conceptual groups. So, there’s this clear linearity across time, the temporal sequence, belief state maintenance, subject-action links, and object-location associations.
+What’s also cool is that the PCA related tokens spatially, keeping clear distances between the conceptual groups. So, there’s this clear linearity across time, the temporal sequence, belief state maintenance, subject-action links, and object-location associations.
 
 <br>
 
 ### Residual stream and multi-head attention
 
-Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact. Specifically, we’ll be looking at the top 3 positive (visualizations for the negative heads were also produced in the analysis) logit attribution heads based on their direct contribution to the logits.
+Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
 
-One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. This makes it hard to asses what the attention heads are doing when tokens are being attended to. 
+One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence up to that point. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. This makes it hard to asses what the attention heads are doing when tokens are being attended to. 
 
 But at the same time, I think when an attention head is attending to a token, it is accessing abstract information stored at that position.
 
@@ -347,7 +351,7 @@ But at the same time, I think when an attention head is attending to a token, it
 
 <br>
 
-In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers and must go through this stream. It captures everything the model has "thought" so far, so it will contain everything important going on in the model.
+In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers. It captures everything the model has *thought* so far, so it will contain everything important going on in the model.
 
 <br>
 
@@ -357,13 +361,15 @@ In transformer architectures, each token position has a residual stream—a vect
 
 <br>
 
-The residual stream in a transformer isn’t just about token embeddings; it’s an information highway that aggregates outputs from previous attention heads and MLPs. Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer to be decomposed as the sum of contributions from various mechanisms across different layers.
+The residual stream in a transformer isn’t just about processing token embeddings; it’s an information highway that aggregates outputs from previous attention heads and MLPs. Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer be decomposed as the sum of contributions from various mechanisms across different layers.
 
 By the later layers, the residual stream holds rich, high-level abstractions: syntactic structures, semantic relationships, and even summaries of phrases or entire sentences. This enables the model to map syntax onto semantics in a powerful way. Attention heads read from specific positions in the residual stream and write new information to target positions, which helps move abstract, context-heavy information around—independent of specific tokens.
 
 Going back to our period example, at the position of a period at the end of a sentence, the residual stream might hold a summary of the entire sentence rather than just the token embedding for the period itself. This layered representation is built up across attention blocks and MLPs, incorporating syntactic roles, semantic meanings, and sentence structure. Attention patterns help transfer these complex, high-level abstractions between positions, enabling the model to handle hierarchical structures.
 
-As the model processes information, each layer can access everything from **the residual stream but focuses on specific directions** that are relevant for the task. After aligning with the directions it needs, the model writes the information to another mechanism. The flow of information between mechanisms depends on how similar the directions in the residual stream are to those in other components, guiding the movement of abstract information across the model. More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>
+As the model processes information, each layer can access everything from the residual stream **but focuses on specific directions** that are relevant for the task based on the similarity of information held between mechanisms. After aligning with the directions it needs, the model writes the information to another mechanism. The flow of information between mechanisms depends on how similar the directions in the residual stream are, guiding the movement of abstract information across the model. 
+
+More on how transformers process information using linear algebra <a href="https://youtu.be/wjZofJX0v4M?si=yzNyY0gmwQ892Z6P&t=747" title="3Blue1Brown" rel="nofollow">here.</a>
 
 <br>
 
@@ -375,21 +381,25 @@ As the model processes information, each layer can access everything from **the 
 
 Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
-The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
+The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. 
+
+For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/950b47aa-675d-4a47-82c7-d7ce8b457552" width="7500"/>  
+<img src="https://github.com/user-attachments/assets/415c58d0-6975-4483-808c-31cccf887cd9" width="7500"/>  
 </p>
 
 <br>
 
 So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the events, the order of events, character actions and possibly even directional or spatial information is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
-This kind of hierarchical, nested structure in the residual stream is key to solving the IOI task<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>. Which requires the model to parse grammatical roles, like identifying subjects, objects, and indirect objects, and understand their relationships. Similarly, the ToM task requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual streams.
+This kind of hierarchical, nested structure in the residual stream is key to solving the ToM task. It requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual stream.
 
-In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. What we should be looking at is the information stored in the residual streams at that position—often abstract concepts or higher-level representations—rather than just assuming the attention head is simply "attending" to the token itself.
+In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. We should be looking at this information alongside the information stored in the residual streams at that position—which often contains abstract concepts or higher-level representations.
+
+While keeping all of that in mind, when looking at the plots, it’s a good time to start thinking about the algorithms the model might be using. 
 
 <br>
 
@@ -400,11 +410,9 @@ In any case, it’s easy to get tricked if you think an attention head is just f
 
 <br>
 
-While keeping all of that in mind, when looking at this plot, it’s a good time to start thinking about the algorithm the model might be running. Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
+Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
 
-We can start to connect some dots between our earlier observations on FOL, semantics, and pragmatics, and how they might show up in the model's attention patterns. When it comes to FOL properties and relations, we see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. What’s particularly interesting is that when John’s interaction with the `basket` is isolated, we also see a high positive logit attribution score. This hints at the model potentially locking onto a key relation—between the subject (John), the object (basket), and the location—tied to those specific interaction moments.
-
-This attention pattern suggests the model might be encoding this relation in a way that reflects the logical structure we’re interested in, with the subject-object-location connection becoming more prominent in cases where the interaction is clear and exclusive to John.
+We can start to connect some dots between our earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
 
 <br>
 
@@ -417,7 +425,7 @@ This attention pattern suggests the model might be encoding this relation in a w
 
 <br>
 
-The fact that `the` attends to `basket` with a high positive logit attribution is pretty telling. It suggests that the model might be inferring John’s awareness of the room’s initial state, specifically the location of the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model picks up on the gap between what he knows and what’s actually changed.
+This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John.
 
 <br>
 
@@ -427,7 +435,7 @@ The fact that `the` attends to `basket` with a high positive logit attribution i
 
 <br>
 
-Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks a lot like coreference resolution in action—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight.
+The fact that `the` attends to `basket` with a high positive logit attribution in relation to other positive attributions at different positions in the passage is pretty telling. It suggests that the model is inferring John’s awareness of the location of the `cat`, specifically that it's on the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model ignores what he does not know.
 
 <br>
 
@@ -437,7 +445,7 @@ Semantically, when the model processes the second mention of `John` in the sente
 
 <br>
 
-What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially. 
+Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks a lot like coreference resolution in action—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight. 
 
 <br>
 
@@ -448,7 +456,7 @@ What’s really interesting is how the actions of `John`—both "taking" and "le
 
 <br>
 
-We can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
+What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially.
 
 <br>
 
@@ -458,7 +466,7 @@ We can see how `from` in the phrase `...John comes back from...` attends to `sch
 
 <br>
 
-It's entirely possible the model is balancing its handling of both semantic meaning and the logical relations between entities. 
+We can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
 
 <br>
 
@@ -478,11 +486,11 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
 
-One approach is tracking the activations of key tokens (John, basket, box, cat) across layers, showing how their representations evolve. Another approach is pinpointing which layers and attention heads contribute most to predicting "basket."
+One approach is tracking the activations of key tokens (John, basket, box, cat) across layers, showing how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting "basket."
 
-By combining these methods and comparing the results, we can zero in on heads that attend to both the initial state and John’s final action. Iterative head analysis and activation patching will help us refine our understanding.
+By combining these methods and comparing the results, we can zero in on heads that attend to both the initial state and John’s final action.
 
-Looking at the most basic units of computation in the attentions heads will give the most fine-grained account of what is happen when the models is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), and value (V) vectors across the heirarchy of layers.
+Looking at the most basic units of computation in the attentions heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), and value (V) vectors across the hierarchy of layers.
 
 The DOLMs attention mechanisms weigh the importance of different parts of the ToM passage. Each attention head computes three components:
 
@@ -490,11 +498,11 @@ The DOLMs attention mechanisms weigh the importance of different parts of the To
 - **Key (K):** Represents the tokens considered for attention at each position.
 - **Value (V):** Contains the information to be propagated forward.
 
-The way key/value/query attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
+The way QKV attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
 
 So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
 
-In somewhat technical terms, the values for the query (Q) and key (K) vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The values (V) hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
+In somewhat technical terms, the values for the QK vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The Vs hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
 
 However, it's important to note that the relative sizes of Q and K don't directly determine who is "doing the attending." Instead, both vectors interact through dot-product attention: Q represents the token initiating the attention (the one trying to find relevant content), and K represents the token being attended to (the potential source of relevant information). The attention scores are computed based on the interaction between Q and K, meaning both vectors play a role in deciding where attention is focused. The difference in their values might offer clues about the roles of specific tokens in the attention process, but both vectors contribute to the overall mechanism.
 
@@ -515,10 +523,10 @@ Selecting a few heads across layers, we can see how things are playing out in th
     - **Layer 0, Head 7:** Attends to elements like `in` and `on` and other adpositions
     - **L5, H2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
     - **L8, H0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
-    - **L10, H0:** Strong focus on `<bos>`, `is`, `on`, and `cat`, consolidating scene representation
-    - **L10, H1:** High attention to `on` and `cat`, primarily focused on retrieving information rather combining, minimal key activations, query vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs
+    - **L10, H0:** Strong focus on `is`, `on`, and `cat`, consolidating scene representation
+    - **L10, H1:** High attention to `on` and `cat`, primarily focused on retrieving information rather than combining, Q vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs with minimal K activations
       <br>
-    - **L10, H4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases —`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong value spikes for verb-object agreement (`takes the cat`, `puts it`). Highest value spikes around complete action sequences (`takes the cat and puts it on`)
+    - **L10, H4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases—`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong V spikes for verb-object agreement (`takes the cat`, `puts it`). Highest v spikes around complete action sequences (`takes the cat and puts it on`)
 
 - **Middle Layers & Heads 10-17:**
     - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
@@ -534,37 +542,50 @@ Selecting a few heads across layers, we can see how things are playing out in th
     - **L17, H6:** Attends to mainly determiners, especially the final one at the end of the sequence
     - **L17, H7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
 
-We can see the model builds up its representation across layers, with later layers showing stronger activations for key tokens. Early encodings suggest relations between grammar, spatial relationships, and initial object/subject integration. The middle and late layers seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state.
+<br>
+
+We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state.
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in layer 0 head 7 and layer 10 head 1. Both showing rigid, position-based patterns, clean isolated spikes. The former shows strong Q spikes at regular intervals with minimal KV interference, it seems to be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. The latter shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. In the former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
-
-Specifically, in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket. This suggests the model is strongly querying the initial state of where the cat was placed. The Value vectors (green) show strong contributions around `basket` early in the sequence, another significant spike, but certainly lower than basket around `box`, and several medium-height spikes around key events in the story (like when the cat is moved). Overall the patterns are very asymmetric.
-
-The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial "basket" placement suggests the model understands this is relevant to John's belief state. The value contributions from both "basket" and "box" mentions show the model is tracking both possible locations of the cat. It's tracking both the real state (cat on box) and John's believed state (cat on basket). The strong attention to the initial state makes sense since that's what John last saw before leaving and the model appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely part of a collection of heads attending to John's false belief. 
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
 
 <br>
 
-Formally this is for each token position we have QKV vectors, 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a" width="700"/>
+<br>
+</p>
+
+<br>
+
+Specifically, for the asymmetric patterns in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of where the cat was placed (might be an artifact given its almost everywhere). The V attention (green) show strong contributions around `basket` early in the sequence, completely dominating the V attention of `box`, and several medium-height spikes around key events in the story (like when the cat is moved).
+
+The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat. It's tracking both the real state (`cat on box`) and John's believed state (`cat on basket`). 
+
+The strong attention to the initial state makes sense since that's what John last saw before leaving. The model also appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely follows a collection of heads that build up to this attending to John's false belief. 
+
+<br>
+
+More formally, for each token position we have QKV vectors, 
 
 <code>Q<sub>i</sub></code> <code>K<sub>i</sub></code> <code>V<sub>i</sub></code>
 
 <br>
 
-and the attention score for the position attention to another positions,
+And the attention score for the tokens position to another positions,
 
 score(<code>i,j</code>) = softmax((<code>Q<sub>i</sub></code> · <code>K<sub>j</sub></code>) / √<code>d<sub>k</sub></code>)
 
 <br>
 
-And output for position `i` is
+And output for position `i` is,
 
 out<code><sub>i</sub></code> = Σ<sub>j</sub>(score(<code>i,j</code>) × <code>V<sub>j</sub></code>
 
 <br>
 
-This shows for the 4th head of layer 22 , the QKV vectors for the attention mechanism will look something like this,
+For the 4th head of layer 22 , the QKV vectors for the attention mechanism will look something like this,
 
 <code>Q<sub>basket</sub></code> ≈ 1.0 (tall blue spike)
 <code>K<sub>basket</sub></code> ≈ 0.3 (red line)
@@ -585,15 +606,23 @@ out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V
 
 <br>
 
-Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, which helps the model focus on John's initial information state. The strong green spikes for both `basket` and `box` positions V vectors carries location information. The moderate red activity combines both states, weighted by attention scores, allowing the model to maintain a strong representation of John's initial state (basket location), track current state (box location), and weight them appropriately for belief state tracking.
+Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, which helps the model search for or focus on John's initial belief state. 
 
-In terms of linguistic representations, notice the attention patterns around "He" - there are small but noticeable spikes in both query and value contributions when pronouns need to be resolved back to their referents (John/Mark). There are signs of temporal sequence markers, attention spikes around temporal transition phrases like "while" and "when", helping track the sequence of events and time periods (before/during/after John's absence). Attention patterns showing action-verb state agreements, tracking state changes through verbs. Small but consistent attention to prepositions like "on" and "off" that describe spatial relationships, which work together with the objects (basket/box) to establish location states. And there's attention around verbs that relate to mental states like "knows" and "thinks", marking belief states.
+The strong green spikes for both `basket` and `box` positions V vectors carries location information. 
 
-Overall it appears by this layer the model has integrated information from earlier layers and focuses on more complex semantic relationships!
+The moderate red activity combines both states, weighted by attention scores, allowing the model to maintain a strong representation of John's initial belief state of the `basket` location (false belief, contradiction), track current state of the `box` location (true belief, reality), and weight them appropriately for belief state tracking.
 
-The output is suggesting that the model is composing features related to the objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
+In terms of linguistic representations, notice the attention patterns around `He` - there are small but noticeable spikes in both Q and V contributions when pronouns need to be resolved back to their referents (`John`, `Mark`). 
 
-In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). The suppression head seems to primarily operate in layers 22 and 23, head 4 playing a crucial role. This head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
+There are signs of temporal sequence markers, attention spikes around temporal transition phrases like `while` and `when`, helping track the sequence of events and time periods (before/during/after John's absence). 
+
+Attention patterns showing action-verb state agreements, tracking state changes through verbs. Small but consistent attention to prepositions like "on" and "off" that describe spatial relationships, which work together with the objects (basket/box) to establish location states. And there's attention around verbs that relate to mental states like "knows" and "thinks", marking belief states.
+
+Overall it appears by this layer the model has integrated information from earlier layers and focuses on more complex contextual/semantic relationships!
+
+This output is suggesting that the model is composing features related to objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
+
+In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). This suppression head seems to primarily operate in layers 23 and 25, heads 5 and 4 playing a crucial role. So this head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
 
 **Attention patterns:**
 
