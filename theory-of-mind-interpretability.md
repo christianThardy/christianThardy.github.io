@@ -2,7 +2,7 @@
 
 <br>
 
-#### Table of Contents
+#### Table of Contents <a id="top"></a>
 - [Introduction](#introduction)
 - [The relationship between theory of mind and language](#the-relationship-between-theory-of-mind-and-language)
 - [So What?](#so-what)
@@ -29,6 +29,7 @@
 <br>
 
 # Introduction
+[Back to Contents](#top)
 
 <a href="https://arxiv.org/pdf/2407.02646" title="arxiv" rel="nofollow">Mechanistic interpretability</a> gives us a way to reverse engineer the internal workings of neural networks, turning the representations they learn into understandable algorithms. This helps us trace which parts of the model matter for a given task and decompose paths within the model into interpretable components.
 
