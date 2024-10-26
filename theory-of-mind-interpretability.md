@@ -24,12 +24,13 @@
 
 <br>
 
-*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#iahaap" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tomc" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
+*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#iterative-attention-head-analysis-and-activation-patching" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
 
 <br>
 
 # Introduction
-[Back to Contents](#top)
+
+<br>
 
 <a href="https://arxiv.org/pdf/2407.02646" title="arxiv" rel="nofollow">Mechanistic interpretability</a> gives us a way to reverse engineer the internal workings of neural networks, turning the representations they learn into understandable algorithms. This helps us trace which parts of the model matter for a given task and decompose paths within the model into interpretable components.
 
@@ -54,6 +55,8 @@ While I'm skeptical about why models are performing ToM or are not performing To
 <br>
 
 # The relationship between theory of mind and language
+
+<br>
 
 In the human brain, the language network is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
 
@@ -120,6 +123,9 @@ Understanding John's beliefs and what he expects to find upon his return is cruc
 <br>
 
 ## So What?
+<sub>[Contents](#top)</sub>
+
+<br>
 
 These principles and operations can *help* interpret how humans perform ToM linguistically, but how do these concepts transfer to large language models in relation to ToM? 
 
@@ -132,6 +138,9 @@ ToM prediction heavily relies on context to make sense of the mental states and 
 <br>
 
 # Theory of mind circuit discovery
+<sub>[Contents](#top)</sub>
+
+<br>
 
 The broader goal of this analysis is to identify the circuit responsible for modeling the ToM task, with the more narrow focus being to pinpoint that circuit by understanding the behavior of attention heads, MLPs, and residual streams.
 
@@ -172,6 +181,9 @@ To look at ToM prediction through the lens of a decoder-only transformer, you ca
 <br>
 
 ### Principal component analysis
+<sub>[Contents](#top)</sub>
+
+<br>
 
 Fitting PCA to the activations across MLP, attention, and residual stream patterns for the main entities, locations, and actions of the ToM passage reveals directions in the PCA space that show how the model is structuring the text internally. 
 
@@ -235,6 +247,9 @@ Even from this limited perspective, you can see how the model is capable of dist
 <br>
 
 ### Identify relevant layers and activations
+<sub>[Contents](#top)</sub>
+
+<br>
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
@@ -337,6 +352,9 @@ What’s also cool is that the PCA related tokens spatially, keeping clear dista
 <br>
 
 ### Residual stream and multi-head attention
+<sub>[Contents](#top)</sub>
+
+<br>
 
 Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
 
@@ -483,7 +501,10 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Iterative attention head analysis and activation patching <a id="iahaap"></a>
+### Iterative attention head analysis and activation patching <a id="iterative-attention-head-analysis-and-activation-patching"></a>
+<sub>[Contents](#top)</sub>
+
+<br>
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
 
@@ -753,6 +774,9 @@ The temporal pattern is also worth noting—patching heads in the last 5-10 laye
 <br>
 
 ## So What?
+<sub>[Contents](#top)</sub>
+
+<br>
 
 The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like `cat on box`), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (that the cat should be in the basket). This structured approach suggests the model has learned a robust, step-by-step strategy.
 
@@ -821,6 +845,9 @@ Across each set of heads, the model relies on earlier representations as foundat
 <br>
 
 ### Dictionary learning, sparse autoencoders and superposition
+<sub>[Contents](#top)</sub>
+
+<br>
 
 The linear representation hypothesis tells us that activations are **sparse**, **linear** combinations of **meaningful feature vectors**.
 
@@ -1025,7 +1052,10 @@ What’s especially interesting is that these features represent cases where the
 
 <br>
 
-### ToM circuit <a id="tomc"></a> 
+### ToM circuit <a id="tom-circuit"></a> 
+<sub>[Contents](#top)</sub>
+
+<br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
@@ -1119,6 +1149,9 @@ The circuit as a whole is made up of various attention heads (induction and copy
 <br>
 
 ### Copy supressions role in the ToM circuit
+<sub>[Contents](#top)</sub>
+
+<br>
 
 Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and calibrating the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
 
@@ -1143,6 +1176,9 @@ These heads correspond to some of the name mover heads (renamed location mover h
 <br>
 
 # Conclusion <a id="conclusion"></a>
+<sub>[Contents](#top)</sub>
+
+<br>
 
 The results should be taken with a grain of salt, as the model was only evaluated on one ToM passage. In a future update, goal is to run a proper ablation study on multiple passages to validate or invalidate the proposed circuit.
 
@@ -1157,6 +1193,9 @@ The circuit is not very clean, its a cyclical/recursive task
 <br>
 
 # References:
+<sub>[Contents](#top)</sub>
+
+<br>
 
 Mahowald, *Dissociating Language And Thought In Large Language Models.* University of Texas at Austin, Georgia Institute of Technology, UCLA, MIT. 2024.[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]
 
