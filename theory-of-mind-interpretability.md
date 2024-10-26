@@ -24,7 +24,7 @@
 
 <br>
 
-*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#IAHAAP" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#ToMC" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
+*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#iahaap" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tomc" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
 
 <br>
 
@@ -482,7 +482,7 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Iterative attention head analysis and activation patching <a id="IAHAAP"></a>
+### Iterative attention head analysis and activation patching <a id="iahaap"></a>
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
 
@@ -1024,7 +1024,7 @@ What’s especially interesting is that these features represent cases where the
 
 <br>
 
-### ToM circuit <a id="ToMC"></a> 
+### ToM circuit <a id="tomc"></a> 
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
