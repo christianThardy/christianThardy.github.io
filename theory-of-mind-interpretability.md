@@ -579,40 +579,40 @@ The strong attention to the initial state makes sense since that's what John las
 
 More formally, for each token position we have QKV vectors, 
 
-<code>Q<sub>i</sub></code> <code>K<sub>i</sub></code> <code>V<sub>i</sub></code>
+Q<sub>i</sub> K<sub>i</sub> V<sub>i</sub>
 
 <br>
 
 And the attention score for the tokens position to another positions,
 
-score(<code>i,j</code>) = softmax((<code>Q<sub>i</sub></code> · <code>K<sub>j</sub></code>) / √<code>d<sub>k</sub></code>)
+*score*(i,j) = *softmax*((Q<sub>i</sub> · K<sub>j</sub>) / √d<sub>k</sub>)
 
 <br>
 
-And output for position `i` is,
+And output for position i is,
 
-out<code><sub>i</sub></code> = Σ<sub>j</sub>(score(<code>i,j</code>) × <code>V<sub>j</sub></code>
+out<sub>i</sub> = Σ<sub>j</sub>(*score*(i,j) × V<sub>j</sub>
 
 <br>
 
 For the 4th head of layer 22 , the QKV vectors for the attention mechanism will look something like this,
 
-<code>Q<sub>basket</sub></code> ≈ 1.0 (tall blue spike)
-<code>K<sub>basket</sub></code> ≈ 0.3 (red line)
-<code>V<sub>basket</sub></code> ≈ 0.8 (tall green spike)
+Q<sub>basket</sub> ≈ 1.0 (tall blue spike)
+K<sub>basket</sub> ≈ 0.3 (red line)
+V<sub>basket</sub> ≈ 0.8 (tall green spike)
 
-<code>K<sub>box</sub></code> ≈ 0.2 (red line)
-<code>V<sub>box</sub></code> ≈ 0.4 (medium green spike)
+K<sub>box</sub> ≈ 0.2 (red line)
+V<sub>box</sub> ≈ 0.4 (medium green spike)
 
-score(<code>basket,basket</code>) = softmax((<code>Q<sub>basket</sub></code> · <code>K<sub>basket</sub></code>) / √<code>d<sub>k</sub></code>)
-≈ softmax((1.0 × 0.3) / √64)
+*score*(basket,basket) = *softmax*((Q<sub>basket</sub> · K<sub>basket</sub>) / √d<sub>k</sub>)
+≈ *softmax*((1.0 × 0.3) / √64)
 
-score(<code>basket,box</code>) = softmax((<code>Q<sub>basket</sub></code> · <code>K<sub>box</sub></code>) / √<code>d<sub>k</sub></code>)
-≈ softmax((1.0 × 0.2) / √64)
+*score*(basket,box) = *softmax*((Q<sub>basket</sub> · K<sub>box</sub>) / √d<sub>k</sub>)
+≈ *softmax*((1.0 × 0.2) / √64)
 
-out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
+out<sub>basket</sub> = *score*(basket,basket) × V<sub>basket</sub> + *score*(basket,box) × V<sub>box</sub>
 
-out<code><sub>basket</sub></code> = score(<code>basket,basket</code>) × <code>V<sub>basket</sub></code> + score(<code>basket,box</code>) × <code>V<sub>box</sub></code>
+out<sub>basket</sub> = *score*(basket,basket) × V<sub>basket</sub> + *score*(basket,box) × V<sub>box</sub>
 
 <br>
 
