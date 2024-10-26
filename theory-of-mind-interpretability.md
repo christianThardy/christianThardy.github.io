@@ -616,11 +616,11 @@ In terms of linguistic representations, notice the attention patterns around `He
 
 There are signs of temporal sequence markers, attention spikes around temporal transition phrases like `while` and `when`, helping track the sequence of events and time periods (before/during/after John's absence). 
 
-Attention patterns showing action-verb state agreements, tracking state changes through verbs. Small but consistent attention to prepositions like "on" and "off" that describe spatial relationships, which work together with the objects (basket/box) to establish location states. And there's attention around verbs that relate to mental states like "knows" and "thinks", marking belief states.
+Attention patterns showing action-state-verb agreements, tracking state changes through verbs. Small but consistent attention to prepositions like "on" and "off" that describe spatial relationships, which work together with the objects (basket/box) to establish location states. And there's attention around verbs that relate to mental states like "knows" and "thinks", marking belief states.
 
 Overall it appears by this layer the model has integrated information from earlier layers and focuses on more complex contextual/semantic relationships!
 
-This output is suggesting that the model is composing features related to objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage.
+This output is suggesting that the model is composing features related to objects and their locations, with a strong focus on `basket` in the final layers. The token `basket` shows a significant increase in activation from layer 22 onwards, maintaining high activation through the final layer. This suggests that the model is maintaining the information about the initial state (`cat` on `basket`) despite contradictory information introduced later in the passage. Tracking where `John` thinks the `cat` is seems to be the most important feature of this head.
 
 In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). This suppression head seems to primarily operate in layers 23 and 25, heads 5 and 4 playing a crucial role. So this head maintains the activation of `basket` while relatively suppressing `box`, which would be preserving John's false belief about the cat's location. This can be observed in several ways:
 
