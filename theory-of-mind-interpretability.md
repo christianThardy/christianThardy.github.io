@@ -28,23 +28,23 @@
 
 <a href="https://arxiv.org/pdf/2407.02646" title="arxiv" rel="nofollow">Mechanistic interpretability</a> gives us a way to reverse engineer the internal workings of neural networks, turning the representations they learn into understandable algorithms. This helps us trace which parts of the model matter for a given task and decompose paths within the model into interpretable components.
 
-With my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been wrestling with many core questions:
+With my current focus on transformer-based LLMs, theory of mind (ToM), and mechanistic interpretability, I've been wrestling with many core questions about ToM tasks:
 
 How exactly do decoder-only language models (DOLMs) perform and *solve* ToM tasks? What's happening under the hood? What kinds of algorithms is the model relying on?
 
 Is it appropriate to evaluate DOLMs the way a psychologist would analyze a human subject to gauge its level of ToM? One common framework for this is <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6974541/" title="ncbi.nlm.nih.gov" rel="nofollow">ATOMS</a> (Abilities in Theory of Mind Space), which categorizes concepts like beliefs, intentions, desires, emotions, knowledge, and percepts. Can we contextualize this behavior by zooming in and analyzing the internal mechanisms that enable ToM capabilities in these models? 
 
-If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language— to solve ToM tasks does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
+If a DOLM is trained across multiple ToM datasets representing different categories, and has robust performance across direct probing, and we find a clear algorithmic process —that leans heavily on the structure of language— to solve these tasks, does that automatically mean it's not really engaging in ToM, or could it be that this is the way models represent the abstract reasoning that ToM requires? 
 
 Another key question is whether ToM tasks can be solved purely by leveraging linguistic properties and syntactic structures via compositionality. If functional compotence<sub>[<a href="https://arxiv.org/pdf/2301.06627" title="Mahowald" rel="nofollow">1</a>]</sub> (formal and social reasoning, world knowledge, situation modeling) can be achieved from exploiting linguistic signals that represent this compositionality, are these just "shortcuts" that "give answers away", or are they fundamental features that DOLMs rely on to perform and solve these tasks? 
 
 I'm also asking myself: Do we even have a clear, interpretable algorithm for how *humans* solve ToM tasks? Outside of the scope of combining prior knowledge with observed behaviors and contextual nuances (intentionally ignoring emotions and cultural norms) in the human brain? 
 
-Neural responses are dynamic and context-dependent, as seen in how the left prefrontal cortex encodes semantic information during speech processing. It suggests that the brain uses compositionality to process language<sub>[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">2</a>]</sub>, so maybe the way models handle ToM through linguistic structure isn’t that far off from certain aspects of human reasoning.
+Neural responses are dynamic and context-dependent, as seen in how the left prefrontal cortex encodes semantic information during speech processing. It suggests that the brain uses compositionality to process language<sub>[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">2</a>]</sub>, so maybe the way models handle this through linguistic structure isn’t that far off from certain aspects of human reasoning.
 
-There’s always the argument that model brittleness is inevitable—no dataset, no matter how large, will cover every possible scenario. New, unseen ToM data could always "break" a model. But even beyond that, do the internal mechanisms for solving ToM in DOLMs remain consistent across different samples? While retraining on updated datasets could lead to short-term improvements, there’s still the broader challenge of evaluating ToM effectively, given both our incomplete understanding of ToM and the limitations of DOLMs.
+There’s always the argument that model brittleness is inevitable—no dataset, no matter how large, will cover every possible scenario. New, unseen ToM data could always "break" a model. But even beyond that, do the internal mechanisms for solving this problem remain consistent across different samples? While retraining on updated datasets could lead to short-term improvements, there’s still the broader challenge of evaluating the task effectively, given both our incomplete understanding of ToM and the limitations of DOLMs.
 
-While I'm skeptical about why models are performing ToM or are not performing ToM, I think there’s value in breaking down the abstract reasoning involved in ToM tasks into interpretable algorithms or circuits. By understanding the internal representations within DOLMs, we can start to see how these models structure and approach ToM tasks. Even if they aren’t doing it like humans, we can still gain insights into the mechanisms they’ve learned for processing mental states.
+While I'm skeptical about why models are performing ToM or are not performing ToM, I think there’s value in breaking down the abstract reasoning involved in ToM tasks into interpretable algorithms or circuits. By understanding the internal representations in DOLMs, we can start to see how these models structure and approach ToM tasks —or more specifically false belief tasks. Even if they aren’t doing it like humans, we can still gain insights into the mechanisms they’ve learned for processing mental states.
 
 <br>
 
@@ -54,52 +54,7 @@ In the human brain, the language network is a set of interconnected areas in the
 
 Humans have this amazing ability to infer the mental states of others using ToM. But conceptually, how could we represent ToM in a way that’s understandable for an algorithm? How might we frame it linguistically to help an algorithm get closer to understanding the mental states of others?
 
-To explore how ToM could be represented algorithmically, let’s dig into a few key linguistic principles: **First-Order Logic** (FOL), **Semantics**, and **Pragmatics**.
-
-<br>
-
-### First-Order Logic
-
-FOL provides a framework for representing and manipulating the meaning of sentences in a structured and formal way, and also helps in mapping natural language sentences to their corresponding semantic representations.
-
-Let's take this false belief passage: *'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
-
-In the context of ToM, to make the correct prediction `basket`, the model needs to understand:
-
-  - **Entities:** Mark, John, cat, basket and box.
-
-  - **Properties and Relations:** John puts the cat on the basket, John remembering where he put the cat, John's expectation that the cat will be on the basket.
-
-  - **Mental States:** John's belief and expectation that the cat will be on the basket after he returns.
-
-<br>
-  
-FOL helps in maintaining the context and managing the state of a conversation by representing a dialogue state in logical terms. For example:
-
-  - Take(*John, cat*)\
-    PutOn(*John, cat, basket*)\
-    Leave(*John, room*)\
-    GoTo(*John, school*)\
-    Take(*Mark, cat*)\
-    PutOn(*Mark, cat, box*)\
-    Leave(*Mark, room*)\
-    GoTo(*Mark, work*)\
-    ComeBack(*John*)\
-    Enter(*John, room*)\
-    Thinks(*John, On(cat, basket*))\
-    NotKnow(*John, HappenedDuring(AwayTime)*)
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/ff692b8a-8f6e-4e8a-9abf-68b36fe27d2a" width="800"/>
-</p>
-
-<br>
-
-FOL is useful for capturing meaning because it allows us to formalize relationships and quantifiers, which are essential for understanding nuanced meanings and mental states in ToM. FOL lets us break down the internal structure of propositions—like representing that `John` believes the `cat` should be in a specific place.
-
-It’s possible that, at some level, ToM predictions from DOLMs align with FOL. This could be because models are able to represent complex relationships between entities and their properties, which is key for predicting human mental states and behaviors. Essentially, while DOLMs aren’t explicitly FOL machines, they might still capture the logic-like structure necessary for understanding how entities relate to each other in ToM tasks.
+To explore how ToM could be represented algorithmically, let’s dig into a couple key linguistic principles: **Semantics**, and **Pragmatics**.
 
 <br>
 
@@ -161,11 +116,11 @@ Understanding John's beliefs and what he expects to find upon his return is cruc
 
 ## So What?
 
-These principles and operations can *help* interpret how humans perform ToM linguistically, but can these concepts transfer to large language models? 
+These principles and operations can *help* interpret how humans perform ToM linguistically, but how do these concepts transfer to large language models in relation to ToM? 
 
 By being trained for next word prediction, LLMs end up learning a lot about the structure of language, including linguistic features that were, until recently, thought to be out of reach for statistical models.
 
-A common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers.
+For example, a common way to test linguistic abstraction in LLMs is through probing. This involves training a classifier on internal model representations to predict abstract categories, like part-of-speech or dependency roles. The goal is to see whether these abstract categories can be recovered from the model’s internal states. Using this method, researchers have claimed that LLMs essentially "rediscover the classical NLP pipeline," learning linguistic features like part-of-speech tags, parse trees, and semantic roles across different layers.
 
 ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings and inferred intentions, which are central to pragmatics. Overall, given the literature, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
@@ -195,7 +150,7 @@ It is a decoder-only transformer that has 25 layers and 7 attention heads per at
 
 In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g., reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-To look at ToM prediction through the lens of a decoder-only transformer, we can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
+To look at ToM prediction through the lens of a decoder-only transformer, you can begin with a simplified, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
        - Consider events the subjects have witnessed.
        - Consider the location of objects based on the subject's last knowledge.
@@ -206,13 +161,14 @@ To look at ToM prediction through the lens of a decoder-only transformer, we can
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/2755018d-dd41-4bf7-adb7-d1f3ed087310" width="800"/>
+<br>
 </p>
 
 <br>
 
 ### Principal component analysis
 
-Fitting PCA to the activations across MLP, attention, and residual stream patterns for the main entities, locations, and actions of the ToM passage reveals directions that show how the model is structuring the text internally. 
+Fitting PCA to the activations across MLP, attention, and residual stream patterns for the main entities, locations, and actions of the ToM passage reveals directions in the PCA space that show how the model is structuring the text internally. 
 
 <br>
 
@@ -232,7 +188,7 @@ In the early MLP layers, clusters of tokens are starting to form.
 
 <br>
 
-In the middle layers, as the clusters become more distinct, they are spreading out more. 
+In the middle layers, as the clusters become more distinct, they spread out. 
 
 <br>
 
@@ -242,7 +198,7 @@ In the middle layers, as the clusters become more distinct, they are spreading o
 
 <br>
 
-And the later layers show the most spread. Progressing through the layers, it seems tokens are clustering based on formal similarities. Showing clear seperation of key tokens (John, cat, basket, box) and having close proximity to one another in later layers (John, cat, basket).
+And the later layers show the most spread. Progressing through the layers, it seems tokens are clustering based on functional similarities in the text. Showing clear seperation of key tokens early on (John, cat, basket, box) and having close proximity to one another in later layers, showing what could be a false belief (John, cat, basket).
 
 <br>
 
@@ -252,7 +208,7 @@ And the later layers show the most spread. Progressing through the layers, it se
 
 <br>
 
-The same can be said for the attention mechanisms, where distinct clusters emerge.
+The same can be said for the attention mechanisms, where in early layers distinct clusters emerge.
 
 <br>
 
@@ -263,13 +219,13 @@ The same can be said for the attention mechanisms, where distinct clusters emerg
 
 <br>
 
-The later layers suggest a refined focus in attention and more complex clustering patterns. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
+And in later layers, a refined focus in attention with more complex clustering patterns. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
 
-In the later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
+In the early attention layers, we’re seeing simpler, lower-level features, but as we move through the model, it’s clear the representations are getting more complex and structured. In later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
-In the earlier layers, we’re seeing simpler, lower-level features, but as we move through the model, it’s clear the representations are getting more complex and structured. By the later layers, especially in the context of the ToM task, we’re picking up on some cool patterns: locations relevant to `John` and `Mark` seem to cluster, semantically similar words in the attention heads are grouping up, and interestingly, `basket` is ranked higher than `box` in the residual stream hierarchy.
+In the later layers, we’re picking up on some cool patterns: locations relevant to `John` and `Mark` seem to cluster, similar words in the attention heads are grouping up, and interestingly, `basket` is ranked higher than `box` in the residual stream hierarchy.
 
-This could possibly show how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features, denoting ToM directions in each mechanism. The differences between attention patterns and residual stream plots highlight how each component contributes to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information as the model processes deeper, while the residual stream shows how information is continuously transformed as it flows between layers. And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
+Even from this limited perspective, you can see how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features in each mechanism. The differences between each mechanism highlight how they contribute to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information in deeper layers, while the residual stream shows how information is continuously transformed as it flows between layers. And of course, pre- and post-processing in the residual stream gives us a view into how information gets reshaped before it moves to the next mechanism or layer. But more on that later.
 
 <br>
 
@@ -277,7 +233,9 @@ This could possibly show how the model is capable of distinguishing concepts, in
 
 Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
 
-This technique is essentially a causal intervention – we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
+This technique is essentially a causal intervention —we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. 
+
+To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
 
 For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. In this case:
 `logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
@@ -292,9 +250,9 @@ When we deconstruct the residual stream using the logit-lens, we look at the res
 
 <br>
 
-What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then worse right after layer 24. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent after layer 24.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the ToM task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compared with MLPs (processes information) in their contribution? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly?
+So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific —writing to the residual stream in a way that allows the model to solve the task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (process information) in their contribution to this spike? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly? What can we learn from the MLPs?
 
 This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
 
@@ -308,7 +266,7 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-It looks like only the attention layers matter here. The ToM task, similar to the IOI task, is primarily about moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
+Its clear that attention layers matter a lot. I'm not too surprised. I would imagine that the ToM task is centered around moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn— MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
@@ -322,11 +280,7 @@ We can break down the output of each attention layer even further by looking at 
 
 <br>
 
-Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute, but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
-
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
-These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
+Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute —its possible that this distributed behavior is somehow important— but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in total, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
@@ -335,18 +289,14 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/ed9c8613-8bce-4a35-a2b0-025b8c735011" width="950"/>
+<img src="https://github.com/user-attachments/assets/6958f6c5-6b83-4337-ac3c-93baf669d565" width="950"/>
 </p>
 
 <br>
 
-Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. The model is distinguishing between characters, objects and honing in on story elements that are crucial for ToM processing.
+Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. The model is distinguishing between characters, objects and honing in on story elements that are crucial for ToM processing, but in a way where we can clearly see a refined heirarchical representation.
 
-The progression as you move from the residual stream pre (the input to the layer), to MLP output, and to the residual stream post (the layers output after its done processing) shows how the model integrates information and refines its representations. In the residual stream pre, we can see the model focusing on locations like the `room` the narrative is taking place in and the `school`. By the residual stream post, we see a clear organization of tighter clusters of related concepts. This alignment with ToM processing is obvious—characters (`John` and `Mark`), key objects (like the `cat`, `basket`, and `box`), and mental state verbs (like `thinks` and `knows`) are all grouped together in a way that suggests the model is zoning in on the most relevant elements.
-
-The tighter clustering of `cat`, `basket`, and `box` in the post stream suggests that layer 22 is particularly focused on these objects, which are central to the characters belief states. Similarly, the mental state words are coming closer together.
-
-It seems like layer 22 is helping maintain John’s belief state, focusing on his initial understanding (like the `cat on the basket`) while potentially ignoring other events that aren’t directly relevant. Integrating character, object, and action info, and might even be suppressing contradicting information to keep the belief state clear.
+At this layer the residual stream pre is passing basic scence understanding to the attention. The attention is creating connections between tokens contextual relationships. The MLPs are computing new semantic relationships by processing objects in relation to their roles and actions. The residual stream post reconstructs the scene that encodes John's false belief and uncertainty with updated state information of spatial relationships clearly positioned relative to their connected objects. A clear decompose → relate → transform → reconstruct with updates pipeline.
 
 <br>
 
@@ -356,7 +306,7 @@ It seems like layer 22 is helping maintain John’s belief state, focusing on hi
 
 <br>
 
-Furthermore, there appears to be evidence that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+Based on what I know and have seen so far, its possible there's evidence that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
 
 The PCA breaks down into three clusters of concepts:
 
@@ -370,7 +320,7 @@ Looking at the residual stream post-PCA, we can see stronger associations betwee
 - `basket` and initial state
 - `box` and current state
 
-When we compare the PCA with the linear map constructed earlier, it becomes clear that the model is keeping two separate but parallel "tracks":
+When we compare the PCA with the linear plot above, its clear that the model is keeping two separate but parallel "tracks":
 
 - Reality track (blue): represents actual events
 - Belief track (red): represents John's belief state
@@ -1104,7 +1054,9 @@ For instance, we can break down how the model builds a subject's false belief ab
 
 
 
-
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
+These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
 
 
 
@@ -1149,6 +1101,10 @@ There's a lot more we do not know about these heads and they probably have more 
 (Replicate overconfidence metric analysis to test copy supression heads)
 
 (Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
+
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
+These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
+**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
 
 <br>
 
