@@ -637,7 +637,7 @@ In relation to this, we can also see the suppression of the actual current state
 **Attention patterns:**
 
 - Many heads in layers 22-25 show high attention to `basket` and relatively lower attention to `box`.
-- Layer 23, head 5 and head 6 show particularly strong attention to `basket` over all instances of the token in the sequence, where `box` activations are relatively low.
+- L23H5 and head 6 show particularly strong attention to `basket` over all instances of the token in the sequence, where `box` activations are relatively low.
 
 **Activation patterns:**
 
@@ -645,19 +645,11 @@ In relation to this, we can also see the suppression of the actual current state
 
 <br>
 
-Activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
+Moving on, activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
 
-This is where activation patching comes in. First introduced in the ROME paper (where they called it *causal tracing*), activation patching lets us dig deeper into the model’s internal computations.
-
-Here’s how it works: You run the model twice—once with a *clean* input that produces the correct answer, and once with a *corrupted* input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run at a specific point in the network. Basically, you replace the corrupted activation at a certain layer and position with the corresponding clean activation and then let the model continue its computation. The key insight here is that you can measure how much this patch shifts the output toward the correct answer, we can assess the importance of that particular activation.
-
-By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
-
-In other words, activation patching functions as a noising algorithm, contrasting with the denoising approaches we've previously focused on.
-
-The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit responsible for the observed behavior.
+This is where activation patching comes in. First introduced in the ROME paper (where they called it *causal tracing*), activation patching lets us dig deeper into the model’s internal computations. Here’s how it works:
 
 <br>
 
@@ -669,16 +661,19 @@ The ability to localize computations like this is a huge win for mechanistic int
 
 <br>
 
-We can think of activation patching as a form of noising. In this approach, we run the model on a clean input but introduce "noise" by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean run, effectively removing noise.
+You run the model twice—once with a *clean* input that produces the correct answer, and once with a *corrupted* input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run at a specific point in the network. Basically, you replace the corrupted activation at a certain layer and position with the corresponding clean activation and then let the model continue its computation. The key insight here is that you can measure how much this patch shifts the output toward the correct answer, we can then assess the importance of that particular activation.
+
+By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task.
+
+In other words, activation patching functions as a noising algorithm, contrasting with the denoising approaches we've previously focused on. In this approach, we run the model on a clean input but introduce "noise" by patching in activations from the corrupted run. The flip side is denoising, where we start with a corrupted input and patch in activations from the clean run, effectively removing noise.
 
 So, when would you use noising versus denoising? It depends on your goals. Denoising typically gives you stronger results because demonstrating that a component (or set of components) is sufficient for a task is a big deal—it shows that this part of the model is doing something essential. But transformers are complex, and the components are deeply interdependent, so noising can sometimes lead to unpredictable outcomes. Just because performance drops when you ablate a component doesn’t automatically mean it was necessary for the task.
 
 Take MLP0 in Gemma-2-2B in the logit difference from each head plot above for instance. If you ablate it, performance gets much worse across a bunch of tasks, but that doesn’t mean MLP0 is crucial for something like the ToM task. In fact, MLP0 seems to function more like an extended embedding layer—useful for processing tokens but isn’t doing anything specific to ToM. We’ll dig deeper into this later, but the key point is that noising can lead to some ambiguous results, while denoising tends to give clearer answers.
 
-**Activation Patching:**
+The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit responsible for the observed behavior.
 
-- Layer 22, head 4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
-- This suggests that layer 22, head 4 could be a key component of a suppression circuit, focusing on maintaining the believed state.
+**Activation Patching:**
 
 <br/>
 
@@ -688,9 +683,10 @@ Take MLP0 in Gemma-2-2B in the logit difference from each head plot above for in
 
 <br/>
 
-The model seems to start by encoding initial information about objects and characters in the early layers. As we move into the middle layers, it builds up a more detailed representation of the scene and the actions taking place. By the later layers, particularly from layer 22 onwards, it focuses heavily on the believed state of the world (e.g., `the cat on the basket`).
+- L22H4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
+- There are lots of negative contributions throughout the model, but L14H3, L16H2, and L23H5 are very negative and possibly components to a supression circuit that helps the model focus on maintaining John's believed state.
 
-An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple attention heads. For instance, several heads work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads in the later layers.
+An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple positive and negative attention heads. For instance, several heads probably work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads throughout the network.
 
 <br/>
 
@@ -701,11 +697,11 @@ An important thing to note is that these functions are not neatly isolated but d
 
 <br/>
 
-Diving deeper into the activation patching results, focusing on the residual stream/midstream, blue regions indicate where patching helped the model get closer to the correct prediction (basket), while red regions show where patching hurt (pushing it towards box). The clean run is the uncorrupted input—where the model gets things right ("John thinks the cat is on the box"). The corrupted run comes from swapping adjacent tokens, which messes up the sentence’s meaning and leads to wrong answers. The goal is to patch activations from the clean run into the corrupted one at various layers and sequence positions and see how much it improves the model’s logit difference (i.e., how much closer it gets to predicting the correct answer).
+Diving deeper into the activation patching results, focusing on the residual stream/midstream, blue regions indicate where patching helped the model get closer to the correct prediction (basket), while red regions show where patching hurt (pushing it towards box). The clean run is the uncorrupted input—where the model gets things right (`John thinks the cat is on the basket`). The corrupted run comes from swapping adjacent tokens, which messes up the sentence’s meaning and leads to wrong answers. The goal is to patch activations from the clean run into the corrupted one at various layers and sequence positions and see how much it improves the model’s logit difference (i.e., how much closer it gets to predicting the correct answer).
 
-Patching the `box` token at layer 1 gives a massive boost, almost recovering full performance. But, as we move to later layers, the **most impactful patching** happens at the final `the` token before the blank. **This shift hints at something important:** the model first focuses on where the `cat` was (`on the box`), and later on, it shifts to what word needs to be filled in (`basket` vs. `box`). There’s a super interesting pattern—starting from the `box` token in layer 0 and running up to the final `the` token in layer 25. This implies a distinct computational flow across the model’s layers. Early on, (layers 0-5) it’s all about the `box` token (likely where the model locks in the idea that the cat was on the box).
+Patching the `box` token at layer 1 gives a massive boost, almost recovering full performance. But, as we move to later layers, the **most impactful patching** happens at the final `the` token before the blank where the model's prediction would go. **This shift hints at something important:** the model first focuses on where the `cat` was (`on the box`), and later on, it shifts to what word needs to be filled in (`basket` vs. `box`). There’s a super interesting pattern—starting from the `box` token in layer 0 and running up to the final `the` token in layer 25. This implies a distinct computational flow across the model’s layers. Early on, (layers 0-10) it’s all about the `box` token (likely where the model locks in the idea that the cat was on the box).
 
- Between layers 5-20, the patching impact spreads more evenly across tokens. This is probably where the model’s pulling everything together, building up a complete understanding of what’s going on. Then, by layers 20-25, the focus shifts hard onto the final `the` token—this is where the model's deciding which word (`basket` vs. `box`) to predict. While patching `box` is super helpful in early layers, it starts to hurt later on (negative blue regions). It seems like **the model needs to remember the original cat position** (`box`) early on but **then "forget" it** by the end to make the right call (`basket`). This shows how the model's thinking evolves layer by layer.
+ Between layers 10-20, the patching impact spreads more evenly across tokens. This is probably where the model’s pulling everything together, building up a complete understanding of what’s going on and learning about the `box` vs `basket` contradiction. Then, by layers 20-25, the focus shifts hard onto the final `the` token—this is where the model's deciding which word (`basket` vs. `box`) to predict. While patching `box` is super helpful in early layers, it starts to hurt later on (negative blue regions). It seems like **the model needs to remember the original cat position** (`box`) early on but **then "forget" it** by the end to make the right call (`basket`). This shows how the model's thinking evolves layer by layer.
 
 One cool takeaway is how localized the effect is—patching just a few tokens or layers can fix a lot of the model’s mistakes. It’s not spreading out the info evenly across the whole network. Instead, there’s a very directed flow of information from `box` to `the` over time.
 
@@ -713,7 +709,7 @@ The midstream plot looks similar but now we’re patching activations midstream.
 
 **This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while midstream activations are key for representing changes in location (whether the cat ends up on the basket or box).
 
-The whole process aligns with previous attention analysis—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on resolving John’s false belief.
+The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on resolving John’s false belief.
 
 <br/>
 
@@ -723,19 +719,15 @@ The whole process aligns with previous attention analysis—early layers set up 
 
 <br/>
 
-This plot shows the effect of patching attention head outputs at each layer and head. The color shows how much patching that specific head shifts the model's prediction from `box` to `basket`.
+This plot shows the effect of patching attention head outputs at each layer and head. Again, the color shows how much patching that specific head shifts the model's prediction from `box` to `basket`.
 
-The biggest takeaway? The last few layers, especially layers 21 through 25, matter the most. Specifically, layer 25 drives a huge shift towards the correct prediction (`basket`). This fits the pattern we’d expect—later layers are where the model locks in its final decision. Small tweaks to attention outputs here can dramatically change the model’s output, whereas earlier layers are more about building up representations.
+The strongest signals are in those first few layers, suggesting they are crucial for the model's final decision-making process. Which contrasts to previous analysis of layer 22 where it seemed to be the most important,  but from this perspective it looks much more subtle, indicating it might be doing more fine-tuning rather than making dramatic changes to the prediction. It's particularly striking because this pattern appears consistently across all three views (residual stream, attention output, and MLP output). This suggests that early layers are doing a lot of the computation and the importance of initial context.
+
+The biggest takeaway? The early layers are doing much of the heavy lifting in terms of building and modifying the representation. This fits the pattern we’d expect—later layers are where the model locks in its final decision; small tweaks to attention outputs here can dramatically change the model’s output, whereas earlier layers are more about building up representations.
 
 What’s really interesting is that the important heads in layer 25 weren’t necessarily important in earlier layers. This suggests that the role of each head evolves over time—it’s not just a linear transformation from layer to layer. Instead, heads are integrating new information from other heads and the residual stream in complex ways. 
 
-At most layers, only a handful of heads have a significant effect when patched. Most heads stay neutral (near white), meaning patching them doesn’t really change the output. So, the computation relies on a sparse set of heads, not an even distribution of information across all heads.
-
-It’s interesting to compare this to the attention breakdown by query, key, value. For example, head 5 at layer 20 mattered in both the query and output, but head 6 at layer 25 is only critical in the output—not the query, key, or value. This suggests the queries it’s attending to in layer 25 don’t need to be super precise, but the values it outputs are crucial for driving the final decision.
-
 Just a few heads at a few layers carry most of the critical information needed for the model’s final prediction. But these heads take on different roles at different layers, and their importance can shift dramatically. The model is clearly doing a complex, multi-step computation—transforming representations layer by layer to reach the right conclusion.
-
-The residual stream shows strong activity in the early layers, indicating the importance of initial context.
 
 <br/>
 
@@ -745,7 +737,7 @@ The residual stream shows strong activity in the early layers, indicating the im
 
 <br/>
 
-This plot gives us a deep dive into what’s happening inside attention heads. Each attention head does two key things: **1)** deciding where to move information (this is governed by the attention pattern, which the QK circuit handles) and **2)** deciding what information to move (handled by the value vectors, controlled by the OV circuit). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
+This plot gives us a deep dive into what’s happening inside attention heads. Each attention head does two key things: **1)** deciding where to move information (this is governed by the attention pattern, which the QK vectors handle) and **2)** deciding what information to move (handled by the V vectors, controlled by the OV vectors). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
 
 Let’s start with the 'z' plot (the head's output). Patching outputs from certain heads has a noticeable effect, shifting the model’s output from “box” to “basket,” particularly in the last 5-10 layers. Specifically, head 2 in layer 20 and head 5 in layers 15 and 20 have the largest impact.
 
