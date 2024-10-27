@@ -737,19 +737,28 @@ Just a few heads at a few layers carry most of the critical information needed f
 
 <br/>
 
-This plot gives us a deep dive into what’s happening inside attention heads. Each attention head does two key things: **1)** deciding where to move information (this is governed by the attention pattern, which the QK vectors handle) and **2)** deciding what information to move (handled by the V vectors, controlled by the OV vectors). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
+This plot gives us another view of what’s happening inside attention heads. Again, each attention head does two key things: **1)** deciding where to move information (this is governed by the attention pattern, which the QK vectors handle) and **2)** deciding what information to move (handled by the V vectors, controlled by the OV vectors). To figure out which part matters more, we can patch just the attention pattern or the value vectors separately.
 
-Let’s start with the 'z' plot (the head's output). Patching outputs from certain heads has a noticeable effect, shifting the model’s output from “box” to “basket,” particularly in the last 5-10 layers. Specifically, head 2 in layer 20 and head 5 in layers 15 and 20 have the largest impact.
+Let’s start with the `z` plot (the head's output). Patching outputs from certain heads has a noticeable effect, shifting the model’s output from `box` to `basket`, particularly in the last 5-10 layers. Specifically, L20H2, L15H5, and L20H5 have the largest positive impact. L0H1, L3H1, L6H1, L12H5, L16H2, L17H3, L18H6, 19H1 have the largest negative impact with L8H1
 
-Now, looking at the 'q' plot (query vectors), we see a similar pattern. Heads like head 4 in layers 15 and 20 stand out. This suggests that **adjusting which queries these heads focus on** is pretty important for guiding the model toward the correct outcome. The strongest signals here are in the early to mid layers, where the model is starting to grapple with the false belief.
 
-The 'k' plot (keys) is less clear, though head 4 at layer 15 and head 3 at layer 20 still seem to matter. The queries and keys work together to determine which parts of the input each head attends to, so it’s not surprising that they both play a role. **Comparing query vectors** (which represent John’s perspective) **with key vectors** (which capture what’s actually happening) **helps the model reconcile John’s false belief**. The value vectors, on the other hand, carry the ground truth (like where the cat really is), while query vectors handle John’s perspective (where he thinks the cat is). The key vectors ensure that the model compares John’s belief to reality, helping it detect the contradiction.
 
-Finally, in the 'v' plot (value vectors), certain heads like head 3 in layers 15 and 25 are particularly important. Values are the actual information passed on after attention, so heads with impactful value vectors directly shape the model’s final output.
 
-When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either queries, keys, or values. Head 5 at layer 20 impacts both the output and queries, while head 3 is more influential on keys and values. It’s fascinating to see how different heads specialize: some are more crucial for attending to the right tokens (through q and k), while others are focused on aggregating and transmitting information (through v and z). All these heads work together to guide the final output.
+^^
+(Lots of distributed negative behavior in the Q plot compared to everything else. all negative and positive behavior denoted by this plot needs to be fully understood before moving on)
 
-The temporal pattern is also worth noting—patching heads in the last 5-10 layers has much more impact than earlier layers. This aligns with the idea that early layers handle feature extraction, while later layers focus on resolving the final output.
+
+
+
+
+
+Now, looking at the `q` plot (Q vectors), we see a similar pattern. L15H4 and L20H4 stand out. This suggests that **adjusting which queries these heads focus on** is pretty important for guiding the model toward the correct outcome. The strongest signals here are in the early to mid layers, where the model is starting to grapple with the false belief.
+
+The `k` plot (K vectors) is less clear, though L15H4 and L20H4 still seem to matter. The Qs and Ks work together to determine which parts of the input each head attends to, so it’s not surprising that they both play a role. **Comparing query vectors** (which represent John’s perspective) **with key vectors** (which capture what’s actually happening) **helps the model reconcile John’s false belief**. The value vectors, on the other hand, carry the ground truth (like where the cat really is), while query vectors handle John’s perspective (where he thinks the cat is). The key vectors ensure that the model compares John’s belief to reality, helping it detect the contradiction.
+
+Finally, in the `v` plot (V vectors), certain heads like L15H3 and L25H3 are particularly important. Vs are the actual information passed on after attention, so heads with impactful V vectors directly shape the model’s final output.
+
+When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. L20H5 impacts both the output and Qs, while head 3 is more influential on Ks and Vs. It’s fascinating to see how different heads specialize: some are more crucial for attending to the right tokens (through `q` and `k`), while others are focused on aggregating and transmitting information (through `v` and `z`). All these heads work together to guide the final output.
 
 <br>
 
