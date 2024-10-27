@@ -765,11 +765,11 @@ When we compare across the plots, a few heads consistently stand out, while othe
 ## So What?
 <sub>[↑](#top)</sub>
 
-The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like `cat on box`), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (that the cat should be in the basket). This structured approach suggests the model has learned a robust, step-by-step strategy.
+The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like `cat on box`), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`). This structured approach suggests the model has learned a robust, step-by-step strategy.
 
-We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic token-level dependencies in the early layers, while deeper layers focus on more complex, context-driven reasoning. This pattern aligns with how transformers generally handle more intricate reasoning tasks—processing simple relationships early, and refining the understanding in later stages.
+We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic syntactic dependencies in the early layers, context-drivening reasoning in middle layers, while deeper layers focus on more complex, semantic reasoning. This pattern aligns with how transformers generally handle more intricate reasoning tasks—processing simple relationships early, and refining the understanding in later stages.
 
-The sparse and localized computation in the activation patching plots show us that a few key tokens (like `box` and `the`) and a few attention heads across specific layers carry most of the important information. This sparsity signals efficiency and specialization in how the model processes the task, which was evident from the attention analysis.
+The sparse and localized computation in the activation patching plots show us that a few key tokens (like `box` and `the`) and a few attention heads across specific layers carry most of the important information. This sparsity signals specialization in how the model processes the task, which was evident from the attention analysis.
 
 Different heads specialize in distinct functions. **Some focus on attending to the right tokens** (through queries and keys), **while others are more important for aggregating and passing on information** (through values and outputs). This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
