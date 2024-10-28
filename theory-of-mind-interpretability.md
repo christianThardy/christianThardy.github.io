@@ -318,28 +318,36 @@ At this layer the residual stream pre is passing basic scence understanding to t
 
 <br>
 
-Based on what I saw with PCA, I think its possible that the ToM task could be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –models seem to pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things come to light.
+Based on what I've seen with PCA, I think its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
 
 The PCA breaks down into three clusters of concepts:
 
-- Location tokens (`basket`, `box`, `room`)
 - Actor tokens (`John`, `Mark`, `cat`)
 - Mental state tokens (`thinks`, `knows`)
+- Location tokens (`basket`, `box`, `room`)
 
-Looking at the residual stream post-PCA, we can see stronger associations between:
+In the residual stream pre, there is clustering of scene elements and characters, and the separation between different semantic groups looks linear.
+
+
+In the residual stream pre, scene elements and characters begin clustering, but in the residual stream post (shared space where all layers interact) the separation is even clearer,  aligning these clusters more tightly around token concepts:
 
 - `John` and `thinks`
 - `basket` and initial state
 - `box` and current state
 
-When we compare the PCA with the linear plot above, its clear that the model is keeping two separate but parallel "tracks":
+
+This clearer clustering reinforces the updated relationship between the MLP layers and residual stream, where we now see distinctions between knowledge states (e.g., what John knows vs. doesn’t know) mapped linearly. This makes sense because if tokens didn’t cluster within residual space, then linear transformations across layers would be less informative.
+
+The clustering remains clear as the attention and MLP layer outputs are added back to the residual stream with updated relationships. The separation of "knowledge states" (what John knows vs what he does not) appears linear. The spatial relationships also look linear. If information isn't clustered in residual stream space, linear operations between layers wouldn't be meaningful.
+
+When we compare this with the linear plot above, its clear that the model is keeping two separate but parallel "tracks":
 
 - Reality track (blue): represents actual events
 - Belief track (red): represents John's belief state
 
-The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to simultaneously track reality and belief simultaneously, keeping them separate but interrelated to maintain parallel states. Even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
+The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to maintain two simultaneous yet distinct states—reality and belief—keeping them separate but interrelated to maintain parallel states. Even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
 
-What’s also cool is that the PCA related tokens spatially, keeping clear distances between the conceptual groups. So, there’s this clear linearity across time, the temporal sequence, belief state maintenance, subject-action links, and object-location associations.
+What’s also cool is that the PCA reveals these token clusters at consistently distinct distances, showing the same grouping across transformations. There’s almost a hypothetical “boundary” within the MLP and residual post layers, cleanly dividing what the model has learned about `John`, `Mark`, and their connection to the `basket`.
 
 <br>
 
