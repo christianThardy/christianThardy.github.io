@@ -62,7 +62,9 @@ In the human brain, the language network is a set of interconnected areas in the
 
 Humans have this amazing ability to infer the mental states of others using ToM. But conceptually, how could we represent ToM in a way that’s understandable for an algorithm? How might we frame it linguistically to help an algorithm get closer to understanding the mental states of others?
 
-To explore how ToM could be represented algorithmically, let’s dig into a couple key linguistic principles: **Semantics**, and **Pragmatics**.
+To explore how ToM could be represented algorithmically, we will dig into the linguistic principles of **semantics**, and **pragmatics** in the context of this false belief passage: 
+
+*'In the room there are John, Mark, a cat, a box, and a basket. John takes the cat and puts it on the basket. He leaves the room and goes to school. While John is away, Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work. John comes back from school and enters the room. John looks around the room. He doesn’t know what happened in the room when he was away. John thinks the cat is on the...'*
 
 <br>
 
@@ -70,7 +72,7 @@ To explore how ToM could be represented algorithmically, let’s dig into a coup
 
 Semantics is all about representing meaning in language. It focuses on how words, phrases, and sentences convey meaning, and how humans interpret that meaning. It’s not just about the surface-level meaning of words, but also how those meanings combine and interact in context. Semantics covers a lot of ground, including things like compositional semantics, semantic similarity, word embeddings, distributional semantics, and distributed semantics.
 
-For example, to linguistically understand the semantics of the ToM passage, we need to identify the entities, actions, relationships, and any implied meanings. To do this, we need to break down the sentence into all its entities and actions and map out how they interact. This is crucial for making sense of what's happening, especially when dealing with more abstract reasoning like ToM.
+For example, to linguistically understand the semantics of the ToM passage, we need to identify the entities, actions, relationships, and any implied meanings to correctly predict the final token `basket`. To do this, we need to break down the sentence into all its entities and actions and map out how they interact. This is crucial for making sense of what's happening, especially when dealing with more abstract reasoning like ToM.
 
   - **Entities:** John, Mark, cat, basket, box, room
   - **Actions:** takes, puts, leaves, goes, comes back, enters, looks, doesn't know, thinks
