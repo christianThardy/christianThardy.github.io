@@ -683,8 +683,6 @@ Take MLP0 in Gemma-2-2B in the logit difference from each head plot above for in
 
 The ability to localize computations like this is a huge win for mechanistic interpretability. If the model’s computations are spread out all over the place, it’s going to be much harder to form a clean, understandable story of what’s going on. But if we can pinpoint exactly which parts of the model matter, we can zoom in, figure out what they’re representing, how they’re connected, and ultimately reverse-engineer the circuit responsible for the observed behavior.
 
-**Activation Patching:**
-
 <br/>
 
 <p align="center">
