@@ -424,14 +424,12 @@ While keeping all of that in mind, when looking at the plots, it’s a good time
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/527153fb-f75d-4ec2-a3e3-52a459740d41" width="1000"/>
-    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending.</a></small>
+    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending, tokens weighted by how much information is being copied, and how much every token effects every other token.</a></small>
 </p>
 
 <br>
 
 Specifically, for the attention heads with high positive attribution scores, we can see `the` is attending to `basket` with high confidence, particularly the second time basket is referenced, and `box` with lower confidence. How might this head’s behavior be influencing the logit difference score?
-
-We can start to connect some dots between our earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
 
 <br>
 
@@ -444,6 +442,8 @@ We can start to connect some dots between our earlier observations on semantics 
 
 <br>
 
+We can start to connect some dots between our earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
+
 This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John.
 
 <br>
@@ -454,7 +454,7 @@ This attention pattern suggests the model is encoding subject-object-location ag
 
 <br>
 
-The fact that `the` attends to `basket` with a high positive logit attribution in relation to other positive attributions at different positions in the passage is pretty telling. It suggests that the model is inferring John’s awareness of the location of the `cat`, specifically that it's on the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model ignores what he does not know.
+The fact that `the` attends to `basket` with a high positive logit attribution copy score in relation to other positive attributions at different positions in the passage is pretty telling. It might suggest that the model is inferring John’s awareness of the location of the `cat`, specifically that it's on the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model ignores what he does not know.
 
 <br>
 
@@ -464,18 +464,7 @@ The fact that `the` attends to `basket` with a high positive logit attribution i
 
 <br>
 
-Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks a lot like coreference resolution in action—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight. 
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/7379cba1-9af1-48d4-94bc-e3e271c2650b"/>
-  <img src="https://github.com/user-attachments/assets/9d81a1aa-2a3e-4a26-8fea-26c02fde1f2e"/>
-</p>
-
-<br>
-
-What’s really interesting is how the actions of `John`—both "taking" and "leaving"—impact the model’s attention to the entities that were mentioned initially.
+Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks similar to coreference resolution—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight. 
 
 <br>
 
@@ -485,7 +474,7 @@ What’s really interesting is how the actions of `John`—both "taking" and "le
 
 <br>
 
-We can see how `from` in the phrase `...John comes back from...` attends to `school`. The model’s attention to `school` connects back to the earlier tokens that represent John’s actions and the initial state of the `room` before he left, suggesting how it could potentially integrate information across different parts of the sequence.
+Here we see that the model is attending from the token `from` in the phrase `John comes back from school` to `school`, which appears earlier in the sentence structure. This demonstrates how the model links John's initial departure with his return, capturing continuity in the narrative. The model is utilizing previously seen tokens, such as `school`, to inform its current processing, and copying it to the current position. So the model's capability to reference earlier events, aligns its understanding of John’s absence and return.
 
 <br>
 
@@ -495,7 +484,7 @@ We can see how `from` in the phrase `...John comes back from...` attends to `sch
 
 <br>
 
-We can also color everything from source token to output token to see how much every token effects every other token. These are all the tokens that have their probabilities increased by the attention heads. We can see that `the` attended back to `box`, `basket`, `cat` which increased the probability that the next token should be `room`, suggesting noun phrases and more complex compositional patterns in the future.
+When coloring everything from the source token to the output token to see how much every token effects every other token, we get all the tokens that have their probabilities increased by the attention heads. We can see that `the` attended back to `box`, `basket`, `cat` which increased the probability that the next token should be `room`, suggesting noun phrases and more complex compositional patterns in the future.
 
 We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and iterative attention analysis that set the stage for figuring out the underlying circuit.
 
@@ -1222,12 +1211,14 @@ Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https:/
 
 Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">16</a>]
 
-Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">17</a>]
+Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">17</a>]
 
-Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">18</a>]
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">18</a>]
 
-Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">19</a>]
+Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">19</a>]
 
-Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">20</a>]
+Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">20</a>]
 
-McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">21</a>]
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">21</a>]
+
+McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">22</a>]
