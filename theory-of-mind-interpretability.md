@@ -10,7 +10,7 @@
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identify Relevant Layers and Activations](#identify-relevant-layers-and-activations)
     - [Residual Stream and Multi-Head Attention](#residual-stream-and-multi-head-attention)
-    - [Iterative Attention Head Analysis and Activation Patching](#iterative-attention-head-analysis-and-activation-patching)
+    - [Iterative Attention Head Analysis and Causal Tracing](#iterative-attention-head-analysis-and-causal-tracing)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
     - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
@@ -501,7 +501,7 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Iterative attention head analysis and activation patching <a id="iterative-attention-head-analysis-and-activation-patching"></a>
+### Iterative attention head analysis and causal tracing <a id="iterative-attention-head-analysis-and-causal-tracing"></a>
 <sub>[↑](#top)</sub>
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
@@ -655,6 +655,8 @@ In relation to this, we can also see the suppression of the actual current state
 
 <br>
 
+#### Causal Tracing: Activation patching
+
 Moving on, activation patching is a super useful technique that can help us track which layers and sequence positions in the residual stream are storing and processing the critical information we're interested in.
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
@@ -767,6 +769,10 @@ The `k` plot (K vectors) is less clear, though L15H4 and L20H4 still seem to mat
 Finally, in the `v` plot (V vectors), certain heads like L15H3 and L25H3 are particularly important. Vs are the actual information passed on after attention, so heads with impactful V vectors directly shape the model’s final output.
 
 When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. L20H5 impacts both the output and Qs, while head 3 is more influential on Ks and Vs. It’s fascinating to see how different heads specialize: some are more crucial for attending to the right tokens (through `q` and `k`), while others are focused on aggregating and transmitting information (through `v` and `z`). All these heads work together to guide the final output.
+
+<br>
+
+#### Causal Tracing: Path patching
 
 <br>
 
