@@ -786,9 +786,7 @@ Copy Suppression:
       - V: Inhibits outdated information.
 ```
 
-Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers. It integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations built up in the residual stream to interpret and refine later events correctly. For example, the initial identification of `John` as the belief holder is established in early to mid layers and that position in the sequence remains relevant throughout the processing.
-
-Across each set of heads, the model relies on earlier representations as foundational anchors that it keeps referring back to, updating and refining them as it moves through later layers. Heads in each layer pull from earlier encoded information to track the narrative and piece together context from different positions in the sequence. For instance, when the model identifies "John" as the belief holder early on, it continues to integrate that information across layers to correctly interpret events in later parts of the narrative. The same goes for any linguistic element.
+Across each set of heads, the model keeps circling back to foundational representations it encoded in earlier layers, using these as anchors to interpret and refine its understanding in later layers. The attention integrates information from different points in the narrative, pulling context from any position in the sequence, relying on earlier representations built up in the residual stream to maintain coherence and refine its predictions. For instance, once the model pins down `John` as the belief holder early on, it holds onto that insight as the narrative progresses, letting it shape how events are interpreted in downstream layers. This isn’t just limited to "John"—the model applies this approach across all linguistic elements, ensuring cohesive tracking throughout the sequence.
 
 <br>
 
