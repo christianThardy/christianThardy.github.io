@@ -953,9 +953,7 @@ The features range from low-level tasks (like tracking object positions) to high
 
 <br>
 
-Gemma-2-2B shows a sophisticated approach to processing ToM scenarios, developing specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information.
-
-Notably, these features appear in the MLPs, suggesting that important ToM processing occurs in the model’s feed-forward networks, complementing the attention mechanism. This highlights the power of gradient descent—it uncovers solutions and patterns beyond our initial expectations. Sparse autoencoders (SAEs) are especially valuable here, as they allow us to reveal these learned features without needing to anticipate them ourselves.
+Gemma seems to have developed specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information—all of which also emerge in the MLP layers, supplementing what we see in attention heads. It really speaks to the power of gradient descent; it’s finding solutions and representations way beyond what we’d initially predict, letting us extract and inspect these learned features without needing to know what we’re looking for in advance.
 
 <br>
 
