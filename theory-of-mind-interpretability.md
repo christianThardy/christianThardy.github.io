@@ -444,27 +444,7 @@ Specifically, for the attention heads with high positive attribution scores, we 
 
 We can start to connect some dots between our earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
 
-This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/579881a9-045c-4938-8fe7-4da932456770"/>
-</p>
-
-<br>
-
-The fact that `the` attends to `basket` with a high positive logit attribution copy score in relation to other positive attributions at different positions in the passage is pretty telling. It might suggest that the model is inferring John’s awareness of the location of the `cat`, specifically that it's on the basket. But at the same time, it seems like the model recognizes that John lacks knowledge about any changes that happened while he was away. This fits nicely into a pragmatic understanding of the situation—John’s belief is anchored to the initial state, and the model ignores what he does not know.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/fe668b4a-0b9f-411b-a1fd-93313c181c1c"/>
-</p>
-
-<br>
-
-Semantically, when the model processes the second mention of `John` in the sentence, it’s throwing attention to every entity that was part of the initial state. This looks similar to coreference resolution—linking `John` back to the same entities he was connected to at the start of the scenario. Basically, the model’s tracking `John` across mentions and making sure it’s keeping all the initial context straight. 
+This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John. 
 
 <br>
 
@@ -729,15 +709,13 @@ The biggest takeaway? The early layers are doing much of the heavy lifting in te
 
 These activation patching results shed light on what’s happening inside attention heads across layers. Again, each attention head does two key things: **1)** deciding where to move information (governed by the attention pattern, which the QK vectors control) and **2)** deciding what information to move (handled by the V vectors, influenced by the OV vectors). By isolating either the attention pattern or the value vectors through patching, we can tease apart which factor is more crucial.
 
-Let’s start with the `z` plot (output vector). Patching outputs from certain heads noticeably  shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is very distributed, but specifically, L16H7, L17H6, L22H2, L22H4 and L25H4 have the largest positive impact, along with L0H1, L3H1, L6H1, L8H1 (all previous layers have the same head, very interesting), L12H2, L14H3, L17H3, L16H2, L20H2, and L23H5 having the largest negative impact.
-
-Now, looking at the `q` plot (Q vectors), we see familar negative heads. This suggests that modifying the focus of these queries is pretty impactful for steering the model away from less accurate outputs. This signal pops up across early, mid, and late layers, possibly as the model navigates true belief alignment.
-
-The `k` plot (K vectors) is less clear, though L14H1 and L17H2 seem to matter. 
-
-For the `v` plot (V vectors), certain heads like L22H1 and L22H2 are particularly important. Vs are the actual information passed on after attention, so heads with impactful V vectors directly shape the model’s final output.
+Let’s start with the `z` plot (output vector). Patching outputs from certain heads noticeably  shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is very distributed, but specifically, L16H7, L17H6, L22H2, L22H4 and L25H4 have the largest positive impact, along with L0H1, L3H1, L6H1, L8H1 (all previous layers have the same head, very interesting), L12H2, L14H3, L17H3, L16H2, L20H2, and L23H5 having the largest negative impact. Now, looking at the `q` plot (Q vectors), we see familar negative heads. This suggests that modifying the focus of these queries is pretty impactful for steering the model away from less accurate outputs. This signal pops up across early, mid, and late layers, possibly as the model navigates true belief alignment. The `k` plot (K vectors) is less clear, though L14H1 and L17H2 seem to matter. For the `v` plot (V vectors), certain heads like L22H1 and L22H2 are particularly important. Vs are the actual information passed on after attention, so heads with impactful V vectors directly shape the model’s final output.
 
 When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. L23H5 impacts both the output and Qs, while head 2 is more influential on Ks and Vs. It’s fascinating to see how different heads specialize: some heads prioritize token alignment (through Q and K), while others are focused on aggregating and relaying information (through V and Z).
+
+Examining Q plot, layer 17 head 3, the patched activation is indicating a subtle negative activation. In the same layer and head's QKV plot from the iterative attention head analysis, `box` shows the highest activations with lower activations for `John` early in the sequence. Moderate activations for initial context and action words throughout the sequence. This suggests the model is actively balancing between different perspectives and factual grounding (the belief vs. reality contrast). 
+
+By this point in the sequence, it seems the model has deduced that `box` doesn’t heavily attend to `John`, a relationship the patch highlights with that faint red activation. It’s also worth noting how this insight carries forward, flowing into layer 22, head 4, where the model continues to refine this nuanced “belief adjustment” with highest confidence as it learns.
 
 Broadly speaking, models learn to interpret contextual relationships, which helps them understand cause and effect (John initially places the cat on the basket and then leaves the room, Mark then moves the cat to the box after John has left). Their Qs and Ks work together to determine which parts of the input each head attends to. 
 
@@ -752,21 +730,17 @@ Given the previous attention head analysis, it's plausible that Qs and Ks encode
 ## So What?
 <sub>[↑](#top)</sub>
 
-The model seems to have developed a systematic, multi-step process for solving this task. It starts by identifying the key facts (like `cat on box`), integrates context, and then, in the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`).
-
-We can see that earlier residual streams and later attention heads both play crucial roles. The model seems to handle basic syntactic dependencies in the early layers, context-drivening reasoning in middle layers, while deeper layers focus on more complex, semantic reasoning.
-
-The sparse and localized computation in the activation patching plots show us that a few key tokens (like `box` and `the`) and a few attention heads across specific layers carry most of the important information. This sparsity signals specialization in how the model processes the task, which was evident from the attention analysis.
+The model seems to have developed a systematic, multi-step process for solving this task. It starts by handling basic syntactic dependencies in the early layers, context-driven processing in middle layers by identifying the key facts (like `cat on box`), integrates that context, and then in the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`) using complex semantic attention patterns.
 
 Different heads specialize in distinct functions. Particularly in layer 22 head 4, the head focuses on attending to important tokens that **compose and maintain perspectives** (queries, John's belief), **represent actual changes** in the environment **regardless of character perspective** (keys, state of the world), and **prioritizes groundtruth details** (values, relevant details, where the output vector reflects whichever perspective the attention mechanism emphasizes), showing the models' capability to separate John's belief from reality. This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
-What’s interesting is that a head’s role evolves over the layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers.
+What’s interesting is that the role the head’s take over evolves across layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers.
 
 The last few layers are particularly important for the final output—small tweaks here can shift the model’s prediction. This fits with the idea that earlier layers are mainly focused on feature extraction and building a representation, while the later layers are more about making the final decision. The model has learned how to transform its input into a form where making the final classification becomes straightforward.
 
 Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces.
 
-The model breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
+So the model breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
 
 From the current observations we can begin to theorize how the model is performing ToM.
 
@@ -812,7 +786,7 @@ Copy Suppression:
       - V: Inhibits outdated information.
 ```
 
-Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers, and it integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations to interpret and refine later events correctly. For example, the initial identification of "John" as the belief holder is established early but remains relevant throughout the processing.
+Across each set of heads, the model continually refers back to foundational representations encoded in previous layers to update and refine the model's understanding across later layers. It integrates information from different points in the narrative, from any position in the sequence, relying on earlier representations built up in the residual stream to interpret and refine later events correctly. For example, the initial identification of `John` as the belief holder is established in early to mid layers and that position in the sequence remains relevant throughout the processing.
 
 Across each set of heads, the model relies on earlier representations as foundational anchors that it keeps referring back to, updating and refining them as it moves through later layers. Heads in each layer pull from earlier encoded information to track the narrative and piece together context from different positions in the sequence. For instance, when the model identifies "John" as the belief holder early on, it continues to integrate that information across layers to correctly interpret events in later parts of the narrative. The same goes for any linguistic element.
 
