@@ -524,7 +524,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
 <img src="https://github.com/user-attachments/assets/c4909dbf-f729-458c-9de9-b742cfdbffbf" width="700"/>
 <img src="https://github.com/user-attachments/assets/d801aeb9-36f4-4ef4-95ae-958a80081bc6" width="700"/>
 <br>
-<small style="font-size: 8px;">Left to right: Establishing initial associations summarizing at final token position, preserving facts about the scene, preserving facts about the scene w/focus on initial context, encoding belief-related information in context & summarizing at final token position, preserving facts about the scene, tracking perspectives related to objects and actions, tracking perspective-based understanding and factual states, tracking belief states, </a></small>
+<small style="font-size: 8px;">Left to right: Establishing initial associations summarizing at final token position, preserving facts about the scene, preserving facts about the scene w/focus on initial context, encoding belief-related information in context & summarizing at final token position, preserving facts about the scene, tracking perspectives related to objects and actions, tracking perspective-based understanding and factual states, tracking belief states.</a></small>
 </p>
 
 <br>
