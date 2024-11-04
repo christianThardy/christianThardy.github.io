@@ -803,17 +803,9 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning is closely related to the linear representation hypothesis, in the sense that the dictionary allows complex data to be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
+Dictionary learning aligns closely with the linear representation hypothesis, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a compact set of fundamental components that, when combined, can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and "royalty" directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
 
-There is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
-
-Sparse autoencoders (SAEs) are neural networks that learn both the dictionary and the sparse vector of coefficients. The key idea is to train a wide autoencoder to reconstruct the input activations so that the hidden state learns the coefficients of the meaningful combinations of neurons and the decoder matrix—the dictionary—learns the meaningful feature vectors and each latent variable in the autoencoder is a different learned concept.
-
-The hope is that if there is an interpretable sparse decomposition—the output of the mechanism the autoencoder is learning from—it is now human interpretable.
-
-This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs find real structure in the model that shows us how it is performing a task.
-
-SAEs are based on the hypothesis that models have a big list of concepts they "know" about, with associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and MLPs). 
+Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. These autoencoders are trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
 
 There are many directions to find because of **1)** polysemanticity, where many neurons fire for multiple, often times unrelated features.
 
@@ -837,7 +829,7 @@ Basically neurons represent multiple different things and features are spread ac
 
 <br>
 
-So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, MLP and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
+So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input. From this we can extract rich structures and representations that the model has learned and how it views different features it has processed.
 
 The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
@@ -961,11 +953,9 @@ The features range from low-level tasks (like tracking object positions) to high
 
 <br>
 
-Gemma-2-2B demonstrates a highly sophisticated and distributed approach to processing ToM scenarios. The model seems to have developed specialized concepts for handling various aspects of ToM processing, including belief representation, spatial awareness, temporal sequencing, and integrating contradictory information.
+Gemma-2-2B shows a sophisticated approach to processing ToM scenarios, developing specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information.
 
-This allows the model to maintain multiple token representations simultaneously (like reality vs. belief) within each layer which enables it to maintain and update representations throughout the entire sequence globally, and handle complex ToM scenarios by integrating information across these specialized features. The fact that these features appear in the MLPs suggests that a lot of the heavy lifting for ToM is happening within the model’s feed-forward networks, which complement the information flowing through the residual stream.
-
-What’s especially interesting is that these features represent cases where the model has learned specific behaviors it can then replicate. This highlights how powerful gradient descent is—it finds solutions and learns patterns that we wouldn’t even think to look for. That’s why SAEs are so useful here: they let us uncover the features gradient descent has already taught the model without needing to guess.
+Notably, these features appear in the MLPs, suggesting that important ToM processing occurs in the model’s feed-forward networks, complementing the attention mechanism. This highlights the power of gradient descent—it uncovers solutions and patterns beyond our initial expectations. Sparse autoencoders (SAEs) are especially valuable here, as they allow us to reveal these learned features without needing to anticipate them ourselves.
 
 <br>
 
