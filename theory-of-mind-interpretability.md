@@ -5,7 +5,7 @@
 #### Table of Contents <a id="top"></a>
 - [Introduction](#introduction)
 - [The relationship between theory of mind and language](#the-relationship-between-theory-of-mind-and-language)
-- [So What?](#so-what)
+    - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identify Relevant Layers and Activations](#identify-relevant-layers-and-activations)
@@ -805,7 +805,7 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning is closely related to the linear representation hypothesis, and allows complex data to be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
+Dictionary learning is closely related to the linear representation hypothesis, in the sense that they allow complex data to be expressed as a linear combination of simpler elements. It can be used to break down data into simpler parts, which we call basis vectors. The goal is to find a small set of basis vectors that can efficiently describe the data, making it easier to analyze, compress, or reconstruct. These basis vectors form a "dictionary" of basic components that can be combined in different ways to recreate or represent the original data.
 
 There is some dictionary (data structure for storing a group of things) of concepts that the model knows about—what it's learned during training—and each one has a direction associated with it. On a given input some of these concepts are relevant, they get some score and its activations are roughly linear combinations of those directions weighted by how important they are eg. king is the male direction + the royalty direction. Sparsity comes into play because most concepts are not relevant to most inputs, eg. royalty is irrelevant to bananas, so most of the feature scores will be 0.
 
@@ -814,8 +814,6 @@ Sparse autoencoders (SAEs) are neural networks that learn both the dictionary an
 The hope is that if there is an interpretable sparse decomposition—the output of the mechanism the autoencoder is learning from—it is now human interpretable.
 
 This technique allows us to find abstract features that the model uses to represent concepts that the model uses to make predictions. These features are causually meaningful, and we can steer the model's output (behavior). So SAEs find real structure in the model that shows us how it is performing a task.
-
-Even simpler, we can think of them as microscopes that combat the curse of dimensionality and lets us see inside language models to better understand how they work.
 
 SAEs are based on the hypothesis that models have a big list of concepts they "know" about, with associated directions. On each input, only a few concepts matter and model internals are linear combinations of those directions. SAEs help find these directions (mention directions in residual stream that are read/written by attention and MLPs). 
 
@@ -843,7 +841,7 @@ Basically neurons represent multiple different things and features are spread ac
 
 So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the attention, MLP and residual stream have learned from the input. From this we can extract rich structures and representations that the model has learned and how it thinks about different features as its processing the input.  
 
-The SAE suite I used for this analysis is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
+The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
 <br>
 
@@ -907,19 +905,6 @@ What’s interesting is that key information about the scene, characters, and th
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/dd981a3c-34df-44f4-8ac1-9f5089fd7d6e" width="480"/>
-<img src="https://github.com/user-attachments/assets/7d762b3c-00ad-4ce6-b18b-e66e38631068" width="480"/>
-</p>
-
-<br>
-
-The residual stream's nature allows for continuous updating of information, which is especially important in ToM scenarios, where belief states need to update as new information comes in. Features like 10427 (related to "capabilities and possibilities") and 11271 (focused on "inquiries or questions") being present in the residual stream suggest the model can dynamically adjust its representation of characters' belief states as it processes input.
-
-The fact that ToM-related features show up in the residual stream points to Gemma-2-2B's approach to ToM as being highly integrated, distributed across layers, and dynamic. The model’s ability to update belief states on the fly is a key part of how it handles ToM tasks.
-
-<br>
-
-<p align="center">
 <img src="https://github.com/user-attachments/assets/35024155-99d1-4595-9ed1-2ab162c7580f" width="480"/>
 <img src="https://github.com/user-attachments/assets/428ae4e5-c003-4404-a124-260cc593988e" width="480"/>
 </p>
@@ -927,18 +912,6 @@ The fact that ToM-related features show up in the residual stream points to Gemm
 <br>
 
 Looking at the MLP features, feature 11284 is tied to *verbs related to actions and states in a narrative context*. This likely helps the model process actions like John and Mark taking the cat, putting it on objects, and leaving the room. Feature 5852, on the other hand, is focused on *verbs and phrases related to physical observation or visual engagement*, which probably plays a key role in handling John’s final action of looking around the room. These MLP features seem to help the model handle specific actions and observations, grounding narrative events in a way that's useful for tasks like ToM.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/0b9644d0-f7e7-4bc1-b483-71b45f8eecf8" width="480"/>
-<img src="https://github.com/user-attachments/assets/8b9c0fbf-9350-4b08-b2e0-f029e157bef7" width="480"/>
-<img src="https://github.com/user-attachments/assets/c3ed915f-da78-4777-8c63-cdc206218901" width="480"/>
-</p>
-
-<br>
-
-Feature 13597 seems to play a role in representing the individual experiences of John and Mark, while feature 7929 likely processes the characters' movements in and out of the room, potentially with a focus on tracking these transitions. Feature 12442 appears to be responsible for maintaining the spatial representation of the room and the objects within it. These features all contribute to how the model tracks and processes the physical and experiential aspects of the scene, which is key for understanding the dynamics of the narrative.
 
 <br>
 
