@@ -939,13 +939,26 @@ Gemma seems to have developed specialized concepts for belief representation, sp
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
-In previous sections its clear the model is composing a nuanced mechanism within the attention, maintaining multiple states at once—the actual state and the believed state. Copy suppression is playing a crucial role here: in preventing updates that contradict John's false belief. This is kind of like looking at attention patterns as a rough analogue to looking at neural fMRI scans. Both capture distributed regions of activations—attention heads shift focus across input tokens, similar to how brain activity shifts with focus and task demands.
+The model reveals a nuanced mechanism in its attention, maintaining both actual and believed states, with copy suppression preventing updates that contradict John’s false belief.
 
-We can take this analogy by thinking about the parallels between the "lobes" in the brain and the structure of a transformers attention mechanisms.
+As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between these "functional lobes" in the brain and the structure of a transformers attention mechanisms. Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence.
 
-Each lobe in the brain has its own specialized processing role—the occipital lobe handles visual processing, the frontal lobe handles executive functions like planning and decision-making. Attention heads are similar: they're where much of the model's specific, contextual, and functional knowledge gets processed. Just as lobes help humans draw on relevant prior knowledge, consider outcomes, and make decisions, attention heads help transformers do the same by weighting different parts of the input sequence.
+If we zoom out from any single lobe or head, we can define specific attention heads across layers as circuit components. Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop structures akin to brain regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping key attention heads into components, we can see functional clusters emerge.
 
-If we zoom out from any single lobe or head, we can define specific attention heads across layers as circuit components. Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view.
+The methods for collecting activations, computing co-occurrence, feature firing criteria, performing spectral clustering, and computing the affinity matrix formation using the Phi coefficient aligns with the paper, though the block size differs.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <br>
 
@@ -957,14 +970,10 @@ If we zoom out from any single lobe or head, we can define specific attention he
 
 
 
-Using key attention heads found earlier, we can organize them into functionally similar groups
-
-
 (save for lobe plots)
 
 giving me a structured map of how each component plugs into the bigger picture and how they all come together to make this transformer tick.
 
-When I got into the heads, I went one by one to spot any recurring themes or quirky interactions. Path patching was super clutch here; it let me see which heads were talking to each other and track how info was flowing across the model. Seeing these connections was a big “aha!” moment—it’s like watching the model's thought process unfold.
 
 
 
@@ -1211,14 +1220,14 @@ Riggs, *Really Strong Features Found in Residual Stream.* 2023.[<a href="https:/
 
 Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">16</a>]
 
-Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">17</a>]
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">17</a>]
 
-Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">18</a>]
+Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">18</a>]
 
-Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">19</a>]
+Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">19</a>]
 
-Cunningham, *Sparse Autoencoders Find Highly Interpretable Features in Language Models.* EleutherAI, MATS, Bristol AI Safety Centre, Apollo Research. 2023.[<a href="https://arxiv.org/pdf/2309.08600" title="Cunningham" rel="nofollow">20</a>]
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">20</a>]
 
-Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">21</a>]
+Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]
 
 McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">22</a>]
