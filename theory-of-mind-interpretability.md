@@ -715,6 +715,32 @@ Given the previous attention head analysis, it's plausible that Qs and Ks encode
 
 #### Causal Tracing: Path patching
 
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/6003f28f-a060-4de1-aa8e-ec86cddad86e" width="500">
+</p>
+
+<br/>
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/3919411e-7c83-42de-8ae7-f73fa567dd7f" width="500">
+</p>
+
+<br/>
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/a3d4650a-70c8-4af6-80aa-6497e49df6c2" width="500">
+</p>
+
+<br/>
+
+
+
 <br>
 
 ## So What?
@@ -1004,6 +1030,14 @@ The circuit as a whole is made up of various attention heads (induction and copy
 
 <br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/7a36302c-e42d-47f5-b39d-56cf03e953c1" width="700"/>
+<br>
+<small style="font-size: 8px;"></a></small>
+</p>
+
+<br>
+
 ### Copy supressions role in the ToM circuit
 <sub>[↑](#top)</sub>
 
@@ -1025,7 +1059,74 @@ These heads correspond to some of the name mover heads (renamed location mover h
 
 <br>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/17c0d222-68d9-4bc5-8a7f-e2641dbe400e" width="500"/>
+<br>
+<small style="font-size: 8px;"></a></small>
+</p>
+
+<br>
+
+<br>
+
 ### Ablation studies
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/cbdf9b85-444b-458f-a5db-f75300f9c79e" width="900"/>
+<br>
+<small style="font-size: 8px;"></a></small>
+</p>
+
+<br>
+
+```markdown
+0.8365 = Original logit diff
+16.3298 = Direct Logit Attribution of top name mover head
+-15.4933 = Naive prediction of post ablation logit diff
+0.8365 = Logit diff after ablating L18H6
+```
+
+```markdown
+Top Name Mover to ablate: 18.6
+```
+
+```markdown
+Patched logit diff: 0.836511
+Clean logit diff: 0.836510
+Corrupted logit diff: 0.371032
+Metric value: 0.000002
+```
+
+```markdown
+Average logit difference (ToM dataset, using entire model): 0.8365
+Average logit difference (ToM dataset, only using circuit): 0.8293
+```
+
+```python
+Copying Scores (name
+    mover heads)    
+┏━━━━━━━━━┳━━━━━━━━┓
+┃ Head    ┃ Score  ┃
+┡━━━━━━━━━╇━━━━━━━━┩
+│ (11, 5) │ 91.74% │
+│ (22, 4) │ 94.50% │
+│ (22, 5) │ 0.92%  │
+│ Average │ 17.27% │
+└─────────┴────────┘
+   
+   Copying Scores   
+(negative name mover
+       heads)       
+┏━━━━━━━━━┳━━━━━━━━┓
+┃ Head    ┃ Score  ┃
+┡━━━━━━━━━╇━━━━━━━━┩
+│ (23, 5) │ 22.94% │
+│ (23, 6) │ 0.00%  │
+│ Average │ 12.73% │
+└─────────┴────────┘
+```
 
 <br>
 
