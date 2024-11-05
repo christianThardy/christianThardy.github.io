@@ -423,17 +423,11 @@ While keeping all of that in mind, when looking at the plots, it’s a good time
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/527153fb-f75d-4ec2-a3e3-52a459740d41" width="1000"/>
-    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending, tokens weighted by how much information is being copied, and how much every token effects every other token.</a></small>
-</p>
-
-<br>
-
-<p align="center">
 <img src="https://github.com/user-attachments/assets/9a91c747-f3f6-47ad-8ecd-5124dbcbc79f"/>
 <img src="https://github.com/user-attachments/assets/0492e03e-66de-49f3-af70-45918d8efc93"/>
 <img src="https://github.com/user-attachments/assets/64a36cf9-5bc7-4212-ba60-08f08eb4a12a"/>
 <img src="https://github.com/user-attachments/assets/f680eed9-8fe9-4636-9bd2-736f4a10424c"/>
+    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending, tokens weighted by how much information is being copied, and how much every token effects every other token.</a></small>
 </p>
 
 <br>
@@ -799,9 +793,9 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning aligns closely with the linear representation hypothesis, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a compact set of fundamental components that, when combined, can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and "royalty" directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
+Dictionary learning aligns closely with the linear representation hypothesis, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs, when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
 
-Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. These autoencoders are trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
+Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. They're trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
 
 There are many directions to find because of **1)** polysemanticity, where many neurons fire for multiple, often times unrelated features.
 
@@ -815,7 +809,7 @@ There are many directions to find because of **1)** polysemanticity, where many 
 
 And **2)** superposition, neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
 
-Basically neurons represent multiple different things and features are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
+Basically, neurons represent multiple different things and these things are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
 <br>
 
@@ -833,12 +827,11 @@ The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discove
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/2c554f22-7de0-4b2b-9f5e-2a30faef77b3" width="480"/>
-<img src="https://github.com/user-attachments/assets/323a6cb4-e431-4e3b-96f5-cb7073839dbd" width="480"/>
 </p>
 
 <br>
 
-Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on *references to positions and locations in a narrative*, feature 2704 captures *phrases or contexts involving going to a place or location*, and feature 3 seems tied to *objects or items typically associated with or placed on surfaces*. Each of these has high explanation scores<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is isolating different narrative elements through distinct features.
+Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
 
 <br>
 
@@ -849,7 +842,7 @@ Looking at the residual stream features activated for the ToM passage, it seems 
 
 <br>
 
-These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 11013 captures *mentions of specific individuals and their actions or states in personal narratives*, while feature 9665 focuses on *phrases that emphasize ongoing actions or conditions*. This shows how the model segments and organizes different narrative elements through distinct features.
+These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 5614 captures *mentions of specific individuals and their actions or states in personal narratives*, while feature 5865 focuses on *phrases that emphasize ongoing actions or conditions*.
 
 <br>
 
@@ -860,33 +853,19 @@ These features suggest that the model is building an internal representation of 
 
 <br>
 
-The model also has features representing changes in the scene. Feature 4308 is about *phrases related to the concept of taking action or steps*, feature 6169 focuses on *words related to leaving or departure*.
+The model also has features representing changes in the scene. Feature 4388 is about *phrases related to the concept of taking action or steps*, feature 6169 focuses on *words related to leaving or departure*.
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/545661b6-e6b5-46c0-b20a-5101d50c93a9" width="480"/>
-<img src="https://github.com/user-attachments/assets/1864263d-e072-4c1b-8e87-c3104e70334b" width="480"/>
 </p>
 
 <br>
 
-The model’s ability to track changes to the scene is especially clear in how it handles temporal sequencing, keeping a detailed record of the order of events. For example, feature 21706 captures *statements involving returning or coming back from a situation or event*, while feature 10097 tracks *the verb 'look' as part of phrases that encourage or denote attention*. This shows the model’s mechanism for understanding not just static states, but the flow of actions over time.
+One standout aspect of the model’s capacity to track scene changes lies in its approach to temporal sequencing—it’s almost like it’s keeping a detailed record of event order. Take, for instance, feature 11786, which captures *statements involving returning or coming back from a situation or event*. This kind of specialized tracking is just one of many spatial and temporal features we find scattered throughout the residual stream, indicating the model’s capability for not only for understanding static states but also for representing the flow of actions as they unfold in time and space.
 
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/b4bbc79f-f7d2-45de-a4f0-ca0582e204b7" width="480"/>
-<img src="https://github.com/user-attachments/assets/ad4edeea-8b8f-4898-8712-12565522aece" width="280"/>
-</p>
-
-<br>
-
-It seems like **the model also has features dedicated to representing "uncertainty" or "lacking knowledge"**. For instance, feature 9414 focuses on *phrases that begin with 'what' used in rhetorical or exclamatory contexts*, which could signal John’s lack of knowledge about what happened while he was away.
-
-Since these representations were all recovered from the residual stream, we can see how it acts as a persistent information highway throughout the model’s layers, likely being further refined by the MLPs to capture more specialized information.
-
-What’s interesting is that key information about the scene, characters, and their actions remains accessible across layers and can be picked up by either MLPs or attention heads. The residual stream typically carries a mix of information relevant to various aspects of language processing, and the presence of ToM-related features suggests the model is learning linguistic patterns tied to cognitive, spatial, temporal, and causal processes—core components of ToM tasks.
+The residual stream, in particular, plays a key role as an information-preservation highway across the layers. For example, it receives inputs from L10H4 and relays them through to L14H0 and then to L17H3. Through this pathway, we can observe representations of actions forming within the residual stream itself, often refined further by the MLPs.
 
 <br>
 
@@ -897,7 +876,7 @@ What’s interesting is that key information about the scene, characters, and th
 
 <br>
 
-Looking at the MLP features, feature 11284 is tied to *verbs related to actions and states in a narrative context*. This likely helps the model process actions like John and Mark taking the cat, putting it on objects, and leaving the room. Feature 5852, on the other hand, is focused on *verbs and phrases related to physical observation or visual engagement*, which probably plays a key role in handling John’s final action of looking around the room. These MLP features seem to help the model handle specific actions and observations, grounding narrative events in a way that's useful for tasks like ToM.
+In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model a structure for managing specific narrative events, helping it ground actions and observations.
 
 <br>
 
@@ -914,19 +893,7 @@ Several features seem to be directly tied to representing belief states and know
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/69849c3b-1005-487f-8e7c-679d0d8a0ee8" width="480"/>
-<img src="https://github.com/user-attachments/assets/ee4d1867-9512-4804-9f92-076db60ed459" width="480"/>
-</p>
-
-<br>
-
-A recurring theme in the model’s processing of the passage is its focus on temporal sequencing and how events relate to one another. Feature 10766 seems to track states or conditions related to the timing of events or actions, while feature 3402 appears to deal with abstract temporal concepts. Feature 4320 likely identifies key moments in the narrative that trigger shifts in the scene or changes in the characters’ beliefs. These features suggest the model has mechanisms for keeping track of when things happen and how they influence the broader context—crucial for understanding the evolving dynamics.
-
-<br>
-
-<p align="center">
 <img src="https://github.com/user-attachments/assets/d4171c64-b7af-4ff9-83fa-36f8a4c0f03f" width="480"/>
-<img src="https://github.com/user-attachments/assets/76a45f20-be69-4f2f-a1e7-d1e2a5f70eee" width="480"/>
 <img src="https://github.com/user-attachments/assets/cf95b8e5-09ff-4753-8d9d-63575417fe1b" width="480"/>
 <img src="https://github.com/user-attachments/assets/ac9db7c7-255a-4bf7-ae70-868f23c5a19d" width="280"/>
 </p>
@@ -939,17 +906,7 @@ What’s pretty clear from this is that the MLP features show a high degree of s
 
 The features range from low-level tasks (like tracking object positions) to high-level abstractions (like representing uncertainty and beliefs), showing a hierarchical approach to processing the ToM scenario. The model also seems to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is key for solid processing of ToM tasks.
 
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/02fec28d-0770-40d3-9546-c2375a4c9c7c" width="480"/>
-    <br>
-<small style="font-size: 8px;">Features like 13313 show that the model is capable of integrating contextual information to support its ToM abilities.</a></small>
-</p>
-
-<br>
-
-Gemma seems to have developed specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information—all of which also emerge in the MLP layers, supplementing what we see in attention heads. It really speaks to the power of gradient descent; it’s finding solutions and representations way beyond what we’d initially predict, letting us extract and inspect these learned features without needing to know what we’re looking for in advance.
+Gemma seems to have developed specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information—all of which also emerge in the MLP layers, supplementing what we see in attention heads. It really speaks to the power of gradient descent; it’s finding solutions and representations way beyond what we’d initially predict.
 
 <br>
 
