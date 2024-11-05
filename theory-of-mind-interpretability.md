@@ -939,6 +939,35 @@ Gemma seems to have developed specialized concepts for belief representation, sp
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
+In previous sections its clear the model is composing a nuanced mechanism within the attention, maintaining multiple states at once—the actual state and the believed state. Copy suppression is playing a crucial role here: in preventing updates that contradict John's false belief. This is kind of like looking at attention patterns as a rough analogue to looking at neural fMRI scans. Both capture distributed regions of activations—attention heads shift focus across input tokens, similar to how brain activity shifts with focus and task demands.
+
+We can take this analogy by thinking about the parallels between the "lobes" in the brain and the structure of a transformers attention mechanisms.
+
+Each lobe in the brain has its own specialized processing role—the occipital lobe handles visual processing, the frontal lobe handles executive functions like planning and decision-making. Attention heads are similar: they're where much of the model's specific, contextual, and functional knowledge gets processed. Just as lobes help humans draw on relevant prior knowledge, consider outcomes, and make decisions, attention heads help transformers do the same by weighting different parts of the input sequence.
+
+If we zoom out from any single lobe or head, we can define specific attention heads across layers as circuit components. Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/5c804809-55bc-447e-b164-c8979a1c1de2" width="850"/>
+</p>
+
+<br>
+
+
+
+Using key attention heads found earlier, we can organize them into functionally similar groups
+
+
+(save for lobe plots)
+
+giving me a structured map of how each component plugs into the bigger picture and how they all come together to make this transformer tick.
+
+When I got into the heads, I went one by one to spot any recurring themes or quirky interactions. Path patching was super clutch here; it let me see which heads were talking to each other and track how info was flowing across the model. Seeing these connections was a big “aha!” moment—it’s like watching the model's thought process unfold.
+
+
+
 <p align="center">
 <img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
 </p>
