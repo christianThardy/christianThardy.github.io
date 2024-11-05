@@ -13,7 +13,7 @@
     - [Iterative Attention Head Analysis and Causal Tracing](#iterative-attention-head-analysis-and-causal-tracing)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
-    - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
+        - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
     - [Ablation Studies](#ablation-studies)
  - [Conclusion](#conclusion)
  - [References](#references)
@@ -1076,8 +1076,7 @@ The circuit as a whole is made up of various attention heads (induction and copy
 
 <br>
 
-### Copy supressions role in the ToM circuit
-<sub>[↑](#top)</sub>
+#### Copy supressions role in the ToM circuit
 
 Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and calibrating the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
 
