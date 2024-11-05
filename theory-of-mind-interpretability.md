@@ -941,24 +941,15 @@ Gemma seems to have developed specialized concepts for belief representation, sp
 
 The model reveals a nuanced mechanism in its attention, maintaining both actual and believed states, with copy suppression preventing updates that contradict John’s false belief.
 
-As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between these functional lobes in the brain and the structure of a transformers attention mechanisms. Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence.
+As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between these functional lobes in the brain and the structure of a transformers attention mechanisms. 
 
-If we zoom out from any single lobe or head, we can define specific attention heads across layers as circuit components. Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop structures akin to brain regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping key attention heads into components, we can see functional clusters emerge.
+Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. If we zoom out from any single head, we can define specific attention heads across layers as circuit components. 
 
-The methods for collecting activations, computing co-occurrence, feature firing criteria, performing spectral clustering, and computing the affinity matrix formation using the Phi coefficient aligns with the paper, though the block size differs.
+Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop structures akin to brain regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping key attention heads into components, we can see functional clusters (subciruts) emerge and how they activate simultaneously across sequence positions.
 
+The methods for collecting activations, computing co-occurrence, feature firing criteria, performing spectral clustering, and computing the affinity matrix formation using the Phi coefficient aligns with the paper, though the block size differs. Tests were run on a small dataset that uses various templates to construct false belief passages that are similar in structure to the original ToM passage. 
 
-
-
-
-
-
-
-
-
-
-
-
+The plots show activations of ToM subcircuits at key positions across sequential states of ToM passages that are functionally working together during the task. Components that are activated together appear as higher similarity scores in the heatmap, indicating they are relative to each other at different points in the sequence. A co-occurrence matrix denoting activation co-occurrence firing rates of circuit components on the right. High values for pairs suggest that the components work together when processing specific states.
 
 <br>
 
@@ -968,14 +959,23 @@ The methods for collecting activations, computing co-occurrence, feature firing 
 
 <br>
 
+In the second temporal heatmap, the initial state heads co-activation with the inital state helps set up the context, while belief state heads and scene representation head updates occur during changes in the sequence (such as when John leaves or returns) while maintaining the context. 
 
+In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
 
-(save for lobe plots)
+We can see more fine-grained supression in the second temporal heatmap; there's basically no co-activation at the beginning of the sequence, until the subcircuit prevents copying of past states not associated with the context of the initial state regarding the cats location in the final state.
 
-giving me a structured map of how each component plugs into the bigger picture and how they all come together to make this transformer tick.
+Back to the first temporal heatmap, scene representation heads and belief state heads often co-activate in tandem, which aligns well with the necessity for John to continuously update his beliefs about the environment based on the scene presented to him.
 
+**(co-occurrence matrix)**
 
+These subcircuits reveal that components such as initial states, belief state, and copy suppression each play distinct but interconnected roles: initializing the model's knowledge, updating beliefs based on actions, and suppressing incorrect belief propagation respectively.
 
+Insights from the temporal patterns help establish that the ToM circuit in the model organizes itself into sub-modules resembling functional lobes.
+
+^ Rewrite
+
+<br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
