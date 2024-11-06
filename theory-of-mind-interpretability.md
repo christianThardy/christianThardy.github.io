@@ -889,17 +889,15 @@ The features range from low-level tasks (like tracking object positions) to high
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
-The model reveals a nuanced mechanism in its attention, maintaining both actual and believed states, with copy suppression preventing updates that contradict John’s false belief.
-
-As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between these functional lobes in the brain and the structure of a transformers attention mechanisms. 
+As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. 
 
 Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. If we zoom out from any single head, we can define specific attention heads across layers as circuit components. 
 
-Then, we can analyze how these components "fire" across the ToM passage, revealing how they combine to solve the task. At this stage, we’re essentially mapping out the core ToM circuit from a bird’s-eye view. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop structures akin to brain regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping key attention heads into components, we can see functional clusters (subciruts) emerge and how they activate simultaneously across sequence positions.
+From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping specific attention heads into components, we see functional clusters—or subcircuits—naturally emerging and synchronizing across different positions in the sequence.
 
-The methods for collecting activations, computing co-occurrence, feature firing criteria, performing spectral clustering, and computing the affinity matrix formation using the Phi coefficient aligns with the paper, though the block size differs. Tests were run on a small dataset that uses various templates to construct false belief passages that are similar in structure to the original ToM passage. 
+The methodology here is pretty aligned with the original paper—collecting activations, computing co-occurrence metrics, applying spectral clustering, and building affinity matrices using the Phi coefficient—though the block size is tweaked. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-The plots show activations of ToM subcircuits at key positions across sequential states of ToM passages that are functionally working together during the task. Components that are activated together appear as higher similarity scores in the heatmap, indicating they are relative to each other at different points in the sequence. A co-occurrence matrix denoting activation co-occurrence firing rates of circuit components on the right. High values for pairs suggest that the components work together when processing specific states.
+The resulting plots show activations of ToM subcircuits—sets of attention heads—lighting up at key sequence positions during ToM passages. These subcircuits seem to operate as a cohesive functional unit during the task. Components and their activations are relative to each other at different points in the sequence. High activation values indicate components that are more activated against components that are more or less dormant.
 
 <br>
 
@@ -909,21 +907,25 @@ The plots show activations of ToM subcircuits at key positions across sequential
 
 <br>
 
-In the second temporal heatmap, the initial state heads co-activation with the inital state helps set up the context, while belief state heads and scene representation head updates occur during changes in the sequence (such as when John leaves or returns) while maintaining the context. 
+In the second temporal heatmap, the initial state heads co-activation with the beginning of the sequence helps set up the context, while belief state heads and scene representation head updates (activated together with high similarity) occur during changes in the sequence (such as when John leaves or returns) while maintaining the context. 
 
-In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
+In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
 
-We can see more fine-grained supression in the second temporal heatmap; there's basically no co-activation at the beginning of the sequence, until the subcircuit prevents copying of past states not associated with the context of the initial state regarding the cats location in the final state.
+We can see more fine-grained supression in the second temporal heatmap; there's basically no co-activation at the beginning of the sequence, until the subcircuit prevents copying of past states not associated with the context of the initial state regarding the cats location in the final state. Back to the first temporal heatmap, scene representation heads and belief state heads often co-activate in tandem, which aligns well with the necessity for John to continuously update his beliefs about the environment based on the scene presented to him.
 
-Back to the first temporal heatmap, scene representation heads and belief state heads often co-activate in tandem, which aligns well with the necessity for John to continuously update his beliefs about the environment based on the scene presented to him.
+In the co-occurrence matrix, all components generally co-activate very frequently with very high activations. Showing a *fully connected circuit* in a sense. The close relationship between initial states and action states indicate that initiating a state often co-occurs with some action, such as `John` placing the `cat` on the basket initially and leaving the `room`, setting up the first spatial/temporal actions taken by the characters in the narrative. There is also a strong, co-activating recurrent pattern between the initial state, the scene representation and copy supression. 
 
-**(co-occurrence matrix)**
+It's likely that the initial state acts as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any actions or belief updates happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene updates (`Mark moving the cat`), facts are either downplayed or retained. 
 
-These subcircuits reveal that components such as initial states, belief state, and copy suppression each play distinct but interconnected roles: initializing the model's knowledge, updating beliefs based on actions, and suppressing incorrect belief propagation respectively.
+Leaving out the obvious role of `belief state emphasis`, I believe the likely algorithm is: 
 
-Insights from the temporal patterns help establish that the ToM circuit in the model organizes itself into sub-modules resembling functional lobes.
+1. when `John` places the `cat` on the `basket`, the **initial state** records this position. **Scene Representation** (reality) at this stage reflects the same layout as the initial state, and **copy suppression** does not strongly activate, as there’s no redundancy yet.
 
-^ Rewrite
+2. When `Mark` moves the `cat`, scene representation updates to reflect the `cat’s` new position on the `box`. Here, copy suppression kicks in to downplay the initial belief that the `cat` is on the `basket`, allowing the model to focus on the current scene. This ensures that while the initial state remains unchanged, the belief or inference process does not reinforce outdated information.
+
+3. As `John` re-enters, the scene representation component provides the latest position (`cat on the box`), while copy suppression minimizes the influence of `John's` original belief. This dynamic allows the model to represent `John’s` (potentially incorrect) belief about the `cat’s` location based on the initial state, while the current scene representation provides the objective reality.
+
+The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
 <br>
 
@@ -933,9 +935,7 @@ Insights from the temporal patterns help establish that the ToM circuit in the m
 
 <br>
 
-Iterative analysis of attention patterns and activation patching has revealed a lot about how ToM is represented and processed in a DOLM. The model performs a complex, but interpretable algorithm to perform this particular false-belief task, and it's based on a circuit involving 16 attention heads.
-
-The circuit shows a clear hierarchical structure, breaking down into these components:
+These subcircuits reveal a nuanced algorithm in its attention—an initial state, action state, scene representation, belief state, and copy suppression, where each plays a distinct but interconnected role:
 
 - **Initial State Heads** identify initial state of locations and subject positions.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room, room
@@ -951,6 +951,10 @@ The circuit shows a clear hierarchical structure, breaking down into these compo
       
 - **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
     - e.g., John+++, Mark+, cat on basket++++, cat on box--
+ 
+
+
+: initializing the model's knowledge, updating beliefs based on actions, and preventing incorrect belief propagation to maintain both actual and believed states.
  
 <br>
 
