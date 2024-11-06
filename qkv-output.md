@@ -131,6 +131,9 @@ Logit difference after zeroing value vector: -0.2213
 - Q/K selects positional words like `in`, `from`, and `on`, which establish spatial or temporal relationships.
   - Attention Pattern: Attends to prepositions and auxiliaries.
   - Likely responsible for establishing relationships between objects in a sentence.
+  - Likely a copy head:
+    - Strong query spikes at regular intervals, minimal key/value interference.
+    - Increasing magnitude of Query spikes suggests systematic copying with position awareness.
 
 <br>
 
@@ -527,6 +530,10 @@ Logit difference after zeroing value vector: 0.9721
 - Q/K focuses on function words such as `on`, `the`, and key objects like `box` and `basket`.
   - Attention Pattern: Attends to prepositions and object references.
   - Likely sets up spatial relations between locations and objects in the context of the sentence.
+  - Likely a copy head:
+    - Strong Query patterns, minimal key interaction.
+    - Regular patterns around sentence boundaries suggest systematic copying of structural         
+      elements.
 
 <br>
 
@@ -890,6 +897,11 @@ Logit difference after zeroing value vector: 1.3846
 - Q/K attends to objects like `basket`, `box`, and named entities (`cat`).
   - Attention Pattern: Focuses on key objects and entities.
   - Likely helps identify the main actors and their relations and locations in the sentence.
+  - Likely an induction head:
+    - Strong Q/K spike pairs at semantically similar points.
+    - Looks for patterns in event sequences.
+    - Attention to repeated patterns of actions/states.
+    - Patterns suggesting helping to predict next elements in sequences.
 
 <br>
 
@@ -1220,6 +1232,10 @@ Logit difference after zeroing value vector: 2.1010
 - Q/K focuses on objects like `box`, `basket`, and function words (`In`, `the`).
   - Attention Pattern: Tracks objects and sets up sentence structure.
   - Likely helps ground key objects in the overall sentence flow.
+  - Likely an induction head:
+    - Tracks recurring patterns in nobj states.
+    - Predicts likely next states based on previous patterns.
+    - Q-V interactions suggest pattern completion behavior.
 
 <br>
 
@@ -1252,7 +1268,8 @@ Logit difference after zeroing value vector: 0.2356
 
 - Q/K attends to objects like `basket`, `box`, and function words like `the`.
   - Attention Pattern: Tracks objects and sentence structuring elements.
-  - Likely helps maintain focus on key objects and their relationships in the sentence. Possibly maintaining focus on the context of later mentioned objects, earlier in the sequence.
+  - Likely helps maintain focus on key objects and their relationships in the sentence. Possibly
+    maintaining focus on the context of later mentioned objects, earlier in the sequence.
 
 <br>
 
