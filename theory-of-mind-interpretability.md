@@ -460,7 +460,7 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 
 <br>
 
-### Iterative attention head analysis and causal tracing <a id="iterative-attention-head-analysis-and-causal-tracing"></a>
+### Iterative attention head analysis and causal tracing <a id="iterative-attention-head-analysis-and-causal-tracing"></a> 
 <sub>[↑](#top)</sub>
 
 To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
@@ -1060,7 +1060,8 @@ These heads correspond to some of the name mover heads (renamed location mover h
 
 <br>
 
-### Ablation studies
+### Ablation studies <a id="ablation-studies"></a>
+<sub>[↑](#top)</sub>
 
 <br>
 
