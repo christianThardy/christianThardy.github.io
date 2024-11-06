@@ -370,7 +370,7 @@ But at the same time, I think when an attention head is attending to a token, it
 
 <br>
 
-In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers. It captures everything the model has *thought* so far, so it will contain everything important going on in the model.
+In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers. It aggregates outputs from previous attention heads and MLPs—everything the model has *thought* so far.
 
 <br>
 
@@ -380,7 +380,7 @@ In transformer architectures, each token position has a residual stream—a vect
 
 <br>
 
-The residual stream in a transformer isn’t just about processing token embeddings; it’s an information highway that aggregates outputs from previous attention heads and MLPs. Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer be decomposed as the sum of contributions from various mechanisms across different layers.
+Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer be decomposed as the sum of contributions from various mechanisms across different layers.
 
 By the later layers, the residual stream holds rich, high-level abstractions: syntactic structures, semantic relationships, and even summaries of phrases or entire sentences. This enables the model to map syntax onto semantics in a powerful way. Attention heads read from specific positions in the residual stream and write new information to target positions, which helps move abstract, context-heavy information around—independent of specific tokens.
 
@@ -400,9 +400,7 @@ More on how transformers process information using linear algebra <a href="https
 
 Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
-The model is using the residual stream to achieve compositionality between different pieces of information, and its how mechanisms in the model communicate with each other. 
-
-For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. This means we can expect the residual stream to be very difficult to interpret.
+The model is using the residual stream to achieve compositionality between different pieces of information. For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. While extremely useful, this means we can expect the residual stream to be very difficult to interpret.
 
 <br>
 
@@ -412,7 +410,9 @@ For example, there could be some attention head in layer 2 that composes with so
 
 <br>
 
-So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the events, the order of events, character actions and possibly even directional or spatial information is key.  In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
+So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the events, the order of events, character actions and possibly even directional or spatial information is key. 
+
+In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
 This kind of hierarchical, nested structure in the residual stream is key to solving the ToM task. It requires the model to track what each character knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual stream.
 
@@ -427,12 +427,12 @@ While keeping all of that in mind, when looking at the plots, it’s a good time
 <img src="https://github.com/user-attachments/assets/0492e03e-66de-49f3-af70-45918d8efc93"/>
 <img src="https://github.com/user-attachments/assets/64a36cf9-5bc7-4212-ba60-08f08eb4a12a"/>
 <img src="https://github.com/user-attachments/assets/f680eed9-8fe9-4636-9bd2-736f4a10424c"/>
-    <small style="font-size: 8px;">The attention patterns of the heads. We can see where each token attends by the maximum value of where its attending, tokens weighted by how much information is being copied, and how much every token effects every other token.</a></small>
+    <small style="font-size: 8px;">Attention patterns of the heads. We can see where each token attends by the maximum value of where its attending, tokens weighted by how much information is being copied, and how much every token effects every other token.</a></small>
 </p>
 
 <br>
 
-We can start to connect some dots between our earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
+We can start to connect the dots between earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
 
 This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John. 
 
@@ -444,7 +444,7 @@ This attention pattern suggests the model is encoding subject-object-location ag
 
 <br>
 
-Here we see that the model is attending from the token `from` in the phrase `John comes back from school` to `school`, which appears earlier in the sentence structure. This demonstrates how the model links John's initial departure with his return, capturing continuity in the narrative. The model is utilizing previously seen tokens, such as `school`, to inform its current processing, and copying it to the current position. So the model's capability to reference earlier events, aligns its understanding of John’s absence and return.
+Here we see that the model is attending from the token `from` in the phrase `John comes back from school` to `school`, which appears earlier in the sentence. This demonstrates how the model links John's initial departure with his return, capturing continuity in the narrative. The model is utilizing previously seen tokens, such as `school`, to inform its current processing, and copying it to the current position. So the model's capability to reference earlier events aligns its understanding of John’s absence and return.
 
 <br>
 
@@ -734,7 +734,7 @@ Given the previous attention head analysis, it's plausible that Qs and Ks encode
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/a3d4650a-70c8-4af6-80aa-6497e49df6c2" width="500">
+  <img src = "https://github.com/user-attachments/assets/a3d4650a-70c8-4af6-80aa-6497e49df6c2" width="700">
 </p>
 
 <br/>
@@ -746,63 +746,17 @@ Given the previous attention head analysis, it's plausible that Qs and Ks encode
 ## So What?
 <sub>[↑](#top)</sub>
 
-The model seems to have developed a systematic, multi-step process for solving this task. It starts by handling basic syntactic dependencies in the early layers, context-driven processing in middle layers by identifying the key facts (like `cat on box`), integrates that context, and then in the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`) using complex semantic attention patterns.
+The model seems to have developed a systematic, multi-step process for solving this task. It starts by handling basic syntactic dependencies in the early layers, context-driven processing in middle layers by identifying the key facts (like `cat on box`), integrates that context into the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`) using semantic attention patterns.
 
-Different heads specialize in distinct functions. Particularly in layer 22 head 4, the head focuses on attending to important tokens that **compose and maintain perspectives** (queries, John's belief), **represent actual changes** in the environment **regardless of character perspective** (keys, state of the world), and **prioritizes groundtruth details** (values, relevant details, where the output vector reflects whichever perspective the attention mechanism emphasizes), showing the models' capability to separate John's belief from reality. This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
+Different heads specialize in distinct functions. Particularly in layer 22 head 4, the head focuses on attending to important tokens that **compose and maintain perspectives** (queries, John's belief), **represent actual changes** in the environment **regardless of character perspective** (key vectors → state of the world), and **prioritizes groundtruth details** (values vectors → relevant details, where the output vector reflects whichever perspective the attention mechanism emphasizes), showing the models' capability to separate John's belief from reality. This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
 
 What’s interesting is that the role the head’s take over evolves across layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers.
 
 The last few layers are particularly important for the final output—small tweaks here can shift the model’s prediction. This fits with the idea that earlier layers are mainly focused on feature extraction and building a representation, while the later layers are more about making the final decision. The model has learned how to transform its input into a form where making the final classification becomes straightforward.
 
-Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces.
+Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces, because it breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
 
-So the model breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
-
-From the current observations we can begin to theorize how the model is performing ToM.
-
-```markdown
-### Tracking the Belief Holder ("John")
-
-Initial State:
-    - Layer 0, Head 3:
-      - Q/K: Attends to "John."
-      - V: Writes entity information.
-
-Belief Construction:
-    - Layer 14, Head 0:
-      - Q/K: Integrates "John thinks."
-      - V: Outputs "basket," linking John's perspective to the object's location.
-
-### Moving Location Information
-
-Initial Location Tracking:
-    - Layer 0, Head 7:
-      - Q/K: Focuses on prepositions.
-      - V: High activation for "on," establishing spatial relationships.
-
-Movement Tracking:
-    - Layer 10, Head 1:
-      - Q/K: Attends to location changes.
-      - V: Outputs "on" and "cat," tracking movement.
-
-State Updates:
-    - Layer 16, Head 3:
-      - Q/K: Focuses on "cat" and locations.
-      - V: Updates object-location bindings.
-
-### Belief State Integration
-
-    - Layer 22, Head 4:
-      - Q/K: Selects crucial context for John's belief.
-      - V: Writes strong "basket" activations, solidifying the incorrect belief.
-
-Copy Suppression:
-    - Layer 23, Head 5:
-      - Q/K: Applies negative modulation.
-      - V: Inhibits outdated information.
-```
-
-Across each set of heads, the model keeps circling back to foundational representations it encoded in earlier layers, using these as anchors to interpret and refine its understanding in later layers. The attention integrates information from different points in the narrative, pulling context from any position in the sequence, relying on earlier representations built up in the residual stream to maintain coherence and refine its predictions. For instance, once the model pins down `John` as the belief holder early on, it holds onto that insight as the narrative progresses, letting it shape how events are interpreted in downstream layers. This isn’t just limited to "John"—the model applies this approach across all linguistic elements, ensuring cohesive tracking throughout the sequence.
+So across each set of heads, the model keeps circling back to foundational representations it encoded in earlier layers, using these as anchors to interpret and refine its understanding in later layers. The attention integrates information from different points in the narrative, pulling context from any position in the sequence, relying on earlier representations built up in the residual stream to maintain coherence and refine its predictions. For instance, once the model pins down `John` as the belief holder early on, it holds onto that insight as the narrative progresses, letting it shape how events are interpreted in downstream layers. This isn’t just limited to `John`—the model applies this approach across all linguistic elements, ensuring cohesive tracking throughout the sequence.
 
 <br>
 
@@ -857,7 +811,7 @@ The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discove
 
 <br>
 
-Looking at the residual stream features activated for the ToM passage, it seems like the model has specific features dedicated to representing different aspects of the narrative. For example, on a more granular level, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
+It seems like the model has specific features dedicated to representing different aspects of the narrative. For example, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
 
 <br>
 
@@ -868,18 +822,16 @@ Looking at the residual stream features activated for the ToM passage, it seems 
 
 <br>
 
-These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions. For example, feature 5614 captures *mentions of specific individuals and their actions or states in personal narratives*, while feature 5865 focuses on *phrases that emphasize ongoing actions or conditions*.
+These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and characters are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions.
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/5382e695-ca33-4ede-9440-461bbc902bce" width="480"/>
 <img src="https://github.com/user-attachments/assets/2662e86c-7bd7-4abb-b9bc-b59033d72044" width="480"/>
-</p>
-
 <br>
-
-The model also has features representing changes in the scene. Feature 4388 is about *phrases related to the concept of taking action or steps*, feature 6169 focuses on *words related to leaving or departure*.
+<small style="font-size: 8px;">The model also has features representing actions that directly change the scene.</a></small>
+</p>
 
 <br>
 
@@ -902,7 +854,7 @@ The residual stream, in particular, plays a key role as an information-preservat
 
 <br>
 
-In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model a structure for managing specific narrative events, helping it ground actions and observations.
+In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. The **action related features** are a lot **clearer in the residual stream and MLPs**. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model a structure for managing specific narrative events, helping it ground actions and observations.
 
 <br>
 
@@ -914,7 +866,7 @@ In the MLP features, we're seeing a recurring theme, feature 11284 looks like it
 
 <br>
 
-Several features seem to be directly tied to representing belief states and knowledge. Feature 13597 is likely crucial for capturing John's lack of knowledge about what happened in the room while he was away. Feature 5107 probably signals the model’s awareness of John’s ignorance, potentially reflecting uncertainty and doubt. Feature 12703 could be involved in modeling John’s thought process when he returns to the room, helping the model represent how John updates his beliefs. These features seem key for understanding how the model processes ToM scenarios, especially when tracking characters’ evolving mental states.
+Several features seem to be directly tied to representing belief states and knowledge. Feature 13597 is likely crucial for capturing John's lack of knowledge about what happened in the room while he was away. Feature 5107 probably signals the model’s awareness of John’s ignorance, potentially reflecting uncertainty and doubt. Feature 12703 could be involved in modeling John’s thought process when he returns to the room, helping the model represent how John updates his beliefs. These features seem important for understanding how the model processes ToM scenarios, especially when tracking characters’ evolving mental states.
 
 <br>
 
@@ -926,13 +878,11 @@ Several features seem to be directly tied to representing belief states and know
 
 <br>
 
-Another key aspect for the ToM task is spatial processing. Feature 12441 likely tracks the positions of the cat, box, and basket, while feature 346 seems to process how subjects and objects move around the room.
+Another key aspect for the ToM task is spatial processing. Similar to residual stream feature 81, feature 12441 likely tracks the positions of the cat, box, and basket, while feature 14364 seems to process how subjects and objects move around the room.
 
-What’s pretty clear from this is that the MLP features show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single "ToM module". Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
+What’s pretty clear from this is that the residual stream and MLP features in layer 22 show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single "ToM module". Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
 
-The features range from low-level tasks (like tracking object positions) to high-level abstractions (like representing uncertainty and beliefs), showing a hierarchical approach to processing the ToM scenario. The model also seems to maintain parallel representations of the actual state of the world and the characters' beliefs about it, which is key for solid processing of ToM tasks.
-
-Gemma seems to have developed specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information—all of which also emerge in the MLP layers, supplementing what we see in attention heads. It really speaks to the power of gradient descent; it’s finding solutions and representations way beyond what we’d initially predict.
+The features range from low-level tasks (like tracking object positions) to high-level abstractions (like representing uncertainty and beliefs), showing a lot of nuance. Gemma seems to have developed specialized concepts for belief representation, spatial awareness, temporal sequencing, and handling contradictory information—supplementing what we see in attention heads. It really speaks to the power of gradient descent; it’s finding solutions and representations way beyond what we’d initially predict.
 
 <br>
 
