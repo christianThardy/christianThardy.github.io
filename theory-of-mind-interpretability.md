@@ -917,25 +917,19 @@ In the co-occurrence matrix, all components generally co-activate very frequentl
 
 It's likely that the initial state acts as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any actions or belief updates happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene updates (`Mark moving the cat`), facts are either downplayed or retained. 
 
-Leaving out the obvious role of `belief state emphasis`, I believe the likely algorithm is: 
-
-1. when `John` places the `cat` on the `basket`, the **initial state** records this position. **Scene Representation** (reality) at this stage reflects the same layout as the initial state, and **copy suppression** does not strongly activate, as there’s no redundancy yet.
-
-2. When `Mark` moves the `cat`, scene representation updates to reflect the `cat’s` new position on the `box`. Here, copy suppression kicks in to downplay the initial belief that the `cat` is on the `basket`, allowing the model to focus on the current scene. This ensures that while the initial state remains unchanged, the belief or inference process does not reinforce outdated information.
-
-3. As `John` re-enters, the scene representation component provides the latest position (`cat on the box`), while copy suppression minimizes the influence of `John's` original belief. This dynamic allows the model to represent `John’s` (potentially incorrect) belief about the `cat’s` location based on the initial state, while the current scene representation provides the objective reality.
-
 The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
+<br>
+<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
 
 <br>
 
-These subcircuits reveal a nuanced algorithm in its attention—an initial state, action state, scene representation, belief state, and copy suppression, where each plays a distinct but interconnected role:
+The full circuit reveals a nuanced algorithm in its attention—and each group of heads play a distinct but interconnected role:
 
 - **Initial State Heads** identify initial state of locations and subject positions.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room, room
@@ -952,37 +946,23 @@ These subcircuits reveal a nuanced algorithm in its attention—an initial state
 - **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
     - e.g., John+++, Mark+, cat on basket++++, cat on box--
  
-
-
-: initializing the model's knowledge, updating beliefs based on actions, and preventing incorrect belief propagation to maintain both actual and believed states.
- 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/4169d5a0-b678-4971-b9df-cd421eeceadf" width="650"/>
-<br>
-<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
 
 <br>
 
+The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads. Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
 
+As we move into the middle layers, things get more interesting. The scene representation heads start integrating information from the initial state heads and the action state heads. This is where object tracking, action understanding, and structural processing starts to form. The attention mechanism becomes more balanced between the query and key vectors, reflecting how the model is integrating information and refining its contextual understanding of the scene.
 
-The data extracted from the attention mechanism looks something like this<sub>[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">22</a>]</sub>:
+This integration feeds into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up the initial state, action state and scene representation heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
 
+At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, working to manage information propagation. The value mechanism kicks in to inhibit outdated or irrelevant information, ensuring only the relevant aspects—like a false belief about an object’s location—end up influencing the final prediction.
 
-
-Its clear this layer focuses on basic function words and spatial relationships. 
-
-This is generally true for the early layers, or initial state heads —they mostly handle simple things like basic linguistic elements (parts-of-speech: puncuation, determiners, conjugations. syntactic dependencies) in specialized later heads. Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
-
-As we move into the middle layers, things get more interesting. The actions state heads and scene representation heads start integrating information from the initial state heads. This is where object tracking, action understanding, and structural processing starts to form. The attention mechanism becomes more balanced between the query and key vectors, reflecting how the model is integrating information and refining its contextual understanding of the scene.
-
-This integration feeds into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up from earlier layers. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
-
-At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, working to manage information propagation. The value mechanism here kicks in to inhibit outdated or irrelevant information, ensuring only the relevant aspects—like a false belief about an object’s location—end up influencing the final prediction.
-
-For instance, we can break down how the model builds a subject's false belief about an object’s location by: 1) Establishing John as the belief holder. 2) Tracking the cat's movement. 3) Updating object locations. 4) Integrating these elements into John's belief state. 5) Suppressing outdated or irrelevant information.
+So the model builds a subject's false belief about an object’s location by: **1)** Establishing John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
 
 
 
@@ -995,30 +975,10 @@ These heads correspond to some of the name mover heads (renamed location mover h
 
 
 
-
- ^ Should be broken down even further, should be able to say which mech reads/attends then writes. It feels like I'm lacking specificity on how the QKV are interacting in the circuit during prediction.
-
-Use the example here in the post, and link to the rest of the results in a different .md file
 <br>
 
-**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit**
+**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
 
-
-
-In the last layer the model wants to focus on facts, but the facts are supressed
-
-
-
-In layer 22 head 2 suggests global context consideration in prediction as the earlier mentioned basket tokens are heavily attended to by the key vectors (I think)
-
-The model is taking John and Marks actions into consideration
-
-
-
-
-**Do not forget to show the linguistic parallels**
-
-The circuit as a whole is made up of various attention heads (induction and copy supression heads) that perform algorithms to move information from the context of the sentence 
 
 <br>
 
@@ -1185,3 +1145,5 @@ Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Clau
 Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]
 
 McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">22</a>]
+
+Hardy, *Granular breakdown of data extracted from the attention mechanism*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">23</a>]
