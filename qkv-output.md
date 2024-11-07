@@ -1,4 +1,4 @@
-# Query, Key, Value Attention Mechanism Output from ToM Interpretability Analysis
+# Gemma 2-2B Query, Key, Value Attention Mechanism Output
 
 <br>
 
