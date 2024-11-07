@@ -1,4 +1,4 @@
-# Gemma 2-2B Query, Key, Value Attention Mechanism Output
+# Gemma 2-2B QKV Attention Mechanism Output
 
 <br>
 
