@@ -1146,4 +1146,4 @@ Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[
 
 McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">22</a>]
 
-Hardy, *Granular breakdown of data extracted from the attention mechanism*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">23</a>]
+Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">23</a>]
