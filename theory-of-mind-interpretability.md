@@ -475,7 +475,7 @@ The DOLMs attention mechanisms weigh the importance of different parts of the To
 
 - **Query (Q):** Determines which token positions to attend to.
 - **Key (K):** Represents the tokens considered for attention at each position.
-- **Value (V):** Contains the information to be propagated forward.
+- **Value (V):** Contains the information to be propagated forward. Basically a weight determining to how relevant the key is to the query.
 
 The way QKV attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
 
@@ -526,7 +526,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state.
 
-We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in layer 0 head 7 and layer 10 head 1. Both showing rigid, position-based patterns, clean isolated spikes. The former shows strong Q spikes at regular intervals with minimal KV interference, it seems to be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. The latter shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
+We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in L0H7, L10H1, also in L8H6, L16H2, L18H7, and L23H5. All showing rigid, position-based patterns, clean isolated spikes. L0H7 shows strong Q spikes at regular intervals with minimal KV interference, it might be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. L10H1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
 Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
 
@@ -541,7 +541,7 @@ Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-
 
 Specifically, for the asymmetric patterns in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of where the cat was placed (might be an artifact given its almost everywhere). The V attention (green) show strong contributions around `basket` early in the sequence, completely dominating the V attention of `box`, and several medium-height spikes around key events in the story (like when the cat is moved).
 
-The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat. It's tracking both the real state (`cat on box`) and John's believed state (`cat on basket`). 
+The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief. 
 
 The strong attention to the initial state makes sense since that's what John last saw before leaving. The model also appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely follows a collection of heads that build up to this attending to John's false belief. 
 
@@ -653,6 +653,8 @@ The ability to localize computations like this is a huge win for mechanistic int
 - There are lots of negative contributions throughout the model, but L14H3, L16H2, and L23H5 are very negative and possibly components to a supression circuit that helps the model focus on maintaining John's believed state.
 
 An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple positive and negative attention heads. For instance, several heads probably work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads throughout the network.
+
+L8H6, L16H2, L18H7, and L23H5
 
 <br/>
 
@@ -911,6 +913,20 @@ In the second temporal heatmap, the initial state heads co-activation with the b
 
 In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
 
+
+# FINISH THIS SECTION!!!!!!!
+
+The belief state shows less activation at the final state. It's possible 
+
+L21H5 is the culprit in the belief state emphasis head for the negative value in the lobe analysis, the queries are dominating the QKV space
+
+**INVESTIGAVE THIS MORE**We've seen negative behavior in the final layer of the logit difference plot from a previous section, L25H4. Given the dominating Q bias this is not suprising.
+
+These heads also attend to previous names in the sentence but operate differently. Instead of promoting the correct prediction, they suppress the logit of the indirect object token (IO) by writing in the opposite direction of the Name Mover Heads. This suppression mechanism serves as a form of regularization, preventing the model from over-relying on certain patterns and ensuring a balanced attention distribution
+
+
+
+
 We can see more fine-grained supression in the second temporal heatmap; there's basically no co-activation at the beginning of the sequence, until the subcircuit prevents copying of past states not associated with the context of the initial state regarding the cats location in the final state. Back to the first temporal heatmap, scene representation heads and belief state heads often co-activate in tandem, which aligns well with the necessity for John to continuously update his beliefs about the environment based on the scene presented to him.
 
 In the co-occurrence matrix, all components generally co-activate very frequently with very high activations. Showing a *fully connected circuit* in a sense. The close relationship between initial states and action states indicate that initiating a state often co-occurs with some action, such as `John` placing the `cat` on the basket initially and leaving the `room`, setting up the first spatial/temporal actions taken by the characters in the narrative. There is also a strong, co-activating recurrent pattern between the initial state, the scene representation and copy supression. 
@@ -963,17 +979,6 @@ This integration feeds into the belief state heads, especially for entities like
 At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, working to manage information propagation. The value mechanism kicks in to inhibit outdated or irrelevant information, ensuring only the relevant aspects—like a false belief about an object’s location—end up influencing the final prediction.
 
 So the model builds a subject's false belief about an object’s location by: **1)** Establishing John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
-
-
-
-
-
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
-These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
-
-
-
 
 <br>
 
