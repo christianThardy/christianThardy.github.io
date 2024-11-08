@@ -526,7 +526,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, begin to emphasize John's belief state and then strongly maintain that state.
 
-We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in L0H7, L10H1, also in L8H6, L16H2, L18H7, and L23H5. All showing rigid, position-based patterns, clean isolated spikes. L0H7 shows strong Q spikes at regular intervals with minimal KV interference, it might be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. L10H1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
+We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in L0H7 and L10H1. Both showing rigid, position-based patterns, clean isolated spikes. L0H7 shows strong Q spikes at regular intervals with minimal KV interference, it might be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. L10H1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
 Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
 
@@ -650,11 +650,13 @@ The ability to localize computations like this is a huge win for mechanistic int
 <br/>
 
 - L22H4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
-- There are lots of negative contributions throughout the model, but L14H3, L16H2, and L23H5 are very negative and possibly components to a supression circuit that helps the model focus on maintaining John's believed state.
+- There are lots of negative contributions throughout the model, but L14H3, L16H2, and L23H5 are very negative and possibly components to a supression circuit (inhibition, negative mover) that helps the model focus on maintaining John's believed state.
 
 An important thing to note is that these functions are not neatly isolated but distributed and overlapping across multiple positive and negative attention heads. For instance, several heads probably work together to represent the "mental state," and many of these heads also contribute to other tasks. The suppression activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads throughout the network.
 
-L8H6, L16H2, L18H7, and L23H5
+**REINFORCE THIS SECTION AFTER QKV ANALYSIS IS COMPLETE**
+Specifically L8H6, L16H2, L18H7, and L23H5. All empirically show evidence of negative behavior on the final prediction as seen in the activation patching section. Each head has strong Q attention and low V attention to the `box` token, the most and strongest activations are happening in the middle of the sequence when Mark is moving the cat to the box.
+**REINFORCE THIS SECTION AFTER QKV ANALYSIS IS COMPLETE**
 
 <br/>
 
@@ -913,16 +915,22 @@ In the second temporal heatmap, the initial state heads co-activation with the b
 
 In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
 
-
-# FINISH THIS SECTION!!!!!!!
-
 The belief state shows less activation at the final state. It's possible 
+
+
+
+The fact that the action state would "turn off" in the final state makes sense. When John is thinking at the end of the sequence, thinks in this case is a clausal complement verb, and its representing a mental act, not an intentional act, or a direct physical or verbal action.
 
 L21H5 is the culprit in the belief state emphasis head for the negative value in the lobe analysis, the queries are dominating the QKV space
 
 **INVESTIGAVE THIS MORE**We've seen negative behavior in the final layer of the logit difference plot from a previous section, L25H4. Given the dominating Q bias this is not suprising.
 
 These heads also attend to previous names in the sentence but operate differently. Instead of promoting the correct prediction, they suppress the logit of the indirect object token (IO) by writing in the opposite direction of the Name Mover Heads. This suppression mechanism serves as a form of regularization, preventing the model from over-relying on certain patterns and ensuring a balanced attention distribution
+
+
+Ablating L21H5 from the belief state heads increased the sequence final state in the lobe analysis, which means that head hurts the ToM circuit. This layer and head show high query bias, dominating the activations space over keys and values for the basket token. This directly affects the belief state and shows inhibition or negative belief state type of behavior
+
+
 
 
 
