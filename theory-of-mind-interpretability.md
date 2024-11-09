@@ -901,47 +901,31 @@ From there, we can start mapping out how these components *fire* across the ToM 
 
 The methodology here is pretty aligned with the original paper—collecting activations, computing co-occurrence metrics, applying spectral clustering, and building affinity matrices using the Phi coefficient—though the block size is tweaked. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-The resulting plots show activations of ToM subcircuits—sets of attention heads—lighting up at key sequence positions during ToM passages. These subcircuits seem to operate as a cohesive functional unit during the task. Components and their activations are relative to each other at different points in the sequence. High activation values indicate components that are more activated against components that are more or less dormant.
+The resulting plots show activations of ToM subcircuits—sets of attention heads—lighting up at key sequence positions during ToM passages. These subcircuits operate as a cohesive functional unit during the task. Components and their activations are relative to each other at different points in the sequence. High activation values indicate components that are more activated against components that are more or less dormant.
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/5c804809-55bc-447e-b164-c8979a1c1de2" width="850"/>
+<img src="https://github.com/user-attachments/assets/275a1f0a-1056-4c73-a0d6-ad0f192add5b" width="850"/>
 </p>
 
 <br>
 
-In the second temporal heatmap, the initial state heads co-activation with the beginning of the sequence helps set up the context, while belief state heads and scene representation head updates (activated together with high similarity) occur during changes in the sequence (such as when John leaves or returns) while maintaining the context. 
+In the second temporal heatmap, the initial state heads co-activation with the action state helps set up the context in the initial and intermediate parts of the sequence with high similarity. Belief state heads and scene representation head co-activations occur during the intermediate and penultimate states while maintaining the initial and action state context with high similarity (such as when John or Mark leave or return)—which aligns well with the necessity for the model to continuously update the belief state about the environment based on the presented scene. 
 
-In the first temporal map, copy supression has high co-activation with the final state (end of sequence) around -0.145, with moderate co-activation in the intermediate state at -0.42, which corresponds to about L10H4, which is when the model begins to differentiate between box and basket. In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low values at positions related to the `cat` and `box` in L23H5.
+The initial and action states becoming less prominent after the belief state and scene representation states start to integrate the learned contextual and semantic representations. Given the dominating Q bias this is not suprising. When John is thinking at the end of the sequence, `thinks` in this case is a clausal complement verb, and its representing a mental act, not an intentional act, or a direct physical or verbal action.
 
-The belief state shows less activation at the final state. It's possible 
+Copy supression starts off the sequence with basically no activation at the beginning of the sequence and progressively starts increasing and integrating more supression activity, as conflicting belief states cause the scene to start chaninging, with its co-activation between the belief state in the final parts of the sequence offsetting the models final prediction. It's preventing copying of past states not associated with the context of the initial state regarding the cats location in the final state.
 
+**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
+**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
+**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
 
-
-The fact that the action state would "turn off" in the final state makes sense. When John is thinking at the end of the sequence, thinks in this case is a clausal complement verb, and its representing a mental act, not an intentional act, or a direct physical or verbal action.
-
-L21H5 is the culprit in the belief state emphasis head for the negative value in the lobe analysis, the queries are dominating the QKV space
-
-**INVESTIGAVE THIS MORE**We've seen negative behavior in the final layer of the logit difference plot from a previous section, L25H4. Given the dominating Q bias this is not suprising.
-
-These heads also attend to previous names in the sentence but operate differently. Instead of promoting the correct prediction, they suppress the logit of the indirect object token (IO) by writing in the opposite direction of the Name Mover Heads. This suppression mechanism serves as a form of regularization, preventing the model from over-relying on certain patterns and ensuring a balanced attention distribution
-
-
-Ablating L21H5 from the belief state heads increased the sequence final state in the lobe analysis, which means that head hurts the ToM circuit. This layer and head show high query bias, dominating the activations space over keys and values for the basket token. This directly affects the belief state and shows inhibition or negative belief state type of behavior
-
-
-
-
-
-
-We can see more fine-grained supression in the second temporal heatmap; there's basically no co-activation at the beginning of the sequence, until the subcircuit prevents copying of past states not associated with the context of the initial state regarding the cats location in the final state. Back to the first temporal heatmap, scene representation heads and belief state heads often co-activate in tandem, which aligns well with the necessity for John to continuously update his beliefs about the environment based on the scene presented to him.
+In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low activation values at positions related to noun objects and locations in L23H5.
 
 In the co-occurrence matrix, all components generally co-activate very frequently with very high activations. Showing a *fully connected circuit* in a sense. The close relationship between initial states and action states indicate that initiating a state often co-occurs with some action, such as `John` placing the `cat` on the basket initially and leaving the `room`, setting up the first spatial/temporal actions taken by the characters in the narrative. There is also a strong, co-activating recurrent pattern between the initial state, the scene representation and copy supression. 
 
-It's likely that the initial state acts as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any actions or belief updates happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene updates (`Mark moving the cat`), facts are either downplayed or retained. 
-
-The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
+It's likely that the initial and action states act as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any changes to the scene happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene changes (`Mark moving the cat`), facts are either downplayed or retained. 
 
 <br>
 
@@ -952,6 +936,10 @@ The pattern would suggest that the ToM circuit efficiently balances between reta
 </p>
 
 <br>
+
+The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
+
+The heads here may also attend to previous names in the sequence but operate differently. Some heads show high query bias, dominating the activations space over keys and values for the basket token. This directly affects the belief state. Instead of promoting the correct prediction, they suppress the logit of the `box` token by writing in the opposite direction of the belief state heads. This suppression mechanism could be serving as a form of regularization, inhibition or negative belief state, preventing the model from over-relying on certain patterns and ensuring a balanced attention distribution.
 
 The full circuit reveals a nuanced algorithm in its attention—and each group of heads play a distinct but interconnected role:
 
@@ -990,11 +978,6 @@ So the model builds a subject's false belief about an object’s location by: **
 
 <br>
 
-**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
-
-
-<br>
-
 <p align="center">
 <img src="https://github.com/user-attachments/assets/7a36302c-e42d-47f5-b39d-56cf03e953c1" width="700"/>
 <br>
@@ -1005,7 +988,7 @@ So the model builds a subject's false belief about an object’s location by: **
 
 #### Copy supressions role in the ToM circuit
 
-Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and calibrating the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
+Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and it calibrates the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
 
 More technically, copy surpression is an algorithm applied to the unembedding space of the model. An induction head (belief state emphasis) sees that `John put the cat on the basket`, the current token is `the` and it starts to output `basket`. This is written to the residual stream and will be mapped to the logits, but then copy supression performs post-processing on this logit space by supressing any output it has seen before that is not relevant to the induction heads context. So we can see heads that do task specific things and then heads that are responding to the previous predictions which is a more general and less specific sub task.
 
@@ -1017,10 +1000,6 @@ There's a lot more we do not know about these heads and they probably have more 
 
 (Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
 
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
-These heads correspond to some of the name mover heads (renamed location mover heads for this analysis) and negative name mover heads (renamed negative location mover heads for this analysis) discussed in the paper. There are also other heads that matter positively or negatively but to a lesser degree—these include additional location movers and backup location movers. More on this later.
-**MOVE TO CIRCUITS SECTION AND REFERENCE THIS LOGIT DIFFERENCE FROM EACH HEAD PLOT**
-
 <br>
 
 <p align="center">
@@ -1030,6 +1009,10 @@ These heads correspond to some of the name mover heads (renamed location mover h
 </p>
 
 <br>
+
+<br>
+
+**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
 
 <br>
 
