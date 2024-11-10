@@ -903,6 +903,8 @@ The methodology here is pretty aligned with the original paper—collecting acti
 
 The resulting plots show activations of ToM subcircuits—sets of attention heads—lighting up at key sequence positions during ToM passages. These subcircuits operate as a cohesive functional unit during the task. Components and their activations are relative to each other at different points in the sequence. High activation values indicate components that are more activated against components that are more or less dormant.
 
+Because of spectral clustering its possible to see which components have groups of heads that activate together across different contexts. Essentially this allows us to see how information flows through the network as its making its predictions. For example, within scene representation, certain heads may consistently activate with heads in copy suppression, particularly when managing changes in the scene and beliefs about the scene. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
+
 <br>
 
 <p align="center">
@@ -974,6 +976,8 @@ At the final stages, the copy suppression heads play a key role. These heads sho
 
 So the model builds a subject's false belief about an object’s location by: **1)** Establishing John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
 
+The ToM circuit appears to satisfy the three criteria discussed in Wang et al. The minimality shows how much each attention head from each component of the circuit contributes to the models ToM capability by its direct effect on logit difference. The score represents what percentage of the full model's logit differece (0.8365) this head directly contributes, and the higher the score, the more important the head is to the task.
+
 <br>
 
 <p align="center">
@@ -981,6 +985,21 @@ So the model builds a subject's false belief about an object’s location by: **
 <br>
 <small style="font-size: 8px;"></a></small>
 </p>
+
+```markdown
+Average logit difference (ToM dataset, using entire model): 0.8365
+Average logit difference (ToM dataset, only using circuit): 0.8457
+```
+
+<br>
+
+In so much that it is faithful—the circuit performs slightly better than the full model, complete—performance suggests all necessary heads for each component has been captured, minimal—the plot shows clear specialization with a minimal number of heads per their importance.
+
+The components of the ToM circuit show concentrated importance in specific heads, ~35% in scene representation heads, which suggests that understanding and maintaining the semantics related to scene context is crucial for ToM tasks. Which suggests that these false belief passages heavily rely on maintaining accurate scene representations to track beliefs.
+
+The initial/action state heads have the smallest impact and likely just provide supporting context to be built up by other heads rather than core belief tracking.
+
+The circuit is also very modular in the sense that the heads are very specialized, all relevant computation seems cleanly contained within the specific components and there's less interdependence with parts of the network outside of the identified circuit.
 
 <br>
 
@@ -1017,6 +1036,10 @@ There's a lot more we do not know about these heads and they probably have more 
 ### Ablation studies <a id="ablation-studies"></a>
 <sub>[↑](#top)</sub>
 
+Ablation studies are widely used in neuroscience and they can be applied to neural networks. This study tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
+
+The point is to identify and eliminate unnecessary components to make the model more efficient. The heads with the strongest positive effects when ablated, shows performance drops (hurts performance, heads are helpful), and heads with the strongest negative effects when ablated, shows performance improves (helps performance, heads might interfere).
+
 <br>
 
 <p align="center">
@@ -1026,6 +1049,14 @@ There's a lot more we do not know about these heads and they probably have more 
 </p>
 
 <br>
+
+The belief state shows ~0.5 change in logit difference when ablated from 0.8365 to ~0.3365, so we can see that L22H4 is crucial for maintaining correct belief states. Similar to scene representation L18H6 where there is a ~0.45 change. The L15H0 scene representation head shows a ~-0.2 change, which may actually interfere with belief tracking.
+
+This likely indicates this head is competing with belief tracking by focusing on the actual location, balancing the models representation of belief vs. reality.
+
+^ Show what this head attends to
+
+#### Do statistical significance test and confidence intervals on the effect sizes
 
 ```markdown
 0.8365 = Original logit diff
@@ -1045,10 +1076,7 @@ Corrupted logit diff: 0.371032
 Metric value: 0.000002
 ```
 
-```markdown
-Average logit difference (ToM dataset, using entire model): 0.8365
-Average logit difference (ToM dataset, only using circuit): 0.8293
-```
+
 
 ```python
 Copying Scores (name
