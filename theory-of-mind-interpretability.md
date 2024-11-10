@@ -541,7 +541,7 @@ Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-
 
 Specifically, for the asymmetric patterns in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of where the cat was placed (might be an artifact given its almost everywhere). The V attention (green) show strong contributions around `basket` early in the sequence, completely dominating the V attention of `box`, and several medium-height spikes around key events in the story (like when the cat is moved).
 
-The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief. 
+The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief and passing that information forward to other layers and heads. 
 
 The strong attention to the initial state makes sense since that's what John last saw before leaving. The model also appears to be using this head to integrate information about object locations and character knowledge states. This head is likely key in some belief state emphasis context, and likely follows a collection of heads that build up to this attending to John's false belief. 
 
@@ -1036,7 +1036,18 @@ There's a lot more we do not know about these heads and they probably have more 
 ### Ablation studies <a id="ablation-studies"></a>
 <sub>[↑](#top)</sub>
 
-Ablation studies are widely used in neuroscience and they can be applied to neural networks. This study tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
+Ablation studies are widely used in neuroscience and they can be applied to neural networks to assess the contribution of various components of a model to its overall performance. We systematically remove (ablate) specific components, such as neurons, layers or attention heads in the algorithm.
+
+Completely knocking out all of the attention heads 
+
+associated with the ToM circuit...
+
+No single head significantly affected performance, further validating the distributed nature of the task
+
+
+
+
+The study here tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
 
 The point is to identify and eliminate unnecessary components to make the model more efficient. The heads with the strongest positive effects when ablated, shows performance drops (hurts performance, heads are helpful), and heads with the strongest negative effects when ablated, shows performance improves (helps performance, heads might interfere).
 
@@ -1052,9 +1063,10 @@ The point is to identify and eliminate unnecessary components to make the model 
 
 The belief state shows ~0.5 change in logit difference when ablated from 0.8365 to ~0.3365, so we can see that L22H4 is crucial for maintaining correct belief states. Similar to scene representation L18H6 where there is a ~0.45 change. The L15H0 scene representation head shows a ~-0.2 change, which may actually interfere with belief tracking.
 
-This likely indicates this head is competing with belief tracking by focusing on the actual location, balancing the models representation of belief vs. reality.
+Given L15H0's QKV interactions, its possible that when this head is removed, others compensate by over-emphasizing belief states. Suggesting backup mechanisms possibly kick in when its ablated, or other heads might overcompensate to allow redundency in the circuit. 
 
-^ Show what this head attends to
+
+
 
 #### Do statistical significance test and confidence intervals on the effect sizes
 
