@@ -906,7 +906,7 @@ The resulting plots show activations of ToM subcircuits—sets of attention head
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/275a1f0a-1056-4c73-a0d6-ad0f192add5b" width="850"/>
+<img src="https://github.com/user-attachments/assets/dd7d6109-c3d1-4354-a994-1d6d651fbff4" width="600"/>
 </p>
 
 <br>
@@ -923,14 +923,12 @@ Copy supression starts off the sequence with basically no activation at the begi
 
 In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low activation values at positions related to noun objects and locations in L23H5.
 
-In the co-occurrence matrix, all components generally co-activate very frequently with very high activations. Showing a *fully connected circuit* in a sense. The close relationship between initial states and action states indicate that initiating a state often co-occurs with some action, such as `John` placing the `cat` on the basket initially and leaving the `room`, setting up the first spatial/temporal actions taken by the characters in the narrative. There is also a strong, co-activating recurrent pattern between the initial state, the scene representation and copy supression. 
-
 It's likely that the initial and action states act as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any changes to the scene happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene changes (`Mark moving the cat`), facts are either downplayed or retained. 
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/29b7c1e7-a97d-4600-a4d7-166beb7fab2d" width="650"/>
+<img src="https://github.com/user-attachments/assets/47970454-6f36-435c-befd-7b68d8c8c954" width="650"/>
 <br>
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
@@ -961,7 +959,7 @@ The full circuit reveals a nuanced algorithm in its attention—and each group o
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/4169d5a0-b678-4971-b9df-cd421eeceadf" width="650"/>
+<img src="https://github.com/user-attachments/assets/1cdbad02-1845-415b-8f66-b5a120676fbd" width="650"/>
 </p>
 
 <br>
@@ -979,7 +977,7 @@ So the model builds a subject's false belief about an object’s location by: **
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/7a36302c-e42d-47f5-b39d-56cf03e953c1" width="700"/>
+<img src="https://github.com/user-attachments/assets/aaf17afd-59ad-4002-897b-c2d29186a847" width="700"/>
 <br>
 <small style="font-size: 8px;"></a></small>
 </p>
@@ -1022,7 +1020,7 @@ There's a lot more we do not know about these heads and they probably have more 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/cbdf9b85-444b-458f-a5db-f75300f9c79e" width="900"/>
+<img src="https://github.com/user-attachments/assets/a2c9b0ee-b7ce-4714-8798-b534fc968100" width="900"/>
 <br>
 <small style="font-size: 8px;"></a></small>
 </p>
