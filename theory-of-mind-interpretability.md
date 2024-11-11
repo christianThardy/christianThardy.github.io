@@ -893,17 +893,21 @@ The features range from low-level tasks (like tracking object positions) to high
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
+SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. 
+
+If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
+
 As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. 
 
-Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. If we zoom out from any single head, we can define specific attention heads across layers as circuit components. 
+Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. 
 
-From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. SAEs organize concepts into functionally coherent clusters, suggesting LLMs develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. By grouping specific attention heads into components, we see functional clusters—or subcircuits—naturally emerging and synchronizing across different positions in the sequence.
+If we zoom out from any single head, we can define specific attention heads across layers as circuit components. From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. 
 
-The methodology here is pretty aligned with the original paper—collecting activations, computing co-occurrence metrics, applying spectral clustering, and building affinity matrices using the Phi coefficient—though the block size is tweaked. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
+The methodology aligns closely with the original paper, but with some tweaks: activation data is collected, co-occurrence metrics are calculated, spectral clustering is applied, and affinity matrices with the Phi coefficient are used with spectral clustering. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-The resulting plots show activations of ToM subcircuits—sets of attention heads—lighting up at key sequence positions during ToM passages. These subcircuits operate as a cohesive functional unit during the task. Components and their activations are relative to each other at different points in the sequence. High activation values indicate components that are more activated against components that are more or less dormant.
+The results show distinct ToM subcircuits—sets of attention heads lighting up at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. High activation levels indicate “lit-up” components compared to others. High activation values indicate components that are more activated against components that are more or less dormant.
 
-Because of spectral clustering its possible to see which components have groups of heads that activate together across different contexts. Essentially this allows us to see how information flows through the network as its making its predictions. For example, within scene representation, certain heads may consistently activate with heads in copy suppression, particularly when managing changes in the scene and beliefs about the scene. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
+Because of spectral clustering its possible to see which components have groups of heads that activate together across different contexts. Essentially this allows us to see how information flows through the network as its making its predictions. For example, within scene representation, certain heads may consistently activate with heads in copy suppression, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
 
 <br>
 
@@ -913,19 +917,19 @@ Because of spectral clustering its possible to see which components have groups 
 
 <br>
 
-In the second temporal heatmap, the initial state heads co-activation with the action state helps set up the context in the initial and intermediate parts of the sequence with high similarity. Belief state heads and scene representation head co-activations occur during the intermediate and penultimate states while maintaining the initial and action state context with high similarity (such as when John or Mark leave or return)—which aligns well with the necessity for the model to continuously update the belief state about the environment based on the presented scene. 
+We see initial-state heads co-activating with action-state heads early on, setting up a stable context for the initial and intermediate parts of the sequence with high similarity. Belief-state heads and scene-representation heads start co-activating in the intermediate and penultimate states, while still referencing that initial and action-state context—like when John or Mark leave or return. This makes sense, as the model has to keep updating its belief state about the environment based on what’s going on in the scene.
 
-The initial and action states becoming less prominent after the belief state and scene representation states start to integrate the learned contextual and semantic representations. Given the dominating Q bias this is not suprising. When John is thinking at the end of the sequence, `thinks` in this case is a clausal complement verb, and its representing a mental act, not an intentional act, or a direct physical or verbal action.
+Interestingly, the initial and action states fade out as belief and scene representation heads start to integrate more of the learned context and semantics. Given the strong Q bias here, this isn’t unexpected. When John is “thinking” at the end of the sequence, “thinks” functions as a clausal complement verb, representing a mental act rather than a concrete physical or verbal action.
 
-Copy supression starts off the sequence with basically no activation at the beginning of the sequence and progressively starts increasing and integrating more supression activity, as conflicting belief states cause the scene to start chaninging, with its co-activation between the belief state in the final parts of the sequence offsetting the models final prediction. It's preventing copying of past states not associated with the context of the initial state regarding the cats location in the final state.
+Copy suppression kicks in weakly at the beginning, but it steadily ramps up, progressively increasing suppression as conflicting belief states make the scene change. In the final part of the sequence, we see copy suppression co-activating with belief state heads, offsetting the model’s final prediction. It’s stopping the model from copying past states that don’t fit with the current context of where the cat is supposed to be by the end.
 
 **NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
 **NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
 **NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
 
-In other words, the high co-activation of supression is having a direct impact on the actual location of the cat. This is expected given the low activation values at positions related to noun objects and locations in L23H5.
+In other words, high suppression co-activation directly affects the final predicted location of the cat. This lines up with the low activation values we’re seeing at positions connected to nouns and locations in L23H5.
 
-It's likely that the initial and action states act as an anchor or reference point, allowing the subcircuit to remember original positions and facts before any changes to the scene happen. Its co-occurrence with initial state likely reflects a need to constantly compare the current scene representation with the original state, helping the model differentiate between what has remained the same and what has changed. Copy supressions recurrent co-activation with the scene representation suggests that as the scene changes (`Mark moving the cat`), facts are either downplayed or retained. 
+It’s likely that the initial and action states act as an anchor for the subcircuit, helping it “remember” original positions and facts before any scene changes. This recurring co-activation with the initial state could be the model’s way of constantly comparing the current scene to its starting point, helping it distinguish between what’s stayed the same and what’s changed. Copy suppression’s co-activation with scene representation suggests that as the scene changes (like when `Mark moves the cat`), the model selectively downplays or retains certain facts.
 
 <br>
 
@@ -939,7 +943,7 @@ It's likely that the initial and action states act as an anchor or reference poi
 
 The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
-The heads here may also attend to previous names in the sequence but operate differently. Some heads show high query bias, dominating the activations space over keys and values for the basket token. This directly affects the belief state. Instead of promoting the correct prediction, they suppress the logit of the `box` token by writing in the opposite direction of the belief state heads. This suppression mechanism could be serving as a form of regularization, inhibition or negative belief state, preventing the model from over-relying on certain patterns and ensuring a balanced attention distribution.
+Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the basket token by focusing more on queries than keys or values. This directly impacts the belief state. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the box token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
 
 The full circuit reveals a nuanced algorithm in its attention—and each group of heads play a distinct but interconnected role:
 
@@ -966,17 +970,17 @@ The full circuit reveals a nuanced algorithm in its attention—and each group o
 
 <br>
 
-The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads. Here, we often see stronger contributions from the key vectors, suggesting these layers are mostly about gathering broad contextual information and maintaining diffuse attention patterns.
+The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads.  These heads focus on picking up broader contextual signals, with key vectors usually having a larger influence. This suggests that early layers are primarily about gathering broad, diffuse information and maintaining generalized attention patterns.
 
-As we move into the middle layers, things get more interesting. The scene representation heads start integrating information from the initial state heads and the action state heads. This is where object tracking, action understanding, and structural processing starts to form. The attention mechanism becomes more balanced between the query and key vectors, reflecting how the model is integrating information and refining its contextual understanding of the scene.
+As we move into the middle layers, things get more interesting. Here, the scene representation heads start doing more compositional work, integrating outputs from the initial state heads and action state heads. This is where object tracking, action understanding, and structural processing beginning to form. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
 
-This integration feeds into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up the initial state, action state and scene representation heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
+This scene understanding flows into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up the initial state, action state and scene representation heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
 
-At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, working to manage information propagation. The value mechanism kicks in to inhibit outdated or irrelevant information, ensuring only the relevant aspects—like a false belief about an object’s location—end up influencing the final prediction.
+At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, both enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
 
-So the model builds a subject's false belief about an object’s location by: **1)** Establishing John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
+So the model builds a subject's false belief about an object’s location by: **1)** Identifying John as a belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
 
-The ToM circuit appears to satisfy the three criteria discussed in Wang et al. The minimality shows how much each attention head from each component of the circuit contributes to the models ToM capability by its direct effect on logit difference. The score represents what percentage of the full model's logit differece (0.8365) this head directly contributes, and the higher the score, the more important the head is to the task.
+The ToM circuit satisfies the three criteria discussed in Wang et al. Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
 
 <br>
 
@@ -993,13 +997,13 @@ Average logit difference (ToM dataset, only using circuit): 0.8457
 
 <br>
 
-In so much that it is faithful—the circuit performs slightly better than the full model, complete—performance suggests all necessary heads for each component has been captured, minimal—the plot shows clear specialization with a minimal number of heads per their importance.
+The ToM circuit hits all the key benchmarks: faithful—the circuit actually outperforms the full model slightly, showing it captures the necessary functions; complete—all heads essential for each component are included; minimal—the plot highlights clear specialization with only a minimal number of heads carrying substantial weight.
 
-The components of the ToM circuit show concentrated importance in specific heads, ~35% in scene representation heads, which suggests that understanding and maintaining the semantics related to scene context is crucial for ToM tasks. Which suggests that these false belief passages heavily rely on maintaining accurate scene representations to track beliefs.
+Breaking it down, the ToM circuit shows concentrated importance in certain heads, with around 35% in the scene representation heads. This suggests that understanding and keeping a coherent grasp of scene context is critical for handling ToM tasks. It implies that these heads are crucial in false belief passages, where maintaining accurate scene representations directly impacts belief tracking.
 
-The initial/action state heads have the smallest impact and likely just provide supporting context to be built up by other heads rather than core belief tracking.
+Meanwhile, the initial and action state heads contribute minimally, acting more as supporting context providers rather than the main drivers of belief tracking.
 
-The circuit is also very modular in the sense that the heads are very specialized, all relevant computation seems cleanly contained within the specific components and there's less interdependence with parts of the network outside of the identified circuit.
+The circuit also shows a high degree of modularity: heads are highly specialized, with relevant computations neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, indicating a clean and compartmentalized structure.
 
 <br>
 
@@ -1038,16 +1042,17 @@ There's a lot more we do not know about these heads and they probably have more 
 
 Ablation studies are widely used in neuroscience and they can be applied to neural networks to assess the contribution of various components of a model to its overall performance. We systematically remove (ablate) specific components, such as neurons, layers or attention heads in the algorithm.
 
-Completely knocking out all of the attention heads 
+Mean ablating the entire ToM circuit reduces performance by ~87%.
 
-associated with the ToM circuit...
+```markdown
+Original believed-actual diff: 0.836511
+Ablated believed-actual diff: 0.108107
+Total circuit effect: 0.728405
+```
 
-No single head significantly affected performance, further validating the distributed nature of the task
+Which suggests these heads work together significantly. The remaining small difference (0.108) suggests minimal ToM capability without the circuit. Unsurprising, the most critical components are the scene representation heads and the belief state heads, where ablating reduces model performance by ~61% and ~23% respectively. No single head significantly affected performance, further validating the distributed nature of the task.
 
-
-
-
-The study here tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
+The second study tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
 
 The point is to identify and eliminate unnecessary components to make the model more efficient. The heads with the strongest positive effects when ablated, shows performance drops (hurts performance, heads are helpful), and heads with the strongest negative effects when ablated, shows performance improves (helps performance, heads might interfere).
 
@@ -1065,10 +1070,11 @@ The belief state shows ~0.5 change in logit difference when ablated from 0.8365 
 
 Given L15H0's QKV interactions, its possible that when this head is removed, others compensate by over-emphasizing belief states. Suggesting backup mechanisms possibly kick in when its ablated, or other heads might overcompensate to allow redundency in the circuit. 
 
-
-
-
 #### Do statistical significance test and confidence intervals on the effect sizes
+
+<br>
+
+<br>
 
 ```markdown
 0.8365 = Original logit diff
