@@ -893,9 +893,7 @@ The features range from low-level tasks (like tracking object positions) to high
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
-SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. 
-
-If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
+SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
 
 As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. 
 
