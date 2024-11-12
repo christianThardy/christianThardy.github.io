@@ -954,7 +954,7 @@ The full circuit reveals a nuanced algorithm in its attention—and each group o
 - **Scene Representation** integrates the initial states and actions, placing them in the context of the ongoing scene, and integrates location changes
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room
       
-- **Belief State Emphasis Heads** maintain subject's mental state from subjects initial state.
+- **Belief State Heads** maintain subject's mental state from subjects initial state.
     - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
       
 - **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
@@ -1007,17 +1007,21 @@ The circuit also shows a high degree of modularity: heads are highly specialized
 
 #### Copy supressions role in the ToM circuit
 
-Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit is a head in the model that responds to the predictions that are being made by heads in earlier layers and it calibrates the final prediction. It's useful for later heads to do this because they get to see everything that comes before them. They get to see all of the context made by the earlier heads in the model and then adjust the level of confidence (positive/negative) of the next predicted token in the sequence wrt the logits before the final token is predicted.
+Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit are heads in the model that involves certain attention heads—often in the later layers—that respond to predictions made by earlier heads and adjust the final output accordingly. These later heads have the advantage of seeing all preceding context and the intermediate predictions generated so far. By leveraging this comprehensive view, they can calibrate the model's confidence (positive/negative) in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
 
-More technically, copy surpression is an algorithm applied to the unembedding space of the model. An induction head (belief state emphasis) sees that `John put the cat on the basket`, the current token is `the` and it starts to output `basket`. This is written to the residual stream and will be mapped to the logits, but then copy supression performs post-processing on this logit space by supressing any output it has seen before that is not relevant to the induction heads context. So we can see heads that do task specific things and then heads that are responding to the previous predictions which is a more general and less specific sub task.
+More technically, copy surpression operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: "John put the cat on the basket," and the current token is "the". The induction head predicts "basket" as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output.
 
-The amount of copy supression is mediated by the amount of attention paid to the copied token. Which makes sense, DOLMs iteratively refine their predictions by learning iteratively, being trained iteratively, then they represent information iteratively though each of its layers as information approaches the final layers.  
+However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. Essentially, while some heads focus on specific tasks—like predicting the next word based on context—other heads serve a more general role. They monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate.
+
+The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of DOLMs. These models refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. 
 
 There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to copy surpress information and when it is bad. 
 
 (Replicate overconfidence metric analysis to test copy supression heads)
 
 (Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
+
+**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
 
 <br>
 
@@ -1029,18 +1033,12 @@ There's a lot more we do not know about these heads and they probably have more 
 
 <br>
 
-<br>
-
-**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
-
-<br>
-
 ### Ablation studies <a id="ablation-studies"></a>
 <sub>[↑](#top)</sub>
 
-Ablation studies are widely used in neuroscience and they can be applied to neural networks to assess the contribution of various components of a model to its overall performance. We systematically remove (ablate) specific components, such as neurons, layers or attention heads in the algorithm.
+Ablation studies are widely used in neuroscience and they are super useful for probing neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
 
-Mean ablating the entire ToM circuit reduces performance by ~87%.
+When we mean-ablate the entire ToM circuit, performance drops by about 87%.
 
 ```markdown
 Original believed-actual diff: 0.836511
@@ -1048,11 +1046,11 @@ Ablated believed-actual diff: 0.108107
 Total circuit effect: 0.728405
 ```
 
-Which suggests these heads work together significantly. The remaining small difference (0.108) suggests minimal ToM capability without the circuit. Unsurprising, the most critical components are the scene representation heads and the belief state heads, where ablating reduces model performance by ~61% and ~23% respectively. No single head significantly affected performance, further validating the distributed nature of the task.
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~10.8%) implies that outside the ToM circuit, there’s not much capacity left for ToM tasks, as expected. Unsurprisingly, the scene representation heads and belief state heads come out as the most critical. Ablating these reduces performance by ~61% and ~23% respectively. Notably, no single head caused a dramatic performance drop, underscoring the distributed nature of this task.
 
-The second study tests the individual heads of the components in isolation using a baseline comparison that preserves the statistical properties of the model while ablating to measure the functional impact of the components logit difference rather than just zeroing out the activation patterns.
+In the next study, we dive deeper by isolating each head within each component, using a more nuanced ablation technique. Instead of just zeroing out activations, we use a baseline comparison that keeps the statistical properties of the model intact, letting us directly measure the functional impact on the logits.
 
-The point is to identify and eliminate unnecessary components to make the model more efficient. The heads with the strongest positive effects when ablated, shows performance drops (hurts performance, heads are helpful), and heads with the strongest negative effects when ablated, shows performance improves (helps performance, heads might interfere).
+The goal is to find and possibly cut out any dead weight, making the model more efficient. Heads that, when ablated, lead to a performance drop indicate that these heads are beneficial (ablating hurts). Meanwhile, heads where ablation improves performance suggest they may be introducing interference into the task.
 
 <br>
 
@@ -1064,9 +1062,13 @@ The point is to identify and eliminate unnecessary components to make the model 
 
 <br>
 
-The belief state shows ~0.5 change in logit difference when ablated from 0.8365 to ~0.3365, so we can see that L22H4 is crucial for maintaining correct belief states. Similar to scene representation L18H6 where there is a ~0.45 change. The L15H0 scene representation head shows a ~-0.2 change, which may actually interfere with belief tracking.
+When we ablate the belief state head (L22H4), we see a notable 0.5 change in logit difference, dropping from 0.8365 to around 0.3365. This makes it clear that L22H4 plays a crucial role in maintaining accurate belief states. We see a similar impact with the scene representation head (L18H6), where ablation results in a ~0.45 change in logit difference. Interestingly, the L15H0 scene representation head causes a ~-0.2 change upon ablation, suggesting it might actually interfere with belief tracking.
 
-Given L15H0's QKV interactions, its possible that when this head is removed, others compensate by over-emphasizing belief states. Suggesting backup mechanisms possibly kick in when its ablated, or other heads might overcompensate to allow redundency in the circuit. 
+Given L15H0’s QKV interactions, it’s possible that its removal allows other heads to step in and even over-emphasize belief states. This hints at potential backup mechanisms in the circuit—when L15H0 is ablated, other heads may overcompensate to maintain belief state redundancy. This kind of head interplay might reflect built-in redundancy, where specific heads can fill in for each other to preserve circuit functionality under ablation.
+
+
+
+
 
 #### Do statistical significance test and confidence intervals on the effect sizes
 
