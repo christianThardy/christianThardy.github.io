@@ -760,22 +760,12 @@ Induction heads.....
 
 The induction circuit consists of a previous token head in layer 0 and an induction head in layer 1, where the induction head learns to attend to the token immediately after copies of the current token via K-Composition with the previous token head.
 
-When looking for the average attention paid to the offset diagonal to find the induction attention pattern.
+When looking for the average attention paid to the offset diagonal to find the induction attention pattern, we can see the strongest signals appear at 6.2, 6.3, 15.0, 17.3, 17.4, 18.6.
 
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/e7b631d5-61e7-48ea-a755-baa49498aaf8" width="500">
-</p>
-
-<br/>
-
-We can see the strongest signals appear at 6.2, 6.3, 15.0, 17.3, 17.4, 18.6.
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/b949a320-85f1-4868-b3bb-9c773c25b6cb" width="500">
+  <img src = "https://github.com/user-attachments/assets/c5e034a4-8b2f-4042-8736-16d708cb54a2" width="500">
 </p>
 
 <br/>
@@ -1125,15 +1115,17 @@ Each component serves a specific rolw at different points in the sequence. The t
 
 Ablation studies are widely used in neuroscience and they are super useful for probing neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
 
-When we mean-ablate the entire ToM circuit, performance drops by about 87%.
+When we mean-ablate the entire ToM circuit, performance drops by about 100%, showing a reversal in the believed-actual difference.
 
 ```markdown
+Full Circuit Mean Ablation Results:
+Number of heads ablated: 28
 Original believed-actual diff: 0.836511
-Ablated believed-actual diff: 0.108107
-Total circuit effect: 0.728405
+Ablated believed-actual diff: -0.228279
+Total circuit effect: 1.064790
 ```
 
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~10.8%) implies that outside the ToM circuit, there’s not much capacity left for ToM tasks, as expected. Unsurprisingly, the scene representation heads and belief state heads come out as the most critical. Ablating these reduces performance by ~61% and ~23% respectively. Notably, no single head caused a dramatic performance drop, underscoring the distributed nature of this task.
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~-27.3%) implies that outside the ToM circuit, there’s not much capacity left for ToM tasks, as expected. Unsurprisingly, the negative belief state heads and induction heads come out as the most critical. Ablating these reduces performance by ~45.2% and ~40.5% respectively.
 
 In the next study, we dive deeper by isolating each head within each component, using a more nuanced ablation technique. Instead of just zeroing out activations, we use a baseline comparison that keeps the statistical properties of the model intact, letting us directly measure the functional impact on the logits.
 
