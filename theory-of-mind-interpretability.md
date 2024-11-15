@@ -661,12 +661,11 @@ Specifically, 14.3, 16.2, 20.2, and 25.5 all show evidence of negative behavior 
 
 <p align="center">
   <img src = "https://github.com/user-attachments/assets/a424bb3e-90f7-4992-ab3f-3fd26ba45ebe" width="900">
-  <img src = "https://github.com/user-attachments/assets/1670b458-7601-4449-b901-3df3e706dfac" width="900">
 </p>
 
 <br/>
 
-Diving deeper into the activation patching results, focusing on the residual stream/midstream, blue regions indicate where patching helped the model get closer to the correct prediction `basket`, while red regions show where patching hurt (pushing it towards `box`). The clean run is the uncorrupted input—where the model gets things right (`John thinks the cat is on the basket`). The corrupted run comes from swapping adjacent tokens, which messes up the sentence’s meaning and leads to wrong answers. The goal is to patch activations from the clean run into the corrupted one at various layers and sequence positions and see how much it improves the model’s logit difference (i.e., how much closer it gets to predicting the correct answer).
+Diving deeper into the activation patching results, blue regions indicate where patching helped the model get closer to the correct prediction `basket`, while red regions show where patching hurt (pushing it towards `box`). The clean run is the uncorrupted input—where the model gets things right (`John thinks the cat is on the basket`). The corrupted run comes from swapping adjacent tokens, which messes up the sentence’s meaning and leads to wrong answers. The goal is to patch activations from the clean run into the corrupted one at various layers and sequence positions and see how much it improves the model’s logit difference (i.e., how much closer it gets to predicting the correct answer).
 
 Patching the `box` token at layer 1 gives a massive boost, almost recovering full performance. But, as we move to later layers, significant patching happens at the final `the` token before the blank where the model's prediction would go. **This shift hints at something important:** the model first focuses on where the `cat` was (`on the box`), and later on, it shifts to what word needs to be filled in (`basket` vs. `box`). There’s a super interesting pattern—starting from the `box` token in layer 0 and running up to the final `the` token in layer 25. This implies a distinct computational flow across the model’s layers. Early on, (layers 0-10) it’s all about the `box` token (likely where the model locks in the idea that the cat was on the box).
 
