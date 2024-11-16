@@ -366,7 +366,7 @@ But at the same time, I think when an attention head is attending to a token, it
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/c64273c7-5d0b-4efc-bbd1-b0ed05842aa5" width="280"/>
+<img src="https://github.com/user-attachments/assets/b908cc34-5893-40bc-8296-42a62fe229bb" width="280"/>
 </p>
 
 <br>
@@ -376,7 +376,7 @@ In transformer architectures, each token position has a residual stream—a vect
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/d1590634-0cb0-42f5-b177-a17ee0203af1" width="280"/>
+<img src="https://github.com/user-attachments/assets/0193ea80-3953-4411-a71e-125d33efd5b2" width="280"/>
 </p>
 
 <br>
@@ -394,7 +394,7 @@ More on how transformers process information using linear algebra <a href="https
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/61e58090-4367-4a9d-b8bb-411fcb5f0e1b" width="280"/>
+<img src="https://github.com/user-attachments/assets/761d49b6-c841-4ca3-84f0-46c1d1b7c678" width="280"/>
 </p>
 
 <br>
@@ -627,7 +627,7 @@ This is where activation patching comes in. First introduced in the ROME paper (
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/aa21ea4f-67e4-4ab6-a373-cac81c8a3ee5" width="700"/>
+<img src="https://github.com/user-attachments/assets/9d544727-9bb5-4c1f-a222-af0322e40d3a" width="700"/>
 <br>
 <small style="font-size: 8px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</a></small>
 </p>
