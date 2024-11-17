@@ -696,7 +696,14 @@ blocks.25.hook_resid_post: Original: 16.517208099365234, Content: 18.57611846923
 
 <br>
 
-We see a sharp divergence in logit differences between the original and patched content tokens and `the` token at the end of the sequence. So early layers play a foundational role in encoding token-specific information, building up representations of individual tokens, including both semantic (content) and functional (grammatical) tokens. Divergence here reflects that removing or altering these tokens disrupts the encoding process at these foundational layers.
+We also see a sharp divergence in logit differences between the original and patched content tokens and `the` token at the end of the sequence. So early layers play a foundational role in encoding token-specific information, building up representations of individual tokens, including both semantic (content) and functional (grammatical) tokens. Divergence here reflects that removing or altering these tokens disrupts the encoding process at these foundational layers.
+
+```markdown
+Original Logit: 16.517208099365234
+Ablated Logit (Content Only): -17.1851749420166
+```
+
+And when the content tokens are ablated, it causes the logits to flip dramatically to a negative value. Ablating the functional token alongside content tokens doesn’t worsen the result, suggesting that "the" alone cannot meaningfully contribute to the prediction without the content tokens, suggesting that its role as a summarization point depends on the contributions of the content tokens.
 
 The model may use "the" as a summarization position when we see the effects of patching `the` mirroring that of content tokens across all layers. This is plausible since functional tokens like `the` often act as anchors or separators in sentences, helping the model organize context. Attention mechanisms likely aggregate information at these positions, which explains why patching "the" has a similar impact as patching content tokens.
 
