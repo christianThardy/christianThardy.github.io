@@ -677,28 +677,26 @@ One cool takeaway is how localized the effect is—patching just a few tokens or
 
 The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on reinforcing John’s false belief.
 
-But there are many more takeaways, and we can dig deeper to analyze how models encode and summarize abstract information at specific token positions not directly related to the task, revealing sort of structural regularities in LLMs. The visual isolation of `box` and `leaves` at their positions suggest that rather than Mark or John's belief state being directly moved to the final token, they are both aggregated on intermediate summarization tokens `box` and `leaves` that represent object location and some action taken by Mark, and then `the` functions as a final aggregation point, bringing together all of the context before the prediction is made. 
+But there are many more takeaways, and we can dig deeper to analyze how models learn the capability to encode and summarize abstract information at specific token positions not directly related to the task, revealing sort of structural regularities in LLMs. The visual isolation of `box` and `leaves` at their positions suggest that rather than Mark or John's belief state being directly moved to the final token, they are both aggregated on intermediate summarization tokens `box` and `leaves` that represent object location and some action taken by Mark, and then `the` functions as a final aggregation point, bringing together all of the context before the prediction is made. 
 
-These token positions act as dedicated storage points rather than information being distributed across many positions. The stark contrast suggests these positions are special and are carrying concentrated information until layer 22 in the `box` and `leaves` tokens and then transfers all of it to the `the` token right before prediction.
+The model uses these token positions as dedicated storage points that aggregate causally important information relating to an entity at a particular token for later use rather than attending back to the original tokens that werer the source of the information. The `box` and `leaves` tokens store this information at layer 22 and then transfers all of it to the `the` token right before prediction. As a by product of this behavior, these tokens become as important as the phrases that precede them.
 
 Weak evidence shows that the summarization motif<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">16</a>]</sub> is not just for sentiment, but might be a general mechanism models use—in this case to track and update information about sequential events. The model may be using `the` tokens as a reference point to maintain a coherent representation of the scene. This is found by patching clean residual activations for specific tokens (content and functional) into a corrupted model run at specific layers.
 
-The baseline logit difference when the model processes the text normally is 16.52, both `box`, `leaves` (content words) and `the` (function word) tokens produce identical logit differences that are 36% higher than the original, implying the model's reliance on these positions to make its prediction. Suggesting the token are:
-
-- Storing actual state information at "box"
-- Maintaining absence information at "leaves"
-- Using "the" for belief state computation
+The baseline logit difference when the model processes the text normally is 16.52, both `box`, `leaves` (content words) and `the` (function word) tokens produce identical logit differences that are 36% higher than the original, implying the model's reliance on these positions to make its prediction. Suggesting the tokens are storing contextual information.
 
 <br>
 
 ```markdown
 blocks.2.hook_resid_post: Original: 16.517208099365234, Content: 119.10560607910156, 'the': 119.10560607910156
+blocks.10.hook_resid_post: Original: 16.517208099365234, Content: 22.416271209716797, 'the': 22.416271209716797
 blocks.22.hook_resid_post: Original: 16.517208099365234, Content: 6.501191139221191, 'the': 6.501191139221191
+blocks.25.hook_resid_post: Original: 16.517208099365234, Content: 18.57611846923828, 'the': 18.57611846923828
 ```
 
 <br>
 
-We see a sharp divergence in logit differences between the original and patched content or "the" tokens. So early layers play a foundational role in encoding token-specific information, building up representations of individual tokens, including both semantic (content) and functional (grammatical) tokens. Divergence here reflects that removing or altering these tokens disrupts the encoding process at these foundational layers.
+We see a sharp divergence in logit differences between the original and patched content tokens and `the` token at the end of the sequence. So early layers play a foundational role in encoding token-specific information, building up representations of individual tokens, including both semantic (content) and functional (grammatical) tokens. Divergence here reflects that removing or altering these tokens disrupts the encoding process at these foundational layers.
 
 The model may use "the" as a summarization position when we see the effects of patching `the` mirroring that of content tokens across all layers. This is plausible since functional tokens like `the` often act as anchors or separators in sentences, helping the model organize context. Attention mechanisms likely aggregate information at these positions, which explains why patching "the" has a similar impact as patching content tokens.
 
