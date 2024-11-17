@@ -713,21 +713,7 @@ Ablation results, especially when accuracy changes, show the importance of the T
 
 This is interesting because classical constituency would suggest the ability to think that the `cat is on the basket` requires tokenizing a representation of the cat, so if I mes with or interfere with you ability to represent the cat, I will mess with your ability to perform on tasks that require thinking about the `cat is on the basket`. This kind of principle is important in a lot of visual psychophysics if you want to understand how things are encoded, so you interfere with these bits of information and you see which ones are really intergral by knocking out the ability to represent it you won't be able to represent it, and this kind of behavioral implication of compositionality can we tested and witnessed as ToM directions in the residual stream that encode early context to inform later semantics. 
 
-Which makes sense given ToM requires tracking both believed and actual locations. Multiple tokens, whose positions are crucial for the model to correctly predict beliefs, maintain significant activations simultaneously, suggesting parallel processing of different aspects of the belief state. There's a clear progression from early storage in context tokens ("box", "leaves") to final processing at "the". The transfer appears gradual, possibly reflecting the complexity of belief state tracking.
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/b4d4f65b-6628-42a3-bb4b-de89915c8b82" width="950">
-</p>
-
-<br/>
-
-The middle plot shows the effect of patching attention head outputs at each layer and head. Again, the color shows how much patching that specific head shifts the model's prediction from `box` to `basket`.
-
-There are moderate signals in early layers, with the strongest signals being in the middle, suggesting the middle layers are important to the models' resolution of where the cat is located. Which contrasts to previous analysis of layer 22 where it seemed to be the most important. From this perspective it looks much more subtle, indicating that layer 22 might be doing more fine-tuning rather than making dramatic changes to the prediction. It's particularly striking because this pattern appears consistent across all three views (residual stream, attention output, and MLP output), where the signal from middle to later layers shifts more positive.
-
-The biggest takeaway? The early layers are doing much of the heavy lifting in terms of building the representation and middle to late layers are doing much more modifying. This fits the pattern we’d expect—later layers are where the model locks in its final decision; small tweaks to attention outputs here can dramatically change the model’s output, whereas earlier layers are more about building up representations.
+Which makes sense given ToM requires tracking both believed and actual locations. Multiple tokens, whose positions are crucial for the model to correctly predict beliefs, maintain significant activations simultaneously, suggesting parallel processing of different aspects of the belief state. There's a clear progression from early storage in context tokens ("box", "leaves") to final processing at "the".
 
 <br/>
 
