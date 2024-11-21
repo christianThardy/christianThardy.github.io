@@ -5,7 +5,6 @@
 #### Table of Contents <a id="top"></a>
 - [Introduction](#introduction)
 - [The relationship between theory of mind and language](#the-relationship-between-theory-of-mind-and-language)
-    - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identify Relevant Layers and Activations](#identify-relevant-layers-and-activations)
@@ -967,7 +966,7 @@ Because of spectral clustering its possible to see which components have groups 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/dd7d6109-c3d1-4354-a994-1d6d651fbff4" width="600"/>
+<img src="https://github.com/user-attachments/assets/b9a84303-fed7-44c8-b51d-bbbf0ddee187" width="600"/>
 </p>
 
 <br>
@@ -1058,14 +1057,14 @@ The ToM circuit satisfies the three criteria discussed in Wang et al. Minimality
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/aaf17afd-59ad-4002-897b-c2d29186a847" width="700"/>
+<img src="https://github.com/user-attachments/assets/584ab188-91b9-4d5f-ad09-105d1e90d0ee" width="700"/>
 <br>
 <small style="font-size: 8px;"></a></small>
 </p>
 
 ```markdown
 Average logit difference (ToM dataset, using entire model): 0.8365
-Average logit difference (ToM dataset, only using circuit): 0.8457
+Average logit difference (ToM dataset, only using circuit): 0.9373
 ```
 
 <br>
@@ -1120,17 +1119,17 @@ Each component serves a specific rolw at different points in the sequence. The t
 
 Ablation studies are widely used in neuroscience and they are super useful for probing neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
 
-When we mean-ablate the entire ToM circuit, performance drops by about 100%, showing a reversal in the believed-actual difference.
+When we mean-ablate the entire ToM circuit, performance drops by about 80.66%, showing a massive reduction in the believed-actual difference and the model's confidence of the token `basket` as the correct prediction.
 
 ```markdown
 Full Circuit Mean Ablation Results:
 Number of heads ablated: 28
 Original believed-actual diff: 0.836511
-Ablated believed-actual diff: -0.228279
-Total circuit effect: 1.064790
+Ablated believed-actual diff: 0.162061
+Total circuit effect: 0.674451
 ```
 
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~-27.3%) implies that outside the ToM circuit, there’s not much capacity left for ToM tasks, as expected. Unsurprisingly, the negative belief state heads and induction heads come out as the most critical. Ablating these reduces performance by ~45.2% and ~40.5% respectively.
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
 
 In the next study, we dive deeper by isolating each head within each component, using a more nuanced ablation technique. Instead of just zeroing out activations, we use a baseline comparison that keeps the statistical properties of the model intact, letting us directly measure the functional impact on the logits.
 
@@ -1139,7 +1138,7 @@ The goal is to find and possibly cut out any dead weight, making the model more 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/a2c9b0ee-b7ce-4714-8798-b534fc968100" width="900"/>
+<img src="https://github.com/user-attachments/assets/96e25160-c828-45f4-a2d1-ae044fbc1b1e" width="900"/>
 <br>
 <small style="font-size: 8px;"></a></small>
 </p>
