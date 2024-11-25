@@ -361,23 +361,17 @@ One common mistake when interpreting attention patterns is to assume that the he
 
 But at the same time, I think when an attention head is attending to a token, it is accessing abstract information stored at that position.
 
-<br>
-
 <p align="center">
-<img src="https://github.com/user-attachments/assets/b908cc34-5893-40bc-8296-42a62fe229bb" width="280"/>
+<img src="https://github.com/user-attachments/assets/31f89a77-fca5-49e1-8b52-a845ad5b2c11" width="280"/>
 </p>
-
-<br>
 
 In transformer architectures, each token position has a residual stream—a vector that carries forward information as the model processes each layer. We can think of the residual stream as the place where everything communicated from earlier layers are communicated to later layers. It aggregates outputs from previous attention heads and MLPs—everything the model has *thought* so far.
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/0193ea80-3953-4411-a71e-125d33efd5b2" width="280"/>
+<img src="https://github.com/user-attachments/assets/e59b7e99-7c6b-41cb-aeaa-84960f7a0eab" width="270"/>
 </p>
-
-<br>
 
 Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer be decomposed as the sum of contributions from various mechanisms across different layers.
 
@@ -392,10 +386,8 @@ More on how transformers process information using linear algebra <a href="https
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/761d49b6-c841-4ca3-84f0-46c1d1b7c678" width="280"/>
+<img src="https://github.com/user-attachments/assets/5ddfe670-a04f-4ed6-b33c-8b164ac90691" width="280"/>
 </p>
-
-<br>
 
 Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
