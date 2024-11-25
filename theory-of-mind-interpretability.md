@@ -617,7 +617,7 @@ This is where activation patching comes in. First introduced in the ROME paper (
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/eafd2686-7ce0-46e1-8ad1-d0ef5cb6d136" width="700"/>
+<img src="https://github.com/user-attachments/assets/055dc553-968e-42ee-80a2-76ee80902e10" width="700"/>
 <br>
 <small style="font-size: 8px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</a></small>
 </p>
@@ -813,7 +813,7 @@ There are many directions to find because of **1)** polysemanticity, where many 
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/16ce1f4b-32dd-486d-920b-ae2394cea058" width="950px">
+  <img src = "https://github.com/user-attachments/assets/b24edca2-7911-460e-a227-c6ba3434f33e" width="950px">
 </p>
 
 <br/>
@@ -822,10 +822,8 @@ And **2)** superposition, neural networks represent more concepts (features) tha
 
 Basically, neurons represent multiple different things and these things are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
-<br>
-
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e7869efd-bcaa-4d21-b49f-c0e1db1de148" width="480"/>
+<img src="https://github.com/user-attachments/assets/4ca32983-5c7a-457c-9b29-fd01b3446650" width="480"/>
 </p>
 
 <br>
