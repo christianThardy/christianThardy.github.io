@@ -10,7 +10,6 @@
     - [Identify Relevant Layers and Activations](#identify-relevant-layers-and-activations)
     - [Residual Stream and Multi-Head Attention](#residual-stream-and-multi-head-attention)
     - [Iterative Attention Head Analysis and Causal Tracing](#iterative-attention-head-analysis-and-causal-tracing)
-        - [Identifying Fundamental Attention Head Classes](#identifying-fundamental-attention-heads-classes)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
         - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
@@ -738,60 +737,6 @@ Given the previous attention head analysis, it's plausible that Qs and Ks encode
 
 <br>
 
-### Identifying Fundamental Attention Head Classes <a id="identifying-fundamental-attention-heads-classes"></a> 
-<sub>[↑](#top)</sub>
-
-#### Causal Tracing: Path patching
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/3919411e-7c83-42de-8ae7-f73fa567dd7f" width="500">
-</p>
-
-<br/>
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/a3d4650a-70c8-4af6-80aa-6497e49df6c2" width="700">
-</p>
-
-<br/>
-
-#### Induction Heads
-Induction heads.....
-
-The induction circuit consists of a previous token head in layer 0 and an induction head in layer 1, where the induction head learns to attend to the token immediately after copies of the current token via K-Composition with the previous token head.
-
-When looking for the average attention paid to the offset diagonal to find the induction attention pattern, we can see the strongest signals appear at 6.2, 6.3, 15.0, 17.3, 17.4, 18.6.
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/c5e034a4-8b2f-4042-8736-16d708cb54a2" width="500">
-</p>
-
-<br/>
-
-Most key head ablations show minimal impact close to 0, the most notable disruptions happening at layers/heads from the previous plot matching high induction scores, with 6.2 and 6.3 showing major impact. 
-
-Strongest query effects, again around 6.2, 6.3, and 15.0 also shows meaningful imapct aligning well with the induction scores. 
-
-We can see the importance of 6.2, 6.3, 15.0, and 17.3, 17.4, 18.6 on the value and output head ablations, showing consistency across the attention mechanism and confirming their importance as induction heads.
-
-Further supported by examination of each heads QKV output, which shows an evolution from simple pattern matching in early layers to complex tracking and moving in later layers, suggesting these heads work together as a hierarchical induction circuit, with each layer building on the patterns detected by previous layers.
-
-The induction heads likely help maintain these parallel tracks by connecting back to earlier parts of the text where John's last known state is established.
-
-The presence of both previous-token and first-token attending heads suggests the model can track immediate context (through prev_token_heads), maintain long-range dependencies (through first_token_heads), and this dual tracking is crucial for false belief tasks where both immediate and historical context matter.
-
-The ablation results suggest the model has specialized circuits for, maintaining character perspectives, distinguishing between different temporal states and understanding what information characters do and don't have access to.
-
-Which would corresponding to earlier layers (6.2, 6.3) tracking basic state information, middle layers (15.0) integrating perspective information, and later layers (17-18) might make the final prediction based on character knowledge state.
-
-<br>
-
 ## So What?
 <sub>[↑](#top)</sub>
 
@@ -817,6 +762,40 @@ Integrating temporal and perspective information
 These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and character knowledge states, suggesting more sophisticated reasoning abilities than simple pattern matching or next-token prediction.
 
 The fact that ablating these specific head that indicate induction behavior significantly impacts performance suggests these capabilities are localized in specific circuits rather than being diffusely distributed throughout the model, pointing to specialized neural circuitry for handling perspective-taking and belief states.
+
+Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys and values, we can start to build a bigger picture of what is happening. If this is our sequence:
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/2418cd2a-be5a-4076-b77e-b7831aa38390" width="1000">
+</p>
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/33f89aa5-b44d-43f9-82e3-a1aa99819492" width="680">
+</p>
+
+<br/>
+
+The model appears to be tracking the occurences of `box` at index 57, and `basket` at indexes 18 and 29.
+
+In the early layers, the position of the `box` token at index 57 (Marks perspective) acting as the query, strongly attends to the key token `basket` at index 18 (initial state of the room, backwards in the sequence), then compares it to the key token `basket` at index 29 and compute the value. Denoted by the gray curved flow moving to `basket` at index 29 (Johns perspective, forwards in the sequence). When duplicate tokens are detected they are added to the residual stream.
+
+In the middle layers, the `the` token at index 105 acting as the query, attends to the values for each noun-object token at all three positions at varying degrees of strength to aggregate learned patterns and maintain context across multiple sequence positions. The `box` value is connected to the `the` query with a negative modulation, then the value information is passed to the final layers.
+
+Shown from strong negative modulations in activation patching, the inhibition heads receive information from duplicate token heads and actively supress unwanted positions, working with induction heads to guide attention.
+
+Also in the late layers, we can see an induction path where `the` very strongly attends to `basket` at index 29, and `box` from index 57 is hit with strong negative modulation at the last state of processing before the final prediction.
+
+The induction circuit consists of a previous token head in layer 2 and an induction head in layer 18, where the induction head learns to attend to the token immediately after copies of the current token via K-Composition with the previous token heads. When looking for the average attention paid to the offset diagonal to find the induction attention pattern, we can see the strongest signals appear at 2.5, 6.2, 18.6, and 22.4.
+
+Further supported by examination of each heads QKV output, which shows an evolution from simple pattern matching in early layers to complex tracking and moving in later layers, suggesting these heads work together as a hierarchical induction circuit, with each layer building on the patterns detected by previous layers.
+
+The induction heads likely help maintain the parallel tracks of the scene from Mark and John's perspective by connecting back to earlier parts of the text where John's last known state of the cat is established.
+
+So in the early and middle layers we see duplicate relationships, broad context and inhibition, and then induction and supression working together in the late layers.
 
 <br>
 
