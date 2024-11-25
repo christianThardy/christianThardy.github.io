@@ -4,7 +4,7 @@
 
 #### Table of Contents <a id="top"></a>
 - [Introduction](#introduction)
-- [The relationship between theory of mind and language](#the-relationship-between-theory-of-mind-and-language)
+- [The Relationship Between Theory of Mind and Language](#the-relationship-between-theory-of-mind-and-language)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identifying Relevant Layers and Activations](#identifying-relevant-layers-and-activations)
