@@ -1136,54 +1136,6 @@ Given L15H0’s QKV interactions, it’s possible that its removal allows other 
 
 <br>
 
-<br>
-
-```markdown
-0.8365 = Original logit diff
-16.3298 = Direct Logit Attribution of top name mover head
--15.4933 = Naive prediction of post ablation logit diff
-0.8365 = Logit diff after ablating L18H6
-```
-
-```markdown
-Top Name Mover to ablate: 18.6
-```
-
-```markdown
-Patched logit diff: 0.836511
-Clean logit diff: 0.836510
-Corrupted logit diff: 0.371032
-Metric value: 0.000002
-```
-
-
-
-```python
-Copying Scores (name
-    mover heads)    
-┏━━━━━━━━━┳━━━━━━━━┓
-┃ Head    ┃ Score  ┃
-┡━━━━━━━━━╇━━━━━━━━┩
-│ (11, 5) │ 91.74% │
-│ (22, 4) │ 94.50% │
-│ (22, 5) │ 0.92%  │
-│ Average │ 17.27% │
-└─────────┴────────┘
-   
-   Copying Scores   
-(negative name mover
-       heads)       
-┏━━━━━━━━━┳━━━━━━━━┓
-┃ Head    ┃ Score  ┃
-┡━━━━━━━━━╇━━━━━━━━┩
-│ (23, 5) │ 22.94% │
-│ (23, 6) │ 0.00%  │
-│ Average │ 12.73% │
-└─────────┴────────┘
-```
-
-<br>
-
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
