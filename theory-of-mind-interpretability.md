@@ -524,7 +524,7 @@ Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-
 <p align="center">
 <img src="https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a" width="700"/>
 <br>
-<small id="layer-22-head" style="font-size: 8px;">Layer 22, head 4.</small>
+<small id="#layer-22-head" style="font-size: 8px;">Layer 22, head 4.</small>
 </p>
 
 <br>
