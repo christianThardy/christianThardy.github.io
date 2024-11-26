@@ -741,7 +741,7 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic example of specialization in action and likely represents an induction head. This head does a few key things:
 
-**Composes and maintains perspectives:** It attends to tokens that represent belief states, like John’s belief. [Check out this plot again](#layer-22-head). The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
+**Composes and maintains perspectives:** It attends to tokens that represent belief states, like John’s belief. [Check out this plot again](#layer-22-head-4). The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
 
 The spikes for query, key and value in this head appear concentrated on tokens earlier in the sequence, specifically in John's region where `basket` and `cat` occur with high value contributions and `box` with significantly lower value contributions, indicating these are tokens central to the repetitive patterns in the sequence. The attention seems biased toward earlier occurrences of tokens like `basket` and `cat` with stronger contributions for these earlier tokens in heads 2, 3 and 4 compared to the layers other heads, showing a clear leftward bias and the models' capability to separate John's belief from Mark's belief. 
 
