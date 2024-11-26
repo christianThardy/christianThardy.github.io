@@ -468,9 +468,7 @@ The DOLMs attention mechanisms weigh the importance of different parts of the To
 - **Key (K):** Represents the tokens considered for attention at each position.
 - **Value (V):** Contains the information to be propagated forward. Basically a weight determining to how relevant the key is to the query.
 
-The way QKV attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values.
-
-So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values.
+The way QKV attention works is sort of like how a search engine operates. Imagine you’re looking for a video on YouTube —the text you type in the search bar is your query. The search engine then compares that query to a bunch of keys —like video titles, descriptions, tags that are stored in its database. Finally, it retrieves and ranks the best-matching videos —which are the values. So, attention is basically about mapping a query to the most relevant keys and pulling out the corresponding values. This allows attention heads to specialize: some heads prioritize token alignment (through Q and K), while others are focused on aggregating and relaying information (through V and Z).
 
 In somewhat technical terms, the values for the QK vectors control how much attention each token pays to others within the attention mechanism. A larger Q relative to K suggests the current token is more strongly driving the attention, meaning it's "searching" for relevant information to attend to. On the other hand, when K is larger than Q, it indicates that the token associated with K is drawing more attention from other tokens—essentially, it's being "attended to." The Vs hold the actual information or features from the input tokens and play a crucial role in determining what information is passed forward once the attention scores between Q and K are calculated.
 
@@ -526,6 +524,7 @@ Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-
 <p align="center">
 <img src="https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a" width="700"/>
 <br>
+<small id="layer-22-head-4" style="font-size: 8px;">Layer 22, head 4.</small>
 </p>
 
 <br>
@@ -663,25 +662,25 @@ Between layers 10-20, the patching impact spreads more evenly across tokens. Thi
 
 One cool takeaway is how localized the effect is—patching just a few tokens or layers can fix a lot of the model’s mistakes. It’s not spreading out the info evenly across the whole network. Instead, there’s a very directed flow of information from `box` to `the` over time, as if the relevant information for choosing `basket` over `box` is stored at the `box` token located at the position in the passage where Mark moved the cat.
 
-**This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while early and midstream activations are key for representing changes in location (whether the cat ends up on the basket or box).
+**This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while early and midstream activations are key for representing changes in location (whether the cat ends up on the basket or box). The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on reinforcing John’s false belief.
 
-The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on reinforcing John’s false belief.
+There’s a lot to dig into here, but one big takeaway is how models seem to encode and summarize abstract information at specific, arbitrary token positions that act as structural anchor points<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">16</a>]</sub>. This points to a surprising regularity in how LLMs organize their internal representations.
 
-But there are many more takeaways, and we can dig deeper to analyze how models learn the capability to encode and summarize abstract information at specific token positions not directly related to the task, revealing sort of structural regularities in LLMs. The visual isolation of `box` and `leaves` at their positions suggest that rather than Mark or John's belief state being directly moved to the final token, they are both aggregated on intermediate summarization tokens `box` and `leaves` that represent object location and some action taken by Mark, and then `the` functions as a final aggregation point, bringing together all of the context before the prediction is made. 
+Specifically, the tokens box and leaves stand out. Their isolation to patching suggests that rather than Mark or John's belief state being directly moved to the final token, these tokens seem to act as intermediate summarization nodes—box representing the object’s location and leaves summarizing Mark’s action. Then the token the takes on a final aggregation role, pulling everything together before prediction.
 
-The model uses these token positions as dedicated storage points that aggregate causally important information relating to an entity at a particular token for later use rather than attending back to the original tokens that werer the source of the information. The `box` and `leaves` tokens store this information at layer 22 and then transfers all of it to the `the` token right before prediction. As a by product of this behavior, these tokens become as important as the phrases that precede them.
+The model uses these token positions as dedicated storage points. Instead of always attending back to the original source tokens, the model compresses and aggregates causally relevant information at intermediate tokens like box and leaves, passing that along to the at layer 22. By the time the prediction happens, all the information from earlier in the context is funneled through these positions. As a result, these tokens become just as important—if not more so—than the phrases that originally introduced the information.
 
-Weak evidence shows that the summarization motif<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">16</a>]</sub> is not just for sentiment, but might be a general mechanism models use—in this case to track and update information about sequential events. The model may be using `the` tokens as a reference point to maintain a coherent representation of the scene. This is found by patching clean residual activations for specific tokens (content and functional) into a corrupted model run at specific layers.
+Weak evidence shows that the summarization motif is not just for sentiment, but might be a general mechanism models use—in this case to track and update information about sequential events. The model may be using `the` tokens as a reference point to maintain a coherent representation of the scene. This behavior was discovered by patching clean residual activations for content (`box`, `leaves`) and functional (`the`) tokens into a corrupted model run at specific layers to isolate their contribution.
 
-The baseline logit difference when the model processes the text normally is 16.52, both `box`, `leaves` (content words) and `the` (function word) tokens produce identical logit differences that are 36% higher than the original, implying the model's reliance on these positions to make its prediction. Suggesting the tokens are storing contextual information.
+The baseline logit difference for the uncorrupted run is 16.52. But when clean activations are patched in for `box`, `leaves` and `the`, the logit difference increases by 36%. This strongly implies that the model is relying on these positions to store contextual information and that these tokens play a central role in the model’s predictions.
 
 <br>
 
 ```markdown
-blocks.2.hook_resid_post: Original: 16.517208099365234, Content: 119.10560607910156, 'the': 119.10560607910156
-blocks.10.hook_resid_post: Original: 16.517208099365234, Content: 22.416271209716797, 'the': 22.416271209716797
-blocks.22.hook_resid_post: Original: 16.517208099365234, Content: 6.501191139221191, 'the': 6.501191139221191
-blocks.25.hook_resid_post: Original: 16.517208099365234, Content: 18.57611846923828, 'the': 18.57611846923828
+blocks.2.hook_resid_post: Original: 16.517208099365234, Content Tokens: 119.10560607910156, 'the': 119.10560607910156
+blocks.10.hook_resid_post: Original: 16.517208099365234, Content Tokens: 22.416271209716797, 'the': 22.416271209716797
+blocks.22.hook_resid_post: Original: 16.517208099365234, Content Tokens: 6.501191139221191, 'the': 6.501191139221191
+blocks.25.hook_resid_post: Original: 16.517208099365234, Content Tokens: 18.57611846923828, 'the': 18.57611846923828
 ```
 
 <br>
@@ -693,17 +692,17 @@ Original Logit: 16.517208099365234
 Ablated Logit (Content Only): -17.1851749420166
 ```
 
-And when the content tokens are ablated, it causes the logits to flip dramatically to a negative value. Ablating the functional token alongside content tokens doesn’t worsen the result, suggesting that "the" alone cannot meaningfully contribute to the prediction without the content tokens, suggesting that its role as a summarization point depends on the contributions of the content tokens.
+Ablating the content tokens causes the logits to flip dramatically, dropping to a large negative value. Ablating the functional token `the` alongside content tokens doesn’t worsen the result. This suggests that `the`  on its own cannot contribute meaningfully to the prediction without the content tokens—its role as a summarization point seems to depend on the presence of the content tokens.
 
-The model may use "the" as a summarization position when we see the effects of patching `the` mirroring that of content tokens across all layers. This is plausible since functional tokens like `the` often act as anchors or separators in sentences, helping the model organize context. Attention mechanisms likely aggregate information at these positions, which explains why patching "the" has a similar impact as patching content tokens.
+It’s plausible that the model uses `the` as a summarization position, especially since patching `the` produces effects that closely mirror those of content tokens across layers. Functional tokens like `the` often act as anchors or separators, helping models organize context by serving as aggregation points for attention. The attention heads likely focus on `the` to pull in information from content tokens. This aligns with the observation that patching the has a similar causal impact as patching content tokens—it’s not acting independently but rather facilitating the aggregation of meaningful context.
 
-Furthermore, in tests to identify a *ToM direction* in the model's represetation space by using distributed alignment search (DAS) to find a vector in the activation space that maximally aligns with correct predictions of the ToM task to test the causal role of the ToM direction in making predictions about John’s belief, activations were projected onto the ToM direction and ablated to test the causal significance of this direction, utilizing single and combined directional ablations.
+To investigate the ToM direction in the model's representation space, Distributed Alignment Search (DAS) was used to identify a vector in the activation space that aligns maximally with correct predictions on the ToM task. This ToM direction was then tested for its causal role in predicting John’s belief. Activations were projected onto the ToM direction and ablated, with both single and combined directional ablations used to assess its significance.
 
-Ablation results, especially when accuracy changes, show the importance of the ToM direction and specific tokens in belief representation. This showed causal relationships between the `box`, `leaves` and `the` token positions in relation to the task performance at layer 22, one clear finding from the data is that the combined ablation had a dramatic effect of a -0.625 accuracy change from a pre-ablation accuracy of 0.625 to a post-ablation accuracy of 0.
+The results were striking. Ablating the ToM direction caused clear accuracy drops, highlighting its importance for belief representation. Specifically, the `box`, `leaves`, and `the` token positions at layer 22 played a critical role in task performance. Combined ablations had the most dramatic impact, causing accuracy to plummet from 0.625 pre-ablation to 0.0 post-ablation—a shocking -0.625 change. This provides strong causal evidence that the ToM direction, along with specific token representations, is central to the model's ability to reason about beliefs in this task.
 
-This is interesting because classical constituency would suggest the ability to think that the `cat is on the basket` requires tokenizing a representation of the cat, so if I mes with or interfere with you ability to represent the cat, I will mess with your ability to perform on tasks that require thinking about the `cat is on the basket`. This kind of principle is important in a lot of visual psychophysics if you want to understand how things are encoded, so you interfere with these bits of information and you see which ones are really intergral by knocking out the ability to represent it you won't be able to represent it, and this kind of behavioral implication of compositionality can we tested and witnessed as ToM directions in the residual stream that encode early context to inform later semantics. 
+This is fascinating because classical constituency theory suggests that understanding something like `the cat is on the basket` requires the model to explicitly encode a representation of `cat`. If you interfere with the model’s ability to represent `cat`, it should break down on tasks involving that idea. This principle is widely used in visual psychophysics to study encoding—you knock out specific pieces of information and see what breaks. If interfering with a representation prevents the system from performing, you’ve identified something integral. In the context of transformers, this plays out as behavioral implications of compositionality: you can test and observe how ToM directions in the residual stream encode early context and carry it forward to influence later semantics.
 
-Which makes sense given ToM requires tracking both believed and actual locations. Multiple tokens, whose positions are crucial for the model to correctly predict beliefs, maintain significant activations simultaneously, suggesting parallel processing of different aspects of the belief state. There's a clear progression from early storage in context tokens ("box", "leaves") to final processing at "the".
+This lines up with the nature of ToM tasks, which require tracking both believed and actual object locations. The model appears to leverage multiple token positions (box, leaves) to maintain belief-relevant activations in parallel, processing different facets of the belief state simultaneously. There’s a clear progression: early context tokens like box and leaves store critical information, which are then funneled into the token the for final processing. This demonstrates a structured pipeline where information flows through specific points in the residual stream, enabling the model to piece together belief representations over time.
 
 <br/>
 
@@ -713,47 +712,55 @@ Which makes sense given ToM requires tracking both believed and actual locations
 
 <br/>
 
-These activation patching results shed light on what’s happening inside attention heads across layers. Again, each attention head does two key things: **1)** deciding where to move information (governed by the attention pattern, which the QK vectors control) and **2)** deciding what information to move (handled by the V vectors, influenced by the OV vectors). By isolating either the attention pattern or the value vectors through patching, we can tease apart which factor is more crucial.
+These activation patching results shed light on what’s happening inside attention heads across layers. Let’s step back for a second—each attention head does two key things: **1)** deciding where to move information (governed by the attention pattern, controlled by the QK interaction) and **2)** deciding what information to move (handled by the V vectors, influenced by the OV projection). By patching either the attention pattern or the value vectors, we can tease apart which factor is more crucial and doing the heavy lifting.
 
-Let’s start with the `z` plot (output vector). Patching outputs from certain heads noticeably  shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is very distributed, but specifically, L16H7, L17H6, L22H2, L22H4 and L25H4 have the largest positive impact, along with L0H1, L3H1, L6H1, L8H1 (all previous layers have the same head, very interesting), L12H2, L14H3, L17H3, L16H2, L20H2, and L23H5 having the largest negative impact. Now, looking at the `q` plot (Q vectors), we see familar negative heads. This suggests that modifying the focus of these queries is pretty impactful for steering the model away from less accurate outputs. This signal pops up across early, mid, and late layers, possibly as the model navigates true belief alignment. The `k` plot (K vectors) is less clear, though L14H1 and L17H2 seem to matter. For the `v` plot (V vectors), certain heads like L22H1 and L22H2 are particularly important. Vs are the actual information passed on after attention, so heads with impactful V vectors directly shape the model’s final output.
+Let’s start with the `z` plot (output vector). Patching outputs from certain heads noticeably  shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is pretty distributed, but some heads stand out: 16.7, 17.6, 22.2, 22.4 and 25.4 have the largest positive impact, along with 0.1, 3.1, 6.1, 8.1 (all previous layers have the same head position, very interesting), 12.2, 14.3, 17.3, 16.2, 20.2, and 23.5 having the largest negative impact. 
 
-When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. L23H5 impacts both the output and Qs, while head 2 is more influential on Ks and Vs. It’s fascinating to see how different heads specialize: some heads prioritize token alignment (through Q and K), while others are focused on aggregating and relaying information (through V and Z).
+Now, looking at the `q` plot (Q vectors), we see familar patterns—negative heads in particular are pretty impactful, suggesting that modifying the queries’ focus is key for steering the model away from inaccurate outputs. This signal shows up across early, middle, and late layers, possibly reflecting the model’s attempts to align with the “true belief”.
 
-Examining Q plot, layer 17 head 3, the patched activation is indicating a subtle negative activation. In the same layer and head's QKV plot from the iterative attention head analysis, `box` shows the highest activations with lower activations for `John` early in the sequence. Moderate activations for initial context and action words throughout the sequence. This suggests the model is actively balancing between different perspectives and factual grounding (the belief vs. reality contrast). 
+The k plot (K vectors) is less clear, though heads like 14.1 and 17.2 show some influence. Finally, the v plot (V vectors) highlights some key heads, with 22.1 and 22.2 standing out. Since Vs represent the actual information passed through attention, heads with influential Vs directly shape the model’s final predictions.
 
-By this point in the sequence, it seems the model has deduced that `box` doesn’t heavily attend to `John`, a relationship the patch highlights with that faint red activation. It’s also worth noting how this insight carries forward, flowing into layer 22, head 4, where the model continues to refine this nuanced “belief adjustment” with highest confidence as it learns.
+When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. For example, 23.5 impacts both the output and Qs, while head 2 is more influential on Ks and Vs.
 
-Broadly speaking, models learn to interpret contextual relationships, which helps them understand cause and effect (John initially places the cat on the basket and then leaves the room, Mark then moves the cat to the box after John has left). Their Qs and Ks work together to determine which parts of the input each head attends to. 
+Examining Q plot for layer 17 and head 3, the patched activation shows a subtle negative shift. In the same layer and head's QKV plot from the earlier attention head analysis, we see this head assigning high activations to `box` while assigning lower activations to `John` early in the sequence. There's moderate activation for initial context and action related tokens throughout the sequence. This seems to indicate the model is actively balancing between different perspectives and factual grounding (the belief vs. reality contrast). 
 
-Given the previous attention head analysis, it's plausible that Qs and Ks encode separate perspectives—where Qs represent John’s mental model of the cat’s location, while Ks capture the reality, and Vs could carry the false or true belief (where the cat really is), with Zs balancing the belief that is more weighted by the Q or K. Together, they nudge the model toward a coherent final output.
+By this point in the sequence, the model appears to have deduced that `box` doesn’t strongly attend to `John`. The patch highlights this with a faint red activation, showing how the relationship is being discounted. This carries forward into layer 22, head 4, where the model refines this “belief adjustment” with greater confidence, learning that `box` is the true location while John’s belief is outdated.
+
+Stepping back, these insights highlight how the model uses contextual relationships to understand cause and effect. (Example: John places the cat on the basket, leaves the room, and then Mark moves the cat to the box.) Qs and Ks collaborate to decide which parts of the input each head attends to.
+
+My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the characters, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs, then, act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer.
 
 <br>
 
 ## So What?
 <sub>[↑](#top)</sub>
 
-The model seems to have developed a systematic, multi-step process for solving this task. It starts by handling basic syntactic dependencies in the early layers, context-driven processing in middle layers by identifying the key facts (like `cat on box`), integrates that context into the final layers, resolves any ambiguity to arrive at the correct conclusion (`cat on basket`) using semantic attention patterns.
+The model seems to have developed a systematic, multi-step process for solving this task. Early layers handle low-level tasks like syntactic dependencies, while middle layers focus on context-driven processing, identifying key facts like `cat on box`. By the time we reach the later layers, the model integrates this context and resolves ambiguities, landing on the correct conclusion (`cat on basket`) by using semantic attention patterns to disentangle competing perspectives.
 
-Different heads specialize in distinct functions. Particularly in layer 22 head 4, the head focuses on attending to important tokens that **compose and maintain perspectives** (queries, John's belief), **represent actual changes** in the environment **regardless of character perspective** (key vectors → state of the world), and **prioritizes groundtruth details** (values vectors → relevant details, where the output vector reflects whichever perspective the attention mechanism emphasizes), showing the models' capability to separate John's belief from reality. This division of labor shows that the model breaks down the task into subtasks, with different heads handling different parts of the process.
+### Specialization across heads
 
-What’s interesting is that the role the head’s take over evolves across layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers.
+Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic example of specialization in action and likely represents an induction head. This head does a few key things:
 
-The last few layers are particularly important for the final output—small tweaks here can shift the model’s prediction. This fits with the idea that earlier layers are mainly focused on feature extraction and building a representation, while the later layers are more about making the final decision. The model has learned how to transform its input into a form where making the final classification becomes straightforward.
+**Composes and maintains perspectives:** It attends to tokens that represent belief states, like John’s belief. [Check out this plot again.](#layer-22-head-4) The heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns, which captures where John believes the cat will be located when he returns. 
 
-Another interesting point is that patching just a few key components—either specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model’s understanding isn’t brittle. Rather, it can be "nudged" in the right direction by fixing a few critical pieces, because it breaks the problem down into specialized subtasks, processes information in a sparse and localized way, and gradually transforms its representation over multiple layers to reach the right conclusion.
+The spikes for query, key and value in this head appear concentrated on tokens earlier in the sequence, specifically in John's region where `basket` and `cat` occur with high value contributions and `box` with significantly lower value contributions, indicating these are tokens central to the repetitive patterns in the sequence. The attention seems biased toward earlier occurrences of tokens like `basket` and `cat` with stronger contributions for these earlier tokens in heads 2, 3 and 4 compared to the layers other heads, showing a clear leftward bias and the models' capability to separate John's belief from Mark's belief. 
 
-So across each set of heads, the model keeps circling back to foundational representations it encoded in earlier layers, using these as anchors to interpret and refine its understanding in later layers. The attention integrates information from different points in the narrative, pulling context from any position in the sequence, relying on earlier representations built up in the residual stream to maintain coherence and refine its predictions. For instance, once the model pins down `John` as the belief holder early on, it holds onto that insight as the narrative progresses, letting it shape how events are interpreted in downstream layers. This isn’t just limited to `John`—the model applies this approach across all linguistic elements, ensuring cohesive tracking throughout the sequence.
+**Resilience through sparse, localized representations:** What’s interesting is that the role the head’s take over evolves across layers. The output of a head at one layer isn’t just a simple transformation of what it did in the previous layer. There are complex interactions between heads and the residual stream, allowing the model to gradually shift its internal representation and get closer to solving the task as it moves through the layers. 
 
-Identifying attention head classes shows that the model has developed sophisticated mechanisms for:
+One fascinating insight is how patching just a few key components—like specific tokens or heads—with activations from a clean run is enough to steer the model back to the correct answer. This suggests the model processes information in a sparse, localized way, breaking the problem down into specialized subtasks. It doesn’t rely on a single brittle representation; instead, it layers insights, gradually refining its understanding over time. For example, the model identifies John as the belief holder early in the sequence and uses this as an anchor. 
 
-Tracking multiple states of reality
-Understanding character knowledge limitations
-Maintaining long-range dependencies in text
-Integrating temporal and perspective information
+This insight flows forward through the layers, shaping how subsequent events are interpreted. The same approach applies across the narrative—the model maintains cohesive tracking of all linguistic elements by integrating earlier representations stored in the residual stream with new information from later layers. This long-range dependency management is key to its performance.
 
-These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and character knowledge states, suggesting more sophisticated reasoning abilities than simple pattern matching or next-token prediction.
+**Sophisticated mechanisms for processing:** Zooming out, attention head analysis shows the model has developed specialized circuits for:
 
-The fact that ablating these specific head that indicate induction behavior significantly impacts performance suggests these capabilities are localized in specific circuits rather than being diffusely distributed throughout the model, pointing to specialized neural circuitry for handling perspective-taking and belief states.
+- Tracking multiple states of reality: It keeps separate representations for what’s true versus what characters believe.
+- Understanding character knowledge limitations: Heads explicitly encode what a character knows - versus what they don’t know.
+- Maintaining long-range dependencies: The model integrates information from across the sequence, ensuring coherence.
+- Integrating temporal and perspective information: It distinguishes changes over time while keeping track of different viewpoints.
+
+These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and character knowledge states, suggesting sophisticated pattern matching and next-token prediction.
+
+**Localized circuit for belief tracking:** It’s worth noting how ablation experiments reinforce the idea that these capabilities are localized. Heads exhibiting induction behavior show significant performance drops when ablated
 
 Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys and values, we can start to build a bigger picture of what is happening. If this is our sequence:
 
@@ -777,17 +784,15 @@ In the early layers, the position of the `box` token at index 57 (Marks perspect
 
 In the middle layers, the `the` token at index 105 acting as the query, attends to the values for each noun-object token at all three positions at varying degrees of strength to aggregate learned patterns and maintain context across multiple sequence positions. The `box` value is connected to the `the` query with a negative modulation, then the value information is passed to the final layers.
 
-Shown from strong negative modulations in activation patching, the inhibition heads receive information from duplicate token heads and actively supress unwanted positions, working with induction heads to guide attention.
-
-Also in the late layers, we can see an induction path where `the` very strongly attends to `basket` at index 29, and `box` from index 57 is hit with strong negative modulation at the last state of processing before the final prediction.
+Shown from strong negative modulations in activation patching, the inhibition heads receive information from duplicate token heads and actively supress unwanted positions, working with induction heads to guide attention. Also in the late layers, we can see an induction path where `the` very strongly attends to `basket` at index 29, and `box` from index 57 is hit with strong negative modulation at the last state of processing before the final prediction.
 
 The induction circuit consists of a previous token head in layer 2 and an induction head in layer 18, where the induction head learns to attend to the token immediately after copies of the current token via K-Composition with the previous token heads. When looking for the average attention paid to the offset diagonal to find the induction attention pattern, we can see the strongest signals appear at 2.5, 6.2, 18.6, and 22.4.
 
-Further supported by examination of each heads QKV output, which shows an evolution from simple pattern matching in early layers to complex tracking and moving in later layers, suggesting these heads work together as a hierarchical induction circuit, with each layer building on the patterns detected by previous layers.
+Further supported by examination of each heads QKV mechanism, which shows an evolution from simple pattern matching in early layers to complex tracking and moving in later layers, suggesting these heads work together as a hierarchical induction circuit, with each layer building on the patterns detected by previous layers.
 
 The induction heads likely help maintain the parallel tracks of the scene from Mark and John's perspective by connecting back to earlier parts of the text where John's last known state of the cat is established.
 
-So in the early and middle layers we see duplicate relationships, broad context and inhibition, and then induction and supression working together in the late layers.
+So in the early and middle layers we see duplicate relationships, broad context and inhibition, and then induction and inhibition working together in the late layers.
 
 <br>
 
