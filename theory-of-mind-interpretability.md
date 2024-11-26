@@ -23,7 +23,7 @@
 
 <br>
 
-*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#iterative-attention-head-analysis-and-activation-patching" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
+*This post is a deep dive into the internals of transformer models. I'll assume you're comfortable with some basics, but I'll also be covering a lot of specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with certain parts, you can jump straight to the results in the following sections<sub>[<a href="#attention-head-analysis-and-causal-tracing" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#conclusion" title="Go to section" rel="nofollow">3</a>]</sub>.*
 
 <br>
 
@@ -979,7 +979,7 @@ It’s likely that the initial and action states act as an anchor for the subcir
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/47970454-6f36-435c-befd-7b68d8c8c954" width="650"/>
+<img src="https://github.com/user-attachments/assets/bac58df9-eba1-4327-a69b-47445fcc6096" width="650"/>
 <br>
 <small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
 </p>
@@ -1010,7 +1010,7 @@ The full circuit reveals a nuanced algorithm in its attention—and each group o
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/1cdbad02-1845-415b-8f66-b5a120676fbd" width="650"/>
+<img src="https://github.com/user-attachments/assets/574f9555-f955-410b-a5ac-c5af019231f8" width="650"/>
 </p>
 
 <br>
