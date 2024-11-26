@@ -489,27 +489,27 @@ Selecting a few heads across layers, we can see how things are playing out in th
 <br>
 
 - **Early Layers & Heads 0-10:**
-    - **Layer 0, Head 7:** Attends to elements like `in` and `on` and other adpositions
-    - **L5, H2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
-    - **L8, H0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
-    - **L10, H0:** Strong focus on `is`, `on`, and `cat`, consolidating scene representation
-    - **L10, H1:** High attention to `on` and `cat`, primarily focused on retrieving information rather than combining, Q vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs with minimal K activations
+    - **Layer 0.Head 7:** Attends to elements like `in` and `on` and other adpositions
+    - **5.2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
+    - **8.0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
+    - **10.0:** Strong focus on `is`, `on`, and `cat`, consolidating scene representation
+    - **10.1:** High attention to `on` and `cat`, primarily focused on retrieving information rather than combining, Q vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs with minimal K activations
       <br>
-    - **L10, H4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases—`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong V spikes for verb-object agreement (`takes the cat`, `puts it`). Highest v spikes around complete action sequences (`takes the cat and puts it on`)
+    - **10.4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases—`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong V spikes for verb-object agreement (`takes the cat`, `puts it`). Highest v spikes around complete action sequences (`takes the cat and puts it on`)
 
 - **Middle Layers & Heads 10-17:**
-    - **L14, H0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
-    - **L14, H3:** Very high attention to `box`, possibly encoding the actual state
-    - **L14, H6:** Increasing attention to `basket` compared to `box`, suggesting comparison
-    - **L16, H0:** Focuses on `room` with moderate attention to objects and spatial relationships
-    - **L16, H2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
-    - **L16, H3:** High attention to `cat` and `on`, objects and spatial relationships
-    - **L16, H7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
-    - **L17, H0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context.
-    - **L17, H3:** Very high attention to `box`, reinforcing possibly reinforcing where the cat is actually located
-    - **L17, H4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
-    - **L17, H6:** Attends to mainly determiners, especially the final one at the end of the sequence
-    - **L17, H7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
+    - **14.0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover belief state
+    - **14.3:** Very high attention to `box`, possibly encoding the actual state
+    - **14.6:** Increasing attention to `basket` compared to `box`, suggesting comparison
+    - **16.0:** Focuses on `room` with moderate attention to objects and spatial relationships
+    - **16.2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
+    - **16.3:** High attention to `cat` and `on`, objects and spatial relationships
+    - **16.7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
+    - **17.0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context.
+    - **17.3:** Very high attention to `box`, reinforcing possibly reinforcing where the cat is actually located
+    - **17.4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
+    - **17.6:** Attends to mainly determiners, especially the final one at the end of the sequence
+    - **17.7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
 
 <br>
 
@@ -596,7 +596,7 @@ In relation to this, we can also see the suppression of the actual current state
 **Attention patterns:**
 
 - Many heads in layers 22-25 show high attention to `basket` and relatively lower attention to `box`.
-- L23H5 and head 6 show particularly strong attention to `basket` over all instances of the token in the sequence, where `box` activations are relatively low.
+- 23.5 and head 6 show particularly strong attention to `basket` over all instances of the token in the sequence, where `box` activations are relatively low.
 
 **Activation patterns:**
 
@@ -638,8 +638,8 @@ The ability to localize computations like this is a huge win for mechanistic int
 
 <br/>
 
-- L22H4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
-- There are lots of negative contributions throughout the model, but L14H3, L16H2, and L23H5 are very negative and possibly components to a supression circuit (likely representing negative movers and inhibition) that helps the model focus on maintaining John's believed state.
+- 22.4 shows a large positive logit difference, indicating that this head is crucial for the final prediction of `basket`.
+- There are lots of negative contributions throughout the model, but 14.3, 16.2, and 23.5 are very negative and possibly components to a supression circuit (likely representing negative movers and inhibition) that helps the model focus on maintaining John's believed state.
 
 An important thing to note is that these functions are not neatly isolated, but are distributed and overlapping across multiple positive and negative attention heads. For instance, several heads likely work together to represent the "mental state," and many of these heads also contribute to other tasks. Suppression-like activity, for example, doesn’t come from a single head—it emerges from the interactions between multiple heads throughout the network.
 
@@ -876,7 +876,7 @@ These features suggest that the model is building an internal representation of 
 
 One standout aspect of the model’s capacity to track scene changes lies in its approach to temporal sequencing—it’s almost like it’s keeping a detailed record of event order. Take, for instance, feature 11786, which captures *statements involving returning or coming back from a situation or event*. This kind of specialized tracking is just one of many spatial and temporal features we find scattered throughout the residual stream, indicating the model’s capability for not only for understanding static states but also for representing the flow of actions as they unfold in time and space.
 
-The residual stream, in particular, plays a key role as an information-preservation highway across the layers. For example, it receives inputs from L10H4 and relays them through to L14H0 and then to L17H3. Through this pathway, we can observe representations of actions forming within the residual stream itself, often refined further by the MLPs.
+The residual stream, in particular, plays a key role as an information-preservation highway across the layers. For example, it receives inputs from 10.4 and relays them through to 14.0 and then to 17.3. Through this pathway, we can observe representations of actions forming within the residual stream itself, often refined further by the MLPs.
 
 <br>
 
@@ -1118,9 +1118,9 @@ The goal is to find and possibly cut out any dead weight, making the model more 
 
 <br>
 
-When we ablate the belief state head (L22H4), we see a notable 0.5 change in logit difference, dropping from 0.8365 to around 0.3365. This makes it clear that L22H4 plays a crucial role in maintaining accurate belief states. We see a similar impact with the scene representation head (L18H6), where ablation results in a ~0.45 change in logit difference. Interestingly, the L15H0 scene representation head causes a ~-0.2 change upon ablation, suggesting it might actually interfere with belief tracking.
+When we ablate the belief state head (22.4), we see a notable 0.5 change in logit difference, dropping from 0.8365 to around 0.3365. This makes it clear that 22.4 plays a crucial role in maintaining accurate belief states. We see a similar impact with the scene representation head (18.6), where ablation results in a ~0.45 change in logit difference. Interestingly, the 15.0 scene representation head causes a ~-0.2 change upon ablation, suggesting it might actually interfere with belief tracking.
 
-Given L15H0’s QKV interactions, it’s possible that its removal allows other heads to step in and even over-emphasize belief states. This hints at potential backup mechanisms in the circuit—when L15H0 is ablated, other heads may overcompensate to maintain belief state redundancy. This kind of head interplay might reflect built-in redundancy, where specific heads can fill in for each other to preserve circuit functionality under ablation.
+Given 15.0’s QKV interactions, it’s possible that its removal allows other heads to step in and even over-emphasize belief states. This hints at potential backup mechanisms in the circuit—when 15.0 is ablated, other heads may overcompensate to maintain belief state redundancy. This kind of head interplay might reflect built-in redundancy, where specific heads can fill in for each other to preserve circuit functionality under ablation.
 
 
 
