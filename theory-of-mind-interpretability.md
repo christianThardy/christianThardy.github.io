@@ -517,19 +517,18 @@ We can see the model building its representation across layers, with later layer
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in L0H7 and L10H1. Both showing rigid, position-based patterns, clean isolated spikes. L0H7 shows strong Q spikes at regular intervals with minimal KV interference, it might be doing token-level copying or positional tracking, but the sharp, forward, diagnoal increased magnitude of Q spikes screams systematic copying with position awareness to me. L10H1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns.
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predicts what will happen next) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in character actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4...
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a" width="700"/>
 <br>
-<small id="layer-22-head-4" style="font-size: 8px;">Layer 22 head 4</small>
 </p>
 
 <br>
 
-Specifically, for the asymmetric patterns in layer 22 head 4, the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of where the cat was placed (might be an artifact given its almost everywhere). The V attention (green) show strong contributions around `basket` early in the sequence, completely dominating the V attention of `box`, and several medium-height spikes around key events in the story (like when the cat is moved).
+...the highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of where the cat was placed (might be an artifact given its almost everywhere). The V attention (green) show strong contributions around `basket` early in the sequence, completely dominating the V attention of `box`, and several medium-height spikes around key events in the story (like when the cat is moved).
 
 The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. The value contributions from both `basket` and `box` mentions show the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief and passing that information forward to other layers and heads. 
 
@@ -741,7 +740,7 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic example of specialization in action and likely represents an induction head. This head does a few key things:
 
-**Composes and maintains perspectives:** It attends to tokens that represent belief states, like John’s belief. [Check out this plot again](#layer-22-head-4). The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
+**Composes and maintains perspectives:** It attends to tokens that represent belief states, like John’s belief. [Check out this plot again.](https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a) The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
 
 The spikes for query, key and value in this head appear concentrated on tokens earlier in the sequence, specifically in John's region where `basket` and `cat` occur with high value contributions and `box` with significantly lower value contributions, indicating these are tokens central to the repetitive patterns in the sequence. The attention seems biased toward earlier occurrences of tokens like `basket` and `cat` with stronger contributions for these earlier tokens in heads 2, 3 and 4 compared to the layers other heads, showing a clear leftward bias and the models' capability to separate John's belief from Mark's belief. 
 
