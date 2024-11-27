@@ -944,37 +944,27 @@ Because of spectral clustering its possible to see which components have groups 
 
 <br>
 
-We see initial-state heads co-activating with action-state heads early on, setting up a stable context for the initial and intermediate parts of the sequence with high similarity. Belief-state heads and scene-representation heads start co-activating in the intermediate and penultimate states, while still referencing that initial and action-state context—like when John or Mark leave or return. This makes sense, as the model has to keep updating its belief state about the environment based on what’s going on in the scene throughout the sequence, but are especially active when establishing initial beliefs and making final predictions, which specifically helps preserve initial state information for later comparison and when the final scene state needs to be compared with beliefs. 
+We see nsubj-1 heads (John) co-activating with nsubj-2 heads (Mark) early on, setting up a stable context for the initial and intermediate parts of the sequence with higher similarity between the location state and nsubj-2 heads. Potentially suggesting its important for the model to learn the actual location of things early in the sequence.
 
-Interestingly, the initial and action states fade out as belief and scene representation heads start to integrate more of the learned context and semantics. Given the strong Q bias here, this isn’t unexpected. When John is “thinking” at the end of the sequence, “thinks” functions as a clausal complement verb, representing a mental act rather than a concrete physical or verbal action. 
+The duplicate token heads, and to a lesser extent the induction heads of nsubj-1 co-activate throughout the sequence with high similarity to the inhibition heads which have a negative effect on the heads for nsubj-2 up until the penultimate and final states. Showing that the model never fully disregards the actual location of the cat, but actively chooses where the cat is based on where John believes that it is.
 
-The negative belief state shows complementary patterns with the belief state. A strong negative belief state at the beginning of the sequence makes sense intuitively; one tracks positive beliefs, the other tracks what's not believed, and they also have complementary effects with scene representation in the final state. The negative belief state's strong activations in the initial state and weak activation in the later state suggests these heads may be involved in encoding what is **NOT** true at the start by creating *negative* representations that help track what a character doesn't know/believe.
+The location state co-activates heavily in the inital and final state. This makes sense as the model has to keep updating the belief state of John and Mark about the environment based on what’s going on in the scene throughout the sequence, its possible this specifically helps preserve initial state information for later comparison and when the final location state needs to be compared with beliefs. 
 
-Previous token heads show relatively consistent but mild activation patterns across the initial and intermediate states, with a sharp drop in the penultimate state and an even sharper drop in the final state. Intuitively, this makes sense as previous token heads should be active throughout the sequence to track and process token-to-token relationships up to a certain point. 
+The location state's previous token heads show relatively consistent but mild activation patterns across the initial and intermediate states, with a sharp drop in the penultimate state and an uptick in the final state. Intuitively, this makes sense as previous token heads should be working together with the induction heads to move toward the right prediction. 
 
-The strong negative activation in the final state suggests these heads are actively suppressed when the model needs to make its final prediction about John's belief. This also makes mechanistic sense, in the final prediction, the model needs to recall John's last known state (before he left). Simply attending to the previous token would give the wrong answer (the current true location). The negative activation, in tandem with the inhibition (suppression) activation likely helps prevent the model from being biased by recent/current state.
+Inhibition heads show complementary inverse patterns with the induction heads. Strong suppression at the beginning of the sequence makes sense intuitively; the model is tracking the competing view points by nsubj-1 and nsubj-2. Inhibition's strong activations in the initial state and weaker, albeit still very active activation in the later state offsetting the model’s final prediction. 
 
-Interestingly, while previous token heads are suppressed, scene representation and belief state are active, and induction heads maintain moderate activation, which naively suggests they take over to retrieve and use the correct historical state, switching the model from sequential processing to memory-based reasoning.
+This suggests these heads may be involved in encoding what is **NOT** true at the start by creating *negative* representations that help track what a character doesn't “know” or “believe”. In other words, high suppression co-activation directly affects the final predicted location of the cat. This lines up with the low activation values we’re seeing at positions connected to nouns and locations in 23.5.
 
-Induction heads show minimal activation during initial state, stronger activation during intermediate state, the strongest activation during penultimate state and moderate activation during final state. The pattern is suggesting that induction heads are most active when the model needs to recall and apply patterns from earlier in the sequence, particularly engaged during the penultimate state, which is when the model needs to recall the initial state to predict John's belief and less active during initial encoding of information. So it's important for connecting later events back to earlier states.
+Induction heads show minimal activation during initial state, stronger activation during intermediate state, and the strongest activation during the final state. The pattern is suggesting that induction heads are most active when the model needs to recall and apply patterns from earlier in the sequence, particularly engaged during the final state, which is when the model needs to recall the initial state to predict John's belief and less active during initial encoding of information. So it's important for connecting later events back to earlier states.
 
-This aligns with the QKV patterns we saw earlier from the induction head ablation studies, where induction heads showed increasing activation through the sequence, peaking at critical state transition points. The QKV analysis reveals the mechanical basis for this behavior - progressive refinement of pattern detection and state tracking through the network.
+This aligns with the QKV patterns seen from the induction head ablation studies, where induction heads showed increasing activation through the sequence, peaking at critical state transition points. The QKV analysis reveals the mechanical basis for this behavior—progressive refinement of pattern detection and state tracking through the network.
 
 The contrast between these two heads are revealing, previous token heads maintain consistent, low-level activation—suggesting they handle basic sequential processing. Induction heads show state-dependent activation—suggesting they're involved in more complex pattern recognition and recall tasks, especially when the model needs to access information from much earlier in the sequence.
 
 This aligns with the earlier analysis of the induction head ablation studies, where these groups were identified as serving distinct functions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
 
-The fact that induction heads show peak activation during the Penultimate State (when the model needs to recall John's last known state) strongly suggests they play a crucial role in maintaining and retrieving relevant historical information for the false belief task.
-
-Copy suppression kicks in weakly at the beginning, but it steadily ramps up, progressively increasing suppression as conflicting belief states make the scene change, likely relating to copying/repeating attention behavior. In the final part of the sequence, we see copy suppression co-activating with belief state heads, offsetting the model’s final prediction. It’s stopping the model from copying current states that don’t fit with the past context of where the cat is supposed to be by the end.
-
-**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
-**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
-**NEED TO DIFFERENTIATE BETWEEN INIHIBTION AND NEGATIVE MOVER HEADS TO RELATE TO THE COPY SUPRESSION HEAD, FEELS LIKE ITS A CATCH ALL RIGHT NOW (CROSS REFERENCE WITH ACTIVATION PATCHING/PATH PATCHING/QKV PLOT RESULTS)**
-
-In other words, high suppression co-activation directly affects the final predicted location of the cat. This lines up with the low activation values we’re seeing at positions connected to nouns and locations in L23H5.
-
-It’s likely that the initial and action states act as an anchor for the subcircuit, helping it “remember” original positions and facts before any scene changes. This recurring co-activation with the initial state could be the model’s way of constantly comparing the current scene to its starting point, helping it distinguish between what’s stayed the same and what’s changed. Copy suppression’s co-activation with scene representation suggests that as the scene changes (like when `Mark moves the cat`), the model selectively downplays or retains certain facts.
+The fact that induction heads show peak activation during the penultimate state (when the model needs to recall John's last known state) strongly suggests they play a crucial role in maintaining and retrieving relevant historical information for the false belief task.
 
 <br>
 
@@ -986,25 +976,25 @@ It’s likely that the initial and action states act as an anchor for the subcir
 
 <br>
 
-The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated beliefs or information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
+The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
-Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the basket token by focusing more on queries than keys or values. This directly impacts the belief state. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the box token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
+Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the `basket` token by focusing more on queries than keys or values. This directly impacts the belief states. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the `box` token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
 
 The full circuit reveals a nuanced algorithm in its attention—and each group of heads play a distinct but interconnected role:
 
-- **Initial State Heads** identify initial state of locations and subject positions.
-    - e.g., cat in room, box in room, basket in room, John in room, Mark in room, room
+- **nsubj-1 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to John.
+    - e.g., cat in room, box in room, basket in room, John in room, Mark in room, John puts cat on basket
       
-- **Action State Heads** identify subject actions and their relationships to objects.
+- **nsubj-2 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to Mark.
     - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
       
-- **Scene Representation** integrates the initial states and actions, placing them in the context of the ongoing scene, and integrates location changes
-    - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room
+- **location state (previous-backup token heads)** captures local dependencies, primarily focusing on locations of subjects and objects to tokens immediately preceding the current one, placing them in the context of the ongoing scene.
+    - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room, John goes to school, Mark goes to work
       
-- **Belief State Heads** maintain subject's mental state from subjects initial state.
+- **nsubj-1 belief state (induction heads)** maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in a sequence.
     - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
       
-- **Copy Supression Heads** negatively effect true-beliefs and prevents copying the actual location of the object.
+- **Copy Supression Heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors.
     - e.g., John+++, Mark+, cat on basket++++, cat on box--
  
 <br>
@@ -1017,11 +1007,11 @@ The full circuit reveals a nuanced algorithm in its attention—and each group o
 
 The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads.  These heads focus on picking up broader contextual signals, with key vectors usually having a larger influence. This suggests that early layers are primarily about gathering broad, diffuse information and maintaining generalized attention patterns.
 
-As we move into the middle layers, things get more interesting. Here, the scene representation heads start doing more compositional work, integrating outputs from the initial state heads and action state heads. This is where object tracking, action understanding, and structural processing beginning to form. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
+As we move into the middle layers, things get more interesting. Here, the location state heads start doing more compositional work, integrating outputs from nsubj-1 state heads and nsubj-2 state heads. This is where object tracking, action understanding, and structural processing begin to form. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
 
-This scene understanding flows into the belief state heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up the initial state, action state and scene representation heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
+This scene understanding flows into nsubj-1's belief state or induction heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up by their initial head states, and the location state heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
 
-At the final stages, the copy suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, both enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
+At the final stages, the suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, both enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
 
 So the model builds a subject's false belief about an object’s location by: **1)** Identifying John as a belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
 
@@ -1044,11 +1034,11 @@ Average logit difference (ToM dataset, only using circuit): 0.9373
 
 The ToM circuit hits all the key benchmarks: faithful—the circuit actually outperforms the full model slightly, showing it captures the necessary functions; complete—all heads essential for each component are included; minimal—the plot highlights clear specialization with only a minimal number of heads carrying substantial weight.
 
-Breaking it down, the ToM circuit shows concentrated importance in certain heads, with around 35% in the scene representation heads. This suggests that understanding and keeping a coherent grasp of scene context is critical for handling ToM tasks. It implies that these heads are crucial in false belief passages, where maintaining accurate scene representations directly impacts belief tracking.
+Breaking it down, the ToM circuit shows concentrated importance in certain heads, with over 40% in the induction heads of nsubj-1's belief state. This suggests that understanding and keeping a coherent grasp of where John thinks the cat is, is critical for handling ToM tasks. It implies that these heads are crucial in false belief passages, where maintaining an accurate representation of the scene from the character who first moved the cat directly impacts belief tracking.
 
-Meanwhile, the initial and action state heads contribute minimally, acting more as supporting context providers rather than the main drivers of belief tracking.
+Meanwhile, the duplicate and previous- backup token heads contribute minimally, acting more as supporting context providers rather than the main drivers of belief tracking.
 
-The circuit also shows a high degree of modularity: heads are highly specialized, with relevant computations neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, indicating a clean and compartmentalized structure.
+The circuit also shows a high degree of modularity: heads are highly specialized, with relevant computations neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, showing a clean and compartmentalized structure.
 
 <br>
 
@@ -1080,8 +1070,6 @@ There are key interactions and patterns that we can see backed by qualitative ev
 Circuit components complement each other during belief processing. Belief state and negative belief state clusters show complementary patterns; one tracks positive beliefs, the other tracks what's not believed and both interact with scene representation in final state.
 
 Circuit components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activation over sequence, and copy suppression prevents simple copying at end.
-
-And finally we can see a steady flow of information of Initial States → Action State → Scene Representation → Belief State, which shows a clear pipeline of information processing from initial encoding to final belief prediction.
 
 Each component serves a specific rolw at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
 
@@ -1197,3 +1185,6 @@ Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[
 McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2024.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">22</a>]
 
 Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">23</a>]
+
+
+https://arxiv.org/pdf/2402.13055
