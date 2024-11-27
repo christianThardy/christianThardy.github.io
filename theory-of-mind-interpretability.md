@@ -1044,34 +1044,24 @@ The circuit also shows a high degree of modularity: heads are highly specialized
 
 #### Copy supressions role in the ToM circuit
 
-Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit are heads in the model that involves certain attention heads—often in the later layers—that respond to predictions made by earlier heads and adjust the final output accordingly. These later heads have the advantage of seeing all preceding context and the intermediate predictions generated so far. By leveraging this comprehensive view, they can calibrate the model's confidence (positive/negative) in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
+Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">19</a>] in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjust the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
 
-More technically, copy surpression operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: "John put the cat on the basket," and the current token is "the". The induction head predicts "basket" as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output.
+Copy surpression in later layers operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts "basket" as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
 
-However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. Essentially, while some heads focus on specific tasks—like predicting the next word based on context—other heads serve a more general role. They monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate.
-
-The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of DOLMs. These models refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. 
-
-There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to copy surpress information and when it is bad. 
-
-(Replicate overconfidence metric analysis to test copy supression heads)
-
-(Replicate qk, ov matrices of CS head to test its ability to produce the negative of box)
-
-**Provide high and low level explanation of attention heads and their patterns that make up each node in the circuit** Take all the heads from the low level data and the plots, group them in canva so see QKV patterns across each circuit component. Not sure if it'll go here, but it will be fun to see. Identify ALL copy/induction heads. Correct circuit diagram
+Essentially, while some heads focus on specific tasks—like predicting the next word based on the context of previous next word predictors—other heads monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate. The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of LLMs. They refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to copy surpress information and when it is bad. 
 
 <br>
 
 ## So What?
 <sub>[↑](#top)</sub>
 
-There are key interactions and patterns that we can see backed by qualitative evidence. Circuit components have complementary timing in the way they activate across the sequence. Initial states cluster activates early, action state and scene representation activate more strongly later, showing a clear temporal progression of information processing.
+There are key interactions and patterns that we can see backed by qualitative evidence. Circuit components have complementary timing in the way they activate across the sequence. The location state activates early, nsubj-1 and nsubj-2 states activate more strongly in middle and later layers, showing a clear temporal progression of information processing.
 
-Circuit components complement each other during belief processing. Belief state and negative belief state clusters show complementary patterns; one tracks positive beliefs, the other tracks what's not believed and both interact with scene representation in final state.
+Circuit components complement each other during belief processing. Belief states and inhibition head clusters show complementary patterns; one tracks beliefs, and the other tracks what's not believed.
 
-Circuit components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activation over sequence, and copy suppression prevents simple copying at end.
+Circuit components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
 
-Each component serves a specific rolw at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
+Each component serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
 
 <br>
 
@@ -1091,30 +1081,6 @@ Total circuit effect: 0.674451
 ```
 
 This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
-
-In the next study, we dive deeper by isolating each head within each component, using a more nuanced ablation technique. Instead of just zeroing out activations, we use a baseline comparison that keeps the statistical properties of the model intact, letting us directly measure the functional impact on the logits.
-
-The goal is to find and possibly cut out any dead weight, making the model more efficient. Heads that, when ablated, lead to a performance drop indicate that these heads are beneficial (ablating hurts). Meanwhile, heads where ablation improves performance suggest they may be introducing interference into the task.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/96e25160-c828-45f4-a2d1-ae044fbc1b1e" width="900"/>
-<br>
-<small style="font-size: 8px;"></a></small>
-</p>
-
-<br>
-
-When we ablate the belief state head (22.4), we see a notable 0.5 change in logit difference, dropping from 0.8365 to around 0.3365. This makes it clear that 22.4 plays a crucial role in maintaining accurate belief states. We see a similar impact with the scene representation head (18.6), where ablation results in a ~0.45 change in logit difference. Interestingly, the 15.0 scene representation head causes a ~-0.2 change upon ablation, suggesting it might actually interfere with belief tracking.
-
-Given 15.0’s QKV interactions, it’s possible that its removal allows other heads to step in and even over-emphasize belief states. This hints at potential backup mechanisms in the circuit—when 15.0 is ablated, other heads may overcompensate to maintain belief state redundancy. This kind of head interplay might reflect built-in redundancy, where specific heads can fill in for each other to preserve circuit functionality under ablation.
-
-
-
-
-
-#### Do statistical significance test and confidence intervals on the effect sizes
 
 <br>
 
