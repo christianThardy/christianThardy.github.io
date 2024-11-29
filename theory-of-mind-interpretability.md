@@ -1034,9 +1034,9 @@ Circuit components have complementary timing in the way they activate across the
 
 From the perspective of this task, copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (beliefs), and this has several implications for AI alignment. Because the model has learned to maintain distinct representations and track multiple potentially conflicting "versions of reality," this hints at a capability for nuanced reasoning—understanding different perspectives, and even lying. Investigating inhibition and suppression mechanisms is crucial for understanding how models might deceive, but these same capabilities could be incredibly useful for alignment research. For example, they could help with:
 
--Value learning: Separating "is" from "ought" to reason about values.
--Goal preservation: Keeping different types of goals or beliefs separate and coherent.
--Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between "what is" and "what should be."
+- Value learning: Separating "is" from "ought" to reason about values.
+- Goal preservation: Keeping different types of goals or beliefs separate and coherent.
+- Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between "what is" and "what should be."
 
 These insights could improve alignment techniques and safeguard against belief corruption. But this also raises key questions: how reliable is this mechanism for alignment? Can it scale to more complex belief systems? -What are the failure modes, especially in edge cases? These are exactly the kinds of questions we need to answer to make progress on robust alignment.
 
