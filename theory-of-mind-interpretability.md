@@ -917,7 +917,7 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/b9a84303-fed7-44c8-b51d-bbbf0ddee187" width="600"/>
 <br>   
-<small style="font-size: 8px;">High activation values indicate components that are more activated against components that are more or less dormant.</a></small>
+<small style="font-size: 8px;">High activation values indicate components that are more activated against low activation values.</a></small>
 </p>
 
 <br>
