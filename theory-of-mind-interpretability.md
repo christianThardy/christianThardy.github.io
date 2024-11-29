@@ -1133,5 +1133,7 @@ McDougall, *Indirect Object Identification Exercises and Solutions* Independent.
 
 Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">24</a>]
 
+Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">25</a>]
+
 
 https://arxiv.org/pdf/2402.13055
