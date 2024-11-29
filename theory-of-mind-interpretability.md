@@ -303,7 +303,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. It appears to be distinguishing between actors, objects and honing in on story elements that are crucial for ToM processing, but in a way where we can clearly see a refined heirarchical representation.
 
-Based on what I've seen with PCA, I think its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
+Based on the PCA, its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
 
 <br>
 
@@ -790,7 +790,7 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning aligns closely with the linear representation hypothesis, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs, when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
+Dictionary learning aligns closely with the linear representation hypothesis, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs—and when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
 
 Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. They're trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
 
@@ -804,7 +804,7 @@ There are many directions to find because of **1)** polysemanticity, where many 
 
 <br/>
 
-And **2)** superposition, neural networks represent more concepts (features) than they have neurons and uses linear combinations of neurons to represent these concepts. 
+And **2)** superposition, neural networks represent more concepts (features) than they have neurons and use linear combinations of neurons to represent these concepts. 
 
 Basically, neurons represent multiple different things and these things are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
 
@@ -814,7 +814,7 @@ Basically, neurons represent multiple different things and these things are spre
 
 <br>
 
-So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input. From this we can extract rich structures and representations that the model has learned and how it views different features it has processed.
+So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input. From this we can extract rich structures and representations that the model has learned.
 
 The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
@@ -826,7 +826,7 @@ The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discove
 
 <br>
 
-It seems like the model has specific features dedicated to representing different aspects of the narrative. For example, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
+The model has specific features dedicated to representing different aspects of the narrative in the residual stream. For example, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">17</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
 
 <br>
 
@@ -869,7 +869,7 @@ The residual stream, in particular, plays a key role as an information-preservat
 
 <br>
 
-In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. The **action related features** are a lot **clearer in the residual stream and MLPs**. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model a structure for managing specific narrative events, helping it ground actions and observations.
+In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. The **action related features** are a lot **clearer in the residual stream and MLPs**. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model structures for managing specific narrative events, helping it ground actions and observations.
 
 <br>
 
@@ -906,47 +906,37 @@ The features range from low-level tasks (like tracking object positions) to high
 
 SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">21</a>]</sub>. If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
 
-As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. 
+As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. 
 
-Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. 
+If we zoom out from any single head, we can define specific attention heads across layers as circuit components. From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. The methodology aligns closely with the original paper, but with some tweaks: activation data is collected, co-occurrence metrics are calculated, spectral clustering is applied, and affinity matrices with the Phi coefficient are used with spectral clustering. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-If we zoom out from any single head, we can define specific attention heads across layers as circuit components. From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. 
-
-The methodology aligns closely with the original paper, but with some tweaks: activation data is collected, co-occurrence metrics are calculated, spectral clustering is applied, and affinity matrices with the Phi coefficient are used with spectral clustering. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
-
-The results show distinct ToM subcircuits—sets of attention heads lighting up at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. High activation levels indicate “lit-up” components compared to others. High activation values indicate components that are more activated against components that are more or less dormant.
-
-Because of spectral clustering its possible to see which components have groups of heads that activate together across different contexts. Essentially this allows us to see how information flows through the network as its making its predictions. For example, within scene representation, certain heads may consistently activate with heads in copy suppression, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
+The results show distinct ToM subcircuits—sets of attention heads lighting up at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. This makes it possible to see which components have groups of heads that activate together across different contexts, and allows us to see how information flows through the network as its making its predictions. For example, within the location state, certain heads may consistently activate with inhibition heads in suppression component, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
 
 <br>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/b9a84303-fed7-44c8-b51d-bbbf0ddee187" width="600"/>
+<br>   
+<small style="font-size: 8px;">High activation values indicate components that are more activated against components that are more or less dormant.</a></small>
 </p>
 
 <br>
 
 We see nsubj-1 heads (John) co-activating with nsubj-2 heads (Mark) early on, setting up a stable context for the initial and intermediate parts of the sequence with higher similarity between the location state and nsubj-2 heads. Potentially suggesting its important for the model to learn the actual location of things early in the sequence.
 
-The duplicate token heads, and to a lesser extent the induction heads of nsubj-1 co-activate throughout the sequence with high similarity to the inhibition heads which have a negative effect on the heads for nsubj-2 up until the penultimate and final states. Showing that the model never fully disregards the actual location of the cat, but actively chooses where the cat is based on where John believes that it is.
+The duplicate token heads, and to a lesser extent the induction heads of nsubj-1 co-activate throughout the sequence with high similarity to the inhibition heads, which have a negative effect on the heads for nsubj-2 up until the penultimate and final states. Showing that the model never fully disregards the actual location of the cat, but actively chooses where the cat is based on where John believes that it is.
 
-The location state co-activates heavily in the inital and final state. This makes sense as the model has to keep updating the belief state of John and Mark about the environment based on what’s going on in the scene throughout the sequence, its possible this specifically helps preserve initial state information for later comparison and when the final location state needs to be compared with beliefs. 
+The location state previous token heads co-activate heavily in the inital and final state. This makes sense as the model has to keep updating the belief state of John and Mark about the environment based on what’s going on in the scene throughout the sequence, its possible this specifically helps preserve initial state information for later comparison when the final location of the cat needs to be compared with beliefs. 
 
-The location state's previous token heads show relatively consistent but mild activation patterns across the initial and intermediate states, with a sharp drop in the penultimate state and an uptick in the final state. Intuitively, this makes sense as previous token heads should be working together with the induction heads to move toward the right prediction. 
-
-Inhibition heads show complementary inverse patterns with the induction heads. Strong suppression at the beginning of the sequence makes sense intuitively; the model is tracking the competing view points by nsubj-1 and nsubj-2. Inhibition's strong activations in the initial state and weaker, albeit still very active activation in the later state offsetting the model’s final prediction. 
+Inhibition heads show complementary inverse patterns with the induction heads. Strong suppression at the beginning of the sequence makes sense intuitively; the model is tracking the competing view points by nsubj-1 and nsubj-2. Inhibition's strong activations in the initial state and weaker, albeit still strong activation in the later state offsetting the model’s final prediction. 
 
 This suggests these heads may be involved in encoding what is **NOT** true at the start by creating *negative* representations that help track what an actor doesn't “know” or “believe”. In other words, high suppression co-activation directly affects the final predicted location of the cat. This lines up with the low activation values we’re seeing at positions connected to nouns and locations in 23.5.
 
 Induction heads show minimal activation during initial state, stronger activation during intermediate state, and the strongest activation during the final state. The pattern is suggesting that induction heads are most active when the model needs to recall and apply patterns from earlier in the sequence, particularly engaged during the final state, which is when the model needs to recall the initial state to predict John's belief and less active during initial encoding of information. So it's important for connecting later events back to earlier states.
 
-This aligns with the QKV patterns seen from the induction head ablation studies, where induction heads showed increasing activation through the sequence, peaking at critical state transition points. The QKV analysis reveals the mechanical basis for this behavior—progressive refinement of pattern detection and state tracking through the network.
+This aligns with the QKV patterns seen from the induction head ablation studies, where these groups of heads were identified as serving distinct functions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
 
-The contrast between these two heads are revealing, previous token heads maintain consistent, low-level activation—suggesting they handle basic sequential processing. Induction heads show state-dependent activation—suggesting they're involved in more complex pattern recognition and recall tasks, especially when the model needs to access information from much earlier in the sequence.
-
-This aligns with the earlier analysis of the induction head ablation studies, where these groups were identified as serving distinct functions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
-
-The fact that induction heads show peak activation during the penultimate state (when the model needs to recall John's last known state) strongly suggests they play a crucial role in maintaining and retrieving relevant historical information for the false belief task.
+The fact that induction heads show peak activation during the final state (when the model needs to recall John's last known state) strongly suggests they play a crucial role in maintaining and retrieving relevant historical information for the false belief task.
 
 <br>
 
@@ -958,7 +948,7 @@ The fact that induction heads show peak activation during the penultimate state 
 
 <br>
 
-The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and discarding outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
+The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and suppressing outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
 Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the `basket` token by focusing more on queries than keys or values. This directly impacts the belief states. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the `box` token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
 
@@ -970,14 +960,15 @@ The full circuit reveals a nuanced algorithm in its attention—175 total attent
 - **nsubj-2 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to Mark.
     - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
       
-- **location state (previous-backup token heads)** captures local dependencies, primarily focusing on locations of subjects and objects to tokens immediately preceding the current one, placing them in the context of the ongoing scene.
+- **location state (previous-backup token heads)** captures local dependencies, primarily focusing on locations of subjects and objects with equal weight, to tokens immediately preceding the current one, placing them in the context of the ongoing scene.
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room, John goes to school, Mark goes to work
       
-- **nsubj-1 belief state (induction heads)** maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in a sequence.
-    - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
+- **nsubj-1 belief state (induction heads)** captures long range dependencies, maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in the sequence.
+    - e.g., John put cat on basket, John at school, John not in room, Mark not in room, cat currently on basket
       
 - **Copy Supression Heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors.
-    - e.g., John+++, Mark+, cat on basket++++, cat on box--
+    - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
+        - John+++, Mark+, cat on basket++++, cat on box--
  
 <br>
 
@@ -987,17 +978,17 @@ The full circuit reveals a nuanced algorithm in its attention—175 total attent
 
 <br>
 
-The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads.  These heads focus on picking up broader contextual signals, with key vectors usually having a larger influence. This suggests that early layers are primarily about gathering broad, diffuse information and maintaining generalized attention patterns.
+The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads.  These heads focus on picking up broader contextual signals, with key vectors usually having a larger influence. This suggests that early layers are primarily focused on gathering broad, diffuse information and maintaining generalized attention patterns.
 
-As we move into the middle layers, things get more interesting. Here, the location state heads start doing more compositional work, integrating outputs from nsubj-1 state heads and nsubj-2 state heads. This is where object tracking, action understanding, and structural processing begin to form. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
+As we move into the middle layers, things get more interesting. Here, the location state heads start doing more compositional work, integrating outputs from nsubj-1 state heads and nsubj-2 state heads. This is where object tracking, action understanding, and structural processing begin to take over. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
 
-This scene understanding flows into nsubj-1's belief state or induction heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up by their initial head states, and the location state heads. It’s here that we see the emergence of complex reasoning, such as tracking belief states while keeping attention on earlier elements of the narrative.
+This scene understanding flows into nsubj-1's induction heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up by their initial head states, and the location state heads. It’s here that we see the emergence of complex reasoning and specialized attention heads, such as tracking belief states while keeping attention on earlier elements of the narrative in relation to John.
 
-At the final stages, the suppression heads play a key role. These heads show both positive and negative modulations between the QK mechanisms, both enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
+At the final stages, the suppression heads play a key role. They show both positive and negative modulations between the QK mechanisms, enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information to John's knowledge, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
 
-So the model builds a subject's false belief about an object’s location by: **1)** Identifying John as a belief holder. **2)** Tracking the cat's movement. **3)** Updating object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing outdated or irrelevant information.
+So the model builds the subject's false belief about an object’s location by: **1)** Identifying John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating its knowlege on object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing information irrelevant to the belief holder.
 
-The ToM circuit satisfies the three criteria discussed in Wang et al. Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
+The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub> . Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
 
 <br>
 
@@ -1014,9 +1005,9 @@ Average logit difference (ToM dataset, only using circuit): 0.9373
 
 <br>
 
-The ToM circuit hits all the key benchmarks: faithful—the circuit actually outperforms the full model slightly, showing it captures the necessary functions; complete—all heads essential for each component are included; minimal—the plot highlights clear specialization with only a minimal number of heads carrying substantial weight.
+The ToM circuit hits all the key benchmarks: faithful—the circuit actually outperforms the full model, showing it captures the necessary functions; complete—all heads essential for each component are included; minimal—the plot highlights clear specialization with only a minimal number of heads carrying substantial weight.
 
-Breaking it down, the ToM circuit shows concentrated importance in certain heads, with over 40% in the induction heads of nsubj-1's belief state. This suggests that understanding and keeping a coherent grasp of where John thinks the cat is, is critical for handling ToM tasks. It implies that these heads are crucial in false belief passages, where maintaining an accurate representation of the scene from the actor who first moved the cat directly impacts belief tracking.
+Breaking it down, the ToM circuit shows concentrated importance in certain heads, with over 40% in the induction heads of nsubj-1's belief state. This suggests that understanding and keeping a coherent grasp of where John thinks the cat is, is critical for handling ToM tasks. It implies that an accurate representation of the scene from the actor who first moved the cat directly impacts belief tracking.
 
 Meanwhile, the duplicate and previous- backup token heads contribute minimally, acting more as supporting context providers rather than the main drivers of belief tracking.
 
@@ -1030,18 +1021,24 @@ Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel
 
 Copy surpression in later layers operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts "basket" as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
 
-Essentially, while some heads focus on specific tasks—like predicting the next word based on the context of previous next word predictors—other heads monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate. The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of LLMs. They refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to copy surpress information and when it is bad. 
+Essentially, while some heads focus on specific tasks—like predicting the next word based on the context of previous next word predictors—other heads monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate. The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of LLMs. They refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to surpress information and when it is bad. 
 
 <br>
 
 ## So What?
 <sub>[↑](#top)</sub>
 
-There are key interactions and patterns that we can see backed by qualitative evidence. Circuit components have complementary timing in the way they activate across the sequence. The location state activates early, nsubj-1 and nsubj-2 states activate more strongly in middle and later layers, showing a clear temporal progression of information processing.
+There are key interactions and patterns that we can see backed by qualitative evidence. 
 
-Circuit components complement each other during belief processing. Belief states and inhibition head clusters show complementary patterns; one tracks beliefs, and the other tracks what's not believed.
+Circuit components have complementary timing in the way they activate across the sequence. The location state activates early, nsubj-1 and nsubj-2 states activate more strongly in middle and later layers, showing a clear temporal progression of information processing. Components complement each other during belief processing. Belief states and inhibition head clusters show complementary patterns; one tracks beliefs, and the other tracks what's not believed. Components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
 
-Circuit components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
+From the perspective of this task, copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (beliefs), and this has several implications for AI alignment. Because the model has learned to maintain distinct representations and track multiple potentially conflicting "versions of reality," this hints at a capability for nuanced reasoning—understanding different perspectives, and even lying. Investigating inhibition and suppression mechanisms is crucial for understanding how models might deceive, but these same capabilities could be incredibly useful for alignment research. For example, they could help with:
+
+-Value learning: Separating "is" from "ought" to reason about values.
+-Goal preservation: Keeping different types of goals or beliefs separate and coherent.
+-Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between "what is" and "what should be."
+
+These insights could improve alignment techniques and safeguard against belief corruption. But this also raises key questions: how reliable is this mechanism for alignment? Can it scale to more complex belief systems? -What are the failure modes, especially in edge cases? These are exactly the kinds of questions we need to answer to make progress on robust alignment.
 
 Each component serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
 
