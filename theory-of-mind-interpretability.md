@@ -1070,7 +1070,7 @@ By bridging high-level behavioral analogues with low-level computational mechani
 
 The proposed ToM circuit:
 
-- Identifies specific attention heads as pivotal to false belief tasks. They have the ability to track and update belief states of entities in regards to locations and objects using strong formal linguistic competence via the manipulation of linguistic elements, and tentative functional competence to distinguish facts from the believed reality of a 3rd person perspective.
+- Builds on the IOI task to identify specific attention heads as pivotal to false belief tasks. Which track and update belief states of entities in regards to locations and objects using strong formal linguistic competence and tentative functional competence via the manipulation of linguistic elements, to distinguish facts from the believed reality of a 3rd person perspective.
 
 - Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. This circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
 
