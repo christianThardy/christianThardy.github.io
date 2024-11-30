@@ -1074,7 +1074,7 @@ The proposed ToM circuit:
 
 - Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. This circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
 
-- The proposed ToM circuit is robust to targeted ablations. Critical heads responsible for ToM capabilities, were isolated to validate the circuit. The observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
+- Is robust to targeted ablations. Critical heads responsible for ToM capabilities were isolated to validate the circuit, and the observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
 
 The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. Further studies will explore a wider range of model architectures, tasks, and datasets to assess the robustness and generalizability of these findings.
 
