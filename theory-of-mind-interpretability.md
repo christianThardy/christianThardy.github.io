@@ -1068,15 +1068,7 @@ This suggests that these heads are working together in a highly interdependent w
 
 <br>
 
-The results should be taken with a grain of salt, as the model was only evaluated on one ToM passage. In a future update, goal is to run a proper ablation study on multiple passages to validate or invalidate the proposed circuit.
 
-Grab the most compelling insights from each section and reiterate on them here
-
-The activation patching plots show that the output prediction is strongly influenced by the attention heads that focus on John's last known action and the initial state of the room. Those attention heads are..........
-
-The circuit is not very clean, its a cyclical/recursive task
-
-<br>
 
 <br>
 
