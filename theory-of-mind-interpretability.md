@@ -1066,7 +1066,19 @@ This suggests that these heads are working together in a highly interdependent w
 
 <br>
 
+By bridging high-level behavioral analogues with low-level computational mechanisms, this work hopes to contribute to the understanding of transformer models’ inner workings when performing structured ToM tasks. 
 
+The proposed ToM circuit:
+
+- Identifies specific attention heads as pivotal to false belief tasks, that focus their ability to track and update belief states of entities about objects, and make up isolated processes happening within the interconnectedness of a dense network to distinguish facts from the believed reality of a 3rd person perspective.
+
+- Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. This circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
+
+- The proposed ToM circuit is robust to targeted ablations. Critical heads responsible for ToM capabilities, were isolated to validate the circuit. The observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
+
+The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. Further studies will explore a wider range of model architectures, tasks, and datasets to assess the robustness and generalizability of these findings.
+
+While its possible to say we have a partial map between human and machine language processing, transformers do not fully capture the consistency and generality of human cognition. However, the success of the formal and functional linguistic competence of large language models should not be ignored.
 
 <br>
 
