@@ -599,7 +599,7 @@ This is where activation patching comes in. First introduced in the ROME paper (
 <p align="center">
 <img src="https://github.com/user-attachments/assets/055dc553-968e-42ee-80a2-76ee80902e10" width="700"/>
 <br>
-<small style="font-size: 15px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</small>
+<small style="font-size: 10px;">Patching into a transformer can be done in a bunch of different ways (e.g. values of the residual stream, the MLP, or attention heads' output). If you want to get really granular, you can patch at specific sequence positions (not shown). This flexibility lets us explore different components of the model and figure out exactly where certain behaviors are coming from.</small>
 </p>
 
 <br>
