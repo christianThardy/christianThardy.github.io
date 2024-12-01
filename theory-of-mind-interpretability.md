@@ -1066,8 +1066,6 @@ This suggests that these heads are working together in a highly interdependent w
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
-<br>
-
 By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), this work hopes to contribute to the understanding of transformer models’ inner workings when performing ToM tasks. 
 
 The proposed ToM circuit:
