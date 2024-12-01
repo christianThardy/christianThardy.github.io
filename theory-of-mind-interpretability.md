@@ -101,7 +101,7 @@ For example, to linguistically understand the semantics of the ToM passage, we n
 
 Understanding and interpreting this passage to extract the meaning of each sentence requires identifying entities, their properties, and relationships—which are core tasks of semantic parsing. This would help the model comprehend the context and infer implied meanings, which is essential for making accurate ToM predictions.
 
-ToM involves representing complex mental states and expectations. For example, in this case, DOLMs can grasp both the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it's actually on the `box`. This requires the model to go beyond the literal content, inferring the beliefs and mental states of the actors—key to performing these tasks.
+ToM involves representing complex mental states and expectations. For example, in this case, DOLMs can grasp both the underlying meaning and context, allowing them to predict that `John` thinks the `cat` is on the `basket`, even though it's actually on the `box` using only formal linguistic elements. In humans this requires going beyond the literal content, and inferring the beliefs and mental states of others—key to performing these tasks.
 
 <br>
 
