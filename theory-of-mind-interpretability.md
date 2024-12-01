@@ -51,7 +51,7 @@ While I'm skeptical about why models are performing ToM or are not performing To
 
 <br>
 
-In the human brain, the language network is a set of interconnected areas in the frontal and temporal lobes that handles everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
+In the human brain, the language network is a set of interconnected areas in the frontal and temporal lobes that handle everything from language comprehension to generation. It's highly tuned for various linguistic operations, covering everything from word meanings (semantics) to the broader context of conversations (pragmatics).
 
 Humans have this amazing ability to infer the mental states of others using ToM. But conceptually, how could we represent ToM in a way that’s understandable for an algorithm? How might we frame it linguistically to help an algorithm get closer to understanding the mental states of others?
 
