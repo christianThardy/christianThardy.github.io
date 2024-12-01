@@ -941,7 +941,7 @@ The fact that induction heads show peak activation during the final state (when 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/bac58df9-eba1-4327-a69b-47445fcc6096" width="650"/>
 <br>
-<small style="font-size: 8px;">Theory of Mind Circuit.</a></small>
+<small style="font-size: 8px;">Theory of Mind Circuit</small>
 </p>
 
 <br>
