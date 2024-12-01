@@ -146,7 +146,7 @@ The model used for this analysis is Gemma-2-2B from Google's family of Gemma mod
 <p align="center">
 <img src="https://github.com/user-attachments/assets/ecec4cba-66c3-4b05-acfc-132c66804021" width="400"/>
 <br>
-<small style="font-size: 10px;"><a href="https://developers.googleblog.com/en/gemma-explained-overview-gemma-model-family-architectures/" title="Google Developers Blog" rel="nofollow">Google's Gemma, 2024</a></small>
+<small style="font-size: 12px;"><a href="https://developers.googleblog.com/en/gemma-explained-overview-gemma-model-family-architectures/" title="Google Developers Blog" rel="nofollow">Google's Gemma, 2024</a></small>
 </p>
 
 <br>
