@@ -993,7 +993,7 @@ The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a hre
 <p align="center">
 <img src="https://github.com/user-attachments/assets/584ab188-91b9-4d5f-ad09-105d1e90d0ee" width="700"/>
 <br>
-<small style="font-size: 8px;"></a></small>
+<small style="font-size: 8px;" </small>
 </p>
 
 ```markdown
