@@ -14,6 +14,7 @@
     - [ToM Circuit](#tom-circuit)
         - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
     - [Ablation Studies](#ablation-studies)
+    - [Broader Implications](#broader-implications)
  - [Conclusion](#conclusion)
  - [References](#references)
 
@@ -1043,26 +1044,6 @@ Each component serves a specific role at different points in the sequence. The t
 
 <br>
 
-### Broader implications
-
-A common critique of LLMs is that they rely purely on formal linguistic competence, and therefore can't truly "learn" meaning in a deep sense<sub>[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">18</a>]</sub>.  However, when considering *emergent understanding*—the idea that models develop an implicit sense of meaning based on patterns in the data—n intuitive question arises: How do mechanisms like induction heads effectively capture semantics to succeed on ToM tasks? 
-
-One plausible hypothesis is that while induction heads primarily track formal patterns, semantic meaning embedded in those patterns gets absorbed through training. For example, repeated references to “the cat being on the basket” provide a robust contextual anchor. Although induction heads focus on sequence-level correlations, these correlations often align with real-world semantics present in the training data. When a model predicts that “the cat is in the basket”, it might be leveraging a weakly implicit form of semantic understanding (functional competency) encoded in its layers.
-
-This idea is particularly relevant in tasks requiring predictions about mental states or perspectives. Even if the model initially exploits high-level patterns, these patterns often align with semantic reasoning. For example, deeper layers—say, layer 22—don’t just pass through raw pattern data from earlier layers. Instead, they integrate signals representing a mix of formal linguistic structure and contextual cues. By this stage, the model might be blending formal reasoning with the semantic relationships encoded in the data.
-
-This raises an important question: When the model predicts John’s perspective in a ToM task, is it actually reasoning about John’s mental state (functional competence)? Or is it just leveraging high-level linguistic correlations (formal competence) that happen to align with correct answers? My bet is that there’s a blurry line here—meaning can emerge from form when structured, implicit grounding exists in the data.
-
-Induction heads, though not explicitly designed to handle grounded semantics, may leverage weak forms of grounding if the training data embeds consistent patterns that correlate with meaning. For example, if the model sees “John thinks the cat is in the basket” paired repeatedly with specific outcomes, it might learn to associate those patterns with semantic relationships. By layer 22, earlier layers have already encoded semantic cues into their representations, which the deeper layers can recombine into contextually grounded predictions.
-
-Even without explicit grounding, models trained on structured datasets can still encode weak semantic signals. Datasets like MMLU, ARC-C or Winogrande embed linguistic patterns that implicitly carry semantic entailments or logical structures. Models like Gemma-2-2B seem to capture these relationships effectively, even if they’re operating formally. By layer 22, relational data synthesized from earlier layers yield outputs that mimic semantic understanding.
-
-Tasks like Winogrande make this particularly clear: while solving these tasks seems to require semantic reasoning, models often succeed by exploiting subtle textual cues embedded in the data. This suggests that while heads like 22.4 might not directly access labeled semantic relationships, they capitalize on implicit signals encoded in the training data. For example, co-occurrences of specific token patterns might encode semantic entailments without the model ever “knowing” what those entailments mean explicitly.
-
-In larger models like Gemma-2-2B, emergent semantic inference seems plausible due to the interplay between the architecture and the training data. Datasets like BoolQ and TriviaQA provide structured patterns that tie linguistic forms to functional outputs, creating a scaffolding for weak grounding. While induction heads and specific layers remain pattern-driven, the broader training process imbues the model with enough implicit grounding to perform tasks requiring nuanced semantic judgments. This bridges the gap between form and meaning, allowing the model to encode partial grounding—even if it never reaches full semantic understanding.
-
-<br>
-
 ### Ablation studies <a id="ablation-studies"></a>
 <sub>[↑](#top)</sub>
 
@@ -1079,6 +1060,27 @@ Total circuit effect: 0.674451
 ```
 
 This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
+
+<br>
+
+### Broader implications <a id="broader-implications"></a>
+<sub>[↑](#top)</sub>
+
+A common critique of LLMs is that they rely purely on formal linguistic competence, and therefore can't truly "learn" meaning in a deep sense<sub>[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">18</a>]</sub>.  However, when considering *emergent understanding*—the idea that models develop an implicit sense of meaning based on patterns in the data—n intuitive question arises: How do mechanisms like induction heads effectively capture semantics to succeed on ToM tasks? 
+
+One plausible hypothesis is that while induction heads primarily track formal patterns, semantic meaning embedded in those patterns gets absorbed through training. For example, repeated references to “the cat being on the basket” provide a robust contextual anchor. Although induction heads focus on sequence-level correlations, these correlations often align with real-world semantics present in the training data. When a model predicts that “the cat is in the basket”, it might be leveraging a weakly implicit form of semantic understanding (functional competency) encoded in its layers.
+
+This idea is particularly relevant in tasks requiring predictions about mental states or perspectives. Even if the model initially exploits high-level patterns, these patterns often align with semantic reasoning. For example, deeper layers—say, layer 22—don’t just pass through raw pattern data from earlier layers. Instead, they integrate signals representing a mix of formal linguistic structure and contextual cues. By this stage, the model might be blending formal reasoning with the semantic relationships encoded in the data.
+
+This raises an important question: When the model predicts John’s perspective in a ToM task, is it actually reasoning about John’s mental state (functional competence)? Or is it just leveraging high-level linguistic correlations (formal competence) that happen to align with correct answers? My bet is that there’s a blurry line here—meaning can emerge from form when structured, implicit grounding exists in the data.
+
+Induction heads, though not explicitly designed to handle grounded semantics, may leverage weak forms of grounding if the training data embeds consistent patterns that correlate with meaning. For example, if the model sees “John thinks the cat is in the basket” paired repeatedly with specific outcomes, it might learn to associate those patterns with semantic relationships. By layer 22, earlier layers have already encoded semantic cues into their representations, which the deeper layers can recombine into contextually grounded predictions.
+
+Even without explicit grounding, models trained on structured datasets can still encode weak semantic signals. Datasets like MMLU, ARC-C or Winogrande embed linguistic patterns that implicitly carry semantic entailments or logical structures. Models like Gemma-2-2B seem to capture these relationships effectively, even if they’re operating formally. By layer 22, relational data synthesized from earlier layers yield outputs that mimic semantic understanding.
+
+Tasks like Winogrande make this particularly clear: while solving these tasks seems to require semantic reasoning, models often succeed by exploiting subtle textual cues embedded in the data. This suggests that while heads like 22.4 might not directly access labeled semantic relationships, they capitalize on implicit signals encoded in the training data. For example, co-occurrences of specific token patterns might encode semantic entailments without the model ever “knowing” what those entailments mean explicitly.
+
+In larger models like Gemma-2-2B, emergent semantic inference seems plausible due to the interplay between the architecture and the training data. Datasets like BoolQ and TriviaQA provide structured patterns that tie linguistic forms to functional outputs, creating a scaffolding for weak grounding. While induction heads and specific layers remain pattern-driven, the broader training process imbues the model with enough implicit grounding to perform tasks requiring nuanced semantic judgments. This bridges the gap between form and meaning, allowing the model to encode partial grounding—even if it never reaches full semantic understanding.
 
 <br>
 
