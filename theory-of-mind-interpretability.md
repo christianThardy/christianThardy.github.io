@@ -951,7 +951,7 @@ The pattern would suggest that the ToM circuit efficiently balances between reta
 
 Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the `basket` token by focusing more on queries than keys or values. This directly impacts the belief states. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the `box` token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
 
-The full circuit reveals a nuanced algorithm in its attention—175 total attention heads in Gemma-2-2B decomposed to 28, and each group of heads play a distinct but interconnected role:
+The full circuit reveals a nuanced algorithm in its attention:
 
 - **nsubj-1 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to John.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room, John puts cat on basket
