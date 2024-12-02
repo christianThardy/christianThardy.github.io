@@ -1,8 +1,8 @@
-# Deconstructing theory of mind in large language models
+# Deconstructing theory of mind in large language models <a id="top"></a>
 
 <br>
 
-#### Table of Contents <a id="top"></a>
+#### Table of Contents
 - [Introduction](#introduction)
 - [The Relationship Between Theory of Mind and Language](#the-relationship-between-theory-of-mind-and-language)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
