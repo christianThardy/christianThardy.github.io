@@ -1144,8 +1144,10 @@ McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.*
 
 Jamali, *Unveiling theory of mind in large language models: A parallel to single neurons in the human brain.* Massachusetts General Hospital, Harvard Medical School, MIT. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">17</a>]
 
-McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">18</a>]
+Bender, *Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data.* University of Washington, Saarland University. 2020.[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">18</a>]
 
-Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">19</a>]
+McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">19</a>]
 
-Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">20</a>]
+Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">20</a>]
+
+Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">21</a>]
