@@ -1037,9 +1037,23 @@ From the perspective of this task, copy suppression helps the model maintain sep
 - Goal preservation: Keeping different types of goals or beliefs separate and coherent.
 - Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between “what is” and “what should be”. 
 
-These insights could improve alignment techniques and safeguard against belief corruption. But this also raises key questions: how reliable is this mechanism for alignment? Can it scale to more complex belief systems? -What are the failure modes, especially in edge cases? These are exactly the kinds of questions we need to answer to make progress on robust alignment.
+Copy suppression could be useful to improve alignment techniques and safeguard against belief corruption. But this also raises key questions: how reliable is this mechanism for alignment? Can it scale to more complex belief systems? -What are the failure modes, especially in edge cases? These are exactly the kinds of questions we need to answer to make progress on robust alignment.
 
 Each component serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
+
+<br>
+
+### Broader implications
+
+It's often argued that large language models only use formal compotence in making predictions
+
+
+
+If the models induction heads are only using formal compotencies to process the text, why at layer 22, which is using induction, able to capture the semantics to make the prediction about the cat being on the basket from john's perspective if its only basing its prediction on formal compotence?
+
+
+We argue that the language modeling task, because it only uses form as training data, cannot in
+principle lead to learning of meaning.
 
 <br>
 
@@ -1065,7 +1079,7 @@ This suggests that these heads are working together in a highly interdependent w
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
-By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), this work hopes to contribute to the understanding of transformer models’ inner workings when performing ToM tasks. 
+By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work is to contribute to the understanding of transformer models’ inner workings when performing ToM tasks.
 
 The proposed ToM circuit:
 
@@ -1075,9 +1089,13 @@ The proposed ToM circuit:
 
 - Is robust to targeted ablations. Critical heads responsible for ToM capabilities were isolated to validate the circuit, and the observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
 
-The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. Further studies will explore a wider range of model architectures, tasks, and datasets to assess the robustness and generalizability of these findings.
+The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. It wil be interesting to study the difference between predicting why someone will act (ex-ante— predict why a subject will perform an action.) but with more focus on explaining why they did act (ex-post—isolates how the model understands rather than being concerned with its prediction) in a broader ToM context. Further experiments will also explore a wider range of model architectures, tasks, and datasets covering more ToM aspects to assess the robustness and generalizability of these findings.
 
-While its possible to say we have a partial map between human and machine language processing, transformers do not fully capture the consistency and generality of human cognition. However, the success of the formal and functional linguistic competence of large language models should not be ignored.
+While this work aims to bring high-level behavioral understanding to how models perform ToM, there are many unanswered questions. The method the model learned to do this task, did it just memorize it? How generalizable is it? How do we know the model's methods are truly based on what it is infering will happen versus what it has memorized (developing a method to quantify this could significantly advance this debate)? It's moving linguistic elements around but does it truly understand its utterance? But concretely defined, what is *true understanding*?
+
+Imagine someone dismisses a book’s ability to tell a story, arguing, “It’s just ink marks on paper!” Technically true, but missing the point: the magic lies in how those marks are arranged. The specific organization—words forming sentences, sentences forming a narrative—unlocks meaning, emotion, and depth. The key question isn’t whether a book is reducible to ink and paper, but whether those marks, when structured just right, can encode the rich dynamics of storytelling. Similarly, when thinking about LLMs, the question isn’t whether they’re “just matrix multiplications”, but whether their computations, when structured, can replicate the processes that underpin cognitive abilities.
+
+I think findings between their behavior, our behavior and what's happening to them internally will get us closer to the answers. While its possible to say we have a partial map between human and machine language processing, transformers do not fully capture the consistency and generality of human cognition. However, the success of the formal and functional linguistic competence of large language models should not be ignored.
 
 <br>
 
