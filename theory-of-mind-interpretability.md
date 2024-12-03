@@ -13,7 +13,6 @@
     - [Attention Head Analysis and Causal Tracing](#attention-head-analysis-and-causal-tracing)
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
-        - [Copy Supressions role in the ToM Circuit](#copy-supressions-role-in-the-tom-circuit)
     - [Ablation Studies](#ablation-studies)
     - [Broader Implications](#broader-implications)
  - [Conclusion](#conclusion)
