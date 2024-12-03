@@ -5,6 +5,7 @@
 #### Table of Contents
 - [Introduction](#introduction)
 - [The Relationship Between Theory of Mind and Language](#the-relationship-between-theory-of-mind-and-language)
+    - [So What?](#so-what)
 - [Theory of Mind Circuit Discovery](#theory-of-mind-circuit-discovery)
     - [Principal Component Analysis](#principal-component-analysis)
     - [Identifying Relevant Layers and Activations](#identifying-relevant-layers-and-activations)
