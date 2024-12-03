@@ -14,7 +14,7 @@
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
     - [Ablation Studies](#ablation-studies)
-    - [Broader Implications](#broader-implications)
+- [Broader Implications](#broader-implications)
  - [Conclusion](#conclusion)
  - [References](#references)
 
