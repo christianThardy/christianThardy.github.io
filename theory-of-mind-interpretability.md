@@ -129,6 +129,12 @@ For example, a common way to test linguistic abstraction in LLMs is through prob
 
 I think ToM prediction heavily relies on context to make sense of the mental states and intentions behind the words and actions of others, and final word prediction is based on implied meanings (implicature) and inferred intentions (presupposition), which are central to pragmatics. Given the literature, even if the phenomena is just statistical, **some** form of semantic and pragmatic inference in LLMs has been learned, regardless of how uneven or weak the performance.
 
+One intriguing hypothesis in the literature states that ToM emerges as a byproduct of learning language. The example passage above contains a sentential complement: “John thinks the cat is on the...”, and a subordinate clause: “...the cat is on the...”, nested within it. These linguistic structures are shown to play an important role in children's cognitive development, serving as a foundation for building a linguistic basis for passing false-belief tasks. In fact, passing complement-based language tasks is a highly significant predictor of false-belief reasoning, suggesting that mastering these linguistic constructs may be a prerequisite for performing well on false-belief tasks<sub>[<a href="https://alliedhealth.ceconnection.com/files/TheRoleofLanguageinTheoryofMindDevelopment-1415277302473.pdf" title="de Villiers" rel="nofollow">5</a>]</sub>. 
+
+The study also found that children with langauge delay could not bypass the linguistic requirements of these tests by relying on alternative strategies like interpreting behavior, gestures, body cues, or life experiences. Even children with autism, provided they had sufficient language ability, required the same linguistic scaffolding to succeed. Further research corroborates this, showing that knowledge of sentential complements is a strong concurrent predictor of false-belief performance in children with autism<sub>[<a href="https://psycnet.apa.org/record/2005-12116-014" title="Tager-Flusberg" rel="nofollow">6</a>]</sub>.
+
+This aligns with the idea that a system trained to mimic humans would naturally develop ToM-like behaviors as a byproduct of mastering human language. It weakly supports the hypothesis that ToM in humans may have originally developed as a side effect of increasing linguistic complexity—a fascinating example of how emergent capabilities can arise from seemingly unrelated tasks.
+
 <br>
 
 # Theory of mind circuit discovery
@@ -246,7 +252,7 @@ This technique is essentially a causal intervention—we're directly messing wit
 To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
 
 For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. In this case:
-`logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">5</a>]</sub>.
+`logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">7</a>]</sub>.
 
 When we deconstruct the residual stream using the logit-lens, we can look at the residual stream after each layer and calculate the logit difference at that point. This simulates what would happen if we “deleted” all subsequent layers, giving us a snapshot of the model's evolving prediction. The final layernorm is applied to the residual stream values, which are then projected in the direction of the logit difference to measure the model's performance at each layer.
 
@@ -304,7 +310,7 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. It appears to be distinguishing between actors, objects and honing in on story elements that are crucial for ToM processing, but in a way where we can clearly see a refined heirarchical representation.
 
-Based on the PCA, its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">6</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">7</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
+Based on the PCA, its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">8</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">9</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
 
 <br>
 
@@ -502,7 +508,7 @@ We can see the model building its representation across layers, with later layer
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 10.1. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 10.1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">8</a>]</sub>) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">9</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in actor actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">10</a>]</sub>) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">11</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in actor actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
 
 <br>
 
@@ -646,7 +652,7 @@ One cool takeaway is how localized the effect is—patching just a few tokens or
 
 **This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while early and midstream activations are key for representing changes in location (whether the cat ends up on the basket or box). The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on reinforcing John’s false belief.
 
-Another takeaway is how models seem to encode and summarize abstract information at specific, arbitrary token positions that act as structural anchor points<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">10</a>]</sub>. Specifically, the tokens `box` and `leaves` stand out. Their isolation to patching suggests that rather than Mark or John's belief state being directly moved to the final token, these tokens seem to act as intermediate summarization nodes—`box` representing the object’s location and `leaves` representing Mark’s action. Then the token `the` takes on a final aggregation role, pulling everything together before prediction.
+Another takeaway is how models seem to encode and summarize abstract information at specific, arbitrary token positions that act as structural anchor points<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">12</a>]</sub>. Specifically, the tokens `box` and `leaves` stand out. Their isolation to patching suggests that rather than Mark or John's belief state being directly moved to the final token, these tokens seem to act as intermediate summarization nodes—`box` representing the object’s location and `leaves` representing Mark’s action. Then the token `the` takes on a final aggregation role, pulling everything together before prediction.
 
 Instead of always attending back to the original source tokens, the model compresses and aggregates causally relevant information at the intermediate tokens `box` and `leaves`—using the token positions as dedicated storage points—and passes that along to `the` at layer 22. By the time the prediction happens, all the information from earlier in the context is funneled through these positions. As a result, these tokens become just as important—if not more so—than the constituent parts of the sentence that originally introduced the information.
 
@@ -715,7 +721,7 @@ My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's 
 ## So What?
 <sub>[↑](#top)</sub>
 
-The model seems to have developed a systematic, multi-step process for solving this task. Demonstrating its ability track the protagonists' belief<sub>[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">11</a>]</sub>. Early layers handle low-level tasks like syntactic dependencies, while middle layers focus on context-driven processing, identifying key facts like `cat on box`. By the time we reach the later layers, the model integrates this context and resolves ambiguities, landing on the correct conclusion (`cat on basket`) by using semantic attention patterns to disentangle competing perspectives.
+The model seems to have developed a systematic, multi-step process for solving this task. Demonstrating its ability track the protagonists' belief<sub>[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">13</a>]</sub>. Early layers handle low-level tasks like syntactic dependencies, while middle layers focus on context-driven processing, identifying key facts like `cat on box`. By the time we reach the later layers, the model integrates this context and resolves ambiguities, landing on the correct conclusion (`cat on basket`) by using semantic attention patterns to disentangle competing perspectives.
 
 ### Specialization across heads
 
@@ -789,7 +795,7 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning aligns closely with the linear representation hypothesis<sub>[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">19</a>]</sub>, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs—and when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
+Dictionary learning aligns closely with the linear representation hypothesis<sub>[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">14</a>]</sub>, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs—and when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
 
 Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. They're trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
 
@@ -813,7 +819,7 @@ Basically, neurons represent multiple different things and these things are spre
 
 <br>
 
-So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input<sub>[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">13</a>]</sub>. From this we can extract rich structures and representations that the model has learned.
+So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input<sub>[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">15</a>]</sub>. From this we can extract rich structures and representations that the model has learned.
 
 The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
@@ -825,7 +831,7 @@ The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discove
 
 <br>
 
-The model has specific features dedicated to representing different aspects of the narrative in the residual stream. For example, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">14</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
+The model has specific features dedicated to representing different aspects of the narrative in the residual stream. For example, feature 61 focuses on *references to positions and locations in a narrative*. This feature has a high explanation score<sub>[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">16</a>]</sub>, showing that the model is correctly isolating different narrative elements through distinct features.
 
 <br>
 
@@ -903,7 +909,7 @@ The features range from low-level tasks (like tracking object positions) to high
 ### ToM circuit <a id="tom-circuit"></a> 
 <sub>[↑](#top)</sub>
 
-SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">15</a>]</sub>. If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
+SAEs organize concepts into functionally coherent clusters. Because of this its possible that  LLMs might develop their own versions of brain-like regions<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">17</a>]</sub>. If specific attention heads are grouped into components, its possible to produce functional clusters—or subcircuits—which naturally emerge and synchronize across different positions in the input sequence.
 
 As a rough analogue to how neural fMRI scans capture distributed activations, attention heads shift focus across tokens, similar to how brain regions activate based on focus and task demands. We can make this analogy by thinking about the parallels between functional lobes in the brain and the structure of a transformers attention mechanisms. Each brain lobe has a specialized role: the occipital lobe handles vision, and the frontal lobe manages planning. Attention heads work similarly, processing contextual knowledge within specific structures. Like lobes aiding decision-making by accessing relevant knowledge, attention heads enable transformers to weigh parts of the input sequence. 
 
@@ -987,7 +993,7 @@ At the final stages, the suppression heads play a key role. They show both posit
 
 So the model builds the subject's false belief about an object’s location by: **1)** Identifying John as the belief holder. **2)** Tracking the cat's movement. **3)** Updating its knowlege on object locations. **4)** Integrating these elements into John's belief state. **5)** Suppressing information irrelevant to the belief holder.
 
-The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">5</a>]</sub> . Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
+The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">7</a>]</sub> . Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
 
 <br>
 
@@ -1015,7 +1021,7 @@ The circuit also shows a high degree of modularity: heads are highly specialized
 
 #### Copy supressions role in the ToM circuit
 
-Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">16</a>] in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjust the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
+Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">18</a>] in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjust the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
 
 Copy surpression in later layers operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts "basket" as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
 
@@ -1030,7 +1036,7 @@ There are key interactions and patterns that we can see backed by qualitative ev
 
 Circuit components have complementary timing in the way they activate across the sequence. The location state activates early, nsubj-1 and nsubj-2 states activate more strongly in middle and later layers, showing a clear temporal progression of information processing. Components complement each other during belief processing. Belief states and inhibition head clusters show complementary patterns; one tracks beliefs, and the other tracks what's not believed. Components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
 
-Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated and used to solve ToM tasks, and a significant decrease in performance when they are ablated. Element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">17</a>]</sub>. Both cases show similar isolated activity to the attention heads identified in this study when performing ToM.
+Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated and used to solve ToM tasks, and a significant decrease in performance when they are ablated. Element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">19</a>]</sub>. Both cases show similar isolated activity to the attention heads identified in this study when performing ToM.
 
 From the perspective of this task, copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (beliefs), and this has several implications for AI alignment. Because the model has learned to maintain distinct representations and track multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and even lying. Investigating inhibition and suppression mechanisms is crucial for understanding how models might deceive, but these same capabilities could be incredibly useful for alignment research. For example, they could help with:
 
@@ -1066,7 +1072,7 @@ This suggests that these heads are working together in a highly interdependent w
 ### Broader implications <a id="broader-implications"></a>
 <sub>[↑](#top)</sub>
 
-A common critique of LLMs is that they rely purely on formal linguistic competence, and therefore can't truly "learn" meaning in a deep sense<sub>[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">18</a>]</sub>.  However, when considering *emergent understanding*—the idea that models develop an implicit sense of meaning based on patterns in the data—an intuitive question arises: How do mechanisms like induction heads effectively capture semantics to succeed at ToM? 
+A common critique of LLMs is that they rely purely on formal linguistic competence, and therefore can't truly "learn" meaning in a deep sense<sub>[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">20</a>]</sub>.  However, when considering *emergent understanding*—the idea that models develop an implicit sense of meaning based on patterns in the data—an intuitive question arises: How do mechanisms like induction heads effectively capture semantics to succeed at ToM? 
 
 One plausible hypothesis is that while induction heads primarily track formal patterns, semantic meaning embedded in those patterns gets absorbed through training. For example, repeated references to “the cat being on the basket” provide a robust contextual anchor. Although induction heads focus on sequence-level correlations, these correlations often align with real-world semantics present in the training data. When a model predicts that “the cat is in the basket”, it might be leveraging a weakly implicit form of semantic understanding (functional competency) encoded in its layers.
 
@@ -1118,36 +1124,40 @@ Bender, *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* 
 
 Jamali, *Semantic encoding during language comprehension at single-cell resolution.* Nature. 2024.[<a href="https://www.nature.com/articles/s41586-024-07643-2" title="Jamali" rel="nofollow">4</a>]
 
-Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">5</a>] 
+de Villiers, *The Role of Language in Theory of Mind Development.* Lippincott Williams & Wilkins. 2014.[<a href="https://alliedhealth.ceconnection.com/files/TheRoleofLanguageinTheoryofMindDevelopment-1415277302473.pdf" title="de Villiers" rel="nofollow">5</a>]
 
-Park, *The Linear Representation Hypothesis and the Geometry of Large Language Models.* 2024.[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">6</a>] 
+Tager-Flusberg, *How Language Facilitates the Acquisition of False-Belief Understanding in Children with Autism.* APA PsycNet. 2005.[<a href="https://psycnet.apa.org/record/2005-12116-014" title="Tager-Flusberg" rel="nofollow">6</a>] 
 
-Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">7</a>]
+Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">7</a>] 
 
-Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">8</a>]
+Park, *The Linear Representation Hypothesis and the Geometry of Large Language Models.* 2024.[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">8</a>] 
 
-Ren, *Identifying Semantic Induction Heads to Understand In-Context Learning* 1Shanghai Jiao Tong University, Shanghai Artificial Intelligence Laboratory, Fudan University, The Chinese University of Hong Kong. 2024.[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">9</a>]
+Mikolov, *Linguistic Regularities in Continuous Space Word Representations.* Microsoft Research. 2013.[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">9</a>]
 
-Tigges, *Linear Representation of Sentiment in Large Language Models* Eluether AI Institute, SERI MATS, Stanford University, Pr(AI)R Group, Independent. 2023.[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">10</a>]
+Elhage, *A Mathematical Framework for Transformer Circuits* Anthropic. 2021.[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">10</a>]
 
-Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">11</a>]
+Ren, *Identifying Semantic Induction Heads to Understand In-Context Learning* Shanghai Jiao Tong University, Shanghai Artificial Intelligence Laboratory, Fudan University, The Chinese University of Hong Kong. 2024.[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">11</a>]
 
-Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">12</a>]
+Tigges, *Linear Representation of Sentiment in Large Language Models* Eluether AI Institute, SERI MATS, Stanford University, Pr(AI)R Group, Independent. 2023.[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">12</a>]
 
-Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">13</a>]
+Kosinski, *Evaluating Large Language Models in Theory of Mind Tasks.* Stanford University. 2023.[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">13</a>]
 
-Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">14</a>]
+Bricken, *Towards Monosemanticity: Decomposing Language Models With Dictionary Learning* Anthropic. 2023.[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">14</a>]
 
-Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">15</a>]
+Templeton, *Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet.* Anthropic. 2024.[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">15</a>]
 
-McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2023.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">16</a>]
+Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a href="https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html#sec-algorithm-explain" title="Bills" rel="nofollow">16</a>]
 
-Jamali, *Unveiling theory of mind in large language models: A parallel to single neurons in the human brain.* Massachusetts General Hospital, Harvard Medical School, MIT. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">17</a>]
+Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">17</a>]
 
-Bender, *Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data.* University of Washington, Saarland University. 2020.[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">18</a>]
+McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2023.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">18</a>]
 
-McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">19</a>]
+Jamali, *Unveiling theory of mind in large language models: A parallel to single neurons in the human brain.* Massachusetts General Hospital, Harvard Medical School, MIT. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">19</a>]
 
-Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">20</a>]
+Bender, *Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data.* University of Washington, Saarland University. 2020.[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">20</a>]
 
-Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">21</a>]
+McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">21</a>]
+
+Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/q-k-v-output.md" title="Hardy" rel="nofollow">22</a>]
+
+Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">23</a>]
