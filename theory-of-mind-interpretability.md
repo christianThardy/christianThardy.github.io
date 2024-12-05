@@ -684,7 +684,10 @@ Ablating the content tokens causes the logits to flip dramatically, dropping to 
 
 It’s plausible that the attention heads likely focus on `the` to pull in information from the content tokens, because patching `the` produces effects that closely mirror those of content tokens across layers. This aligns with the observation that patching `the` has a similar causal impact as patching content tokens—it’s not acting independently but rather facilitating the aggregation of meaningful context.
 
-To investigate the ToM direction in the model's representation space, Distributed Alignment Search (DAS) was used to identify a vector in the activation space that aligns maximally with correct predictions on the ToM task. This ToM direction was then tested for its causal role in the model predicting John’s believed location of the cat. Activations were projected onto the ToM direction and ablated, with both single and combined directional ablations used to assess its significance.
+To investigate the ToM direction in the model's representation space, Distributed Alignment Search (DAS)—an optimization method that finds the best possible direction, by which a metric evaluates how changes of a given direction causally influence the mode's outputs, allowing analysis of relationships between internal model representations and outputs in response to inputs—was used to identify a vector in the activation space that aligns maximally with correct predictions on the ToM task. This ToM direction was then tested for its causal role in the model predicting John’s believed location of the cat. Activations were projected onto the ToM direction and ablated, with both single and combined directional ablations used to assess its significance.
+
+An optimization method that identifies the most impactful direction in a model's latent space, based on a specified metric. This metric evaluates how changes along a given direction causally influence the model's outputs, enabling the analysis of relationships between internal model representations and behavior.
+
 
 The results were striking. Ablating the ToM direction caused clear accuracy drops, highlighting its importance for belief representation. Specifically, the `box`, `leaves`, and `the` token positions at layer 22 played a critical role in task performance. Combined ablations had the most dramatic impact, causing accuracy to plummet from 0.625 pre-ablation to 0.0 post-ablation—a shocking -0.625 change. This causal evidence suggests that the ToM direction, along with the specific token representations, is central to the model's ability to summarize context before making the final prediction.
 
@@ -1134,7 +1137,7 @@ Grice, *Meaning.* The Philosophical Review. 1957.[<a href="https://semantics.uch
 
 Valle, *Theory of Mind Development in Adolescence and Early Adulthood: The Growing Complexity of Recursive Thinking Ability.* Europe's Journal of Psychology. 2015.[<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4873097/" title="Valle" rel="nofollow">8</a>] 
 
-Davies, *Theory of Mind Development in Adolescence and Early Adulthood: The Growing Complexity of Recursive Thinking Ability.* University of Leeds. 2015.[<a href="https://www.latl.leeds.ac.uk/wp-content/uploads/sites/49/2019/05/Davies_2000.pdf" title="Davies" rel="nofollow">9</a>] 
+Davies, *Grice’s Cooperative Principle: Getting The Meaning Across.* University of Leeds. 2015.[<a href="https://www.latl.leeds.ac.uk/wp-content/uploads/sites/49/2019/05/Davies_2000.pdf" title="Davies" rel="nofollow">9</a>] 
 
 Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>] 
 
