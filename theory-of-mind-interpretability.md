@@ -166,10 +166,10 @@ In terms of the internal mechanisms of a language model, a **feature** is a prop
 
 To begin looking at ToM prediction through the lens of a decoder-only transformer, we can start by defining a simple, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This will serve as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
-       - Consider events the subjects have witnessed.
-       - Consider the location of objects based on the subject's last knowledge.
-       - Ignore events that occurred while the subject was absent.
-       - Predict subjects belief about the object's location based on the last event they witnessed.
+- Consider events the subjects have witnessed.
+- Consider the location of objects based on the subject's last knowledge.
+- Ignore events that occurred while the subject was absent.
+- Predict subjects belief about the object's location based on the last event they witnessed.
 
 <br>
 
