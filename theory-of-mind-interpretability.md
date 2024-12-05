@@ -613,7 +613,7 @@ This is where activation patching comes in. First introduced in the ROME paper (
 
 <br>
 
-You run the model twice—once with a *clean* input that produces the correct answer, and once with a *corrupted* input that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run at a specific point in the network. Basically, you replace the corrupted activation at a certain layer and position with the corresponding clean activation and then let the model continue its computation. The key insight here is that you can measure how much this patch shifts the output toward the correct answer, we can then assess the importance of that particular activation.
+You run the model twice—once with a *clean* input (original) that produces the correct answer, and once with a *corrupted* input (counterfactual) that doesn’t. The trick is that during the corrupted run, you intervene by patching in an activation from the clean run at a specific point in the network. Basically, you replace the corrupted activation at a certain layer and position with the corresponding clean activation and then let the model continue its computation. The key insight here is that you can measure how much this patch shifts the output toward the correct answer, we can then assess the importance of that particular activation.
 
 By iterating over lots of different activations, you can map out which ones matter. If patching a certain activation makes a big difference in pushing the model toward the right answer, it tells us that activation is important for the task. In other words, activation patching functions as a denoising algorithm, contrasting with the noising approaches we've previously focused on. In this approach, we run the model on a corrupted input then introduce the clean input by patching in activations from the clean run. The flip side is noising, where we start with a clean input and patch in activations from the corrupted run, effectively adding noise.
 
@@ -660,7 +660,7 @@ Instead of always attending back to the original source tokens, the model compre
 
 Weak evidence in this analysis shows that the summarization motif is not just for sentiment, but might be a general mechanism models use—in this case to track and update information about sequential events; so the model is using the tokens as a reference point to maintain a coherent representation of the scene. This behavior was discovered by patching clean residual activations for content (`box`, `leaves`) and functional (`the`) tokens into a corrupted model run at specific layers to isolate their contribution.
 
-The baseline logit difference for the uncorrupted run is 16.52. But when clean activations are patched in for `box`, `leaves` and `the`, the logit difference increases by 36%. This implies that the model is relying on these positions to store contextual information and that these tokens play a central role in the model’s predictions.
+The baseline logit difference for the clean run is 16.52. But when clean activations are patched in for `box`, `leaves` and `the`, the logit difference increases by 36%. This implies that the model is relying on these positions to store contextual information and that these tokens play a central role in the model’s predictions.
 
 <br>
 
