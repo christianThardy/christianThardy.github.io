@@ -654,7 +654,9 @@ One cool takeaway is how localized the effect is—patching just a few tokens or
 
 **This fits with the bigger picture:** earlier layers are encoding the critical scene details (e.g., Mark moving the cat), while early and midstream activations are key for representing changes in location (whether the cat ends up on the basket or box). The whole process aligns with previous attention analyses—early layers set up the scene, mid layers handle object movement and maintaining the scene, and late layers focus on reinforcing John’s false belief.
 
-Another takeaway is how models seem to encode and summarize abstract information at specific, arbitrary token positions that act as structural anchor points<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">15</a>]</sub>. Specifically, the tokens `box` and `leaves` stand out. Their isolation to patching suggests that rather than Mark or John's belief state being directly moved to the final token, these tokens seem to act as intermediate summarization nodes—`box` representing the object’s location and `leaves` representing Mark’s action. Then the token `the` takes on a final aggregation role, pulling everything together before prediction.
+models may have learned to rely on certain predictable patterns
+
+Another takeaway is how models seem to encode and summarize abstract information at specific—perhaps relied on because of a predictable pattern—token positions that act as structural anchor points<sub>[<a href="https://arxiv.org/pdf/2310.15154" title="Tigges" rel="nofollow">15</a>]</sub>. Specifically, the tokens `box` and `leaves` stand out. Their isolation to patching suggests that rather than Mark or John's belief state being directly moved to the final token, these tokens seem to act as intermediate summarization nodes—`box` representing the object’s location and `leaves` representing Mark’s action. Then the token `the` takes on a final aggregation role, pulling everything together before prediction.
 
 Instead of always attending back to the original source tokens, the model compresses and aggregates causally relevant information at the intermediate tokens `box` and `leaves`—using the token positions as dedicated storage points—and passes that along to `the` at layer 22. By the time the prediction happens, all the information from earlier in the context is funneled through these positions. As a result, these tokens become just as important—if not more so—than the constituent parts of the sentence that originally introduced the information.
 
@@ -1038,6 +1040,25 @@ There's a lot more we do not know about these heads and they probably have more 
 
 <br>
 
+### Ablation studies <a id="ablation-studies"></a>
+<sub>[↑](#top)</sub>
+
+Ablation studies are widely used in neuroscience and they are super useful for probing neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
+
+When we mean-ablate the entire ToM circuit, performance drops by about 80.66%, showing a massive reduction in the believed-actual difference and the model's confidence of the token `basket` as the correct prediction.
+
+```markdown
+Full Circuit Mean Ablation Results:
+Number of heads ablated: 28
+Original believed-actual diff: 0.836511
+Ablated believed-actual diff: 0.162061
+Total circuit effect: 0.674451
+```
+
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
+
+<br>
+
 ## So What?
 <sub>[↑](#top)</sub>
 
@@ -1056,25 +1077,6 @@ From the perspective of this task, copy suppression helps the model maintain sep
 Copy suppression could be useful to improve alignment techniques and safeguard against belief corruption. But this also raises key questions: how reliable is this mechanism for alignment? Can it scale to more complex belief systems? -What are the failure modes, especially in edge cases? These are exactly the kinds of questions we need to answer to make progress on robust alignment.
 
 Each component serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
-
-<br>
-
-### Ablation studies <a id="ablation-studies"></a>
-<sub>[↑](#top)</sub>
-
-Ablation studies are widely used in neuroscience and they are super useful for probing neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
-
-When we mean-ablate the entire ToM circuit, performance drops by about 80.66%, showing a massive reduction in the believed-actual difference and the model's confidence of the token `basket` as the correct prediction.
-
-```markdown
-Full Circuit Mean Ablation Results:
-Number of heads ablated: 28
-Original believed-actual diff: 0.836511
-Ablated believed-actual diff: 0.162061
-Total circuit effect: 0.674451
-```
-
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
 
 <br>
 
