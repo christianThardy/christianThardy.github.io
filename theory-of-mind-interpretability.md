@@ -1104,15 +1104,16 @@ In large models like Gemma-2-2B, emergent semantic inference seems plausible due
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
-By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work here and future work is to contribute to the understanding of transformer models’ inner workings when performing ToM tasks.
+By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work here and future work is to validate or invalidate that certain heads or circuits are causally implicated in tasks that map onto ToM-like reasoning.
 
 The proposed ToM circuit:
 
 - Extends on the <a href="https://www.alignmentforum.org/posts/3ecs6duLmTfyra3Gp/some-lessons-learned-from-studying-indirect-object" title="alignmentforums" rel="nofollow">IOI</a> (focuses on tracking a models ability to reconstruct the syntax of natural language) work to identify specific attention heads that are pivotal to false belief tasks. The proposed circuit tracks and updates belief states of entities in regards to locations and objects using strong formal linguistic competence and tentative functional competence via the manipulation of linguistic elements, to distinguish facts from the believed reality of a 3rd person perspective.
-
-- Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. This circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
+    - The empirical results from—activation patching, identified circuit that’s causally linked to ToM performance—provides some evidence that form can carry function. The circuit captures stable relationships (like who believes what) that go beyond surface-level token transitions. *Some* emergent semantic-like behavior exists.
 
 - Is robust to targeted ablations. Critical heads responsible for ToM capabilities were isolated to validate the circuit, and the observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
+
+- Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. This circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
 
 The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. Further experiments will also explore a wider range of model architectures, tasks, and datasets covering more ToM aspects to assess the robustness and generalizability of these findings. For example, it would be interesting to study the difference between predicting why someone will act (ex-ante— predict why a subject will perform an action.) but with more focus on explaining why they did act (ex-post—isolates how the model understands rather than being concerned with its prediction) or develop more empirical studies or experiments that directly test hypotheses about weak grounding or emergent semantics in LLMs, in a broader ToM context.
 
