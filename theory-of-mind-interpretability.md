@@ -164,7 +164,7 @@ It is a decoder-only transformer that has 25 layers and 7 attention heads per at
 
 In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g. reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-To begin looking at ToM prediction through the lens of a decoder-only transformer, we can start by defining a simple, interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This will serve as a starting point to understand how the model might represent and process ToM-related reasoning: 
+To begin looking at ToM prediction through the lens of a decoder-only transformer, we can start by defining a simple hypothesis of an interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This will serve as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
 - Consider events the subjects have witnessed.
 - Consider the location of objects based on the subject's last knowledge.
