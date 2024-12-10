@@ -714,7 +714,7 @@ My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's 
 <br/>
 
 <p align="center">
-  <img src = "" width="1000">
+  <img src = "https://github.com/user-attachments/assets/a1f01bda-0b0b-4ce8-b6ec-51fe0d3ad4b2" width="1000">
 </p>
 
 <br/>
