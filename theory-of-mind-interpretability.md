@@ -699,23 +699,62 @@ This lines up with the nature of ToM tasks, which require tracking both believed
 
 <br/>
 
-The activation patching results for the breakdown between queries, keys, values and outputs shed a brighter light on what’s happening inside attention heads across layers. Let’s step back for a second—each attention head does two key things: **1)** deciding where to move information (governed by the attention pattern, controlled by the QK interaction) and **2)** deciding what information to move (handled by the V vectors, influenced by the OV projection). By patching either the attention pattern or the value vectors, we can tease apart which factor is more crucial and doing the heavy lifting.
+The activation patching results for the breakdown between queries, keys, values and outputs shed a brighter light on what’s happening inside attention heads across layers. Let’s step back for a second—each attention head does two key things: **1)** deciding what information to move and where to attend to that information (governed by the attention pattern, controlled by the QK interaction) and **2)** deciding what information to move forward (handled by the V vectors, influenced by the OV projection). By patching either the attention pattern or the value vectors, we can tease apart which factor is more crucial and doing the heavy lifting.
 
-Let’s start with the `z` plot (output vector). Patching outputs from certain heads noticeably  shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is pretty distributed, but some heads stand out: 16.7, 17.6, 22.2, 22.4 and 25.4 have the largest positive impact, along with 0.1, 3.1, 6.1, 8.1 (all previous layers have the same head position, very interesting), 12.2, 14.3, 17.3, 16.2, 20.2, and 23.5 having the largest negative impact. 
+In the `z` plot (output vector), patching outputs from certain heads noticeably shifts the models' output from `box` to `basket`, particularly in the last 5-10 layers. The behavior is pretty distributed, but some heads stand out: 16.7, 17.6, 22.2, 22.4 and 25.4 have the largest positive impact, along with 0.1, 3.1, 6.1, 8.1 (all previous layers have the same head position, very interesting), 12.2, 14.3, 17.3, 16.2, 20.2, and 23.5 having the largest negative impact. 
 
-Now, looking at the `q` plot (Q vectors), we see familar patterns—negative heads in particular are pretty impactful, suggesting that modifying the queries’ focus is key for steering the model away from inaccurate outputs. This signal shows up across early, middle, and late layers, possibly reflecting the model’s attempts to align with the “true belief”.
+Looking at the `q` plot (Q vectors), we see familar patterns—negative heads in particular are pretty impactful, suggesting that modifying the queries’ focus is key for steering the model away from inaccurate outputs. This signal shows up across early, middle, and late layers, possibly reflecting the model’s attempts to align with the “true belief”.
 
 The k plot (K vectors) is less clear, though heads like 14.1 and 17.2 show some influence. Finally, the v plot (V vectors) highlight a few key heads, with 22.1 and 22.2 standing out. Since Vs represent the actual information passed through attention, heads with influential Vs directly shape the model’s final predictions.
 
-When we compare across the plots, a few heads consistently stand out, while others are more specialized—focusing on either Qs, Ks, or Vs. For example, 23.5 impacts both the output and Qs, while head 2 is more influential on Ks and Vs.
+The analysis reveals that some attention heads are consistently impactful across Qs, Ks, and Vs, while others are more specialized. For instance, head 23.5 influences both Qs and outputs, while head 2 targets Ks and Vs. In layer 17, head 3’s Q plot shows a subtle negative activation shift, indicating how the model adjusts its belief about the cat’s location. The head assigns high activation to box and lower to John, suggesting a balance between factual grounding and perspective-taking. This adjustment becomes clearer by layer 22, head 4, where the model confidently determines box as the true location, discounting John’s outdated belief. 
 
-Examining the Q plot for layer 17 and head 3, the patched activation shows a subtle negative shift. In the same layer and head's QKV plot from the earlier attention head analysis, we see this head assigning high activations to `box` while assigning lower activations to `John` early in the sequence. There's moderate activation for initial context and action related tokens throughout the sequence. This seems to indicate the model is actively balancing between different perspectives and factual grounding (the belief vs. reality contrast). 
+My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the actors, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer. It's possible to see this play out at a finer scale with causal evidence at the QKVO dimension-level, where dimensions in the attention mechanism are input tokens. Let's see where I'm wrong.
 
-By this point in the sequence, the model appears to have deduced that `box` doesn’t strongly attend to `John`. The patch highlights this with a faint red activation, showing how the relationship is being discounted. This carries forward into layer 22, head 4, where the model refines this “belief adjustment” with greater confidence, learning that `box` is the true location while John’s belief is outdated.
+<br/>
 
-Stepping back, these insights highlight how the model uses contextual relationships to understand cause and effect. (e.g. John places the cat on the basket, leaves the room, and then Mark moves the cat to the box.) Qs and Ks collaborate to decide which parts of the input each head attends to.
+<p align="center">
+  <img src = "" width="1000">
+</p>
 
-My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the actors, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer.
+<br/>
+
+Since we have a high-level understanding of QKVO's, we can test whether specific subspaces in the attention mechanism are causally essential by zeroing out the top principal components in each vector. This helps isolate activation subspaces that encode *belief*-related signals at a granular level. An interesting intervention is applying a temporal ablation—starting right when Mark moves the cat—to zero out activations only after that event. If the model fails the ToM task following this intervention, it strongly suggests that the model relies on that temporal window of activations to maintain belief coherence. This provides fine-grained causal insights into how each component of the attention mechanism functions, compared to coarser-grained analyses done earlier.
+
+Mapping the information flow, we can see how dimensions in each attention mechanism component (QKVO) are correlated with specific tokens (features) in that mechanism—where the correlation is the degree to which the activation values of a dimension in a head are aligned with the positions of a feature in the input tokens, quantifying how strongly the activation of a particular dimension is associated with the occurrence of a specific feature:
+
+**John’s Perspective**
+
+Looking at 8.1:
+- Q-vectors: Correlate with `John: 0.2456`, suggesting that this head tracks John’s perspective by aligning activations with John-related input tokens.
+- K-vectors: Correlate with `basket: 0.2609`, likely indexing the scene's initial setup and location data.
+- V-vectors: Correlate with `cat: -0.2666`, encoding the cat’s initial placement on the basket.
+- O-dimensions: `Dim 103: 0.5107` shows a strong correlation, encoding John’s subject representation.
+
+The combined flow suggests that Head 8.1 builds a foundational representation of the scene: `John puts cat on basket`.
+
+**Mark’s Perspective**
+
+10.5 reveals interesting dynamics:
+- Q-vectors: Correlate with `Mark: 0.2651`, tracking Mark's mental representation.
+- O-dimensions: `Dim 203: -0.0895` encodes subject information, while `Dim 86: -0.0665` tracks the temporal event leaves, anchoring contextual updates based on sequence progression.
+
+12.2 integrates Mark’s actions:
+- V-vectors: Critical state changes emerge, with `Dim 195: 0.0718` correlating with transitions and `Dim 123: 0.0337` tracking the cat’s movement.
+- K-vectors: Attend to `Mark: -0.2837`, `box: -0.1342`, and `puts: 0.3218`, likely encoding Mark’s action of moving the cat from the basket to the box.
+
+From these heads alone we can see John’s state is strongly anchored to the initial state (`basket` location), Mark’s state is more dynamic, emphasizing the current state (`box` location) and action verbs like `takes` and `puts`, suggesting the circuit models `Mark` primarily as the agent of physical change rather than maintaining his belief state.
+
+The circuit processes Mark's role in three primary stages:
+
+-  Action Recording (Early Layers)
+   - Tracks Mark’s physical movements and initiates state changes.
+- State Update (Middle Layers):
+  - Updates the cat's true location and the sequence of events leading to the change.
+- Belief State Integration (Late Layers):
+  - Uses Mark's actions to create the distinction between:
+    - True current state (what Mark made happen).
+    - False Believed state (what John knows).
 
 <br>
 
@@ -749,7 +788,7 @@ These capabilities allow it to handle false belief tasks by maintaining parallel
 
 **Localized circuit for belief tracking:** It’s worth noting how ablation experiments reinforce the idea that these capabilities are localized. Heads exhibiting induction behavior show significant performance drops when ablated.
 
-Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys and values, we can start to build a bigger picture of what is happening. If this is our sequence:
+Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys and values, we can start to build an abstract, conceptual bigger picture of what is happening. If this is our sequence, where the model appears to be tracking the occurences of `box` at index 57, and `basket` at indexes 18 and 29.:
 
 <br/>
 
@@ -765,21 +804,29 @@ Thinking about how the model represents the location of the cat given the data f
 
 <br/>
 
-The model appears to be tracking the occurences of `box` at index 57, and `basket` at indexes 18 and 29.
+Early layers set up character-specific attention patterns using Q-vectors. `John` emerges as the primary belief holder, while `Mark` serves as the secondary actor. The Q-vector for the `box` token (index 57, Mark’s perspective) strongly attends to the `basket` token (index 18, initial room state). K-vectors encode locations—where the `basket` represents the original state and the `box` the future location. V-vectors pass initial state information, flowing from the `basket` (index 18) to the `basket` again (index 29), indicating John’s perspective forward in the sequence.
 
-In the early layers, the position of the `box` token at index 57 (Marks perspective) acting as the query, strongly attends to the key token `basket` at index 18 (initial state of the room, backwards in the sequence), then compares it to the key token `basket` at index 29 and computes the value. Denoted by the gray curved flow moving to `basket` at index 29 (Johns perspective, forwards in the sequence). When duplicate tokens are detected they are added to the residual stream.
+O-dimensions reinforce this distinction: Dim 103 (0.5107) encodes `John` as the main subject, while Dim 206 (-0.1298) keeps character representations separate. Duplicate tokens accumulate in the residual stream, forming distinct initial state representations for both characters.
 
-In the middle layers, the `the` token at index 105 acting as the query, attends to the values for each noun-object token at all three positions at varying degrees of strength to aggregate learned patterns and maintain context across multiple sequence positions. The `box` value is connected to the `the` query with a negative modulation, then the value information is passed to the final layers.
+By the middle layers, indexing sharpens. The `the` token at index 105 acts as a query, attending to noun-object tokens across three positions with different attention strengths, maintaining context across multiple sequence positions. `box`-related values are passed forward with negative modulation, sustaining temporal context. Detailed parallel state maintenance can be seen in the middle layers across layer 12 in heads 1, 2 and 3 particularly.
+
+Q-vectors maintain belief states in 12.1 which tracks subject presence for `John: -0.3388` during departure and `Mark: -0.2272` during action. K-vectors again index locations for `room: 0.3227`: in scene context and `basket: 0.2996`: representing the original location. V-vectors maintain dual states where Dim 129 (0.0368) encodes `looks` actions and Dim 43 (0.0317) tracks the `cat` position. O-dimensions then separate perspectives where Dim 127 (0.2166) maintains room context and Dim 240 (-0.0376) suppresses state updates. 
+
+In 12.2 more actions are integrated, Q-vectors attend to action changes such as `Mark: -0.2837` during movement and `puts: 0.3218` for action tracking. K-vectors track locations where `box: -0.1342`: is the new location and `basket: 0.2609`: is the original location. V-vectors encode object movement sequences where Dim 195 (0.0718) is for transitions and Dim 123 (0.0337) for object movement.
+
+And in 12.3 we see belief-action integration where Q-vectors maintain temporal contex, K-vectors strongly differentiate locations between `box` in the current state and `basket` in the believed state, the V-vectors encode dual perspectives where Dim 68 (0.0468): integrates the timing of actions, Dim 152 (0.0394): maintains the beliefs, and O-dimensions manage information flow through Dim 38 (0.1374): maintaining room context and Dim 219 (-0.0996): encoding temporal boundaries. The fact that this is coming from Mark's perspective is not entirely surprising but its definitely interesting.
+
+The induction circuit activates in layers 2 and 18, linking previous-token heads through K-composition. Attention to the offset diagonal reveals induction peaks at 18.6, and 22.4. Activation patching shows inhibition heads suppressing unwanted token positions, ensuring focus on relevant context. Late-layer induction highlights the basket (index 29) while suppressing the box (index 57), steering final predictions. This reflects strong belief-tracking behavior through the specialized heads.
 
 Shown from strong negative modulations in activation patching, the inhibition heads receive information from duplicate token heads and actively supress unwanted positions, working with induction heads to guide attention. Also in the late layers, there is an induction path where `the` very strongly attends to `basket` at index 29, and `box` from index 57 is hit with strong negative modulation at the last state of processing before the final prediction.
 
-The induction circuit consists of a previous token head in layer 2 and an induction head in layer 18, where the induction head learns to attend to the token immediately after copies of the current token via K-Composition with the previous token heads. When looking for the average attention paid to the offset diagonal to find the induction attention pattern, we can see the strongest signals appear at 2.5, 6.2, 18.6, and 22.4.
+We can now see the full circuit culminates through multiple specialized heads. In 22.4, Q-vectors show strongest belief encoding where it takes `John: 0.3075`: as the primary perspective and the returning context of `room: -0.1961`. K-vectors maintain temporal boundaries showing `leaves: -0.1719`: as the departure marker and `comes: 0.2158`: as the return marker. V-vectors preserve belief states where Dim 192 (0.2942): is the subject encoding and Dim 142 (0.0846): provides temporal context. And the O-dimensions show critical integration of Dim 192 (0.2942): which strengthens John's perspective and Dim 155 (-0.4181): suppresses updates during his absence. In 22.2 the Q-vectors track scene changes, the K-vectors index both location states and the V-vectors maintain their separation. 
 
-Further supported by examination of each heads QKV mechanism, which shows an evolution from simple pattern matching in early layers to complex tracking and moving in later layers, suggesting these heads work together as a hierarchical induction circuit, with each layer building on the patterns detected by previous layers.
+By 22.3, the circuit achieves false-belief reasoning through careful orchestration where context from John and Mark's perspectives are aggregated at the location state which then maintains distinct state representations. The Q-vectors query temporal context from `away: -0.2288`: representing John's absence period and his return marker with `comes: -0.2810`. K-vectors index locations of the original state `basket: 0.3385` and current state `box: -0.2478`. V-vectors encode dual states of the original location Dim 151 (0.0552) and current location Dim 21 (0.0546).
 
-The induction heads likely help maintain the parallel tracks of the scene from Mark and John's perspective by connecting back to earlier parts of the text where John's last known state of the cat is established.
+16.2 then actively prevents belief contamination where Q-vectors track temporal boundaries, V-vectors show strategic inhibition at `basket` (-0.2848): preserving the original belief and `room` (0.4802): maintains context and O-dimensions manage information flow. At 23.5 V-vectors encode final state representation where Dim 115 (0.1799): handles the subject encoding, Dim 233 (0.1708): maintains room context, and O-dimensions make final integration for Dim 120 (-0.3636): showing strong suppression of updates and Dim 237 (-0.1991): enables action inhibition.
 
-So in the early and middle layers we see duplicate relationships, broad context and inhibition, and then induction and inhibition working together in the late layers.
+The full circuit evolves from early state representations into layered belief-action integration. Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two actors. John’s representation centers on beliefs, while Mark’s tracks actions and their consequences—highlighting a meaningful cognitive distinction. The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations. Copy suppression plays a crucial role here, preventing belief contamination, and enabling false-belief reasoning through a dynamic, interpretable circuit.
 
 <br>
 
@@ -921,7 +968,7 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/b9a84303-fed7-44c8-b51d-bbbf0ddee187" width="600"/>
+<img src="https://github.com/user-attachments/assets/5d325cda-9093-4db4-8bf2-505a769fefb2" width="600"/>
 <br>   
 <small style="font-size: 12px;">High activation values indicate components that are more activated against low activation values.</small>
 </p>
@@ -947,7 +994,7 @@ The fact that induction heads show peak activation during the final state (when 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/bac58df9-eba1-4327-a69b-47445fcc6096" width="650"/>
+<img src="https://github.com/user-attachments/assets/562a8929-f929-4894-8a56-482d5ec5fced" width="650"/>
 <br>
 <small style="font-size: 12px;">Theory of Mind Circuit</small>
 </p>
@@ -979,7 +1026,7 @@ The full circuit reveals a nuanced algorithm in its attention:
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/574f9555-f955-410b-a5ac-c5af019231f8" width="650"/>
+<img src="https://github.com/user-attachments/assets/3b783981-c073-4af9-9d32-edaf7c839f9e" width="650"/>
 </p>
 
 <br>
@@ -999,7 +1046,7 @@ The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a hre
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/584ab188-91b9-4d5f-ad09-105d1e90d0ee" width="700"/>
+<img src="https://github.com/user-attachments/assets/2c2fce87-170a-4f65-9d0c-c127a7ea86dd" width="700"/>
 <br>
 </p>
 
