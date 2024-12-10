@@ -729,7 +729,7 @@ Looking at 8.1:
 - Q-vectors: Correlate with `John: 0.2456`, suggesting that this head tracks John’s perspective by aligning activations with John-related input tokens.
 - K-vectors: Correlate with `basket: 0.2609`, likely indexing the scene's initial setup and location data.
 - V-vectors: Correlate with `cat: -0.2666`, encoding the cat’s initial placement on the basket.
-- O-dimensions: `Dim 103: 0.5107` shows a strong correlation, encoding John’s subject representation.
+- O-dimensions: `Dim 170: 0.0885` shows a strong correlation, encoding John’s subject representation.
 
 The combined flow suggests that Head 8.1 builds a foundational representation of the scene: `John puts cat on basket`.
 
