@@ -17,6 +17,8 @@ navigation:
     url: things-I-wish-I-knew
   - title: finding similarities between friends using shallow & deep nlp
     url: finding-similarities-between-friends
+  - title: quantum computing and deep learning
+    url: quantum-machine-learning.md
   - title: visualizations & machine learning
     url: visualization-ml
   - title: millennial noir
