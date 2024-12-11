@@ -951,7 +951,7 @@ The fact that induction heads show peak activation during the final state (when 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/562a8929-f929-4894-8a56-482d5ec5fced" width="650"/>
+<img src="https://github.com/user-attachments/assets/b3c790fe-edb3-49ac-8e13-3e6e1406811f" width="650"/>
 <br>
 <small style="font-size: 12px;">Theory of Mind Circuit</small>
 </p>
@@ -983,7 +983,7 @@ The full circuit reveals a nuanced algorithm in its attention:
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3b783981-c073-4af9-9d32-edaf7c839f9e" width="650"/>
+<img src="https://github.com/user-attachments/assets/1de75c9c-cbad-4220-92e1-23bb980748f3" width="650"/>
 </p>
 
 <br>
