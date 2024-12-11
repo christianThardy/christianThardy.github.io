@@ -590,7 +590,7 @@ Activation patching is a super useful technique where internal activations in a 
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits—and they only show correlations at best. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
 
-This is where activation patching comes in. First introduced in the ROME paper as causal tracing (although the history of the technique can be traced back to <a href="https://dl.acm.org/doi/pdf/10.5555/2074022.2074073" title="Pearl" rel="nofollow">Judea Pearl</a>), activation patching lets us dig deeper into the model’s internal computations. Here’s how it works:
+This is where activation patching comes in. Introduced in the ROME paper as causal tracing (although the history of the technique can be traced back to <a href="https://dl.acm.org/doi/pdf/10.5555/2074022.2074073" title="Pearl" rel="nofollow">Judea Pearl</a>), activation patching lets us dig deeper into the model’s internal computations. Here’s how it works:
 
 <br>
 
