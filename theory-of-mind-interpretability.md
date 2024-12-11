@@ -2,6 +2,8 @@
 
 <br>
 
+##### Originally posted: 12/01/24
+
 #### Table of Contents
 - [Introduction](#introduction)
 - [The Relationship Between Theory of Mind and Language](#the-relationship-between-theory-of-mind-and-language)
