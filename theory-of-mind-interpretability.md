@@ -1114,7 +1114,7 @@ The proposed ToM circuit:
       
     - The fact that patching in certain Q, K, or V components from a “clean” run restores correct predictions indicates these attention heads are doing a bit more than just memorizing surface patterns. The heads appear to encode aspects of *perspective*, *belief*, and context. The strong improvements following targeted interventions suggest the model internally represents subtle cues needed for ToM tasks. This finding is still a step short of indisputable evidence for genuine semantics, but beyond naive statistical correlation.
 
-- Is robust to targeted ablations. Critical heads responsible for ToM capabilities were isolated to validate the circuit, and the observed performance degradations following ablations affirm the importance of these components in maintaining robust ToM functionality.
+- Is robust to targeted ablations. Critical heads responsible for ToM capabilities were isolated to validate the circuit, and the observed performance degradations and full task recovery following ablations affirm the importance of these components in maintaining robust ToM functionality.
   
     - Furthermore, experiments show that when certain tokens (those involved in representing “belief states” like where John thinks the cat is) are patched from a clean run, the corrupted model’s performance on the ToM task recovers.
       
