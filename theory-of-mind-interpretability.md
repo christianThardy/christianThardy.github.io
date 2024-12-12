@@ -1130,7 +1130,7 @@ The proposed ToM circuit:
       
     - Pretty speculative, but I think the experiments lend credence to this by pinpointing heads whose removal or modification affects semantic coherence. While it’s not definitive proof that the model truly *understands* semantics, it’s a concrete demonstration that formal pattern capturing is sufficient to manifest in behaviors associated with semantic interpretation.
 
-The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I believe its likely other models and tasks will use similar mechanisms, but these are questions not fully answered by this work. 
+The parallels to human thinking are fascinating—but still, there’s a big “but” here: how much of this translates to other model architectures and ToM tasks beyond false beliefs across a wider range of data? I think its likely other models will use similar mechanisms<sub>[<a href="https://arxiv.org/pdf/2407.10827" title="Tigges" rel="nofollow">24</a>]</sub>, but these are questions not fully answered by this work. 
 
 Further experiments will also explore a wider range of model architectures, the application of crosscoders, transcoders, tasks, and datasets covering more ToM aspects to assess the robustness and generalizability of these findings. For example, it would be interesting to study the difference between predicting why someone will act (ex-ante—predict why a subject will perform an action.) but with more focus on explaining why they did act (ex-post—isolates how the model understands rather than being concerned with its prediction) or develop more empirical studies or experiments that directly test hypotheses about weak grounding or emergent semantics in LLMs, in a broader ToM context.
 
@@ -1191,8 +1191,10 @@ Jamali, *Unveiling theory of mind in large language models: A parallel to single
 
 Bender, *Climbing towards NLU: On Meaning, Form, and Understanding in the Age of Data.* University of Washington, Saarland University. 2020.[<a href="https://aclanthology.org/2020.acl-main.463.pdf" title="Bender" rel="nofollow">23</a>]
 
-McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">24</a>]
+Tigges, *LLM Circuit Analyses Are Consistent Across Training and Scale.* EleutherAI, ILLC, University of Amsterdam, Brown University. 2024.[<a href="https://arxiv.org/pdf/2407.10827" title="Tigges" rel="nofollow">24</a>]
 
-Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/qkv-output.md" title="Hardy" rel="nofollow">25</a>]
+McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">25</a>]
 
-Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">26</a>]
+Hardy, *Granular breakdown of data extracted from the Gemma 2-2B attention mechanism explained by ChatGPT-4o*.[<a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/qkv-output.md" title="Hardy" rel="nofollow">26</a>]
+
+Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">27</a>]
