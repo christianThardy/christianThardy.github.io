@@ -24,7 +24,7 @@
  
 ##### tl;dr:  
 
-*This study explores how "black box" algorithms like transformer-based large language models (LLMs) perform Theory of Mind (ToM) tasks, particularly focusing on false belief scenarios. The analysis bridges high-level behavioral analogues—such as tracking and updating belief states of entities—with low-level computational mechanisms within the model that facilitate next token prediction, to propose an algorithm that models learn to perform this task. I'll assume you're comfortable with some basics, but I'll also be covering a lot of theory and specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with most parts, you can jump straight to the results in the following sections<sub>[<a href="#conclusion" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#attention-head-analysis-and-causal-tracing" title="Go to section" rel="nofollow">3</a>]</sub>.*
+*This study explores how "black box" algorithms like transformer-based large language models (LLMs) perform Theory of Mind (ToM) tasks, particularly focusing on false belief scenarios. The analysis bridges high-level behavioral analogues—such as tracking and updating belief states of entities—with low-level computational mechanisms within the model that facilitate next token prediction, to propose an algorithm that models learn to perform this task. 28 attention heads account for 16% of total heads in Gemma-2-2B and recover full ToM task performance. I'll assume you're comfortable with some basics, but I'll also be covering a lot of theory and specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with most parts, you can jump straight to the results in the following sections<sub>[<a href="#conclusion" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#attention-head-analysis-and-causal-tracing" title="Go to section" rel="nofollow">3</a>]</sub>.*
 
 <br>
 
@@ -964,7 +964,7 @@ The pattern would suggest that the ToM circuit efficiently balances between reta
 
 Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the `basket` token by focusing more on queries than keys or values. This directly impacts the belief states. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the `box` token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
 
-The full circuit accounts for 16% of total heads and reveals a nuanced algorithm in its attention that recovers full ToM task performance:
+The full circuit reveals a nuanced algorithm in its attention:
 
 - **nsubj-1 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to John.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room, John puts cat on basket
