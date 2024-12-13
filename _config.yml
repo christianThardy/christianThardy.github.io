@@ -8,7 +8,7 @@ navigation:
   - title: about
     url: about
   - title: deconstructing theory of mind in large language models
-    url: theory-of-mind-interpretability
+    url: tom-interpretability
   - title: towards better mental health detection
     url: llms-mental-health
   - title: deep learning can solve non-trivial problems in nlp
