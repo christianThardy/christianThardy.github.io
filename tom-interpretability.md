@@ -805,16 +805,16 @@ Thinking about how the model represents the location of the cat given the data f
 <br/>
 
 ```markdown
-[Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
-       |                        |
-       v                        v
-[DTH L8.1] -----------------> [IHs L14-L17]
-       |                        |
-       |                        v
-       |              [Late PTHs L16-L23]
-       |                        |
-       |                        v
-       +-------------------> [CSHs L14-L23]
+        [Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
+               |                        |
+               v                        v
+        [DTH L8.1] -----------------> [IHs L14-L17]
+               |                        |
+               |                        v
+               |              [Late PTHs L16-L23]
+               |                        |
+               |                        v
+               +-------------------> [CSHs L14-L23]
 ```
 
 ```markdown
