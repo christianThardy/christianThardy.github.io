@@ -513,7 +513,7 @@ We can see the model building its representation across layers, with later layer
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 10.1. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 10.1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 0 and layer 17 head 3. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in actor actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in actor actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
 
 <br>
 
@@ -530,7 +530,7 @@ The pattern shows the model is attending strongly to both the initial state (`ca
 
 In the context of predicting the final token `basket`, the value contributions from both `basket` and `box` at their earlier positions in the sequence shows the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief and passing that information forward to other layers and heads. 
 
-The strong attention to the position where John first moved the cat makes sense since that's what John last saw before leaving. The model appears to be using this head to integrate information about object locations and actor knowledge states. Given previous analysis, this head is key to some *belief state emphasis*, and likely follows a collection of heads that build up to this. 
+The strong attention to the position where John first moved the cat makes sense since that's what John last saw before leaving. The model appears to be using this head to integrate information about object locations and actor knowledge states. Given previous analysis, whether this head is an induction head or not, its key to some *belief state emphasis*, and likely follows a collection of heads that build up to this. 
 
 <br>
 
@@ -702,7 +702,7 @@ My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's 
 <br/>
 
 <p align="center">
-  <img src = "https://github.com/user-attachments/assets/a1f01bda-0b0b-4ce8-b6ec-51fe0d3ad4b2" width="1000">
+  <img src = "https://github.com/user-attachments/assets/7d1829f3-d427-486a-9aad-148671bbca36" width="1000">
 </p>
 
 <br/>
@@ -731,6 +731,45 @@ From these heads alone we can see John’s state is strongly anchored to the ini
 
 <br>
 
+#### Causal Tracing: Path patching
+
+How might the behavior of a model change if we selectively replace the output of attention head A directed toward head B (where B follows A in the computation sequence) with the corresponding value from a different input distribution, while keeping all other components unchanged? What if we do this across different head types? This path patching technique shifts the focus from evaluating the isolated importance of individual attention heads to understanding the functional role of the circuit formed by their connection.
+
+This final causal experiment captures the complex interdependencies between attention heads and shows how the model's circuitry works together to solve the ToM task. The experiment will define attention head groups (e.g., “previous token heads”, “induction heads”) identified by a set of metrics that determine whether a model's attention head is acting like a specific head from the head group<sub>[<a href="https://arxiv.org/pdf/2407.10827" title="Tigges" rel="nofollow">17</a>]</sub>. Multiple path patching experiments are run to compute the clean and corrupted logits, the activations from heads that send information into receiving heads are patched, and the logit difference is measured to calculate the impact on model output.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/f0040c73-b524-4279-96cd-d6b7492f4bf8" width="500">
+</p>
+
+<br/>
+
+After this process we have a few artifacts. The first one is a plot that shows sender-receiver pairs (y and x axis) that shows us how things flow through the network to reveal the circuits structure. A positive effect of the magnitude of the influence of heads means that patching the sender’s activation in the receiver context tends to increase the difference between correct and incorrect logits (improving correctness or pushing in some direction), while negative values push in the opposite direction (blue). Each cell represents how much patching the activation from a sender head to a receiver head affects the model's performance.
+
+The idea is that you take the activations from a “sender head” in the corrupted scenario and insert them into the clean scenario model run at the same point, effectively asking: “How does changing what this one head writes cause changes to the final output and to other heads downstream?”.
+
+The darkest blue patches appear when 5.4, a previous token head, is the sender, and 12.3, a previous token head, is the receiver.
+
+```markdown
+Layer 5 Head 4 → Layer 12 Head 3
+effect_of_head_to_head: -1.3715
+```
+
+Suggesting 12.3 is particularly sensitive to interference from other heads. Many of the strongest positive effects are around 0.3 to 0.5, where the highest values tend to appear in interactions between later layers (L17-L23), although the receiver 12.2 shows very strong positive interactions (red) with itself and middle layers, long with 17.6 (induction head).
+
+```markdown
+Layer 12 Head 2 → Layer 12 Head 2
+effect_of_head_to_head: 0.5152
+
+Layer 17 Head 6 → Layer 17 Head 6
+effect_of_head_to_head: 0.4579
+```
+
+It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? By combining the results of the QKVO flows, we will be able to see how the identified heads form a layered composition.
+
+<br>
+
 ## So What?
 <sub>[↑](#top)</sub>
 
@@ -738,7 +777,7 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 ### Specialization across heads
 
-Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic example of specialization in action and likely represents an induction head. This head does a few key things:
+Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic, likely example of specialization in action. This head does a few key things:
 
 **Composes and maintains perspectives:** It attends to tokens that represent an actors belief. [Check out this plot again.](https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a) The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
 
@@ -761,29 +800,134 @@ These capabilities allow it to handle false belief tasks by maintaining parallel
 
 **Localized circuit for belief tracking:** It’s worth noting how interventions and ablation experiments reinforce the idea that these capabilities are localized (e.g. heads exhibiting induction behavior show significant performance drops when ablated).
 
-Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys, values and outputs, we can start to build a bigger, conceptual picture of what is happening. If this is our sequence where the model appears to be tracking the occurences of `box` at index 57, `basket` at indexes 18 and 29, and `the` at index 105:
+Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys, values and outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and put together a naive circuit.
 
 <br/>
 
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/68336ba9-9b1f-411d-8963-0daff98a26d4" width="1000">
-</p>
+```markdown
+                                            [Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
+                                                   |                        |
+                                                   v                        v
+                                            [DTH L8.1] -----------------> [IHs L14-L17]
+                                                   |                        |
+                                                   |                        v
+                                                   |              [Late PTHs L16-L23]
+                                                   |                        |
+                                                   |                        v
+                                                   +-------------------> [CSHs L14-L23]
+```
 
-<br/>
+```markdown
+[Early PTHs L2-L6] <---> [Early PTHs L2-L6]  (Strong mutual interactions)
+       |||                    
+       vvv
+[Mid Integration Hub L10-L12]
+```
 
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/33f89aa5-b44d-43f9-82e3-a1aa99819492" width="680">
-</p>
+**Early Previous Token Head Processing (L2-6)**
+- **Primary Function:** Initial semantic feature extraction
+  - **QKVO Flow:**
+    - 2.3's output encodes subject-action pairs (“John puts”) into key spaces
+    - 2.5 adds transition information to these encodings
+    - 5.4 queries against these output patterns while integrating temporal context
+    - 5.2 and 6.2 build location/action bindings
+    - Values propagate movement and state semantic patterns forward
+   
+```markdown
+[Mid PTHs L10-L12] <======> [DTH L8.1]
+        |||                    ||
+        vvv                    vv
+[Induction L14-17]   [Copy Suppression Early]
+```
 
-<br/>
+**Mid-Layer Previous Token Integration (L10-12)**
+- **Primary Function:** Complex state representation building
+    - **QKVO Flow:**
+      - 10.5 and 11.3 query against early layer encodings
+      - 12.1/2/3 form a tight integration cluster with shared K/V spaces
+      - Values from this cluster encode sophisticated state patterns
+      - 12.3 serves as critical integration point (shown by negative ablation effects)
+     
+```markdown
+[DTH L8.1] ---------> [Induction L14-17]
+    |                        |
+    |                        v
+    +-----------------> [Copy Suppression]
+```
 
-Early layers establish character roles and the initial state. Q-components highlight who is involved (John or Mark), and K/V-components encode the initial locations and items. O-components record subject identities and keep track of the scene’s initial conditions.
+**Duplicate Token Head Processing (L8.1)**
+- **Primary Function:** Parallel state perspective maintenance
+    - **QKVO Flow:**
+      - Queries search for subject positions in all previous token head outputs
+      - Keys match against accumulated current and past location states
+      - Values create dual representations from multiple inputs
+      - Output maintains parallel current/believed states
 
-Middle layers integrate changes. Mark’s actions updating the cat’s location appear in the K/V vectors. Specialized subspaces (dimensions) capture transitions and timing. The network uses these signals to form two parallel representations: the true location (as Mark knows it) and the outdated location (as John believes it to be).
+```markdown
+[Induction L14-17] --------> [Late PTHs L16-L23]
+        ||                          ||
+        vv                          vv
+[Copy Suppression Mid]  [Copy Suppression Late]
+```
 
-Late layers distinguish whose perspective the model should rely on. Some heads inhibit the influence of updated information when reasoning about John’s belief state. Others reinforce the correct perspective by emphasizing the relevant subspace dimensions that encode John’s outdated belief. A more in-depth analysis of the QKVO-dimensions can be found <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-notes.md" title="ToM notes" rel="nofollow">here</a>.
+**Induction Head Processing (L14-17)**
+- **Primary Function:** Temporal pattern recognition
+    - **QKVO Flow:**
+      - 14.2 and 15.0 query against duplicate token head's parallel states
+      - Keys specifically match temporal patterns
+      - 17.0 and 17.6 query against earlier induction head outputs
+        - 17.6 shows strong correlations with temporal markers tied to John's absence (correlations around 0.31-0.34), suggesting they're specifically tracking what John doesn't see
+      - Values encode belief state transitions
+      - Strong routing between 14.2 and 17.6 for pattern completion
 
-The full circuit evolves from early state representations into layered belief-action integration. Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two actors—highlighting a meaningful cognitive distinction. 
+```markdown
+[Late PTHs L16-L23] <====> [Copy Suppression L14-L23]
+            |||                    |||
+            vvv                    vvv
+         [Final Output]        [State Filtering]
+```
+
+**Late Previous Token Integration (L16-23)**
+- **Primary Function:** Final state integration
+   - **QKVO Flow:**
+     - 16.7 and 18.6 process induction head outputs
+     - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
+        - Querying against both induction and copy suppression outputs
+        - Keys matching belief states
+        - Values producing final predictions
+
+**Copy Suppression Processing (L14-23)**
+- **Primary Function:** State filtering and arbitration
+    - **QKVO Flow:**
+      - 14.3 queries check current states against induction patterns
+      - 16.2 and 18.7 perform intermediate filtering
+      - 20.2 handles mid-circuit suppressions
+      - 23.5 performs final arbitration through:
+        - Queries verifying belief states
+        - Keys checking reality states
+        - Values suppressing inconsistent predictions
+
+Thinking about the circuit from a higher level:
+
+**Previous Token → Duplicate Token:**
+Previous token head outputs become K/V inputs for 8.1,
+8.1 maintains parallel representations
+
+**Duplicate Token → Induction:**
+8.1's dual states feed induction head queries,
+temporal pattern matching through key spaces
+
+**Induction → Copy Suppression:**
+Belief state encodings route to suppression queries,
+filtering through key/value interactions
+
+**Copy Suppression → Final Integration:**
+Filtered states route to late PTH queries,
+final arbitration through value spaces
+
+The full circuit evolves from early semantic features representations into layered belief-action integration, duplicate token heads maintain parallel representations of reality, induction heads recognize temporal states, copy suppression filters contradictions and the final previous token heads produce the final prediction.
+
+Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two actors—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
 
 The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations. Copy suppression plays a crucial role here, preventing belief contamination, and enabling false-belief reasoning through a dynamic, interpretable circuit.
 
@@ -927,74 +1071,72 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/5d325cda-9093-4db4-8bf2-505a769fefb2" width="600"/>
+<img src="https://github.com/user-attachments/assets/86f79bc4-1a5b-4f27-bee2-95fea1f616d3" width="800"/>
 <br>   
 <small style="font-size: 12px;">High activation values indicate components that are more activated against low activation values.</small>
 </p>
 
 <br>
 
-We see nsubj-1 heads (John) co-activating with nsubj-2 heads (Mark) early on, setting up a stable context for the initial and intermediate parts of the sequence with higher similarity between the location state and nsubj-2 heads. Potentially suggesting its important for the model to learn the actual location of things early in the sequence.
+Starting with the co-occurrence matrix, the initial and final subject state heads (previous token heads) show strong co-activation with the intermediate subject state (induction heads), suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other suppresses information contradictory to John's perspective. While late suppression heads have strong negative co-occurrence with action-location state heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—perhaps helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
 
-The duplicate token heads, and to a lesser extent the induction heads of nsubj-1 co-activate throughout the sequence with high similarity to the inhibition heads, which have a negative effect on the heads for nsubj-2 up until the penultimate and final states. Showing that the model never fully disregards the actual location of the cat, but actively chooses where the cat is based on where John believes that it is.
+There's a clear hierarchical structure in the suppression heads (early, mid, and late), with moderate co-activation between early and mid suppression heads, but distinct activation patterns for late suppression heads. This highlights early suppression during initial state filtering, mid suppresion during pattern refinement by the induction heads and late suppression applying the final arbitration before prediction.
 
-The location state previous token heads co-activate heavily in the inital and final state. This makes sense as the model has to keep updating the belief state of John and Mark about the environment based on what’s going on in the scene throughout the sequence, its possible this specifically helps preserve initial state information for later comparison when the final location of the cat needs to be compared with beliefs. 
+We can see this mimicked in the temporal activation plots but with more detail. Cluster 2 (action-location state) shows the strongest activation during the intermediate state, suggesting this is when the model is most actively processing the shared semantics from the previous token heads in. This makes sense as this would be when the model needs to track the actual movement or position changes in parallel between both subjects. The suppression heads (Clusters 0, 4, and 5) show interesting temporal patterns where late suppression heads are most active in the penultimate state, early suppression heads show the most activation in the initial state, and mid suppression heads maintain relatively consistent activation levels, but shows the most activation in the final state.
 
-Inhibition heads show complementary inverse patterns with the induction heads. Strong suppression at the beginning of the sequence makes sense intuitively; the model is tracking the competing view points by nsubj-1 and nsubj-2. Inhibition's strong activations in the initial state and weaker, albeit still strong activation in the later state offsetting the model’s final prediction. 
+The intermediate subject state (induction heads, Cluster 6) shows selective activation during the initial and final states, suggesting they may be crucial for maintaining and updating the model's representation of the subject's knowledge that it learned during the beginning of the passage, transferring that information to the final state to co-activate with the previous/duplicate token heads and suppression to predict the correct location. The pattern is suggesting that induction heads are most active when the model needs to recall and apply patterns from earlier in the sequence when the model needs to recall the initial state to predict John's belief and less active during intermediate and penultimate processing. So it's important for connecting later events back to earlier states.
 
-This suggests these heads may be involved in encoding what is **NOT** true at the start by creating *negative* representations that help track what an actor doesn't “know” or “believe”. In other words, high suppression co-activation directly affects the final predicted location of the cat. This lines up with the low activation values we’re seeing at positions connected to nouns and locations in 23.5.
+The final subject state heads (Cluster 1) show subtle, increasing activation from the intermediate to final state, suggesting they integrate information to form the final representation of the subject's belief states. Also, the intermediate subject state (induction heads) shows an interesting dip in activation during the penultimate state, right when the early suppression heads (Cluster 4) show increased activation. This could indicate a mechanism where the model temporarily suppresses ongoing state tracking right before the final state computation—perhaps a kind of "reset" before integrating all the information for the final belief state determination.
 
-Induction heads show minimal activation during initial state, stronger activation during intermediate state, and the strongest activation during the final state. The pattern is suggesting that induction heads are most active when the model needs to recall and apply patterns from earlier in the sequence, particularly engaged during the final state, which is when the model needs to recall the initial state to predict John's belief and less active during initial encoding of information. So it's important for connecting later events back to earlier states.
+Looking at the distribution of activation strengths across clusters in the second temporal plot, it's noteworthy that the action-location state shows the most extreme activation values. This suggests that tracking the parallel states of each subject's physical state/location in relation to the believed location of the cat, and integrating the semantic features in context might serve as a kind of “ground truth” against which subject states need to be compared.
 
-This aligns with the QKV patterns seen from the induction head ablation studies, where these groups of heads were identified as serving distinct functions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
+Everything here aligns with the QKV patterns seen from the ablation studies and interventions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
 
-The fact that induction heads show peak activation during the final state (when the model needs to recall John's last known state) strongly suggests they play a crucial role in maintaining and retrieving relevant historical information for the false belief task.
+This again is confirming that the model maintains multiple representations of reality (actual locations) and beliefs (subject states) through coordinated activation of different head clusters, with suppression heads helping to manage which information is relevant at different points in the sequence, so at different layers of the network.
 
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/b3c790fe-edb3-49ac-8e13-3e6e1406811f" width="650"/>
+<img src="https://github.com/user-attachments/assets/e7049e9b-388d-42e1-bbb8-b6e2753d3e7b" width="650"/>
 <br>
 <small style="font-size: 12px;">Theory of Mind Circuit</small>
 </p>
 
 <br>
 
-The pattern would suggest that the ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and suppressing outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
-
-Some heads in this circuit seem to attend to previous names in the sequence but with different styles of operation. A few heads are showing a high query bias, which takes over the activation space around the `basket` token by focusing more on queries than keys or values. This directly impacts the belief states. Instead of nudging toward the correct prediction, these heads actually suppress the logit of the `box` token by writing against the belief state heads’ direction. This suppression might be doing something similar to regularization or inhibition—almost like a “negative belief state”—preventing the model from leaning too hard on certain patterns and balancing out attention across tokens.
+The ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and suppressing outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for ToM, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
 The full circuit reveals a nuanced algorithm in its attention:
 
-- **nsubj-1 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to John.
-    - e.g., cat in room, box in room, basket in room, John in room, Mark in room, John puts cat on basket
+- **initial subj state (previous token heads)** identify early occurrences of the same tokens that immediately precede the current one that represent locations, subject actions, objects and positions in relation to John and Mark, but keep their states parallel.
+    - e.g., cat in room, box in room, basket in room, John in room, Mark in room
       
-- **nsubj-2 belief state (duplicate token heads)** identify early occurrences of the same tokens that represent locations, subject actions, objects and positions in relation to Mark.
-    - e.g., John puts cat on basket, Mark takes cat off basket, Mark puts cat on box
+- **intermediate subj state (previous token heads)** identify early occurrences of the same tokens that immediately precede the current one that represent locations, subject actions, objects and positions in relation to John and Mark, but keep their states parallel.
+    - e.g., John cat on basket, Mark cat off basket, Mark cat on box
       
-- **location state (previous-backup token heads)** captures local dependencies, primarily focusing on locations of subjects and objects with equal weight, to tokens immediately preceding the current one, placing them in the context of the ongoing scene.
+- **action-location state (previous-backup token heads)** captures all prior local dependencies, primarily focusing on locations of subjects and objects with equal weight, to repeated tokens, placing them in the context of the ongoing scene.
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room, John goes to school, Mark goes to work
       
-- **nsubj-1 belief state (induction heads)** captures long range dependencies, maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in the sequence.
-    - e.g., John put cat on basket, John at school, John not in room, Mark not in room, cat currently on basket
+- **intermediate subj state (induction heads)** captures long range dependencies from duplicate token output, maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in the sequence.
+    - e.g., John put cat on basket, John at school, John not in room, Mark not in room, John back from school and enters the room, cat currently on basket
       
-- **Copy Supression Heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors.
+- **Early, Mid and Late Supression Heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors at different points in the sequence.
     - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
         - John+++, Mark+, cat on basket++++, cat on box--
  
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/1de75c9c-cbad-4220-92e1-23bb980748f3" width="650"/>
+<img src="https://github.com/user-attachments/assets/27163331-bfed-4a2c-a5b9-67030a316389" width="650"/>
 </p>
 
 <br>
 
 The early layers, or initial state heads, mostly handle simple linguistic elements (parts-of-speech, puncuation, determiners, conjugations, function words, syntactic dependencies) in specialized later heads.  These heads focus on picking up broader contextual signals, with key vectors usually having a larger influence. This suggests that early layers are primarily focused on gathering broad, diffuse information and maintaining generalized attention patterns.
 
-As we move into the middle layers, things get more interesting. Here, the location state heads start doing more compositional work, integrating outputs from nsubj-1 state heads and nsubj-2 state heads. This is where object tracking, action understanding, and structural processing begin to take over. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
+As we move into the middle layers, things get more interesting. Here, the location state heads start doing more compositional work, integrating outputs from subj-1's state and subj-2's state. This is where object tracking, action understanding, and structural processing begin to take over. The attention mechanism becomes more balanced between the query and key vectors, indicating a shift towards integrating contextual information more precisely and building up a richer understanding of the scene.
 
-This scene understanding flows into nsubj-1's induction heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up by their initial head states, and the location state heads. It’s here that we see the emergence of complex reasoning and specialized attention heads, such as tracking belief states while keeping attention on earlier elements of the narrative in relation to John.
+This scene understanding flows into subj-1's induction heads, especially for entities like John and Mark, where the model begins to track complex subject-object interactions and manage belief states—continuing to maintain the broader context built up by their initial head states, and the action-location state. It’s here that we see the emergence of complex reasoning and specialized attention heads, such as tracking belief states while keeping attention on earlier elements of the narrative in relation to John.
 
 At the final stages, the suppression heads play a key role. They show both positive and negative modulations between the QK mechanisms, enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out outdated or irrelevant information to John's knowledge, ensuring only relevant factors—like John’s incorrect belief about an object’s location—are propagated to influence the model’s final output.
 
@@ -1005,7 +1147,7 @@ The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a hre
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/2c2fce87-170a-4f65-9d0c-c127a7ea86dd" width="700"/>
+<img src="https://github.com/user-attachments/assets/87a11ac9-959d-45e8-9bac-cb0cb1b546f2" width="700"/>
 <br>
 </p>
 
@@ -1018,9 +1160,9 @@ Average logit difference (ToM dataset, only using circuit): 0.9373
 
 The ToM circuit hits all the key benchmarks: faithful—the circuit actually outperforms the full model, showing it captures the necessary functions; complete—all heads essential for each component are included; minimal—the plot highlights clear specialization with only a minimal number of heads carrying substantial weight.
 
-Breaking it down, the ToM circuit shows concentrated importance in certain heads, with over 40% in the induction heads of nsubj-1's belief state. This suggests that understanding and keeping a coherent grasp of where John thinks the cat is, is critical for handling ToM tasks. It implies that an accurate representation of the scene from the actor who first moved the cat directly impacts belief tracking.
+Breaking it down, the ToM circuit shows concentrated importance in certain heads, with over 40% in the previous token heads. This suggests that these heads are keeping a coherent grasp of where John thinks the cat is, and is critical for handling ToM tasks.
 
-Meanwhile, the duplicate and previous- backup token heads contribute minimally, acting more as supporting context providers rather than the main drivers of belief tracking.
+Meanwhile, the duplicate token heads contribute minimally, acting more as a supporting context provider rather than the main drivers of belief tracking.
 
 The circuit also shows a high degree of modularity: heads are highly specialized, with relevant computations neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, showing a clean and compartmentalized structure.
 
@@ -1055,7 +1197,7 @@ Ablated believed-actual diff: 0.162061
 Total circuit effect: 0.674451
 ```
 
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the copy suppression heads come out as the most critical. Ablating these reduces performance by ~14.89% and ~68.16% respectively.
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Unsurprisingly, John's duplicate token belief state heads and the early suppression heads come out as the most critical. Ablating these reduces performance by ~11.01% and ~45.88% respectively.
 
 <br>
 
@@ -1064,9 +1206,9 @@ This suggests that these heads are working together in a highly interdependent w
 
 There are key interactions and patterns that we can see backed by qualitative evidence. 
 
-Circuit components have complementary timing in the way they activate across the sequence. The location state activates early, nsubj-1 and nsubj-2 states activate more strongly in middle and later layers, showing a clear temporal progression of information processing. Components complement each other during belief processing. Belief states and inhibition head clusters show complementary patterns; one tracks beliefs, and the other tracks what's not believed. Components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
+Circuit components have complementary timing in the way they activate across the sequence. The action-location state activates strongly in middle and later layers, components complement each other during belief processing, subject states and inhibition head clusters show complementary patterns; they tracks beliefs, and the other tracks what's not believed. Components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at end.
 
-Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated, and a significant decrease in model performance when they are ablated. In a separate study, element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">22</a>]</sub>. In both cases showing modularity and a parallel to the human brain.
+Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated, and a significant decrease in model performance when they are ablated. This is not an isolated result. In a separate study, element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">22</a>]</sub>. In both cases showing modularity and a parallel to the human brain.
 
 From the perspective of this task, copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (beliefs), and this has several implications for AI alignment. Because the model has learned to maintain distinct representations and track multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and possibly even lying. Investigating inhibition and suppression mechanisms might be crucial for understanding how models might deceive, but these same capabilities could be incredibly useful for alignment research. For example, they could help with:
 
@@ -1095,7 +1237,7 @@ Induction heads, though not explicitly designed to handle grounded semantics, ma
 
 Even without explicit grounding, models trained on structured datasets can still encode weak semantic signals. Benchmarks like MMLU, ARC-C or Winogrande embed linguistic patterns that implicitly carry semantic entailments or logical structures. Models like Gemma-2-2B seem to capture these relationships effectively, even if they’re operating formally. By layer 22, relational data synthesized from earlier layers yield outputs that mimic semantic understanding.
 
-Tasks like Winogrande make this particularly clear: While solving these tasks seems to require semantic reasoning, models often succeed by exploiting subtle textual cues embedded in the data. This suggests that while heads like 22.4 might not directly access labeled semantic relationships, they capitalize on implicit signals encoded in the training data. For example, co-occurrences of specific token patterns might encode semantic entailments without the model ever “knowing” what those entailments mean explicitly.
+Tasks like Winogrande make this particularly clear: While solving these tasks seems to require semantic reasoning, models often succeed by exploiting subtle textual cues embedded in the data. This suggests that while the induction heads found in this analysis might not directly access labeled semantic relationships, they capitalize on implicit signals encoded in the training data. For example, co-occurrences of specific token patterns might encode semantic entailments without the model ever “knowing” what those entailments mean explicitly.
 
 In large models like Gemma-2-2B, emergent semantic inference seems plausible due to the interplay between the architecture and the training data. Benchmarks like BoolQ and TriviaQA provide structured patterns that tie linguistic forms to functional outputs, creating a scaffolding for weak grounding. While induction heads and specific layers remain pattern-driven, the broader training process imbues the model with enough implicit grounding to perform tasks requiring nuanced semantic judgments. This bridges the gap between form and meaning, allowing the model to encode partial grounding—even if it never reaches full semantic understanding.
 
@@ -1110,7 +1252,7 @@ The proposed ToM circuit:
 
 - Extends on the <a href="https://www.alignmentforum.org/posts/3ecs6duLmTfyra3Gp/some-lessons-learned-from-studying-indirect-object" title="alignmentforums" rel="nofollow">IOI</a> (focuses on tracking a models ability to reconstruct the syntax of natural language) work to identify specific attention heads that are pivotal to false belief tasks. The proposed circuit tracks and updates belief states of entities in regards to locations and objects using strong formal linguistic competence and tentative functional competence via the manipulation of linguistic elements, to distinguish facts from the believed reality of a 3rd person perspective.
   
-    - The empirical results from activation patching identified a circuit that’s causally linked to ToM performance, and provides *some* causal evidence that form can carry function and certain heads are necessary for successful ToM-like inference. The circuit captures stable relationships (like who believes what) that go beyond surface-level token transitions. *Some* emergent semantic-like behavior exists—removing specific heads consistently reduces performance—which pushes beyond correlation towards a stronger (though still not definitive) causal story.
+    - The empirical results from activation/path patching identified a circuit that’s causally linked to ToM performance, and provides *some* causal evidence that form can carry function and certain heads are necessary for successful ToM-like inference. The circuit captures stable relationships (like who believes what) that go beyond surface-level token transitions. *Some* emergent semantic-like behavior exists—removing specific heads consistently reduces performance—which pushes beyond correlation towards a stronger (though still not definitive) causal story.
       
     - The fact that patching in certain Q, K, or V components from a “clean” run restores correct predictions indicates these attention heads are doing a bit more than just memorizing surface patterns. The heads appear to encode aspects of *perspective*, *belief*, and context. The strong improvements following targeted interventions suggest the model internally represents subtle cues needed for ToM tasks. This finding is still a step short of indisputable evidence for genuine semantics, but beyond naive statistical correlation.
 
