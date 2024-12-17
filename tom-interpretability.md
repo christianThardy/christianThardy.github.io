@@ -1339,4 +1339,4 @@ Tigges, *LLM Circuit Analyses Are Consistent Across Training and Scale.* Eleuthe
 
 McDougall, *Indirect Object Identification Exercises and Solutions used in sections 3.2, 3.3, 3.4* Independent. 2024.[<a href="https://colab.research.google.com/drive/1KgrEwvCKdX-8DQ1uSiIuxwIiwzJuQ3Gw?usp=sharing#scrollTo=IzLtmTaNl6mM5" title="McDougall" rel="nofollow">26</a>]
 
-Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">27</a>]
+Hardy, *Code for the project can be found here*.[<a href="" title="Hardy" rel="nofollow">27</a>].
