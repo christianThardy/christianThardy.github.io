@@ -805,16 +805,16 @@ Thinking about how the model represents the location of the cat given the data f
 <br/>
 
 ```markdown
-                                            [Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
-                                                   |                        |
-                                                   v                        v
-                                            [DTH L8.1] -----------------> [IHs L14-L17]
-                                                   |                        |
-                                                   |                        v
-                                                   |              [Late PTHs L16-L23]
-                                                   |                        |
-                                                   |                        v
-                                                   +-------------------> [CSHs L14-L23]
+[Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
+       |                        |
+       v                        v
+[DTH L8.1] -----------------> [IHs L14-L17]
+       |                        |
+       |                        v
+       |              [Late PTHs L16-L23]
+       |                        |
+       |                        v
+       +-------------------> [CSHs L14-L23]
 ```
 
 ```markdown
@@ -1078,7 +1078,9 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 
 <br>
 
-Starting with the co-occurrence matrix, the initial and final subject state heads (previous token heads) show strong co-activation with the intermediate subject state (induction heads), suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other suppresses information contradictory to John's perspective. While late suppression heads have strong negative co-occurrence with action-location state heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—perhaps helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
+Starting with the co-occurrence matrix, the initial and final subject state heads (previous token heads) show strong co-activation with the intermediate subject state (induction heads), suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other suppresses information contradictory to John's perspective. 
+
+While late suppression heads have strong negative co-occurrence with action-location state heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—perhaps helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
 
 There's a clear hierarchical structure in the suppression heads (early, mid, and late), with moderate co-activation between early and mid suppression heads, but distinct activation patterns for late suppression heads. This highlights early suppression during initial state filtering, mid suppresion during pattern refinement by the induction heads and late suppression applying the final arbitration before prediction.
 
