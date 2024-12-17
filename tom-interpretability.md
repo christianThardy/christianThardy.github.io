@@ -1099,7 +1099,7 @@ This again is confirming that the model maintains multiple representations of re
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e7049e9b-388d-42e1-bbb8-b6e2753d3e7b" width="650"/>
+<img src="https://github.com/user-attachments/assets/9840bf56-03b5-4101-9723-da9a2dccd915" width="650"/>
 <br>
 <small style="font-size: 12px;">Theory of Mind Circuit</small>
 </p>
@@ -1129,7 +1129,7 @@ The full circuit reveals a nuanced algorithm in its attention:
 <br>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/27163331-bfed-4a2c-a5b9-67030a316389" width="650"/>
+<img src="https://github.com/user-attachments/assets/fcad0a54-8014-4701-804a-0315cc93da05" width="650"/>
 </p>
 
 <br>
