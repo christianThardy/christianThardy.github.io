@@ -1113,19 +1113,19 @@ The full circuit reveals a nuanced algorithm in its attention:
 - **initial subj state (previous token heads)** identify early occurrences of the same tokens that immediately precede the current one that represent locations, subject actions, objects and positions in relation to John and Mark, but keep their states parallel.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room
       
-- **intermediate subj state (previous token heads)** identify early occurrences of the same tokens that immediately precede the current one that represent locations, subject actions, objects and positions in relation to John and Mark, but keep their states parallel.
-    - e.g., John cat on basket, Mark cat off basket, Mark cat on box
-      
-- **action-location state (previous-backup token heads)** captures all prior local dependencies, primarily focusing on locations of subjects and objects with equal weight, to repeated tokens, placing them in the context of the ongoing scene.
+- **action-location state (previous-backup token heads)** captures all prior local dependencies, primarily focusing on locations of subjects and objects with equal weight, to repeated tokens, placing them in the context of the ongoing scene and keep their states parallel.
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room, John goes to school, Mark goes to work
       
 - **intermediate subj state (induction heads)** captures long range dependencies from duplicate token output, maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from early tokens previous positions in the sequence.
     - e.g., John put cat on basket, John at school, John not in room, Mark not in room, John back from school and enters the room, cat currently on basket
       
-- **Early, Mid and Late Supression Heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors at different points in the sequence.
+- **early, mid and late supression heads** negatively effects true-beliefs and prevents copying the actual location of the object via negative modulations from value vectors at different points in the sequence.
     - e.g., John put cat on basket, John at school, Mark takes cat off basket, Mark put cat on box, John not in room, Mark at school, cat currently on box (according to Mark's belief), cat currently on basket (according to John's belief)
         - John+++, Mark+, cat on basket++++, cat on box--
- 
+     
+- **final subj state (previous token heads)** query against induction and copy suppression outputs and produce the final prediction.
+    - e.g., John thinks the cat is on the basket
+
 <br>
 
 <p align="center">
