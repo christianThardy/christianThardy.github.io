@@ -494,7 +494,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
     - **10.4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases—`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong V spikes for verb-object agreement (`takes the cat`, `puts it`). Highest v spikes around complete action sequences (`takes the cat and puts it on`)
 
 - **Middle Layers & Heads 10-17:**
-    - **14.0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover “belief states” (locations relevant to the position of the cat from the perspective of each actor)
+    - **14.0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover “belief states” (locations relevant to the position of the cat from the perspective of each subject)
     - **14.3:** Very high attention to `box`, possibly encoding the actual state
     - **14.6:** Increasing attention to `basket` compared to `box`, suggesting comparison
     - **16.0:** Focuses on `room` with moderate attention to objects and spatial relationships
@@ -513,7 +513,7 @@ We can see the model building its representation across layers, with later layer
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 10.1. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 10.1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in actor actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in subject actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
 
 <br>
 
@@ -530,7 +530,7 @@ The pattern shows the model is attending strongly to both the initial state (`ca
 
 In the context of predicting the final token `basket`, the value contributions from both `basket` and `box` at their earlier positions in the sequence shows the model is tracking both possible locations of the cat; the real state (`cat on box`) and John's believed state (`cat on basket`), with the highest value contributions emphasizing tokens important to resolving the false belief and passing that information forward to other layers and heads. 
 
-The strong attention to the position where John first moved the cat makes sense since that's what John last saw before leaving. The model appears to be using this head to integrate information about object locations and actor knowledge states. Given previous analysis, whether this head is an induction head or not, its key to some *belief state emphasis*, and likely follows a collection of heads that build up to this. 
+The strong attention to the position where John first moved the cat makes sense since that's what John last saw before leaving. The model appears to be using this head to integrate information about object locations and subject knowledge states. Given previous analysis, whether this head is an induction head or not, its key to some *belief state emphasis*, and likely follows a collection of heads that build up to this. 
 
 <br>
 
@@ -697,7 +697,7 @@ The `k` plot (K vectors) is less clear, though heads like 14.1 and 17.2 show som
 
 The analysis reveals that some attention heads are consistently impactful across Qs, Ks, and Vs, while others are more specialized. For instance, head 23.5 influences both Qs and outputs, while head 2 targets Ks and Vs. In layer 17, head 3’s Q plot shows a subtle negative activation shift, indicating how the model adjusts its belief about the location of the `cat`. The head assigns high activation to `box` and lower to `John`, suggesting a balance between factual grounding and perspective-taking. This adjustment becomes clearer by layer 22, head 4, where the model confidently determines box as the true location, discounting John’s outdated belief. 
 
-My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the actors, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer. It's possible to see this play out at a finer scale with causal evidence at the QKVO dimension-level, where dimensions in the attention mechanism are input tokens. Let's see if I'm wrong.
+My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the subjects, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer. It's possible to see this play out at a finer scale with causal evidence at the QKVO dimension-level, where dimensions in the attention mechanism are input tokens. Let's see if I'm wrong.
 
 <br/>
 
@@ -779,7 +779,7 @@ The model seems to have developed a systematic, multi-step process for solving t
 
 Different heads specialize in distinct functions. Take layer 22 head 4—it’s a fantastic, likely example of specialization in action. This head does a few key things:
 
-**Composes and maintains perspectives:** It attends to tokens that represent an actors belief. [Check out this plot again.](https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a) The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
+**Composes and maintains perspectives:** It attends to tokens that represent the subject's belief. [Check out this plot again.](https://github.com/user-attachments/assets/43905290-8648-435d-820a-9526d971fe0a) The sequence captures where John believes the cat will be located when he returns, and the heads query vectors attend to token keys that occur earlier in the sequence that match downstream patterns.
 
 The spikes for query, key and value in this head appear concentrated on tokens earlier in the sequence, specifically in John's region where `basket` and `cat` occur with high value contributions and `box` with significantly lower value contributions, indicating these are tokens central to the repetitive patterns in the sequence. The attention seems biased toward earlier occurrences of tokens like `basket` and `cat` with stronger contributions for these earlier tokens in heads 2, 3 and 4 compared to the layers other heads, showing a clear leftward bias and the models' capability to separate John's belief from Mark's belief. 
 
@@ -791,12 +791,12 @@ This insight flows forward through the layers, shaping how subsequent events are
 
 **Sophisticated mechanisms for processing:** Zooming out, the attention head analysis shows the model has developed specialized circuits for:
 
-- Tracking multiple states of reality: It keeps separate representations for what’s true versus what the actors believe.
-- Understanding actor knowledge limitations: Heads explicitly encode what an actor knows - versus what they don’t know.
+- Tracking multiple states of reality: It keeps separate representations for what’s true versus what the subjects believe.
+- Understanding subject knowledge limitations: Heads explicitly encode what a subject knows - versus what they don’t know.
 - Maintaining long-range dependencies: The model integrates information from across the sequence, ensuring coherence.
 - Integrating temporal and perspective information: It distinguishes changes over time while keeping track of different viewpoints.
 
-These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and actor knowledge states, showing sophisticated pattern matching during next-token prediction.
+These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and subject knowledge states, showing sophisticated pattern matching during next-token prediction.
 
 **Localized circuit for belief tracking:** It’s worth noting how interventions and ablation experiments reinforce the idea that these capabilities are localized (e.g. heads exhibiting induction behavior show significant performance drops when ablated).
 
@@ -927,7 +927,7 @@ final arbitration through value spaces
 
 The full circuit evolves from early semantic features representations into layered belief-action integration, duplicate token heads maintain parallel representations of reality, induction heads recognize temporal states, copy suppression filters contradictions and the final previous token heads produce the final prediction.
 
-Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two actors—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
+Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two subjects—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
 
 The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations. Copy suppression plays a crucial role here, preventing belief contamination, and enabling false-belief reasoning through a dynamic, interpretable circuit.
 
@@ -993,7 +993,7 @@ The model has specific features dedicated to representing different aspects of t
 
 <br>
 
-These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and actors are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions.
+These features suggest that the model is building an internal representation of the physical setup described in the passage, tracking where objects and subjects are placed. It’s also clear that several features are responsible for keeping track of John and Mark's movements and actions.
 
 <br>
 
@@ -1037,7 +1037,7 @@ In the MLP features, we're seeing a recurring theme, feature 11284 looks like it
 
 <br>
 
-Several features seem to be directly tied to representing belief states and knowledge. Feature 13597 is likely crucial for capturing John's lack of knowledge about what happened in the room while he was away. Feature 5107 probably signals the model’s awareness of John’s ignorance, potentially reflecting uncertainty and doubt. Feature 12703 could be involved in modeling John’s thought process when he returns to the room, helping the model represent how John updates his beliefs. These features seem important for understanding how the model processes ToM scenarios, especially when tracking actors’ evolving mental states.
+Several features seem to be directly tied to representing belief states and knowledge. Feature 13597 is likely crucial for capturing John's lack of knowledge about what happened in the room while he was away. Feature 5107 probably signals the model’s awareness of John’s ignorance, potentially reflecting uncertainty and doubt. Feature 12703 could be involved in modeling John’s thought process when he returns to the room, helping the model represent how John updates his beliefs. These features seem important for understanding how the model processes ToM scenarios, especially when tracking subjects’ evolving mental states.
 
 <br>
 
@@ -1264,7 +1264,7 @@ The proposed ToM circuit:
       
     - Demonstrates a direct causal relationship between certain linguistic representations and ToM task performance.
 
-- Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing actors' beliefs. The circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
+- Works with copy suppression to ensure that distinct belief representations are tracked and preserved, preventing conflation between reality and differing subjects' beliefs. The circuit's interplay allows for more accurate predictions of behavior based on mismatched beliefs, a hallmark of human ToM.
   
     - The removal of inhibition and induction heads impairs ToM performance. These heads ensure that “belief tokens” and “location tokens” are managed distinctly, preventing confusion between real states of the world and an agent’s belief.
 
