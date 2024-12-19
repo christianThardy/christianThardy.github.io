@@ -455,7 +455,7 @@ To trace which parts of the model's attention are key for this task, and break d
 
 One approach is tracking the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and showing how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to both the initial state and John’s final action.
 
-Looking at the most basic units of computation in the attentions heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), value (V), and output (O) vectors across the hierarchy of layers.
+Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), value (V), and output (O) vectors across the hierarchy of layers.
 
 The LLMs attention mechanism will weigh the importance of different parts of the ToM passage. Each attention head computes three components:
 
@@ -479,7 +479,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
 <img src="https://github.com/user-attachments/assets/c4909dbf-f729-458c-9de9-b742cfdbffbf" width="700"/>
 <img src="https://github.com/user-attachments/assets/d801aeb9-36f4-4ef4-95ae-958a80081bc6" width="700"/>
 <br>
-<small style="font-size: 12px;">From left to right let's assume: Establishing initial associations summarizing at final token position, preserving facts about the scene, preserving facts about the scene w/focus on initial context, encoding belief-related information in context & summarizing at final token position, preserving facts about the scene, tracking perspectives related to objects and actions, tracking perspective-based understanding and factual states, tracking belief states.</small>
+<small style="font-size: 12px;">From left to right: Representations generalizing then specializing across layers.</small>
 </p>
 
 <br>
@@ -509,9 +509,9 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 <br>
 
-We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's belief state, then strongly maintaining those states.
+We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Analyzing the activation contribution across tokens, it looks like early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's state of the scene, then strongly maintaining those states.
 
-We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 10.1. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 10.1 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
+We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 8.0. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 8.0 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
 Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in subject actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
 
@@ -523,8 +523,6 @@ Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-
 </p>
 
 <br>
-
-The highest Q attention (blue spike) is at the beginning of the sequence, around `basket` in the first mention of the basket, maybe suggesting the model is strongly querying the initial state of the room. The V attention (green) showing strong contributions around `basket`, exactly in the position where John first placed the cat, completely dominating the V attention of `box` where Mark moved the cat, and the V attention of `basket` at the beginning of the sequence.
 
 The pattern shows the model is attending strongly to both the initial state (`cat on basket`) and the intermediate state (`cat moved to box`). The high query attention to the initial `basket` placement suggests the model understands this is relevant to John's belief state, and even captures `John` in the initial state with high attention activations relative to `Mark`. 
 
@@ -571,7 +569,7 @@ Where the tall blue spike for `basket` is implemented via the strong Q vector we
 
 The moderate red activity combines both states, weighted by attention scores, allowing the model to maintain a strong representation of John's initial belief state of the `basket` location (false belief, contradiction), track the current state of the `box` location (true belief, reality), and weight them appropriately for belief state tracking.
 
-In terms of linguistic representations, there are attention patterns that show action-state-verb agreements, tracking state changes through verbs. Small but consistent attention to prepositions like `on` and `off` that describe spatial relationships, which work together with the objects (`basket`/`box`) to establish location states. And there's attention around verbs that relate to mental states like `knows` and `thinks`, marking belief states. Overall it appears by this layer the model has integrated information from earlier layers and focuses on more complex contextual/semantic relationships!
+In terms of linguistic representations, there are attention patterns that show action-state-verb agreements, tracking state changes through verbs. Small but consistent attention to prepositions like `on` and `off` that describe spatial relationships, which work together with the objects (`basket`/`box`) to establish location states. There's attention around verbs that relate to mental states like `knows` and `thinks`, marking belief states.
 
 In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). This suppression seems to primarily operate in layers 23 and 25, heads 5 and 4. So its possible these heads maintain the activation of `basket` while relatively suppressing `box`, which would preserve John's false belief about the cat's location. This can be observed in several ways:
 
@@ -592,7 +590,7 @@ Activation patching is a super useful technique where internal activations in a 
 
 The obvious limitation of the techniques we’ve used so far is that they only focus on the final parts of the circuit—the bits that directly affect the logits—and they only show correlations at best. That’s useful, but clearly not enough to fully understand the whole circuit. What we really want is to figure out how everything composes together to produce the final output, and ideally, we’d like to build an end-to-end circuit that explains the entire behavior.
 
-This is where activation patching comes in. Introduced in the ROME paper as causal tracing (although the history of the technique can be traced back to <a href="https://dl.acm.org/doi/pdf/10.5555/2074022.2074073" title="Pearl" rel="nofollow">Judea Pearl</a>), activation patching lets us dig deeper into the model’s internal computations. Here’s how it works:
+This is where causal tracing comes in. First introduced in the ROME paper (although the history of the technique can be traced back to <a href="https://dl.acm.org/doi/pdf/10.5555/2074022.2074073" title="Pearl" rel="nofollow">Judea Pearl</a>), activation patching lets us dig deeper into the model’s internal computations. Here’s how it works:
 
 <br>
 
