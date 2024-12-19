@@ -827,13 +827,13 @@ Thinking about how the model represents the location of the cat given the data f
 **Early Previous Token Head Processing (L2-6)**
 - **Primary Function:** Initial semantic feature extraction
   - **QKVO Flow:**
-    - 2.3 and 2.5's queries encode subject-object locations (“John room”, “cat room”, “Mark room”, “basket”, “box”) 
-    - Keys from 2.3 add transition information to these encodings, reinforcing location (“and”, “room”)
-    - 2.3 values 
-    - Outputs encode subject-action pairs (“John takes”, “John puts”, “Mark puts”, “Mark leaves”)
-    - 5.4 queries against these output patterns while integrating temporal context (“John away”, “when away”, “Mark leaves”)
-    - 5.2 and 6.2 build location/action bindings (“John thinks”)
-    - Values propagate movement and state semantic patterns forward
+    - 2.3 and 2.5's queries encode subject-object locations (“John cat”, “Mark cat”, “basket”, “box”) 
+    - 2.3 keys add transition information to these encodings, reinforcing location (“John and cat”, “Mark and cat”, “cat and basket”, “room and John”, “room and Mark”)
+    - 2.3 values project location/transition information forward to 2.5
+    - Outputs encode subject-verb agreement with objects (“John takes cat”, “John puts cat”, “Mark puts cat”)
+    - 5.4 queries against 2.5's output patterns while integrating temporal context (“John away”, “when away”, “Mark leaves room”, “Mark goes work”)
+    - 5.2 and 6.2 keys attend to subject-action-location bindings (“John thinks”, “John takes”, “Mark takes”, “John room school”, “Mark room work”, “John leaves room”, “John puts cat”)
+    - Values project refined semantic patterns forward (“Mark cat basket”, “Mark takes cat”, “Mark cat box”)
    
 ```markdown
 [Mid PTHs L10-L12] <======> [DTH L8.1]
@@ -845,25 +845,25 @@ Thinking about how the model represents the location of the cat given the data f
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
     - **QKVO Flow:**
-      - 10.5 and 11.3 query against early layer encodings (“John”, “puts”, “cat”, “basket”, “room”, “comes”)
-      - 12.1/2/3 form a tight integration cluster with shared K/V spaces (“John takes cat”)
-      - Values from this cluster encode sophisticated state patterns (“John takes cat and puts”, “John looks”, “and puts on basket”)
-      - 12.3 serves as critical integration point (shown by negative ablation effects)
+      - 10.5 queries against 5.4 and 8.1 outputs, 11.3 queries against 10.5 and 2.3, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations (“John takes cat on basket”)
+      - 12.2/2/3 form a tight integration cluster with shared K/V spaces
+      - Values from this cluster encode sophisticated state patterns (“John takes cat and puts”, “John looks”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”, “John comes back”, “John school”, “Mark work”, “John in room”, “Mark in room”, “cat in room”)
      
 ```markdown
 [DTH L8.1] ---------> [Induction L14-17]
     |                        |
     |                        v
-    +-----------------> [Copy Suppression]
+    +-----------------> [Copy Suppression early]
 ```
 
 **Duplicate Token Head Processing (L8.1)**
 - **Primary Function:** Parallel state perspective maintenance
     - **QKVO Flow:**
-      - Queries search for subject positions in all previous token head outputs
+      - Queries search for all previous token head outputs
       - Keys match against accumulated current and past location states
       - Values create dual representations from multiple inputs
       - Output maintains parallel current/believed states
+        - Suppression applied across all mechanisms, balancing likelihood of all outputs
 
 ```markdown
 [Induction L14-17] --------> [Late PTHs L16-L23]
@@ -875,12 +875,14 @@ Thinking about how the model represents the location of the cat given the data f
 **Induction Head Processing (L14-17)**
 - **Primary Function:** Temporal pattern recognition
     - **QKVO Flow:**
-      - 14.2 and 15.0 query against duplicate token head's parallel states
-      - Keys specifically match temporal patterns
+      - 14.2 and 15.0 strongly query against duplicate token head's parallel states
+      - Keys specifically match temporal and transitional patterns
       - 17.0 and 17.6 query against earlier induction head outputs
         - 17.6 shows strong correlations with temporal markers tied to John's absence (correlations around 0.31-0.34), suggesting they're specifically tracking what John doesn't see
+        - 17.6 also queries 2.5, 8.1, 11.3 and itself, bringing a broad downstream update of refined semantics, and parallel subject processing
       - Values encode belief state transitions
-      - Strong routing between 14.2 and 17.6 for pattern completion
+      - 14.2 outputs encode John's perspective, 15.0 outputs encode Mark's perspective
+      - Strong output signal between 14.2 and 17.6 for belief state pattern completion (“John away, Mark takes cat off basket puts on box. Mark leaves room and goes work. John comes back school and enters room”)
 
 ```markdown
 [Late PTHs L16-L23] <====> [Copy Suppression L14-L23]
@@ -892,21 +894,21 @@ Thinking about how the model represents the location of the cat given the data f
 **Late Previous Token Integration (L16-23)**
 - **Primary Function:** Final state integration
    - **QKVO Flow:**
-     - 16.7 and 18.6 process induction head outputs
+     - 16.7 and 18.6 query from all processed streams, primarily from induction head outputs
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
-        - Querying against both induction and copy suppression outputs
+        - Querying against induction copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
         - Keys matching belief states
         - Values producing final predictions
 
 **Copy Suppression Processing (L14-23)**
 - **Primary Function:** State filtering and arbitration
     - **QKVO Flow:**
-      - 14.3 queries check current states against induction patterns
+      - 14.3 queries check current states against induction patterns for initial state filtering
       - 16.2 and 18.7 perform intermediate filtering
-      - 20.2 handles mid-circuit suppressions
+      - 20.2 handles mid-circuit filtering
       - 23.5 performs final arbitration through:
-        - Queries verifying belief states
-        - Keys checking reality states
+        - Queries verifying belief states (“John cat on basket”)
+        - Keys checking reality states (“Mark cat on box”)
         - Values suppressing inconsistent predictions
 
 Thinking about the circuit from a higher level:
@@ -927,11 +929,11 @@ filtering through key/value interactions
 Filtered states route to late PTH queries,
 final arbitration through value spaces
 
-The full circuit evolves from early semantic features representations into layered belief-action integration, duplicate token heads maintain parallel representations of reality, induction heads recognize temporal states, copy suppression filters contradictions and the final previous token heads produce the final prediction.
+The full circuit evolves from early semantic feature representations into layered belief-action integration, duplicate token heads maintain parallel representations of reality, induction heads recognize temporal states, copy suppression filters contradictions and the final previous token heads produce the final prediction.
 
 Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two subjects—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
 
-The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations. Copy suppression plays a crucial role here, preventing belief contamination, and enabling false-belief reasoning through a dynamic, interpretable circuit.
+The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations.
 
 <br>
 
@@ -1068,7 +1070,7 @@ As a rough analogue to how neural fMRI scans capture distributed activations, at
 
 If we zoom out from any single head, we can define specific attention heads across layers as circuit components. From there, we can start mapping out how these components *fire* across the ToM passage, revealing how they work together to solve the task. The methodology aligns closely with the original paper, but with some tweaks: activation data is collected, co-occurrence metrics are calculated, spectral clustering is applied, and affinity matrices with the Phi coefficient are used with spectral clustering. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-The results show distinct ToM subcircuits—sets of attention heads lighting up at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. This makes it possible to see which components have groups of heads that activate together across different contexts, and allows us to see how information flows through the network as its making its predictions. For example, within the action-location state, certain heads may consistently activate with suppression heads, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
+The results show distinct ToM subcircuits—sets of attention heads lighting up at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. This makes it possible to see which components have groups of heads that activate together across different contexts, and allows us to see how information flows through the network as its making its predictions. For example, within the action-location state, certain heads may consistently activate with suppression heads, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. By calculating these affinities, its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components. Think of it like t-SNE but for attention circuits.
 
 <br>
 
@@ -1080,7 +1082,7 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 
 <br>
 
-Starting with the co-occurrence matrix, the initial and final subject state heads (previous token heads) show strong co-activation with the intermediate subject state (induction heads), suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other partially suppresses information contradictory to John's perspective. 
+Starting with the co-occurrence matrix, all of the features are firing together on a sliding scale. Suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other partially suppresses information contradictory to John's perspective. 
 
 While late suppression heads have strong negative co-occurrence with action-location state heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—perhaps helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
 
