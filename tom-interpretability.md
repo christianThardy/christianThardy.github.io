@@ -845,9 +845,10 @@ Thinking about how the model represents the location of the cat given the data f
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
     - **QKVO Flow:**
-      - 10.5 queries against 5.4 and 8.1 outputs, 11.3 queries against 10.5 and 2.3, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations (“John takes cat on basket”)
-      - 12.2/2/3 form a tight integration cluster with shared K/V spaces
-      - Values from this cluster encode sophisticated state patterns (“John takes cat and puts”, “John looks”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”, “John comes back”, “John school”, “Mark work”, “John in room”, “Mark in room”, “cat in room”)
+      - 10.5 queries against 5.4 and 8.1 outputs, 11.3 queries against 2.3 and 10.5, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations (“John takes cat on basket”)
+      - 12.2/3 form a tight integration cluster with shared Q/K spaces (“the cat is on the”, “the cat and puts it on the”)
+      - Values from this cluster encode complex state patterns (“John takes cat and puts”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”)
+      - The final output of 12.3 show equal attention weight between the cat, all locations and subjects (“John takes cat and puts it on the basket”, “Mark takes the cat off the basket”)
      
 ```markdown
 [DTH L8.1] ---------> [Induction L14-17]
@@ -859,11 +860,13 @@ Thinking about how the model represents the location of the cat given the data f
 **Duplicate Token Head Processing (L8.1)**
 - **Primary Function:** Parallel state perspective maintenance
     - **QKVO Flow:**
-      - Queries search for all previous token head outputs
+      - Queries the output of all previous token heads
       - Keys match against accumulated current and past location states
       - Values create dual representations from multiple inputs
-      - Output maintains parallel current/believed states
-        - Suppression applied across all mechanisms, balancing likelihood of all outputs
+      - 8.1 Output maintains parallel current/believed states
+        - When 16.2's keys interact with 8.1's output, activations correspond to (“John”, “Mark”, “cat”, “box”, “basket”) in the beginning of the sequence. Disperse activations for temporal and action tokens
+        - Values correspond mostly to `Mark`
+        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity and 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the world in favor of the belived state
 
 ```markdown
 [Induction L14-17] --------> [Late PTHs L16-L23]
