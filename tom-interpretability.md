@@ -896,7 +896,7 @@ Thinking about how the model represents the location of the cat given the data f
    - **QKVO Flow:**
      - 16.7 and 18.6 query from all processed streams, primarily from induction head outputs
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
-        - Querying against induction copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
+        - Querying against induction, copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
         - Keys matching belief states
         - Values producing final predictions
 
@@ -1082,7 +1082,7 @@ The results show distinct ToM subcircuits—sets of attention heads lighting up 
 
 <br>
 
-Starting with the co-occurrence matrix, all of the features are firing together on a sliding scale. Suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other partially suppresses information contradictory to John's perspective. 
+Starting with the co-occurrence matrix, all of the heads selected from the causal analysis are firing together on a sliding scale, suggesting they work together to maintain and update subject state information throughout the sequence. The action-location state (duplicate token heads) shows particularly strong negative co-occurrence with late suppression heads, indicating these components work together to have opposing functions—one tracking the actual state while the other partially suppresses information contradictory to John's perspective. 
 
 While late suppression heads have strong negative co-occurrence with action-location state heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—perhaps helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
 
