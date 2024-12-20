@@ -845,10 +845,10 @@ Thinking about how the model represents the location of the cat given the data f
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
     - **QKVO Flow:**
-      - 10.5 queries against 5.4 and 8.1 outputs, 11.3 queries against 2.3 and 10.5, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations (“John takes cat on basket”)
-      - 12.2/3 form a tight integration cluster with shared Q/K spaces (“the cat is on the”, “the cat and puts it on the”)
-      - Values from this cluster encode complex state patterns (“John takes cat and puts”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”)
-      - The final output of 12.3 show equal attention weight between the cat, all locations and subjects (“John takes cat and puts it on the basket”, “Mark takes the cat off the basket”)
+      - 10.5 queries against 5.4 and 8.1 outputs, 11.3 queries against 2.3 and 10.5, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations
+      - 12.2/3 form a tight integration cluster with shared Q/K/V spaces (“the cat is on the”, “the cat and puts it on the”, “In the room are John”, “basket”, “and goes to work”)
+      - Values from this cluster encode complex state patterns (“John takes cat and puts”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”, “cat is on the”)
+      - The final output of 12.3 show equal attention weight between the cat, all locations and subjects (“John takes cat and puts it on the basket”, “Mark takes the cat off the basket and”)
      
 ```markdown
 [DTH L8.1] ---------> [Induction L14-17]
@@ -865,8 +865,8 @@ Thinking about how the model represents the location of the cat given the data f
       - Values create dual representations from multiple inputs
       - 8.1 Output maintains parallel current/believed states
         - When 16.2's keys interact with 8.1's output, activations correspond to (“John”, “Mark”, “cat”, “box”, “basket”) in the beginning of the sequence. Disperse activations for temporal and action tokens
-        - Values correspond mostly to `Mark`
-        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity and 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the world in favor of the belived state
+          - Activations correspond mostly to `Mark`
+        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity. 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the cats location in favor of the belived state with clear separation 
 
 ```markdown
 [Induction L14-17] --------> [Late PTHs L16-L23]
@@ -878,8 +878,8 @@ Thinking about how the model represents the location of the cat given the data f
 **Induction Head Processing (L14-17)**
 - **Primary Function:** Temporal pattern recognition
     - **QKVO Flow:**
-      - 14.2 and 15.0 strongly query against duplicate token head's parallel states
-      - Keys specifically match temporal and transitional patterns
+      - 14.2 and 15.0 strongly query against 8.1's parallel states
+        - Keys specifically match 8.1's temporal and transitional pattern output in relation to John, Mark, cat and basket
       - 17.0 and 17.6 query against earlier induction head outputs
         - 17.6 shows strong correlations with temporal markers tied to John's absence (correlations around 0.31-0.34), suggesting they're specifically tracking what John doesn't see
         - 17.6 also queries 2.5, 8.1, 11.3 and itself, bringing a broad downstream update of refined semantics, and parallel subject processing
