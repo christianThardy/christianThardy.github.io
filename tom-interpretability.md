@@ -832,8 +832,8 @@ Thinking about how the model represents the location of the cat given the data f
     - 2.3 values project location/transition information forward to 2.5
     - 2.5 outputs encode subject-verb agreement with objects (“John takes cat”, “Mark puts cat”, “Mark leaves room”, “John comes back”)
     - 5.4 queries against 2.5's value patterns while integrating temporal context (“John away”, “when away”, “Mark leaves room”, “Mark goes work”)
-    - 5.2 and 6.2 keys attend to subject-action-location bindings (“John thinks”, “John takes”, “Mark takes”, “John room school”, “Mark room work”, “John leaves room”, “John puts cat”)
-    - Values project refined semantic patterns forward (“Mark cat basket”, “Mark takes cat”, “Mark cat box”)
+    - 5.2 and 6.2 keys attend to more subject-action-location bindings (“John thinks”, “John takes”, “Mark takes”, “John room school”, “Mark room work”, “John leaves room”, “John puts cat”)
+    - Values project refined semantic patterns forward
    
 ```markdown
 [Mid PTHs L10-L12] <======> [DTH L8.1]
@@ -845,12 +845,14 @@ Thinking about how the model represents the location of the cat given the data f
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
     - **QKVO Flow:**
-      - 10.5 queries against 5.4 keys and encodes noun phrases and incomplete phrases with subject-verb agreement with a bias for John (“John takes the”, “Mark takes the cat”, “John comes back”, “John looks around the room”)
-      - 10.5 queries 8.1 outputs,
-      - 11.3 queries against 2.3
+      - 10.5 queries against 5.4 keys and encodes simple incomplete clauses, noun phrases, verb phrases and prepositional phrases with with a bias for John (“John takes the”, “Mark takes the cat”, “John comes back”, “John looks around the room”)
+      - 10.5 queries 8.1 outputs and encodes parallel states between John and Mark, 10.5's keys draw from 8.1's output to retrieve information regarding the cat and the box early in the sequence, the room, school, work in the middle of the sequence and actions regarding John when we returns to the room
+      - 11.3 queries against 2.3's output and encodes both subjects perspective, with a heavy focus on John leaving the room and John returning back to the room to find the cat, with intermediate activations for John's actions regarding the cat, leaving the room, coming back from school
+      - 11.3 queries 10.5
+        - 11.3 values project...
       - 10.5, 12.1 queries against 5.2 and 12.2 queries against 12.2 and 12.3 to build better representations
       - 12.2/3 form a tight integration cluster with shared Q/K/V spaces (“the cat is on the”, “the cat and puts it on the”, “In the room are John”, “basket”, “and goes to work”)
-      - Values from this cluster encode complex state patterns (“John takes cat and puts”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”, “cat is on the”)
+      - Values from this cluster encode semantic state patterns (“John takes cat and puts”, “and puts on basket”, “Mark puts cat on box”, “Mark takes cat off basket”, “cat is on the”)
       - The final output of 12.3 show equal attention weight between the cat, all locations and subjects (“John takes cat and puts it on the basket”, “Mark takes the cat off the basket and”)
      
 ```markdown
