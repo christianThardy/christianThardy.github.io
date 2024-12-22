@@ -24,7 +24,7 @@
  
 ##### tl;dr:  
 
-*This study explores how "black box" algorithms like transformer-based large language models (LLMs) perform Theory of Mind (ToM) tasks, particularly focusing on false belief scenarios. The analysis bridges high-level behavioral analogues—such as tracking and updating belief states of entities—with low-level computational mechanisms within the model that facilitate next token prediction, to propose an algorithm that models learn to perform this task. A circuit of 28 attention heads account for 16% of total heads in Gemma-2-2B and recover full ToM task performance. I'll assume you're comfortable with some basics, but I'll also be covering a lot of theory and specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with most parts, you can jump straight to the results in the following sections<sub>[<a href="#conclusion" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#attention-head-analysis-and-causal-tracing" title="Go to section" rel="nofollow">3</a>]</sub>.*
+*This study explores how transformer-based large language models (LLMs) perform Theory of Mind (ToM) tasks, particularly focusing on false belief scenarios. The analysis bridges high-level behavioral analogues—such as tracking and updating belief states of entities—with low-level computational mechanisms within the model that facilitate next token prediction, to propose an algorithm that models learn to perform this task. A circuit of 28 attention heads account for 16% of total heads in Gemma-2-2B and recover full ToM task performance. I'll assume you're comfortable with some basics, but I'll also be covering a lot of theory and specific technical details along the way. Feel free to hop around using the contents—if you're already familiar with most parts, you can jump straight to the results in the following sections<sub>[<a href="#conclusion" title="Go to section" rel="nofollow">1</a>]</sub><sub>[<a href="#tom-circuit" title="Go to section" rel="nofollow">2</a>]</sub><sub>[<a href="#attention-head-analysis-and-causal-tracing" title="Go to section" rel="nofollow">3</a>]</sub>.*
 
 <br>
 
@@ -832,8 +832,8 @@ Thinking about how the model represents the location of the cat given the data f
         - 2.3 values project location/transition information forward to 2.5
     - 2.5 outputs encode subject-verb agreement with objects (`John takes cat`, `Mark puts cat`, `Mark leaves room`, `John comes back`)
     - 5.4 queries against 2.5's value patterns while integrating temporal context (`John away`, `when away`, `Mark leaves room`, `Mark goes work`)
-    - 5.2 and 6.2 keys attend to more subject-action-location bindings (`John thinks`, `John takes`, `Mark takes`, `John room school`, `Mark room work`, `John leaves room`, `John puts cat`)
-    - Values project refined semantic patterns forward
+      - 5.2 and 6.2 keys attend to more subject-action-location bindings (`John thinks`, `John takes`, `Mark takes`, `John room school`, `Mark room work`, `John leaves room`, `John puts cat`)
+        - Values project refined semantic patterns forward
    
 ```markdown
 [Mid PTHs L10-L12] <======> [DTH L8.1]
@@ -845,27 +845,27 @@ Thinking about how the model represents the location of the cat given the data f
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
     - **QKVO Flow:**
-      - 10.5 queries against 5.4 keys, encodes simple incomplete clauses, noun phrases, verb phrases and prepositional phrases with a bias for John (`John takes the`, `Mark takes the cat`, `John comes back`, `John looks around the room`)
+      - 10.5 queries against 5.4 keys to encode basic but incomplete phrases (noun, verb, prepositional) with John-centric bias (`John takes the`, `Mark takes the cat`, `John comes back`, `John looks around the room`)
       - 10.5 queries 8.1 outputs, encodes parallel states between `John` and `Mark`
-        - 10.5's keys draw from 8.1's output, retrieves `the cat` and `the box` early in the sequence, `the room`, `school`, `work` in the middle of the sequence and actions regarding John when we returns to the room
+        - Keys draw from 8.1 output to track objects (`cat`, `box`) early and locations (`room`, `school`, `work`) mid-sequence
           
-      - 11.3 queries the output of 2.3, encoding the initial state of the scene (`are John, Mark, a cat`) and each subjects seperate state (`John takes cat and puts it on the`, `While John is away, Marks takes cat off the basket and puts it on the`, `John thinks the cat is on the`) 
-      - 11.3 queries the keys of 10.5, attending to locations and objects
-        - 11.3 keys attend to 10.5 queries, attending to the initial state of the scene and each subjects seperate state, primarily focusing on the initial scene and (`Mark leaves work`)
-        - Values encode and project the initial state of the scene from 10.5's queries (`the room there are John, Mark, a cat, a box, and a basket.`)
+      - 11.3 queries the queries output of 2.3 to encode scene's initial state and individual subject states (`John takes cat and puts it on the`, `While John is away, Marks takes cat off the basket and puts it on the`, `John thinks the cat is on the`)
+        - Keys and queries interact with 10.5 to attend to locations, objects, and scene states
+          - Values project initial scene state from 10.5 queries (`the room there are John, Mark, a cat, a box, and a basket.`)
           
-      - 12.1 queries the keys of 5.2, encoding subjects leaving the room (`He leaves the room and goes to school`, `Mark leaves the room and goes to work`), with a big focus on John's state of mind after returning (`He doesn't know what happened`)
+      - 12.1 queries track movement of main subjects via 5.2 keys with focus on John's state of mind after returning (`He doesn't know what happened`)
         - 12.1 keys heavily attend to the actions of the subjects before they leave and after they leave (`John takes the cat and puts it on the basket. He leaves the room and goes to school`, `Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work`)
-          - Values settle on focusing on parts of the sequence regarding John being away, and not knowing what happened after he returned
+          - Values concentrate on sequence during John's absence and his lack of knowledge after return
             
-      - 12.2 queries the keys of 12.2, producing a strong "self-composition”/ previous token head pattern across the entire sequence, with the most activity on `John takes the cat and puts it on the basket`, `Mark takes the cat off the basket and puts it on the box`, `the cat is on the`
-        - 12.2 keys attend to the tokens in 12.2's queries producing another strong self composition pattern across the entire sequence, the most activity in the same areas
-          - Values encode the middle of the sequence (`He leaves the room and goes to school`, `Mark leaves the room and goes to work`, `John comes back from school and enters the room`)
+      - 12.2 queries the keys of 12.2, forms a strong "self-composition” pattern across the entire sequence, most activity on (`John takes the cat and puts it on the basket`, `Mark takes the cat off the basket and puts it on the box`, `the cat is on the`)
+        - 12.2 keys attend to the tokens in 12.2's queries forming strong self composition pattern across the entire sequence, most activity in the same areas
+          - Values encode mid-sequence events (`He leaves the room and goes to school`, `Mark leaves the room and goes to work`, `John comes back from school and enters the room`)
             
-      - 12.2 queries the keys of 12.3 forming a tight integration cluster across the entire sequence, showing the most activity on (`a cat`, `the cat`, `the basket`, `the box`, `the cat and puts it on the`, `the cat is on the`) across each part of the sequence
-      - Values from this cluster encode semantic state patterns (`John takes cat and puts`, `and puts on basket`, `Mark puts cat on box`, `Mark takes cat off basket`, `cat is on the`)
-      - The final output of 12.3 show equal attention weight between the cat, all locations and subjects (`John takes cat and puts it on the basket`, `Mark takes the cat off the basket and`)
-     
+      - 12.2 queries the keys of 12.3 create tight integration cluster across entire sequence, most activity on (`a cat`, `the cat`, `the basket`, `the box`, `the cat and puts it on the`, `the cat is on the`)
+        - Values encode semantic state patterns
+          - The final output of 12.3 balances attention between subjects, objects, and locations (`John takes cat and puts it on the basket`, `Mark takes the cat off the basket and`)
+
+
 ```markdown
 [DTH L8.1] ---------> [Induction L14-17]
     |                        |
