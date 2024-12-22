@@ -849,19 +849,19 @@ Thinking about how the model represents the location of the cat given the data f
       - 10.5 queries 8.1 outputs, encodes parallel states between `John` and `Mark`
         - Keys draw from 8.1 output to track objects (`cat`, `box`) early and locations (`room`, `school`, `work`) mid-sequence
           
-      - 11.3 queries the queries output of 2.3 to encode scene's initial state and individual subject states (`John takes cat and puts it on the`, `While John is away, Marks takes cat off the basket and puts it on the`, `John thinks the cat is on the`)
+      - 11.3 queries the queries output of 2.3 to encode scene's initial state and individual subject perspectives
         - Keys and queries interact with 10.5 to attend to locations, objects, and scene states
           - Values project initial scene state from 10.5 queries (`the room there are John, Mark, a cat, a box, and a basket.`)
           
       - 12.1 queries track movement of main subjects via 5.2 keys with focus on John's state of mind after returning (`He doesn't know what happened`)
-        - 12.1 keys heavily attend to the actions of the subjects before they leave and after they leave (`John takes the cat and puts it on the basket. He leaves the room and goes to school`, `Mark takes the cat off the basket and puts it on the box. Mark leaves the room and goes to work`)
+        - 12.1 keys heavily attend to the actions of the subjects before they leave and after they leave
           - Values concentrate on sequence during John's absence and his lack of knowledge after return
             
       - 12.2 queries the keys of 12.2, forms a strong "self-composition” pattern across the entire sequence, most activity on (`John takes the cat and puts it on the basket`, `Mark takes the cat off the basket and puts it on the box`, `the cat is on the`)
         - 12.2 keys attend to the tokens in 12.2's queries forming strong self composition pattern across the entire sequence, most activity in the same areas
           - Values encode mid-sequence events (`He leaves the room and goes to school`, `Mark leaves the room and goes to work`, `John comes back from school and enters the room`)
             
-      - 12.2 queries the keys of 12.3 create tight integration cluster across entire sequence, most activity on (`a cat`, `the cat`, `the basket`, `the box`, `the cat and puts it on the`, `the cat is on the`)
+      - 12.2 queries the keys of 12.3, creates tight integration cluster across entire sequence, most activity on (`a cat`, `the cat`, `the basket`, `the box`, `the cat and puts it on the`, `the cat is on the`)
         - Values encode semantic state patterns
           - The final output of 12.3 balances attention between subjects, objects, and locations (`John takes cat and puts it on the basket`, `Mark takes the cat off the basket and`)
 
