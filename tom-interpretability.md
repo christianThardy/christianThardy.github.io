@@ -484,31 +484,6 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 <br>
 
-- **Early Layers & Heads 0-10:**
-    - **Layer 0.Head 7:** Attends to elements like `in` and `on` and other adpositions
-    - **5.2:** Attends to `basket` and `box`, punctuation and the beginning of the sequence
-    - **8.0:** Shows signs of growing attention to article-noun agreement `the cat`, `the box`, `the basket`, `the room`  
-    - **10.0:** Strong focus on `is`, `on`, and `cat`, consolidating scene representation
-    - **10.1:** High attention to `on` and `cat`, primarily focused on retrieving information rather than combining, Q vector spikes for subject-verb agreement `John takes`, `Mark takes`, as well as consistent attention to main verbs with minimal K activations
-      <br>
-    - **10.4:** Begins to differentiate between `box` and `basket` in a specialized way via prepositional phrases—`on the basket`, `off the basket`, with high activation on `the` in the last position of the sequence, indicating learned spatial relationships. Compared to head 1 in the same layer, strong V spikes for verb-object agreement (`takes the cat`, `puts it`). Highest v spikes around complete action sequences (`takes the cat and puts it on`)
-
-- **Middle Layers & Heads 10-17:**
-    - **14.0:** Attention to `basket`, `box`, and `cat`, showing clear object differentiation, increased attention to `basket`, starting to discover “belief states” (locations relevant to the position of the cat from the perspective of each subject)
-    - **14.3:** Very high attention to `box`, possibly encoding the actual state
-    - **14.6:** Increasing attention to `basket` compared to `box`, suggesting comparison
-    - **16.0:** Focuses on `room` with moderate attention to objects and spatial relationships
-    - **16.2:** Strongly attends to `box`, `basket`, and `cat`, refining object relationships
-    - **16.3:** High attention to `cat` and `on`, objects and spatial relationships
-    - **16.7:** Very strong, specialized attention to `box` and `basket`, and possibly comparing locations
-    - **17.0:** Strong attention to `box` in its 2nd position in the sequence and `basket` at its 2nd position in the sequence, beginning of sequence -maintaining scenario context
-    - **17.3:** Very high attention to `box`, possibly reinforcing where the cat is actually located
-    - **17.4:** Increased focus on `basket`, and determiners beginning to emphasize the belief state
-    - **17.6:** Attends to mainly determiners, especially the final one at the end of the sequence
-    - **17.7:** Extremely high attention to `on`, `is`, `off` solidifying spatial relationship encoding via adpositions
-
-<br>
-
 We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Analyzing the activation contribution across tokens, it looks like early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's state of the scene, then strongly maintaining those states.
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 8.0. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 8.0 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
