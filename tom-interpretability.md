@@ -484,7 +484,7 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 <br>
 
-We can see the model building its representation across layers, with later layers showing stronger activations for key tokens. Analyzing the activation contribution across tokens, it looks like early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's state of the scene, then strongly maintaining those states.
+The model builds its representation across layers, with later layers showing stronger activations for key tokens. Analyzing the activation contribution across tokens, it looks like early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's state of the scene, then strongly maintaining those states.
 
 We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 8.0. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 8.0 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
@@ -812,6 +812,7 @@ Thinking about how the model represents the location of the cat given the data f
     - 5.4 queries against 2.5's value patterns while integrating temporal context (`John away`, `when away`, `Mark leaves room`, `Mark goes work`)
       - 5.2 and 6.2 keys attend to more subject-action-location bindings (`John thinks`, `John takes`, `Mark takes`, `John room school`, `Mark room work`, `John leaves room`, `John puts cat`)
         - Values project refined semantic patterns forward
+
    
 ```markdown
 [Mid PTHs L10-L12] <======> [DTH L8.1]
@@ -860,6 +861,7 @@ Thinking about how the model represents the location of the cat given the data f
             - Values create a clear, dual, perspective-based representation from multiple inputs
       - Output maintains parallel current/believed states with heavy emphasis on both subjects
 
+
 ```markdown
 [Induction L14-17] --------> [Late PTHs L16-L23]
         ||                          ||
@@ -870,37 +872,31 @@ Thinking about how the model represents the location of the cat given the data f
 **Induction Head Processing (L14-17)**
 - **Primary Function:** Temporal pattern recognition
     - **QKVO Flow:**
-      - 14.2 strongly queries against the values of 8.1's parallel states, focusing on initial scene state, Mark's cat-moving actions, with heavy simultaneous emphasis on John's room inspection upon return
-        - Keys attend to subject actions at key sequence points
-            - Keys also attend to 8.1 values, targeting John moving the cat, post-moving actions and his return
-        - Values culminate on John's full cat moving actions while simultanously focusing on his return to the room, while focusing on Mark's final positioning of the cat
-
-      - 15.0 queries the keys of 8.1's `box`/`basket` positions that attend at initial positions of the sequence, targeting basket with overall higher correlations across the sequence with emphasis on cat movement
-        - Keys match 8.1's queries with heavy emphasis on where Mark moved the cat simultaneously emphasizing John's actions pre-post moving, and on his state when searching for the cat
-          - Values settling on when Mark moved the cat and when Mark goes to work
-     
+      - 14.2 queries against the values of 8.1's parallel states, focusing on initial scene state, Mark's cat-moving actions, with simultaneous emphasis on John's room inspection upon return
+        - Keys attend to subject actions at key sequence points and targeting `John` moving the `cat`, post-moving actions and his return
+        - Values emphasize John's full cat-moving actions while simultanously focusing on his return, and Mark’s final positioning of the cat
+       
+      - 15.0 queries the keys of 8.1's `box`/`basket` positions at initial position of the sequence, emphasizing `cat` movement and higher correlation with the basket
+        - Keys match 8.1's queries with heavy emphasis on: `Mark` moving the `cat`, John’s actions pre- and post-moving, `John` searching for the cat
+          - Values settle on `Mark` moving the `cat` and `Mark` leaving for `work`
       - 15.0 forms strong induction pattern
-        - Queries keys of 12.2, induction pattern attends to previous tokens, emphasizing both subject's location changes (work/school)
-          - 15.0 keys attend to its values, induction pattern emphasizing both subject's location changes (work/school)
-        
-      - 15.0 queries keys of 14.2, keys attending to John initially putting the cat on the basket, correlating with 15.0 simultaneously querying the inital state, each subjects perspective, emphasizing John and Mark's initial actions (cat on basket/cat off basket)
+        - Queries keys of 12.2, focuses on all previous tokens, emphasizing subject's location changes (`work`/`school`)
+          - 15.0 keys attend to 12.2 values, emphasizing subject's location changes
+      - 15.0 queries 14.2 keys attending to `John` initially putting the `cat` on the `basket`, correlating with 15.0 simultaneously querying the inital state, each subjects perspective, emphasizing John and Mark's initial actions (`cat on basket`/`cat off basket`)
         - Keys attend to values, (`Mark leaves the room and goes to work. John comes back from school and enters the room`) high correlation to John's initial location change of the cat and Mark's actions
      
-      - 17.6 queries 2.5's keys tracking `cat` position changes between `box`/`basket` from both perspectives
-        - Keys heavily attending to queries, captures action/temporal information across sequence with temporal markers tied to John's absence specifically tracking what John doesn't see during his absence
-          - Values capturing the keys of 2.5 and projecting John's return to the room forward
-        
-      - 17.6 also queries 8.1, 11.3 and itself, bringing a broad downstream update of refined semantics, and parallel subject processing
+      - 17.6 queries 2.5's keys tracking `cat` position changes (`box`/`basket`) from both perspectives
+        - Keys heavily attending to queries, captures action/temporal information across sequence, temporal markers highlighting what `John` doesn't see during his absence
+          - Values capture keys of 2.5 and project `John`'s return to the `room` forward
+      - Queries 8.1, 11.3, bringing a broad downstream update of refined semantics, and parallel subject processing
         - Keys attend to 8.1 token positions, massive emphasis on the initial state of the room
-          - Values encode 8.1 keys with more or less equal attention to both subject perspectives
-
-      - 17.6 queries to 11.3 return sparse signals
-        - Keys attending to queries returns a heavy emphasis from 11.3 on Mark changing the cats location to 17.6 simultaneously focusing on the box and basket with higher correlation on basket, and when John coming back to the room and unaware of what happened
-
+          - Values encode 8.1 keys equally across both perspectives
+      - Sparse query signals from 11.3 emphasize `Mark` changing the `cat`’s location and focus on the `basket`, correlating with `John`’s return
+        - Keys attending to queries returns a heavy emphasis from 11.3, simultaneously focusing on the `box` and `basket` with higher correlation on `basket`, and `John` coming back to the `room` and unaware of what happened
       - 17.6 forms a strong induction pattern across the entire sequence
-        - Query to 15.0 keys show dual perspective encoding
-          - Values to output show semnatic refinement and high attention to dual perspective encoding
-
+        - Queries 15.0 keys for dual perspective encoding
+          - Outputs refined semantics with high attention to dual perspectives.
+         
 
 ```markdown
 [Late PTHs L16-L23] <====> [Copy Suppression L14-L23]
