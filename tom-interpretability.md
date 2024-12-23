@@ -824,7 +824,7 @@ Thinking about how the model represents the location of the cat given the data f
       - 10.5 queries 8.1 outputs, encodes parallel states between `John` and `Mark`
         - Keys draw from 8.1 output to track objects (`cat`, `box`) early and locations (`room`, `school`, `work`) mid-sequence
           
-      - 11.3 queries the queries output of 2.3 to encode scene's initial state and individual subject perspectives
+      - 11.3 queries the output of 2.3 to encode scene's initial state and individual subject perspectives
         - Keys and queries interact with 10.5 to attend to locations, objects, and scene states
           - Values project initial scene state from 10.5 queries (`the room there are John, Mark, a cat, a box, and a basket.`)
           
@@ -851,13 +851,11 @@ Thinking about how the model represents the location of the cat given the data f
 **Duplicate Token Head Processing (L8.1)**
 - **Primary Function:** Parallel state perspective maintenance
     - **QKVO Flow:**
-      - Queries the output of all previous token heads
-      - Keys match against accumulated current and past location states
-      - Values create dual representations from multiple inputs
-      - 8.1 Output maintains parallel current/believed states
-        - When 16.2's keys interact with 8.1's output, activations correspond to (`John`, `Mark`, `cat`, `box`, `basket`) in the beginning of the sequence. Disperse activations for temporal and action tokens
-          - Activations correspond mostly to `Mark`
-        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity. 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the cats location in favor of the belived state with clear separation 
+      - 8.1 forms a strong "self-composition” pattern across duplicate tokens across the entire sequence
+        - Queries the output of all previous token heads
+          - Keys match against accumulated current and past location states
+            - Values create a clear, dual, perspective-based representation from multiple inputs
+      - Output maintains parallel current/believed states with heavy emphasis on both subjects
 
 ```markdown
 [Induction L14-17] --------> [Late PTHs L16-L23]
@@ -869,14 +867,37 @@ Thinking about how the model represents the location of the cat given the data f
 **Induction Head Processing (L14-17)**
 - **Primary Function:** Temporal pattern recognition
     - **QKVO Flow:**
-      - 14.2 and 15.0 strongly query against 8.1's parallel states
-        - Keys specifically match 8.1's temporal and transitional pattern output in relation to John, Mark, cat and basket
-      - 17.0 and 17.6 query against earlier induction head outputs
-        - 17.6 shows strong correlations with temporal markers tied to John's absence (correlations around 0.31-0.34), suggesting they're specifically tracking what John doesn't see
-        - 17.6 also queries 2.5, 8.1, 11.3 and itself, bringing a broad downstream update of refined semantics, and parallel subject processing
-      - Values encode belief state transitions
-      - 14.2 outputs encode John's perspective, 15.0 outputs encode Mark's perspective
-      - Strong output signal between 14.2 and 17.6 for belief state pattern completion (`John away, Mark takes cat off basket puts on box. Mark leaves room and goes work. John comes back school and enters room`)
+      - 14.2 strongly queries against the values of 8.1's parallel states, focusing on initial scene state, Mark's cat-moving actions, with heavy simultaneous emphasis on John's room inspection upon return
+        - Keys attend to subject actions at key sequence points
+            - Keys also attend to 8.1 values, targeting John moving the cat, post-moving actions and his return
+        - Values culminate on John's full cat moving actions while simultanously focusing on his return to the room, while focusing on Mark's final positioning of the cat
+
+      - 15.0 queries the keys of 8.1's `box`/`basket` positions that attend at initial positions of the sequence, targeting basket with overall higher correlations across the sequence with emphasis on cat movement
+        - Keys match 8.1's queries with heavy emphasis on where Mark moved the cat simultaneously emphasizing John's actions pre-post moving, and on his state when searching for the cat
+          - Values settling on when Mark moved the cat and when Mark goes to work
+     
+      - 15.0 forms strong "self-composition” induction pattern across enitre sequence
+        - Queries its keys, induction pattern attends to previous tokens, emphasizing both subject's location changes (work/school)
+          - 15.0 keys attend to its queries, induction pattern emphasizing both subject's location changes (work/school)
+        
+      - 15.0 queries keys of 14.2, keys attending to John initially putting the cat on the basket, correlating with 15.0 simultaneously querying the inital state, each subjects perspective, emphasizing John and Mark's initial actions (cat on basket/cat off basket)
+        - Keys attend to values, (`Mark leaves the room and goes to work. John comes back from school and enters the room`) high correlation to John's initial location change of the cat and Mark's actions
+     
+      - 17.6 queries 2.5's keys tracking `cat` position changes between `box`/`basket` from both perspectives
+        - Keys heavily attending to queries, captures action/temporal information across sequence with temporal markers tied to John's absence specifically tracking what John doesn't see during his absence
+          - Values capturing the keys of 2.5 and projecting John's return to the room forward
+        
+      - 17.6 also queries 8.1, 11.3 and itself, bringing a broad downstream update of refined semantics, and parallel subject processing
+        - Keys attend to 8.1 token positions, massive emphasis on the initial state of the room
+          - Values encode 8.1 keys with more or less equal attention to both subject perspectives
+
+      - 17.6 queries to 11.3 return sparse signals
+        - Keys attending to queries returns a heavy emphasis from 11.3 on Mark changing the cats location to 17.6 simultaneously focusing on the box and basket with higher correlation on basket, and when John coming back to the room and unaware of what happened
+
+      - 17.6 forms a strong "self-composition” induction pattern across the entire sequence
+        - Query to key shows dual perspective encoding
+          - Values to output show semnatic refinement and high attention to dual perspective encoding
+
 
 ```markdown
 [Late PTHs L16-L23] <====> [Copy Suppression L14-L23]
@@ -888,6 +909,9 @@ Thinking about how the model represents the location of the cat given the data f
 **Late Previous Token Integration (L16-23)**
 - **Primary Function:** Final state integration
    - **QKVO Flow:**
+   - 8.1 Output maintains parallel current/believed states. When 16.2's keys interact with 8.1's output, activations correspond to (`John`, `Mark`, `cat`, `box`, `basket`) in the beginning of the sequence. Disperse activations for temporal and action tokens
+          - Activations correspond mostly to `Mark`
+        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity. 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the cats location in favor of the belived state with clear separation 
      - 16.7 and 18.6 query from all processed streams, primarily from induction head outputs
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
         - Querying against induction, copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
