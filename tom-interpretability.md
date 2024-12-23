@@ -720,12 +720,12 @@ Since we have a high-level understanding of the information flow between heads, 
 <p align="center">
   <img src = "https://github.com/user-attachments/assets/fad49b2d-3333-439c-84cb-abeef8542d96" width="500">
 <br>
-<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKVO compositions in the collection of attention heads.</small>
+<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKVO compositions in the collection of identified attention heads.</small>
 </p>
 
 <br/>
 
-By extracting the Q, K, V, and O vectors for any head/layer, we can visualize specific compositions within the circuit to analyze:
+By extracting the Q, K, V, and O vectors for any head/layer, we can visualize specific compositions to analyze:
 
 - Q composition: How the receiver's queries attend to the sender's outputs
 - K composition: How the receiver's keys interact with the sender's outputs
@@ -742,9 +742,9 @@ We can then understand which features—tokens like `John`, `Mark`, `basket`, `b
 
 <br/>
 
-For example, a particular K-dimension receiving attention weights from a O-dimension might consistently activate whenever `box` appears, indicating that this output dimension is keyed to John’s perspective. A Q-dimension might align with `basket`, linking that dimension to the original location of the cat. A V-dimension might respond to `cat`, encoding where and how the cat is situated at each step. By correlating these dimensions with the corresponding tokens, we can infer which components carry signals about characters, actions, or locations.
+For example, a particular K-dimension receiving attention weights from an O-dimension might consistently activate whenever `box` appears, indicating that this output dimension is keyed to John’s perspective. A Q-dimension might align with `basket`, linking that dimension to the original location of the cat. A V-dimension might respond to `cat`, encoding where and how the cat is situated at each step. By correlating these dimensions with the corresponding tokens, we can infer which components carry signals about characters, actions, or locations between heads.
 
-In this particular heatmap, where 5.4 is the sender, 8.1 is the receiver, and the keys of 8.1 are attending to the output of 5.4, we can see duplicate tokens aligning with high strength, with the attention weights biasing Mark's perspective where he moves the cat.
+In this particular heatmap, where 5.4 is the sender, 8.1 is the receiver, and the keys of 8.1 are attending to the output of 5.4, we can see duplicate tokens aligning with high strength, with the attention weights biasing Mark's perspective of where he moves the cat.
 
 <br>
 
