@@ -672,37 +672,7 @@ The `k` plot (K vectors) is less clear, though heads like 14.1 and 17.2 show som
 
 The analysis reveals that some attention heads are consistently impactful across Qs, Ks, and Vs, while others are more specialized. For instance, head 23.5 influences both Qs and outputs, while head 2 targets Ks and Vs. In layer 17, head 3’s Q plot shows a subtle negative activation shift, indicating how the model adjusts its belief about the location of the `cat`. The head assigns high activation to `box` and lower to `John`, suggesting a balance between factual grounding and perspective-taking. This adjustment becomes clearer by layer 22, head 4, where the model confidently determines box as the true location, discounting John’s outdated belief. 
 
-My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the subjects, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer. It's possible to see this play out at a finer scale with causal evidence at the QKVO dimension-level, where dimensions in the attention mechanism are input tokens. Let's see if I'm wrong.
-
-<br/>
-
-<p align="center">
-  <img src = "https://github.com/user-attachments/assets/7d1829f3-d427-486a-9aad-148671bbca36" width="1000">
-</p>
-
-<br/>
-
-Since we have a high-level understanding of QKVO's, we can test whether specific subspaces in the attention mechanism are causally essential by zeroing out the top principal components in each vector—this helps isolate activation subspaces that encode *belief*-related signals at a granular level. An interesting intervention is applying a temporal ablation—starting right when Mark moves the cat—to zero out activations only after that event. If the model fails the ToM task following this intervention, it strongly suggests that the model relies on that temporal window of activations to maintain belief coherence. This provides a fine-grained causal insight into how each component of the attention mechanism functions, compared to coarser-grained analyses done earlier.
-
-To understand which features (e.g., tokens like `John`, `Mark`, `basket`, `box`) are encoded in each component, we measure how strongly each Q, K, V, or O dimension correlates with these features. For example, a particular Q-dimension might consistently activate whenever `John` appears, indicating that this query dimension is keyed to John’s perspective. A K-dimension might align with `basket`, linking that dimension to the original location of the cat. A V-dimension might respond to `cat`, encoding where and how the cat is situated at each step. By correlating these dimensions with the corresponding tokens, we can infer which components carry signals about characters, actions, or locations.
-
-Looking at 8.1:
-- Q-vectors: Correlate with `John: 0.2456`, suggesting that the query signal in this head tracks John’s perspective by aligning activations with John-related input tokens.
-- K-vectors: Correlate with `basket: 0.2609`, likely indexing the scene's initial location context.
-- V-vectors: Correlate with `cat: -0.2666`, encoding its initial placement on the basket.
-- O-dimensions: `Dim 170: 0.0885` reflects subject identity (e.g., John) and stabilizes the final representation in the output stream.
-
-Together, the QKVO components of head 8.1 build a foundational representation of the scene from John’s perspective: the cat originally being in the basket under John’s watch.
-
-10.5 reveals interesting dynamics:
-- Q-vectors: Correlate with `Mark: 0.2651`, tracking Mark's mental representation.
-- O-dimensions: `Dim 203: -0.0895` encodes subject information, while `Dim 86: -0.0665` tracks the temporal event `leaves`, anchoring contextual updates based on sequence progression.
-
-12.2 integrates Mark’s actions:
-- V-vectors: Critical state changes emerge, with `Dim 195: 0.0718` correlating with transitions and `Dim 123: 0.0337` tracking the cat’s movement.
-- K-vectors: Attend to `Mark: -0.2837`, `box: -0.1342`, and `puts: 0.3218`, likely encoding Mark’s action of moving the cat from the basket to the box.
-
-From these heads alone we can see John’s state is strongly anchored to the initial state (`basket` location), Mark’s state is more dynamic, emphasizing the current state (`box` location) and action verbs like `takes` and `puts`, suggesting the circuit models `Mark` primarily as the agent of physical change rather than maintaining a state of his beliefs.
+My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's mental model of the cat’s location from the perspective of the subjects, Ks encode the objective reality, and Vs carry the actual belief being passed forward (true or false). Zs (output) then act as the final arbiter, integrating these signals into the model’s prediction. It’s this interaction—Qs driving belief updates, Ks grounding reality, and Vs carrying the nuanced information—that nudges the model toward its final answer. It's possible to see this play out at a finer scale with causal evidence at the QKVO dimension-level, where dimensions in the attention mechanism are input tokens.
 
 <br>
 
@@ -741,7 +711,40 @@ Layer 17 Head 6 → Layer 17 Head 6
 effect_of_head_to_head: 0.4579
 ```
 
-It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? We get the second artifact by combining the results of the QKVO flows, and we will be able to see how the identified heads form a layered composition.
+It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? We get the second artifact by combining this to the flow of QKVO attention weights between heads, then we will be able to see how the identified heads form a layered composition.
+
+Since we have a high-level understanding of the information flow between heads, we can examine how each attention head interacts and influences each other, tracking the flow of information to see how one head (sender) influences another (receiver).
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/fad49b2d-3333-439c-84cb-abeef8542d96" width="500">
+<br>
+<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKVO compositions in the collection of attention heads.</small>
+</p>
+
+<br/>
+
+By extracting the Q, K, V, and O vectors for any head/layer, we can visualize specific compositions within the circuit to analyze:
+
+- Q composition: How the receiver's queries attend to the sender's outputs
+- K composition: How the receiver's keys interact with the sender's outputs
+- V composition: How the receiver's values are influenced by the sender's outputs
+- O composition: How the final outputs compose between heads
+
+We can then understand which features—tokens like `John`, `Mark`, `basket`, `box`—are encoded in each component, and measure how strongly each dimension correlates with these features. This provides a fine-grained view into how each component of the attention mechanism functions, compared to coarser-grained analyses done earlier.
+
+<br/>
+
+<p align="center">
+  <img src = "https://github.com/user-attachments/assets/a0579eaa-09bb-4920-8a1b-4295f07ad731" width="500">
+</p>
+
+<br/>
+
+For example, a particular K-dimension receiving attention weights from a O-dimension might consistently activate whenever `box` appears, indicating that this output dimension is keyed to John’s perspective. A Q-dimension might align with `basket`, linking that dimension to the original location of the cat. A V-dimension might respond to `cat`, encoding where and how the cat is situated at each step. By correlating these dimensions with the corresponding tokens, we can infer which components carry signals about characters, actions, or locations.
+
+In this particular heatmap, where 5.4 is the sender, 8.1 is the receiver, and the keys of 8.1 are attending to the output of 5.4, we can see duplicate tokens aligning with high strength, with the attention weights biasing Mark's perspective where he moves the cat.
 
 <br>
 
@@ -832,8 +835,8 @@ Thinking about how the model represents the location of the cat given the data f
         - 12.1 keys heavily attend to the actions of the subjects before they leave and after they leave
           - Values concentrate on sequence during John's absence and his lack of knowledge after return
             
-      - 12.2 queries the keys of 12.2, forms a strong "self-composition” pattern across the entire sequence, most activity on (`John takes the cat and puts it on the basket`, `Mark takes the cat off the basket and puts it on the box`, `the cat is on the`)
-        - 12.2 keys attend to the tokens in 12.2's queries forming strong self composition pattern across the entire sequence, most activity in the same areas
+      - 12.2 queries the keys of 12.1, forms a strong previous token pattern across the entire sequence, most activity on (`John takes the cat and puts it on the basket`, `Mark takes the cat off the basket and puts it on the box`, `the cat is on the`)
+        - 12.2 keys attend to the tokens in 12.1's queries forming the same pattern across the entire sequence, most activity in the same areas
           - Values encode mid-sequence events (`He leaves the room and goes to school`, `Mark leaves the room and goes to work`, `John comes back from school and enters the room`)
             
       - 12.2 queries the keys of 12.3, creates tight integration cluster across entire sequence, most activity on (`a cat`, `the cat`, `the basket`, `the box`, `the cat and puts it on the`, `the cat is on the`)
@@ -851,7 +854,7 @@ Thinking about how the model represents the location of the cat given the data f
 **Duplicate Token Head Processing (L8.1)**
 - **Primary Function:** Parallel state perspective maintenance
     - **QKVO Flow:**
-      - 8.1 forms a strong "self-composition” pattern across duplicate tokens across the entire sequence
+      - 8.1 forms a strong duplicate token pattern across the entire sequence
         - Queries the output of all previous token heads
           - Keys match against accumulated current and past location states
             - Values create a clear, dual, perspective-based representation from multiple inputs
@@ -876,9 +879,9 @@ Thinking about how the model represents the location of the cat given the data f
         - Keys match 8.1's queries with heavy emphasis on where Mark moved the cat simultaneously emphasizing John's actions pre-post moving, and on his state when searching for the cat
           - Values settling on when Mark moved the cat and when Mark goes to work
      
-      - 15.0 forms strong "self-composition” induction pattern across enitre sequence
-        - Queries its keys, induction pattern attends to previous tokens, emphasizing both subject's location changes (work/school)
-          - 15.0 keys attend to its queries, induction pattern emphasizing both subject's location changes (work/school)
+      - 15.0 forms strong induction pattern
+        - Queries keys of 12.2, induction pattern attends to previous tokens, emphasizing both subject's location changes (work/school)
+          - 15.0 keys attend to its values, induction pattern emphasizing both subject's location changes (work/school)
         
       - 15.0 queries keys of 14.2, keys attending to John initially putting the cat on the basket, correlating with 15.0 simultaneously querying the inital state, each subjects perspective, emphasizing John and Mark's initial actions (cat on basket/cat off basket)
         - Keys attend to values, (`Mark leaves the room and goes to work. John comes back from school and enters the room`) high correlation to John's initial location change of the cat and Mark's actions
@@ -894,8 +897,8 @@ Thinking about how the model represents the location of the cat given the data f
       - 17.6 queries to 11.3 return sparse signals
         - Keys attending to queries returns a heavy emphasis from 11.3 on Mark changing the cats location to 17.6 simultaneously focusing on the box and basket with higher correlation on basket, and when John coming back to the room and unaware of what happened
 
-      - 17.6 forms a strong "self-composition” induction pattern across the entire sequence
-        - Query to key shows dual perspective encoding
+      - 17.6 forms a strong induction pattern across the entire sequence
+        - Query to 15.0 keys show dual perspective encoding
           - Values to output show semnatic refinement and high attention to dual perspective encoding
 
 
@@ -909,10 +912,19 @@ Thinking about how the model represents the location of the cat given the data f
 **Late Previous Token Integration (L16-23)**
 - **Primary Function:** Final state integration
    - **QKVO Flow:**
-   - 8.1 Output maintains parallel current/believed states. When 16.2's keys interact with 8.1's output, activations correspond to (`John`, `Mark`, `cat`, `box`, `basket`) in the beginning of the sequence. Disperse activations for temporal and action tokens
-          - Activations correspond mostly to `Mark`
-        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity. 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the cats location in favor of the belived state with clear separation 
-     - 16.7 and 18.6 query from all processed streams, primarily from induction head outputs
+   - 16.7 queries the output of 2.3 isolating Mark's state and actions over the entire sequence
+     - Keys attend to output and heavily attends to John's temporal state (`While John is away`, `doesn't know what happened while he was away`), actions, emphasizing the last phrase `John thinks the cat is on the`, there's signal of Mark's state when we moves the cat but the stregnth is very low. Keys also attend to queries and focuses on `basket` and `box`
+       - Values project high strength on `basket`, `on`, `leaves`, `enters` from 2.3 outputs
+         
+   - 16.7 queries the keys of 10.5, focuses on determiners and adpositions, with a bias for the beginning of the sequence and the end
+     - Keys attend to output and query to focus on auxiliary verbs and temporal markers with a John bias, simultaneously focuses on Mark leaving the room from output and John coming back to room from query
+       -  Values project function words from the keys, with a bias on `John` and `Mark` initial state
+
+  -16.7 queries the output of 16.2 emphasizing when John was away and when he came back, showing high correlation between each instance over the sequence
+  - Queries the keys to encode where John may think the cat is, 16.7 attending to almost all the tokens in the last phrase of the sequence. Gives high attention to John's actions and possible cat locations
+    -  Values encode where Mark put the cat, shows very little attention to John's perspective
+ 
+  - 18.6 queries from all processed streams, primarily from induction head outputs
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
         - Querying against induction, copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
         - Keys matching belief states
@@ -928,8 +940,11 @@ Thinking about how the model represents the location of the cat given the data f
         - Queries verifying belief states (`John cat on basket`)
         - Keys checking reality states (`Mark cat on box`)
         - Values suppressing inconsistent predictions
+        -  - 8.1 Output maintains parallel current/believed states. When 16.2's keys interact with 8.1's output, activations correspond to (`John`, `Mark`, `cat`, `box`, `basket`) in the beginning of the sequence. Disperse activations for temporal and action tokens
+          - Activations correspond mostly to `Mark`
+        - 16.2 receives 8.1's output, duplicate token head informs suppression head of duplicate activity. 16.2's output suppresses repeated names as suppression activations for Mark's repeated tokens are higher than John's, mitigating the actual state of the cats location in favor of the belived state with clear separation 
 
-Thinking about the circuit from a higher level:
+A more in-depth analysis of the QKVO-dimensions can be found <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">here</a>. Thinking about the circuit from a high level:
 
 **Previous Token → Duplicate Token:**
 Previous token head outputs become K/V inputs for 8.1,
