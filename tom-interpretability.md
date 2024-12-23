@@ -947,12 +947,12 @@ Thinking about how the model represents the location of the cat given the data f
 A more in-depth analysis of the QKVO-dimensions can be found <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">here</a>. Thinking about the circuit from a high level:
 
 **Previous Token → Duplicate Token:**
-Previous token head outputs become K/V inputs for 8.1,
+Previous token head outputs become Q/K/V inputs for 8.1,
 8.1 maintains parallel representations
 
 **Duplicate Token → Induction:**
 8.1's dual states feed induction head queries,
-temporal pattern matching through key spaces
+driving semantic refinement through sophisticated K/V integration
 
 **Induction → Copy Suppression:**
 Belief state encodings route to suppression queries,
