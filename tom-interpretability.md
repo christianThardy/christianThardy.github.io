@@ -968,6 +968,38 @@ Thinking about how the model represents the location of the cat given the data f
     - Queries encode the keys, heavily attending to John/Mark and the initial state of the sequence
     - Keys attend to queries, heavily focused on the initial state of the room in relation to John looking around the room and his unawareness
     - Values heavily encode Mark's actions
+   
+    - 22.4 queries the output of 20.2 and focuses on Mark's actions in relation to John's
+    - Keys heavily attend to the `leaves` positions in 20.2's values. The keys also attend to Mark's action of moving the cat in 20.2's output, which is correlating with John leaving the room and returning from school
+    - Values are sparse and encode the initial position of the basket in 20.2's output, query, while encoding temporal information from the keys
+
+    - 22.4 queries the output of 21.5, focusing on the state of the entire sequence as John is away at school, with most attention on the initial state of the room at the beginning of the sequence
+    - Keys attend to the output, where the initial state of the room is correlating highly with John's actions, ignoring most of Mark's actions. Keys also attend to queries focusing on John leaving, comparing that to every phrase in the sequence with the most focus on John's return and unawareness of changes made by Mark
+    - Values draw from the output and focus heavily on the initial state of the room
+   
+    - 22.4 queries the keys of 22.3, focusing on the initial state of the room and John leaving the room with strong attention across John/Mark's perspective when they seperately moved the cat
+    - Keys attend to the output, showing a more focused representation of the Q/K relationship. Keys also attend to queries, showing the same relationship, but with heavy attention on Mark leaving, John returning and how those perspectives correlate to John's unawareness of the cat's new position
+
+    - 22.5 queries keys of 5.4, focusing on `John comes back`, `knows` and `the cat`, while simultaneously attending to John/Mark leaving the room
+    - Keys attending to queries, focusing on the initial state of the room and John initially moving the cat
+    - Values are sparse but encode the keys and projects John coming back to the room and `school` with heavy attention
+   
+    - 22.5 queries the output of 6.2, encodes token positions related to `John`, `the room`, his actions and temporal markers. Queries then focus on keys and encode token positions related to the initial state of the room, John being away, Mark moving the cat then leaving and John returning
+    - Keys only attend to queries related to John/Mark leaving, and John return
+    - Values only project temporal markers from the keys forward
+
+    - 22.5 queries the keys of 14.3, keys attend to Mark leaving the room, queries encode that, John's unawareness and heavily focuses on instances of `the basket`, `the box`, `the room`, `the cat` across the entire sequence
+    - Keys attend to output token positions, correlating John initially moving the cat, with most of the attention on Mark moving the cat and leaving the room
+
+    - 22.5 queries the output of 16.2, focusing on John and Mark moving the cat, and the initial state of the room, with most of the attention on John. 16.2's keys attend to John's unawareness while 22.5's queries heavily focus on Mark moving the cat
+
+    - 22.5 queries the output of 18.7 showing equal strength to the initial state of the box/basket while encoding the position that marks John's unawareness
+    - Keys heavily attend to outputs regarding John's unawareness and his action of looking around the room. Keys also attend to the inital state of the room from the query positions
+    - Values receive 18.7's output and projects heavily activated `Mark` tokens
+
+    - 22.5 queries the keys of 22.3, sparsely focusing on `cat` across the sequence
+    - Keys attend to the output, focusing on John/Mark moving the cat. Keys also attend to the query, showing heavy correlation between John/Mark leaving and John's unawareness
+    - Values encodes prior queries forward 
        
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
         - Querying against induction, copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
