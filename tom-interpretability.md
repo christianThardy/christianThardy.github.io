@@ -921,6 +921,54 @@ Thinking about how the model represents the location of the cat given the data f
     -  Values encode where Mark put the cat, shows very little attention to John's perspective
  
   - 18.6 queries from all processed streams, primarily from induction head outputs
+    - 5.4's keys focus on Mark moving the cat with lots of strength on the cats new location, simultaneously attributing lots of attention to what John missed while he was away, coming back and the final phrase of the sequence
+    - 18.6 keys encodes 5.4's queries, where the queries encode John's inital state at the very beginning, when he originally places the cat, when mark moves the cat and when John comes back and the keys attend to this
+    - Values project this information forward
+    - 18.6 queries the keys of 15.0, encoding the shared relationship between sequence positions highlighting John leaving the room and going to school and Mark leaving the room and going to work, especially focusing on when Mark left and when John put the cat on the basket
+    - Values projecting queries about John and Mark coming and going, and the cats position throughout the sequence
+      
+    - 22.2 queries 2.5 output, encodes shared relationship between positions marking John and Mark's departure, John's return, with a focus on phrases like `He leaves the room`, `what happened in the room when he was away`, `John know`, `doesn't know what happened`
+    - Keys attend to queries focusing on the initial state of the room, temporal markers like `While`, and `what happened in the room while he was away`
+    - Values to queries encode `in` and `box` heavily, values to keys encodes `John` sparsely, `Mark` densely, `cat`, and `comes`
+    - 22.2 queries 16.2 keys, focusing on the initial state, John originally placing the cat, Mark moving the cat and the final phrase of the sequence (`the cat is on the`) with emphasis on temporal markers where most attention are on Mark's actions
+    - 6.2 queries encode John's unawareness of what happened while he was away, and 22.2 keys attend to pronouns and cat locations
+    - 18.7's keys attend to the initial state of things, John and Mark moving the cat and the final phrase of the sequence, 22.2's queries show strong emphasis on where Mark moved the cat
+    - 18.7's queries encode when John returns, while 22.2's keys strongly attend to Mark's actions in moving the cat and his departure from the room
+    - 22.2 values project the output of 18.7 in regards to Mark's actions beyond the initial parts of the sequence forward
+
+    - 22.2 queries the output of 21.5, focusing on the initial state of John, Mark and the cat, positions in the sequence where the cat was moved, both with strong attention on John's unawareness and the `box`/`basket`'s relation to the final phrase of the sequence
+    - Queries focus on keys which attend primarily to `John`
+    - 22.2 keys attend to the output with a heavy focus on the cat being on/off the basket, the cat being on the box, and most of the attention on John's unawareness
+    - Keys attend to the queries with a primary focus on the final phrase in the sequence and the initial state John, Mark, the cat and the room
+    - Values attend to the output and focus on the on/off relationship to the cat and objects
+
+    - 22.4 queries encode 2.3 keys that attend to all cat locations in the sequence, physical location of the subjects, the subjects departures and the unawareness of John
+    - Keys attend to queries, focusing on John's initially placement of the cat on the basket, Mark moving the cat, with a strong focus on the keys attending to Mark moving the cat and the queries encoding John's unawareness
+    - Values encoding and projecting the the output where its focused on John in the beginning of the sequence, his actions throughout and heavy attention on John thinking
+   
+    - 22.4 queries the keys of 8.1, where the keys heavily attend to the initial mention of `John` and all subsequent mentions with varying attention strength. The queries encode the initial phrase of the sequence
+    - 22.4 keys attend to 8.1 queries, focusing on duplicate/similar phrases, with high attention on temporal markers
+   
+    - 22.4 queries the keys of 10.5, where keys heavily attend to `Mark takes the cat off the basket and puts it on the box` and `John looks around the room`, while the queries focus on John putting the cat on the basket and leaving the room and John's state at the beginning of the sequence
+    - Keys attend to the output, where most of the focus is on John moving the cat, and John's unawareness, which is heavily attending to `John takes the cat and puts it on the basket`
+    - Values project this information as well as temporal markers forward
+
+    - 22.4 queries the output of 15.0, both focusing on the seperate perspective of Mark/John and their actions toward the cat
+    - 22.4 queries the keys of 15.0, both focus on the state of the room at all positions in the sequence, with a heavy focus on John's unawareness of the room while he was away
+    - 22.4 keys attend to 15.0 outputs, focusing on John/Mark leaving the room, with most attention on Mark's action, John unawareness and John's initial actions
+    - Keys attend to queries, focusing on the cat at the beginning of the sequence, and from John/Mark's perspective
+   
+    - 22.4 queries, focusing on John/Mark moving the cat between the basket/box, query the output of 16.7, which focuses on John leaving for school, with more focus on John returning
+    - Queries encode the keys, focusing on determiners and their relationship to subjects, objects, locations, with dense strength on actions taking place in the room
+   
+    - 22.4 queries the output of 18.6, focusing on entire phrases. The output, where John initially places the cat, highly correlating with his unawareness of how things changed denoted by the queries, Mark moving the cat and Mark leaving the room
+    - Keys attending to queries and highly correlating between Mark leaving the room and the initial state of the room
+   
+    - 22.4 queries the output of 18.7, output focuses on John being away, coming back, and where he thinks the cat is, queries focus on the initial state of the room, and John/Mark moving the cat, their actions and John unawareness correlating to the last phrase of the sequence
+    - Queries encode the keys, heavily attending to John/Mark and the initial state of the sequence
+    - Keys attend to queries, heavily focused on the initial state of the room in relation to John looking around the room and his unawareness
+    - Values heavily encode Mark's actions
+       
      - 21.5, 22.2/3/4/5, L23.H6 perform final integration by:
         - Querying against induction, copy suppression and duplicate token head outputs, primarily from 15.0, 16.7, 17.6, 18.6, 18.7, 20.2
         - Keys matching belief states
