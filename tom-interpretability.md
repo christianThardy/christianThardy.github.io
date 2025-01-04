@@ -713,7 +713,7 @@ effect_of_head_to_head: 0.4579
 
 It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? We get the second artifact by combining this to the flow of QKVO attention weights between heads, then we will be able to see how the identified heads form a layered composition.
 
-Since we have a high-level understanding of the information flow between heads, we can examine how each attention head interacts and influences each other, tracking the flow of information to see how one head (sender) influences another (receiver).
+Since we have a high-level causal understanding of the information flow between heads, we can examine the correlation between each attention head to track the flow of information and see how one head (sender) influences another (receiver).
 
 <br/>
 
