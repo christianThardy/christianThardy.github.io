@@ -778,7 +778,7 @@ These capabilities allow it to handle false belief tasks by maintaining parallel
 
 **Localized circuit for belief tracking:** It’s worth noting how interventions and ablation experiments reinforce the idea that these capabilities are localized (e.g. heads exhibiting induction behavior show significant performance drops when ablated).
 
-Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. A more in-depth qualitative analysis can be found <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">here</a>. Thinking about the circuit from a high level:
+Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">A more in-depth qualitative analysis can be found here</a>. Thinking about the circuit from a high level:
 
 **Previous Token → Duplicate Token:**
 The outputs from early previous token heads are fed as queries, keys, and values into the duplicate token head (8.1). By capturing the same tokens from multiple angles, 8.1 maintains parallel, multi-perspective state representations—one for each subject or belief context—enabling the model to track what each subject knows or *believes*.
