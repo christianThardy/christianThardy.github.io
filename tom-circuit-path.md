@@ -274,4 +274,4 @@
         
       - 20.2 keys attend to the output of 16.2, heavily focusing on `Mark` moving the `cat`/leaving the `room`, simultaneuously to `the cat is on the` at the end of the sequence
 
-      - 23.5 query and key the output of the late group of previous token heads to encode `Mark` moving the `cat` to the `box`, and leaving for `work` with the last phrase of the sequence 
+      - 23.5 query and key the output of the late group of previous token heads to encode `Mark` moving the `cat` to the `box`, and leaving for `work` with the last phrase of the sequence and projects those values forward to the final layers
