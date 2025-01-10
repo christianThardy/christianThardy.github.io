@@ -166,7 +166,7 @@ It is a decoder-only transformer that has 25 layers and 7 attention heads per at
 
 In terms of the internal mechanisms of a language model, a **feature** is a property of the input that humans can understand and is represented in the model's activations (the tokens from the ToM passage). A **circuit** informs us of how these features are extracted from the input and then processed by the model to perform specific behaviors (e.g. reasoning), which gives us an algorithmic understanding of how the model works. So first, we analyze the features, use them to trace out circuits that connect and process those features, and once we understand more circuits we can better understand the model.
 
-To begin looking at ToM prediction through the lens of a decoder-only transformer, we can start by defining a simple hypothesis of an interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This will serve as a starting point to understand how the model might represent and process ToM-related reasoning: 
+To begin looking at ToM prediction through the lens of a decoder-only transformer, we can start by defining a simple hypothesis of an interpretable algorithm that focuses heavily on John’s mental state about where he placed the cat. This serves as a starting point to understand how the model might represent and process ToM-related reasoning: 
 
 - Consider events the subjects have witnessed.
 - Consider the location of objects based on the subject's last knowledge.
@@ -236,13 +236,13 @@ The same can be said for the attention mechanisms, where in early layers distinc
 
 <br>
 
-And in later layers, a refined focus in attention with more complex clustering patterns. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
+In later layers there's a refined focus in attention with more complex clustering patterns. Meanwhile, the residual stream seems to capture broader aspects of information, showing a more continuous evolution of representations across a wider context.
 
-In the early attention layers, we’re seeing simpler, lower-level features, but as we move through the model, it’s clear the representations are getting more complex and structured. In later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. This likely reflects the temporal relationships between different elements of the sequence, and the positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
+In the early attention layers, we’re seeing simpler, lower-level features, but as we move through the model, it’s clear the representations are getting more complex and structured. In later layers, the model appears to combine information from different parts of the input sequence, as shown by the mixed colors in various clusters. The positioning of key elements in these layers might represent the model's understanding of their roles in the narrative.
 
 In the later layers, we’re picking up on some cool patterns: locations relevant to `John` and `Mark` seem to cluster, similar words in the attention heads are grouping up, and interestingly, `basket` is ranked higher than `box` in the residual stream hierarchy.
 
-Even from this limited perspective, you can see how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features in each mechanism. The differences between each mechanism highlight how they contribute to this evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information in deeper layers, while the pre- and post- residual stream shows how information is continuously transformed as it flows between mechanisms and layers. More on that later.
+Even from this limited perspective, you can see how the model is capable of distinguishing concepts, integrating contextual information, and focusing on task-relevant features in each mechanism. The differences between each mechanism highlight how they contribute to the evolving representation. Attention heads seem especially important for forming distinct, task-relevant clusters of information in deeper layers, while the pre- and post- residual stream shows how information is continuously transformed as it flows between mechanisms and layers.
 
 <br>
 
