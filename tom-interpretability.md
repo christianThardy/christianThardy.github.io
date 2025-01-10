@@ -249,16 +249,14 @@ Even from this limited perspective, you can see how the model is capable of dist
 ### Identifying relevant layers and activations
 <sub>[↑](#top)</sub>
 
-Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens —so we can track how language models refine their predictions across layers. The approach will be applied first to interpret layers and activations, and then to dive deeper into feature and circuit discovery.
+Thanks to <a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" title="lesswrong.com" rel="nofollow">nostalgebraist</a> we have the logit-lens—so we can track how language models refine their predictions across layers by directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. 
 
-This technique is essentially a causal intervention—we're directly messing with parts of the model to figure out how they contribute to the output. Most of the methods in this analysis fit this kind of framework. 
+To make sense of what’s happening, we need a solid performance metric to track how things change when we intervene, that way we can get a clear read on how the model's behavior shifts.
 
-To make sense of what’s happening, we also need a solid performance metric to track how things change when we intervene. That way, we can get a clear read on how the model's behavior shifts.
-
-For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. In this case:
+For the ToM task, where the goal is to distinguish between the believed and actual locations of objects, the model needs to predict both the original and updated locations after certain actions. The metric we’ll use here is logit difference, which represents the difference between the logit of the believed location and the logit of the actual location. So:
 `logit(basket) - logit(box)`<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>.
 
-When we deconstruct the residual stream using the logit-lens, we can look at the residual stream after each layer and calculate the logit difference at that point. This simulates what would happen if we “deleted” all subsequent layers, giving us a snapshot of the model's evolving prediction. The final layernorm is applied to the residual stream values, which are then projected in the direction of the logit difference to measure the model's performance at each layer.
+When we deconstruct the residual stream using the logit-lens, we can look after each layer and calculate the logit difference at that point. This simulates what would happen if we “deleted” all subsequent layers, giving us a snapshot of the model's evolving prediction. The final layernorm is applied to the residual stream values, which are then projected in the direction of the logit difference to measure the model's performance at each layer.
 
 <br>
 
@@ -268,13 +266,11 @@ When we deconstruct the residual stream using the logit-lens, we can look at the
 
 <br>
 
-What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then a lot worse right after layer 24. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
+What's interesting is that the model shows almost no capacity to handle the task until we get to layer 22. And then—boom—attention layer 22 kicks in and almost all the performance happens there, and then things get a tiny bit better, then a lot worse right after layer 23. It’s not just a smooth upward trajectory; there’s a clear peak followed by a clear descent.
 
-So, what’s going on here? It’s a strong signal that layers 22, 23, and 24 are doing something really specific—writing to the residual stream in a way that allows the model to solve the task. This insight can help us narrow the investigation and gives a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (process information) in their contribution to this spike? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly? What can we learn from the MLPs?
+So, what’s going on here? It’s a strong signal that layers 22 and 23 are doing something really specific—writing to the residual stream in a way that allows the model to solve the task. This insight gives us a clear direction: we need to figure out what kind of computation these layers are performing. It opens up exciting questions: How do attention layers (move information around) compare with MLPs (process information) in their contribution to this spike? And within those attention layers, which heads are doing the heavy lifting? What's going on in the residual stream exactly?
 
-This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations, which will give real insights into how the model performs ToM.
-
-Repeating the previous analysis, but for each layer by activation reveals how to begin the narrowing process.
+This is where things get really fun. When narrowing down the problem, we can now start isolating the mechanisms and digging into specific computations. Repeating the previous analysis, but for each layer by mechanism reveals how to begin the narrowing process.
 
 <br>
 
@@ -284,11 +280,11 @@ Repeating the previous analysis, but for each layer by activation reveals how to
 
 <br>
 
-Its clear that attention layers matter a lot. I'm not too surprised. I would imagine that the ToM task is centered around moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
+Its clear that attention layers matter a lot, and I'm not too surprised. I would imagine that the ToM task is centered around moving information around, pulling John's believed location of the cat into focus while ignoring or forgetting the actual location of the cat. While there is minimal processing by the MLPs that matter (perhaps some level of understanding context is processed here), which warrents investivation, the emphasis is on the attention.
 
 What’s particularly interesting is that attention layer 22 gives us a big boost in performance, but then things take a turn—MLP layer 22 and attention layer 23 and subsequent MLP layers actually make things worse. So, the attention mechanism is crucial, but there's a point where additional layers start to hurt more than help. This kind of dynamic tells us something important about how information flows through the model and where it can break down.
 
-We can break down the output of each attention layer even further by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 7 heads, and each head acts independently and additively to influence the final result.
+We can further break down the output of each attention layer by looking at the sum of the outputs of each individual attention head. Every attention layer consists of 7 heads, and each head acts independently and additively to influence the final result.
 
 <br>
 
@@ -298,7 +294,7 @@ We can break down the output of each attention layer even further by looking at 
 
 <br>
 
-Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute—its possible that this distributed behavior is somehow important—but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model greatly.
+Interestingly, while there is positive activity that contributes to the prediction of the ToM task, only a few heads *really* matter. It seems many heads contribute—its possible that this distributed behavior is somehow important—but their activations appear quite weak. Head 3 at layer 0, head 4 at layer 22 and head 3 at layer 23 contribute positively on some range of significance, which kind of makes sense given the previously observed behavior on the attention in layer 22 and good performance until layer 23. On the flip side, head 7 at layer 18 and heads 5 and 4 at layers 23 and 25 respectively are negatively impacting the model a lot.
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in every layer, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
@@ -312,17 +308,9 @@ Second, the presence of negative heads is really surprising—like head 7 at lay
 
 <br>
 
-Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. It appears to be distinguishing between actors, objects and honing in on story elements that are crucial for ToM processing, but in a way where we can clearly see a refined heirarchical representation.
+Looking back at the PCA output for layer 22, its clear that the model is doing something interesting in terms of concept clustering. It appears to be distinguishing between actors (`John` and `Mark`), objects and it looks like the model is honing in on story elements that are crucial for ToM processing, but in a way where we can clearly see a refined heirarchical representation.
 
 Based on the PCA, its possible that the ToM task may be aligned with the linear representation hypothesis<sub>[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">11</a>]</sub><sub>[<a href="https://aclanthology.org/N13-1090.pdf" title="Mikolov" rel="nofollow">12</a>]</sub> –the idea that models pick up properties of the input and represent them as directions in activation space. When we dig into layer 22's PCA, a few interesting things stand out.
-
-<br>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/408baaa6-9596-41ac-94d1-098df04d129d" width="750"/>
-</p>
-
-<br>
 
 The PCA breaks down into three clusters of concepts:
 
@@ -338,14 +326,22 @@ In the residual stream pre, there is clustering of scene elements and actors, an
 
 The clustering remains clear as the attention and MLP layer outputs are added back to the residual stream with updated relationships. The separation of "knowledge states" (e.g. what John knows vs. doesn’t know, what Mark knows) appears linear. This makes sense because if tokens did not cluster within residual stream space, linear transformations across layers would be less informative and they wouldn't be meaningful.
 
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/408baaa6-9596-41ac-94d1-098df04d129d" width="750"/>
+</p>
+
+<br>
+
 Its clear that the model is keeping two separate but parallel "tracks":
 
 - Reality track (blue): represents actual events from Mark's perspective
 - Belief track (red): represents John's perspective
 
-The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to maintain two simultaneous yet distinct states—reality and belief—keeping them separate but interrelated to maintain parallel states. Even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
+The key thing here is that after Mark moves the cat, the two tracks split, but the belief track stays locked into John’s original understanding. This suggests that the model is able to maintain two simultaneous yet distinct states—reality and belief—keeping them separate but interrelated to maintain parallel states. I could imagine that even as the sequence progresses—Mark and John’s actions, them leaving, returning—the belief state remains consistent.
 
-What’s also cool is that the PCA reveals these token clusters at consistently distinct distances, showing the same grouping across transformations. There’s almost a hypothetical “boundary” within the MLP and residual post layers, cleanly dividing what the model has learned about `John`, `Mark`, and their connection to the `basket`.
+What’s also cool is that the PCA reveals these tokens cluster at consistently distinct distances, showing the same grouping across transformations. There’s almost a hypothetical “boundary” within the MLP and residual post layers, cleanly dividing what the model has learned about `John`, `Mark`, and their connection to the `basket` and the `cat`.
 
 <br>
 
