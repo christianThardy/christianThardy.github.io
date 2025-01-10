@@ -323,6 +323,6 @@ The way in which classical data is encoded into quantum states can be another so
 
 Some of these errors are reflected in my networks results, as when running the algorithm multiple times, on one run I could get a 20% classification accuracy, on the second run I could get a 45%, and on the third run I could get a 80% accuracy and so on. It seems to me they are just too unstable to be used for anything other than research at this point. 
 
-To be fair, my specific challenges are also algorithmic, so further tuning of the learning rate, network architecture, data encoding, and other hyperparameters may  improve training convergence, and I may just lack the resources for adequate epoch parameter tuning; I've only let the network run for 30 epochs, and it's possible that more mayb be needed for convergence.
+To be fair, my specific challenges are also algorithmic, so further tuning of the learning rate, network architecture, data encoding, and other hyperparameters may  improve training convergence, and I may just lack the resources for adequate epoch parameter tuning; I've only let the network run for 30 epochs, and it's possible that more may be needed for convergence.
 
 But for current industry problems we need scalability and generalization, and it looks like quantum deep learning algorithms are just not ready yet.
