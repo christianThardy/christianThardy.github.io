@@ -447,9 +447,7 @@ To trace which parts of the model's attention are key for this task we need a de
 
 One approach is to track the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and show how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to what John believes about the cat's location.
 
-Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), value (V), and output (O) vectors across the hierarchy of layers.
-
-The LLMs attention mechanism will weigh the importance of different parts of the ToM passage. Each attention head computes three components:
+Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. The attention mechanism will weigh the importance of different parts of the ToM passage. Each attention head computes three components:
 
 - **Query (Q):** Determines which token positions to attend to.
 - **Key (K):** Represents the tokens considered for attention at each position.
