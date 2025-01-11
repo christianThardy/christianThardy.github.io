@@ -394,9 +394,9 @@ The model is using the residual stream to achieve compositionality between diffe
 
 <br>
 
-So, what’s happening here is the model builds up hierarchical representations of language—phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the events, the order of events, actor actions and possibly even directional or spatial information is key. 
+So, what’s happening here is the model builds up hierarchical representations of language—words within phrases, phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the the order of events, actor actions and possibly even directional or spatial information is key. 
 
-In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
+In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which are encoded in the residual stream.
 
 In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. We should be looking at this information alongside the information stored in the residual stream at that position—which often contains more abstract concepts.
 
@@ -414,9 +414,7 @@ While keeping all of that in mind, it’s a good time to start thinking about th
 
 <br>
 
-We can start to connect the dots between earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation—between the subject `John`, the object `basket`, and the location—tied to those specific interaction moments.
-
-This attention pattern suggests the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to John. 
+We can start to connect the dots between earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation between the subject `John`, the object `basket`, and the location—suggesting the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to `John`. 
 
 <br>
 
@@ -426,7 +424,7 @@ This attention pattern suggests the model is encoding subject-object-location ag
 
 <br>
 
-Here we see that the model is attending from the token `from` in the phrase `John comes back from school` to `school`, which appears earlier in the sentence. This demonstrates how the model links John's initial departure with his return, capturing continuity in the narrative. The model is utilizing previously seen tokens, such as `school`, to inform its current processing, and copying it to the current position. So the model's capability to reference earlier events aligns its understanding of John’s absence and return.
+Here, we see that the model is attending from the token `from` in the phrase `John comes back from school` to `school`, which appears earlier in the sentence. This demonstrates how the model links John's initial departure with his return, capturing continuity in the narrative. The model is utilizing previously seen tokens, such as `school`, to inform its current processing, and copying it to the current position. So the model's capability to reference earlier events aligns its understanding of John’s absence and return.
 
 <br>
 
@@ -436,7 +434,7 @@ Here we see that the model is attending from the token `from` in the phrase `Joh
 
 <br>
 
-When coloring everything from the source token to the output token to see how much every token effects every other token, we get all the tokens that have their probabilities increased by the attention heads. We can see that `the` attended back to `box`, `basket`, `cat` which increased the probability that the next token should be `room`, suggesting noun phrases and more complex compositional patterns in the future.
+When coloring everything from the source token to the output token to see how much every token effects every other token, we get all the tokens that have their probabilities increased by the attention heads. We can see that `the` attended back to `box`, `basket`, `cat` which increased the probability that the next token should be `room`, showing how the model can pick up important content words and possibly more complex spatial relationships.
 
 We won’t dive into a full hypothesis about how the model works just yet—more on that later—but these are the kind of questions and iterative attention analysis that set the stage for figuring out the underlying circuit.
 
