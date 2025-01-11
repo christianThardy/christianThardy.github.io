@@ -443,9 +443,9 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 ### Attention head analysis and causal tracing <a id="attention-head-analysis-and-causal-tracing"></a> 
 <sub>[↑](#top)</sub>
 
-To trace which parts of the model's attention are key for this task, and break down those pathways, we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
+To trace which parts of the model's attention are key for this task we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
 
-One approach is tracking the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and showing how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to both the initial state and John’s final action.
+One approach is to track the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and show how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to what John believes about the cat's location.
 
 Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. So we need to explore the roles of the query (Q), key (K), value (V), and output (O) vectors across the hierarchy of layers.
 
