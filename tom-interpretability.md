@@ -414,6 +414,8 @@ While keeping all of that in mind, it’s a good time to start thinking about th
 
 <br>
 
+Multi-head attention gives models the ability to focus on some things and ignore others, a vital role that guides cognition. This allows them to pick out salient information from noisy data to pursue their objectives in an ordered way.
+
 We can start to connect the dots between earlier observations on semantics and pragmatics, and how they might show up in the model's attention patterns. We see that the model’s attention focuses on specific instances of the `basket`, especially when `John` is the only one interacting with it. This hints at the model potentially locking onto a key relation between the subject `John`, the object `basket`, and the location—suggesting the model is encoding subject-object-location agreement and becoming more prominent in cases where the interaction is clear and exclusive to `John`. 
 
 <br>
@@ -443,11 +445,9 @@ We won’t dive into a full hypothesis about how the model works just yet—more
 ### Attention head analysis and causal tracing <a id="attention-head-analysis-and-causal-tracing"></a> 
 <sub>[↑](#top)</sub>
 
-To trace which parts of the model's attention are key for this task we need a deeper dive into the attention patterns. Specifically, we want to see how the model attends to tokens related to John, his initial actions, and his final actions.
+To trace which parts of the model's attention are key for this task we need to dive deeper into the attention patterns. Specifically, we want to see how the model attends to tokens related to John. One approach is to track the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and show how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to what John believes about the cat's location.
 
-One approach is to track the activations of key tokens (`John`, `basket`, `box`, `cat`) across layers, and show how their representations evolve. Another approach is pinpointing which attention heads contribute most to predicting `basket`. By combining these methods we can zero in on heads that attend to what John believes about the cat's location.
-
-Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. The attention mechanism will weigh the importance of different parts of the ToM passage. Each attention head computes three components:
+Looking at the most basic units of computation in the attention heads will give the most fine-grained account of what is happening when the model is processing information to be sent to the MLPs. The attention mechanism will weigh the importance of different parts of the ToM passage, and each attention head will compute three components:
 
 - **Query (Q):** Determines which token positions to attend to.
 - **Key (K):** Represents the tokens considered for attention at each position.
@@ -476,9 +476,9 @@ Selecting a few heads across layers, we can see how things are playing out in th
 
 The model builds its representation across layers, with later layers showing stronger activations for key tokens. Analyzing the activation contribution across tokens, it looks like early to middle encodings suggest relations between grammar, spatial relationships, and initial object-subject integration. The middle to late encodings seem to refine object representations, and begin to emphasize John and Mark's state of the scene, then strongly maintaining those states.
 
-We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 8.0. Both showing rigid, position-based patterns, clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 8.0 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
+We can sort of see evidence for copying heads (attend to a token and increase the probability of that token occuring again) in 0.7 and 8.0. Both showing rigid, position-based patterns, and clean isolated spikes. 0.7 shows strong Q spikes at regular intervals with minimal KV interference. It might be doing token-level copying or positional tracking, but the sharp, forward, diagonal increased magnitude of Q spikes screams systematic copying with position awareness to me. 8.0 shows copy-like behavior for specific syntactic structures with regular patterns around sentence boundaries and copying verb-related information forward.
 
-Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forwards Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in subject actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
+Evidence for <a href="https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html" title="Olsson" rel="nofollow">induction heads</a> (look at present token in context, look back at similar things that have happened, predict what will happen next<sub>[<a href="https://transformer-circuits.pub/2021/framework/index.html#residual-comms/" title="Elhage" rel="nofollow">13</a>]</sub>) in layer 14 head 2 and layer 17 head 0. Both showing more flexible semantic-based patterns<sub>[<a href="https://arxiv.org/pdf/2402.13055" title="Ren" rel="nofollow">14</a>]</sub>, and sharp, backwards K spikes and slight sharp forward Q spikes. The former shows strong QK spikes at semantically similar tokens, attention to repeated patterns of actions/states, and the latter showing the tracking of recurring patterns in subject actions, and next state predictions based on previous patterns. Specifically, for the asymmetric patterns in layer 22 head 4:
 
 <br>
 
