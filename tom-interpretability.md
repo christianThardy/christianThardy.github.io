@@ -348,9 +348,9 @@ What’s also cool is that the PCA reveals these tokens cluster at consistently 
 ### Residual stream and multi-head attention
 <sub>[↑](#top)</sub>
 
-Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, meaning we can just look at the attention patterns from the final token to understand their direct impact.
+Attention heads are valuable to study because we can directly analyze their attention patterns—basically, we can see which positions they pull information from and where they move it to. This is especially helpful in our case since we're focused on the logits, so we can just look at the attention patterns from the final token to understand their direct impact.
 
-One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence up to that point. So when a head attends to it, it’s likely moving that summary information, not caring if it ends with punctuation. This makes it hard to asses what the attention heads are doing when tokens are being attended to. 
+One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence up to that point. So when a head attends to it, it’s possibly moving that summary information, not caring that its just punctuation. This can make it hard to asses what the attention heads are doing when tokens are being attended to. 
 
 But at the same time, I think when an attention head is attending to a token, it is accessing abstract information stored at that position.
 
@@ -366,7 +366,7 @@ In transformer architectures, each token position has a residual stream—a vect
 <img src="https://github.com/user-attachments/assets/e59b7e99-7c6b-41cb-aeaa-84960f7a0eab" width="270"/>
 </p>
 
-Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer be decomposed as the sum of contributions from various mechanisms across different layers.
+Both attention heads and MLPs read from this stream, apply their edits, and then write the modified info back into the residual stream using linear operations (just simple addition). This linearity is key—it allows the input to any layer to be decomposed as the sum of contributions from various mechanisms across different layers.
 
 By the later layers, the residual stream holds rich, high-level abstractions: syntactic structures, semantic relationships, and even summaries of phrases or entire sentences. This enables the model to map syntax onto semantics in a powerful way. Attention heads read from specific positions in the residual stream and write new information to target positions, which helps move abstract, context-heavy information around—independent of specific tokens.
 
@@ -384,7 +384,7 @@ More on how transformers process information using linear algebra <a href="https
 
 Rather than the input needing to go through every single layer of the network, the model can choose which layers it wants information to go through via the residual stream and what paths it wants to send information to. This is why we can expect model behavior to be kind of localized, so as the input goes through each mechanism, not every piece of the input will receive an activation.
 
-The model is using the residual stream to achieve compositionality between different pieces of information. For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically this looks like some head in the 1st layer will output some vector to the residual stream, the head in the 2nd layer will take as an input the entire residual stream and mostly focus on the output of the 1st layer and run some computation on it. For any pair of composing pieces in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. While extremely useful, this means we can expect the residual stream to be very difficult to interpret.
+The model is using the residual stream to achieve compositionality between different pieces of information. For example, there could be some attention head in layer 2 that composes with some head in layer 22. Technically, this ends up looking like some head in some early layer will output some vector to the residual stream, then some head in a layer downstream will take as an input the entire residual stream and mostly focus on the output of the previous layer, then run some computation on it. For any pair of composing mechanisms in the model, they are completely free to choose their own interpretation of the input, so there's no reason that the encoding of the information between head 0 in layer 0 and head 5 in layer 3 will be the same as the encoding between head 2 in layer 0 and head 3 in layer 1. While extremely useful for capturing long-range dependencies, this means we can expect the residual stream to be difficult to interpret.
 
 <br>
 
@@ -398,9 +398,7 @@ So, what’s happening here is the model builds up hierarchical representations 
 
 In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which aren't tied to any single token but are encoded in the residual stream.
 
-This kind of hierarchical, nested structure in the residual stream is key to solving the ToM task. It requires the model to track what each actor knows or believes over time, which means keeping updated representations of these abstract knowledge states in the residual stream.
-
-In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. We should be looking at this information alongside the information stored in the residual streams at that position—which often contains abstract concepts or higher-level representations.
+In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. We should be looking at this information alongside the information stored in the residual stream at that position—which often contains more abstract concepts.
 
 While keeping all of that in mind, it’s a good time to start thinking about the algorithms the model might be using when looking at some preliminary attention output. 
 
