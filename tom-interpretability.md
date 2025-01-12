@@ -526,13 +526,13 @@ out<sub>basket</sub> = *score*(basket,basket) × V<sub>basket</sub> + *score*(ba
 
 out<sub>basket</sub> = *score*(basket,basket) × V<sub>basket</sub> + *score*(basket,box) × V<sub>box</sub>
 
-Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, which helps the model search for or focus on John's initial belief state. The strong green spikes for both `basket` and `box` positions V vectors carries location information. 
+Where the tall blue spike for `basket` is implemented via the strong Q vector weighting, helping the model search for or focus on John's initial belief state, and the strong green spikes for both V vector positions for `basket` and `box` carry location information. 
 
-The moderate red activity combines both states weighted by attention scores, allowing the model to maintain a strong representation of John's initial belief state of the `basket` location (false belief, contradiction), to track the current state of the `box` location (true belief, reality), and weight them appropriately for belief state tracking.
+The moderate red activity combines both states weighted by attention scores, allowing the model to maintain a strong representation of John's initial belief state of the `basket` location (false belief, contradiction), to track the current state of the `box` location (true belief, reality), and to weight them appropriately for belief state tracking.
 
-In terms of linguistic representations, there are attention patterns that show action-state-verb agreements, tracking state changes through verbs. Small but consistent attention to prepositions like `on` and `off` that describe spatial relationships, which work together with the objects (`basket`/`box`) to establish location states. There's attention around verbs that relate to mental states like `knows` and `thinks`, marking John's contemplative state.
+In terms of linguistic representations, the attention patterns show action-state-verb agreements, which track state changes through verbs. Small but consistent attention to prepositions like `on` and `off` that describe spatial relationships, which work together with the objects (`basket`/`box`) to establish location states. There's also attention around verbs that relate to mental states like `knows` and `thinks`, marking John's contemplative state.
 
-In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). This suppression seems to primarily operate in layers 23 and 25, heads 5 and 4. So its possible these heads maintain the activation of `basket` while relatively suppressing `box`, which would help preserve John's false belief about the cat's location. This can be observed in several ways:
+In relation to this, we can also see the suppression of the actual current state (`cat on box`) in favor of the believed state (`cat on basket`). This suppression seems to mostly operate in layers 23 and 25, heads 5 and 4. So its possible these heads maintain the activation of `basket` while relatively suppressing `box`, which would help preserve John's false belief about the cat's location. This can be observed in several other ways:
 
 **Attention patterns:**
 
