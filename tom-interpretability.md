@@ -656,7 +656,7 @@ My hypothesis? Qs and Ks encode separate perspectives. Qs represent the model's 
 
 How might the behavior of a model change if we selectively replace the output of attention head A directed toward head B (where B follows A in the computation sequence) with the corresponding value from a different input distribution, while keeping all other components unchanged? What if we do this across different head types? Path patching will shift the focus from evaluating the isolated importance of individual attention heads to understanding the functional role of the circuit formed by their connection.
 
-This causal intervention captures the complex interdependencies between attention heads and shows how the model's circuitry works together to solve the ToM task. The experiment will define attention head groups (e.g., “previous token heads”, “induction heads”) identified by a set of metrics that determine whether a model's attention head is acting like a specific head from the head group<sub>[<a href="https://arxiv.org/pdf/2407.10827" title="Tigges" rel="nofollow">16</a>]</sub>. Multiple path patching experiments are run to compute the clean and corrupted logits, the activations from heads that send information into receiving heads are patched, and the logit difference is measured to calculate the impact on model output.
+This causal intervention captures the complex interdependencies between attention heads and shows how the model's circuitry works together to solve the ToM task. The experiment defines attention head groups (e.g., “previous token heads”, “induction heads”) identified by a set of metrics that determine whether a model's attention head is acting like a specific head from the head group<sub>[<a href="https://arxiv.org/pdf/2407.10827" title="Tigges" rel="nofollow">16</a>]</sub>. Multiple path patching experiments are run to compute the clean and corrupted logits, the activations from heads that send information into receiving heads are patched, and the logit difference is measured to calculate the impact on model output.
 
 <br/>
 
@@ -668,7 +668,7 @@ This causal intervention captures the complex interdependencies between attentio
 
 After this process we have a couple artifacts. The first one is a plot that shows sender-receiver pairs (y and x axis) that shows us how things flow through the network to reveal the circuits structure. A positive effect of the magnitude of the influence of heads means that patching the sender’s activation in the receiver context tends to increase the difference between correct and incorrect logits (improving correctness or pushing in some direction), while negative values push in the opposite direction (blue). Each cell represents how much patching the activation from a sender head to a receiver head affects the model's performance.
 
-The idea is that you take the activations from a “sender head” in the corrupted scenario and insert them into the clean scenario model run at the same point, effectively asking: “How does changing what this one head writes cause changes to the final output and to other heads downstream?”.
+The idea is that you take the activations from a “sender head” in the corrupted scenario and insert them into the clean scenario model run at the same point, effectively asking: *How does changing what this one head writes cause changes to the final output and to other heads downstream*?
 
 The darkest blue patches appear when 5.4, a previous token head, is the sender, and 12.3, a previous token head, is the receiver.
 
@@ -677,26 +677,16 @@ Layer 5 Head 4 → Layer 12 Head 3
 effect_of_head_to_head: -1.3715
 ```
 
-Suggesting 12.3 is particularly sensitive to interference from other heads. Many of the strongest positive effects are around a value of 0.3 to 0.5, where the highest values tend to appear in interactions between later layers (L17-L23), although the receiver 12.2 shows very strong positive interactions (red) with itself and middle layers, long with 17.6 (induction head).
+Suggesting 12.3 is particularly sensitive to interference from other heads. Many of the strongest positive effects are around a value of 0.3 to 0.5, where the highest values tend to appear in interactions between later layers (L17-L23), although the receiver 12.2 shows very strong positive interactions (red) with middle layers, along with 17.6 (induction head).
 
-```markdown
-Layer 12 Head 2 → Layer 12 Head 2
-effect_of_head_to_head: 0.5152
-
-Layer 17 Head 6 → Layer 17 Head 6
-effect_of_head_to_head: 0.4579
-```
-
-It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? We get the second artifact by combining this to the flow of QKVO attention weights between heads, then we will be able to see how the identified heads form a layered composition.
-
-Since we have a high-level causal understanding of the information flow between heads, we can examine the correlation between each attention head to track the flow of information and see how one head (sender) influences another (receiver).
+It appears that certain heads, particularly in layers 8 and 12, are critical junction points in the network, while later layers (especially around layers 17 and 22) are important for positive reinforcement of the model's computations. But why? By combining this causal understanding of the information flow between heads to the flow of QKV attention weights between heads, we can examine the correlation between each attention head to track the flow of information and see how one head (sender) influences another (receiver) to form a layered composition.
 
 <br/>
 
 <p align="center">
   <img src = "https://github.com/user-attachments/assets/fad49b2d-3333-439c-84cb-abeef8542d96" width="500">
 <br>
-<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKVO compositions in the collection of identified attention heads.</small>
+<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKV compositions in the collection of identified attention heads.</small>
 </p>
 
 <br/>
@@ -747,14 +737,14 @@ This insight flows forward through the layers, shaping how subsequent events are
 
 - Tracking multiple states of reality: It keeps separate representations for what’s true versus what the subjects believe.
 - Understanding subject knowledge limitations: Heads explicitly encode what a subject knows - versus what they don’t know.
-- Maintaining long-range dependencies: The model integrates information from across the sequence, ensuring coherence.
+- Maintaining long-range dependencies: The model integrates information from across the sequence and its attention blocks, ensuring coherence.
 - Integrating temporal and perspective information: It distinguishes changes over time while keeping track of different viewpoints.
 
-These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and subject knowledge states, showing sophisticated pattern matching during next-token prediction.
+These capabilities allow it to handle false belief tasks by maintaining parallel representations of reality and subject knowledge states, showing sophisticated reasoning during next-token prediction.
 
 **Localized circuit for belief tracking:** It’s worth noting how interventions and ablation experiments reinforce the idea that these capabilities are localized (e.g. heads exhibiting induction behavior show significant performance drops when ablated).
 
-Thinking about how the model represents the location of the cat given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">A more in-depth qualitative analysis can be found here</a>. Thinking about the circuit from a high level:
+Thinking about how the model generalizes the task given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">A more in-depth qualitative analysis can be found here</a>. Thinking about the circuit from a high level:
 
 **Previous Token → Duplicate Token:**
 The outputs from early previous token heads are fed as queries, keys, and values into the duplicate token head (8.1). By capturing the same tokens from multiple angles, 8.1 maintains parallel, multi-perspective state representations—one for each subject or belief context—enabling the model to track what each subject knows or *believes*.
@@ -772,7 +762,7 @@ The full circuit evolves from early semantic feature representations into layere
 
 Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two subjects—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
 
-The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, and maintain the separation between these two representations—ultimately yielding a model output that can differentiate between actual events and each subject’s belief or knowledge state.
+The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, while maintaining the separation between these two representations—ultimately yielding a model output that can differentiate between actual events and each subject’s belief or knowledge state.
 
 <br>
 
