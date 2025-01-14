@@ -1088,7 +1088,7 @@ The proposed ToM circuit:
 
 - Extends on the <a href="https://www.alignmentforum.org/posts/3ecs6duLmTfyra3Gp/some-lessons-learned-from-studying-indirect-object" title="alignmentforums" rel="nofollow">IOI</a> (focuses on tracking a models ability to reconstruct the syntax of natural language) work to identify specific attention heads that are pivotal to false belief tasks. The proposed circuit tracks and updates belief states of entities in regards to locations and objects using strong formal linguistic competence and tentative functional competence via the manipulation of linguistic elements, to distinguish facts from the believed reality of a 3rd person perspective.
 
-- Weakly shows that as LLMs scale and learn dense correlations, they develop semantic grounding.
+- Weakly shows that as LLMs scale and learn dense correlations, they develop a causal, semantic grounding.
   
     - Each component of the ToM circuit plays a distinct role in maintaining perspectives, tracking tokens consistently across layers, and updating dynamically. The model integrates changes in real time—*“the cat is on the box”*, John does not know this—rather than just repeating a previously seen phrase. This suggests the model is doing more than superficial matching; it’s maintaining stable relations that resemble an understanding of the narrative.
       
