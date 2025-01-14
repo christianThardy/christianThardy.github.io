@@ -1082,7 +1082,7 @@ In large models like Gemma-2-2B, emergent semantic inference seems plausible due
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
-By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work here and future work is to validate or invalidate that certain heads or circuits are causally implicated in tasks that map onto ToM-like reasoning.
+By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work here and future work is to validate or invalidate that certain circuits are causally implicated in tasks that map onto ToM-like reasoning.
 
 The proposed ToM circuit:
 
@@ -1106,9 +1106,9 @@ The proposed ToM circuit:
       
        - Copy suppression allows the transformer to model this process explicitly by preventing overcommitment to any one interpretation of reality. This enables the model to maintain belief dynamics similar to how humans mentally track both reality and agents' beliefs about reality, filter out irrelevant things, and not just blindly following patterns.
 
-- Weakly shows that as LLMs scale and learn dense correlations, they develop weak semantic grounding—patterns that mimic *genuine* semantic and pragmatic reasoning.
+- Weakly shows that as LLMs scale and learn dense correlations, they develop semantic grounding—patterns that mimic *genuine* semantic and pragmatic reasoning.
   
-    - The ToM circuit appear to track particular tokens (like “basket” vs. “box”) consistently, carrying forward these representations across layers and contributing to final predictions. This suggests the model is doing more than superficial form matching; it’s maintaining stable semantic relations that resemble an understanding of the narrative.
+    - Each component of the ToM circuit plays a distinct role in maintaining perspectives, tracking tokens consistently across layers, and updating dynamically. The model integrates changes in real time—*“the cat is on the box”*, John does not know this—rather than just repeating a previously seen phrase. This suggests the model is doing more than superficial matching; it’s maintaining stable relations that resemble an understanding of the narrative. Heads like 8.1 and the induction heads, systematically track different character viewpoints and times of their observations. The model’s attention patterns are not only forming correlations but producing text that matches the scenario’s cause-and-effect constraints through temporal, spatial and perspective causality (as seen in the path patching/QKV composition analysis).
       
     - While speculative, experiments show that removing certain heads disrupts semantic coherence. Similar to visual psychophysics, where knocking out features tests perceptual encoding, altering heads in transformers reveals how ToM directions encode context. While it’s not definitive proof that the model truly *understands* semantics, it’s a concrete demonstration that complex formal pattern capturing is sufficient to manifest in behaviors associated with semantic interpretation.
 
