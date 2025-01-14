@@ -779,9 +779,9 @@ The linear representation hypothesis tells us that activations are **sparse**, *
 
 <br/>
 
-Dictionary learning aligns closely with the linear representation hypothesis<sub>[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">18</a>]</sub>, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—a data structure that holds key-value pairs—and when combined can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
+Dictionary learning aligns closely with the linear representation hypothesis<sub>[<a href="https://transformer-circuits.pub/2023/monosemantic-features/index.html" title="Bricken" rel="nofollow">18</a>]</sub>, aiming to express complex data as a linear combination of simpler elements, or "basis vectors". These basis vectors form a dictionary—we can think of it as data structure that holds key-value pairs—and when both are combined they can efficiently represent the original data, making it easier to analyze, compress, or reconstruct. In models, a dictionary of learned concepts with associated directions allows specific elements to be activated based on relevance to the input; for example, `queen` could be represented by a combination of `female` and `royalty` directions. Sparsity is key here, as most concepts are irrelevant to a given input, resulting in many feature scores remaining zero.
 
-Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. They're trained to reconstruct input activations, where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. SAEs leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention.
+Sparse autoencoders (SAEs) extend this by learning both the dictionary and a sparse vector of coefficients for each input. They leverage the hypothesis that model internals operate as sparse linear combinations of these concept directions, providing a structured way to find interpretable directions in the residual stream, MLPs, or multi-head attention. Each latent variable in the autoencoder thus represents a distinct learned concept, enabling interpretable, causal insight into how the model organizes knowledge. They can do this because their objective is to reconstruct input activations where the hidden state captures the weights of meaningful neuron combinations, and the decoder matrix learns the dictionary's feature vectors.
 
 There are many directions to find because of **1)** polysemanticity, where many neurons fire for multiple, often times unrelated features.
 
@@ -795,7 +795,7 @@ There are many directions to find because of **1)** polysemanticity, where many 
 
 And **2)** superposition, neural networks represent more concepts (features) than they have neurons and use linear combinations of neurons to represent these concepts. 
 
-Basically, neurons represent multiple different things and these things are spread across multiple different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This allows us to take advantage of SAEs. 
+Basically, neurons represent many different things and these things are spread across many different neurons. Because of superposition, we have a limited number of neurons for all our features, so there are lots of features and not so many neurons in any given activation space. But the irony is that the features are actually sparse, so only a few of them are active at any given time. This makes SAEs useful. 
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/4ca32983-5c7a-457c-9b29-fd01b3446650" width="480"/>
@@ -803,7 +803,7 @@ Basically, neurons represent multiple different things and these things are spre
 
 <br>
 
-So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE where each dimension is a new feature and the wider space will be sparse, which allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input<sub>[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">19</a>]</sub>. From this we can extract rich structures and representations that the model has learned.
+So we can take the activation vectors from attention, an MLP or the residual stream, expand them in a wider space using the SAE, where each dimension is a new feature and the wider space will be sparse. This allows us to reconstruct the original activation vector from the wider sparse space, then we get complex features that the mechanism has learned from the input<sub>[<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/" title="Templeton" rel="nofollow">19</a>]</sub>. From this we can extract rich structures and representations that the model has learned.
 
 The SAE suite used is Google Deepmind's <a href="https://deepmind.google/discover/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/" title="Google Deepmind" rel="nofollow">Gemma Scope</a>, and the output was visualized using <a href="https://docs.neuronpedia.org/" title="Neuronpedia" rel="nofollow">Neuronpedia</a>. Gemma Scope is a collection of hundreds of SAEs on every layer and sublayer of Gemma-2-2B and 9B. Using the trained SAE on the ToM passage, we can take features from layer 22 of Gemma-2-2B out of superposition, and see which features in the model are activated.
 
@@ -834,7 +834,7 @@ These features suggest that the model is building an internal representation of 
 <img src="https://github.com/user-attachments/assets/5382e695-ca33-4ede-9440-461bbc902bce" width="480"/>
 <img src="https://github.com/user-attachments/assets/2662e86c-7bd7-4abb-b9bc-b59033d72044" width="480"/>
 <br>
-<small style="font-size: 8px;">The model also has features representing actions that directly change the scene.</a></small>
+<small style="font-size: 8px;">The model also has features representing actions that directly change the scene.</small>
 </p>
 
 <br>
@@ -845,7 +845,7 @@ These features suggest that the model is building an internal representation of 
 
 <br>
 
-One standout aspect of the model’s capacity to track scene changes lies in its approach to temporal sequencing—it’s almost like it’s keeping a detailed record of event order. Take, for instance, feature 11786, which captures *statements involving returning or coming back from a situation or event*. This kind of specialized tracking is just one of many spatial and temporal features we find scattered throughout the residual stream, indicating the model’s capability for not only for understanding static states but also for representing the flow of actions as they unfold in time and space.
+One standout aspect of the model’s capacity to track scene changes lies in its approach to temporal sequencing—it’s almost like it’s keeping a detailed record of event order. For instance, take feature 11786, which captures *statements involving returning or coming back from a situation or event*. This kind of specialized tracking is just one of many spatial and temporal features we find scattered throughout the residual stream, indicating the model’s capability for not only understanding static states but also for representing the flow of actions as they unfold in time and space.
 
 The residual stream, in particular, plays a key role as an information-preservation highway across the layers. For example, it receives inputs from 10.4 and relays them through to 14.0 and then to 17.3. Through this pathway, we can observe representations of actions forming within the residual stream itself, often refined further by the MLPs.
 
@@ -858,7 +858,7 @@ The residual stream, in particular, plays a key role as an information-preservat
 
 <br>
 
-In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. The **action related features** are a lot **clearer in the residual stream and MLPs**. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. These features in the MLP layer are giving the model structures for managing specific narrative events, helping it ground actions and observations.
+In the MLP features, we're seeing a recurring theme, feature 11284 looks like it’s picking up on verbs associated with actions and states in a narrative frame. The **action related features** are a lot **clearer in the residual stream and MLPs**. This is probably helping the model track actions in the story—meanwhile, feature 5852 seems more tuned into verbs and phrases related to visual attention or perception, which may be important for encoding John’s final act of scanning the room. The features in the MLP layer are giving the model structures for managing specific narrative events, helping it ground actions and observations.
 
 <br>
 
@@ -882,7 +882,7 @@ Several features seem to be directly tied to representing belief states and know
 
 <br>
 
-Another key aspect for the ToM task is spatial processing. Similar to residual stream feature 81, feature 12441 likely tracks the positions of the cat, box, and basket, while feature 14364 seems to process how subjects and objects move around the room.
+Another key aspect for the ToM task is spatial processing. Similar to residual stream feature 81, feature 12441 likely tracks the positions of the `cat`, `box`, and `basket`, while feature 14364 seems to process how subjects and objects move around the room.
 
 What’s pretty clear from this is that the residual stream and MLP features in layer 22 show a high degree of specialization. ToM-related features are distributed across multiple distinct MLPs, suggesting the model doesn’t rely on a single "ToM module". Instead, it integrates various aspects of *reasoning* to achieve ToM understanding.
 
