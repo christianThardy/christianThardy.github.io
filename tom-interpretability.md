@@ -960,6 +960,9 @@ The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a hre
 Average logit difference (ToM dataset, using entire model): 0.8365
 Average logit difference (ToM dataset, only using circuit): 0.9373
 ```
+<p align="center">
+<small style="font-size: 12px;">Competing signals are removed which likely restricted the models performance</small>
+</p>
 
 <br>
 
@@ -1001,9 +1004,6 @@ Original believed-actual diff: 0.836511
 Ablated believed-actual diff: 0.162061
 Total circuit effect: 0.674451
 ```
-<p align="center">
-<small style="font-size: 12px;">Competing signals are removed which likely restricted the models performance</small>
-</p>
 
 This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Component-wise, the early and mid suppression heads had the most significant effect on the decrease in performance when ablated, which reduced performance by ~22.50% and ~45.14% respectively, highlighting the importance of copy suppression for this task.
 
