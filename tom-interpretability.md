@@ -913,7 +913,7 @@ This again is confirming that the model maintains multiple representations of re
 
 <br>
 
-The ToM circuit efficiently balances between retaining initial knowledge, updating as the story progresses, and suppressing outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for false belief tasks, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
+Each component in the ToM circuit serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states throughout the narrative. It efficiently balances between retaining initial knowledge, updating as the story progresses, and suppressing outdated information. This aligns with human-like belief updating, where new observations modify existing beliefs without completely discarding past knowledge. It’s especially crucial for false belief tasks, as it supports reasoning about beliefs that differ from reality—understanding what John believes (`cat on basket`) versus what is actually true (`cat on box`).
 
 The full circuit reveals a nuanced algorithm in its attention:
 
@@ -1018,26 +1018,15 @@ Circuit components have complementary timing in the way they activate across the
 
 Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated, and a significant decrease in model performance when they are ablated. This is not an isolated result. In a separate study, element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">21</a>]</sub>. In both cases showing modularity and a parallel to the human brain.
 
-From the perspective of this task, copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (beliefs), and this could have several implications for AI alignment. Because the model has learned to maintain distinct representations and track multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and possibly even lying. Investigating inhibition and suppression mechanisms might be crucial for understanding how models might deceive, but these same capabilities could be useful for alignment research. For example, they could help with:
+Copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (belief), and this could have several implications for AI alignment. Because the model has learned to maintain multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and possibly even lying. Investigating inhibition and suppression mechanisms might be crucial for understanding how models might deceive, but these same capabilities could be useful for alignment research. For example, they could help with:
 
 - Value learning: Separating “is” from “ought” to reason about values.
 - Goal preservation: Keeping different types of goals or beliefs separate and coherent.
 - Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between “what is” and “what should be”.
 - Moral uncertainty: Predicting the consequences of their actions from multiple points of view
+- Auditing how a model handles contradictory beliefs or goals.
 
-Could copy suppression be useful to improve alignment techniques and safeguard against belief corruption? This raises more key questions: how reliable is this mechanism for alignment? Does it scale to more complex belief systems? What are the failure modes, especially in edge cases?
-
-Each component serves a specific role at different points in the sequence. The timing and strength of the activations suggest a well organized circuit that tracks states, actions, beliefs using linguistic elements throughout the narrative.
-
-
-
-
-
-
-
-Because LLMs can maintain multiple, possibly conflicting “realities,” they are capable of perspective tracking—but also potentially misleading or “lying.” Understanding how “copy suppression” and “belief separation” heads function might be central to alignment: controlling or auditing how a model handles contradictory beliefs or goals.
-
-
+Could copy suppression be useful to improve alignment techniques and safeguard against belief corruption? How reliable would this mechanism be for alignment? Does it scale to more complex belief systems? What are the failure modes, especially in edge cases?
 
 <br>
 
