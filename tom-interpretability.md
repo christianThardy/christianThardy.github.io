@@ -671,7 +671,7 @@ In this particular heatmap, where 5.4 is the sender, 8.1 is the receiver, and th
 ## So What?
 <sub>[↑](#top)</sub>
 
-On tests run on a small dataset that used templates to construct different false belief passages that structurally resemble the original ToM narrative, the model seems to have developed a systematic, multi-step process for solving the task. Demonstrating its ability track the protagonists' belief<sub>[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">15</a>]</sub>. Early layers handle low-level tasks like syntactic dependencies, while middle layers focus on context-driven processing, identifying key facts like `cat on box`. By the time we reach the later layers, the model integrates this context and resolves ambiguities, landing on the correct conclusion (`cat on basket`) by using semantic attention patterns to disentangle competing perspectives.
+On tests run on a small, templatized dataset used to construct different false belief passages that structurally resemble the original ToM narrative, the model seems to have developed a systematic, multi-step process for solving the task. Demonstrating its ability track the protagonists' belief<sub>[<a href="https://arxiv.org/pdf/2302.02083" title="Kosinski" rel="nofollow">15</a>]</sub>. Early layers handle low-level tasks like syntactic dependencies, while middle layers focus on context-driven processing, identifying key facts like `cat on box`. By the time we reach the later layers, the model integrates this context and resolves ambiguities, landing on the correct conclusion (`cat on basket`) by using semantic attention patterns to disentangle competing perspectives.
 
 ### Specialization across heads
 
