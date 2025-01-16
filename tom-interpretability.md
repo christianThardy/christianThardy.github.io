@@ -640,12 +640,12 @@ It appears that certain heads, particularly in layers 8 and 12, are critical jun
 <p align="center">
   <img src = "https://github.com/user-attachments/assets/9591e638-c572-4449-bb34-6937942716b5" width="500">
 <br>
-<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKV compositions from the collection of identified attention heads</small>
+<small style="font-size: 12px;">Hundreds of heatmaps corresponding to all QKV compositions from the collection of identified attention heads</small>
 </p>
 
 <br/>
 
-These heatmaps show what part of the text the model was focusing on when it was predicting a particular part of the cat's location trajectory. By extracting the Q, K, V, and O vectors for any head/layer, we can visualize specific compositions to analyze:
+These heatmaps show what part of the text the model was focusing on when it was predicting particular parts of the cat's final trajectory. By extracting the Q, K, V, and O vectors for any head/layer, we can visualize specific compositions to analyze:
 
 - Q composition: How the receiver's queries attend to the sender's outputs
 - K composition: How the receiver's keys interact with the sender's outputs
