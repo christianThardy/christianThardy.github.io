@@ -640,7 +640,7 @@ It appears that certain heads, particularly in layers 8 and 12, are critical jun
 <p align="center">
   <img src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZndudnM0Z2ZuY2Y4NGExN2VsMXNrZWVnem8yNXV5aDFuNmNuN2MyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eLWD9mTUNuSQZmwjkd/giphy.gif" width="500">
 <br>
-<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKV compositions from the collection of identified attention heads.</small>
+<small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKV compositions from the collection of identified attention heads</small>
 </p>
 
 <br/>
