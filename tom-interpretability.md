@@ -638,7 +638,7 @@ It appears that certain heads, particularly in layers 8 and 12, are critical jun
 <br/>
 
 <p align="center">
-  <img src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZndudnM0Z2ZuY2Y4NGExN2VsMXNrZWVnem8yNXV5aDFuNmNuN2MyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/eLWD9mTUNuSQZmwjkd/giphy.gif" width="500">
+  <img src = "https://github.com/user-attachments/assets/9591e638-c572-4449-bb34-6937942716b5" width="500">
 <br>
 <small style="font-size: 12px;">Dozens of heatmaps corresponding to all QKV compositions from the collection of identified attention heads</small>
 </p>
@@ -719,18 +719,6 @@ The full circuit evolves from early semantic feature representations into layere
 Each layer builds on prior patterns, maintaining Mark’s actions as current-world events while keeping John’s beliefs separate. The circuit appears to maintain a fundamental asymmetry between the two subjects—highlighting a meaningful cognitive distinction. The negative effects from ablation studies (particularly around 8.1 and 12.3) reveal critical integration points where parallel processing streams must be correctly combined to maintain accurate belief tracking.
 
 The system balances belief preservation and action-driven updates, forming a dual-representation architecture, tracking what Mark does to know the true state, what John believes to make the final prediction, while maintaining the separation between these two representations—ultimately yielding a model output that can differentiate between actual events and each subject’s belief or knowledge state.
-
-
-This is by design, each token can attend to any other token via learned queries and keys—no matter how far apart in the sequence they appear. The model can unify widely separated pieces of context (e.g., “Mark left with the cat” in sentence one, “John returned but doesn’t see it” in sentence ten) into a coherent representation of who knows what.
-
-
-
-In RNNs, analyzing a “sequential Jacobian” shows how a network’s output depends on inputs at different time steps.
-Transformers: All Pairs of Tokens.
-Transformers generalize this idea: each token can attend to any other token via learned queries and keys—no matter how far apart in the sequence they appear.
-Result: The model can unify widely separated pieces of context (e.g., “Mark left with the cat” in sentence one, “John returned but doesn’t see it” in sentence ten) into a coherent representation of who knows what.
-
-
 
 <br>
 
