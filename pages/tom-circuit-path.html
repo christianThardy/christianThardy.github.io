@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ToM Circuit Path</title>
+    <title></title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <header>
-        <h1>ToM Circuit Path</h1>
+        <h1></h1>
         <nav>
             <a href="https://xtian.ai/tom-interpretability#attention-head-analysis-and-causal-tracing">Back to Blog</a>
         </nav>
@@ -26,11 +26,11 @@
     <script>
         // Raw Markdown content
         const markdownContent = `
+        
 # ToM Circuit Path
-
 <br/>
 
-\\\markdown
+\`\`\`markdown
                 [Early PTHs L2-L6] -----> [Mid PTHs L10-L12] 
                        |                        |
                        v                        v
@@ -41,14 +41,14 @@
                        |                        |
                        |                        v
                        +-------------------> [CSHs L14-L23]
-\\\
+\`\`\`
 
-\\\markdown
+\`\`\`markdown
 [Early PTHs L2-L6] <---> [Early PTHs L2-L6]  (Strong mutual interactions)
        |||                    
        vvv
 [Mid Integration Hub L10-L12]
-\\\
+\`\`\`
 
 **Early Previous Token Head Processing (L2-6)**
 - **Primary Function:** Initial semantic feature extraction
@@ -62,12 +62,12 @@
         - Values project refined semantic patterns forward
 
 
-\\\markdown
+\`\`\`markdown
 [Mid PTHs L10-L12] <======> [DTH L8.1]
         |||                    ||
         vvv                    vv
 [Induction L14-17]   [Copy Suppression Early]
-\\\
+\`\`\`
 
 **Mid-Layer Previous Token Integration (L10-12)**
 - **Primary Function:** Complex state representation building
