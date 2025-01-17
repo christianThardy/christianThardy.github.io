@@ -10,6 +10,11 @@ layout: full
     <title>{{ site.title | default: site.github.repository_name }} by {{ site.github.owner_name }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=' | append: site.github.build_revision | relative_url }}">
     <meta name="viewport" content="width=device-width">
+
+    <!-- MathJax for LaTeX equations -->
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
   </head>
   <body>
     <div class="wrapper">
