@@ -1033,7 +1033,7 @@ $$
 The aggregated output:
 
 $$
-\text{Output}_i^{(l)} = \sum_h \sum_j C_{ij}^{(l, h)}
+\sum \lvert S_{ij}^{(l,h)} \rvert
 $$
 
 And the cumulative suppression of token *i* across layers is:
