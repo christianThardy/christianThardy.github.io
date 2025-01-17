@@ -1204,7 +1204,7 @@ Davies, *Grice’s Cooperative Principle: Getting The Meaning Across.* Universit
 
 Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">11</a>] 
 
-<a href="/_includes/tom-circuit-path.html" title="ToM circuit paths" rel="nofollow">ToM Circuit Paths</a>
+<a href="/pages/tom-circuit-path.html" title="ToM circuit paths" rel="nofollow">ToM Circuit Paths</a>
 
 
 Park, *The Linear Representation Hypothesis and the Geometry of Large Language Models.* 2024.[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">12</a>] 
