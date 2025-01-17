@@ -983,7 +983,7 @@ This suggests that these heads are working together in a highly interdependent w
 
 <br>
 
-#### Copy supressions role in the ToM circuit
+### Copy supressions role in the ToM circuit
 
 In neuroscience, it is widely known that if it weren't for inhibition coming from the frontal lobe, humans would be more prone to negative social actions. This inhibition is also *a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli*<sub>[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0278262603000800?via%3Dihub" title="Dimitrov" rel="nofollow">20</a>]</sub>. Copy supression<sub>[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]</sub> in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjusts the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits to suppress information before the final prediction is made.
 
