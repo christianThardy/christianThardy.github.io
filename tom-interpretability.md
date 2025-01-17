@@ -935,7 +935,7 @@ The resulting circuit confirms the causal intervention findings: certain heads a
 
 At the final stages, the suppression heads play a key role. They show both positive and negative modulations between the QK mechanisms, enhancing and inhibiting specific connections as needed. Here, the value mechanism filters out information irrelevant to John's knowledge, ensuring only John’s incorrect belief about an object’s location are propagated to influence the model’s final output.
 
-The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub> . Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
+The ToM circuit satisfies the three criteria discussed in Wang et al<sub>[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">10</a>]</sub>. Minimality demonstrates each head’s contribution to ToM capability via its direct impact on logit differences by component. The score, reflecting the percentage of the model’s total logit difference (0.8365) attributed to each head, highlights the importance of each head to the task.
 
 <br>
 
@@ -966,15 +966,102 @@ The circuit also shows a high degree of modularity: heads are highly specialized
 
 #### Copy supressions role in the ToM circuit
 
-Copy supression[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>] in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjust the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits before the final prediction is made.
+In neuroscience, it is widely known that if it weren't for inhibition coming from the frontal lobe, humans would be more prone to negative social actions. This inhibition is also *a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli*<sub>[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0278262603000800?via%3Dihub" title="Dimitrov" rel="nofollow">20</a>]</sub>. Copy supression<sub>[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]</sub> in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjusts the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits to suppress information before the final prediction is made.
 
-Copy surpression in later layers operates in the unembedding space of the model. Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts `basket` as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
+Consider an induction head that's tracking a belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts `basket` as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
+
+It could be nothing but napkin math, but I think this suppression is happening at each step of the attention mechanism, specifically emerging from the mechanism's dot product, softmax, and aggregation steps.
+
+If attention scores are computed as:
+
+$$
+\text{Score}(i, j) = \frac{Q_i \cdot K_j}{\sqrt{d_k}}
+$$
+
+Q<sub>*i*</sub> (query vector of token *i*) and K<sub>*j*</sub> (key vector of token *j*) are real-valued vectors.
+
+And if Q<sub>*i*</sub> · K<sub>*j*</sub> < 0 the alignment between Q<sub>*i*</sub> and K<sub>*j*</sub> is negative, which means token *j* actively suppresses token *i*'s focus. This could be a form of “implicit suppression” therefore suppression could be happening at the attention score level.
+
+The attention scores are then transformed into weights via softmax:
+
+$$
+\text{Weight}(i, j) = \frac{e^{\text{Score}(i, j)}}{\sum_k e^{\text{Score}(i, k)}}
+$$
+
+And for negative attention scores *Score*(*i*,*j* < 0) the exponential function e<sup>Score<sup>(*i*,*j*)</sup></sup> maps the score to a small positive value close to 0. This effectively suppresses token *j*'s contribution to the aggregated output, as the attention weight Weight(*i*,*j*) becomes negligible which results in an exponential suppression via softmax.
+
+The attention-weighted sum aggregates V vectors:
+
+$$
+\text{Output}_i = \sum_j \text{Weight}(i, j) \cdot V_j
+$$
+
+Even though attention weights are non-negative, V<sub>*j*</sub> can contain negative values. If token *j* has been suppressed (i.e., Weight(*i*,*j*) ≈ 0), its contribution to Output<sub>*i*</sub> is effectively erased so at the aggregation of V suppression is reinforced.
+
+This suppression then propagates through subsequent layers. Early layers suppress irrelevant or conflicting tokens (e.g., “box”), while later layers reinforce relevant tokens (e.g., “basket”) based on the model's evolving “belief”. Reflecting the model’s ability to shift focus and selectively erase contributions dynamically across layers and heads. To further quantify suppression and modulation in the ToM task to theoretically identify heads and layers where suppression magnitude is highest and measure how suppression evolves for key tokens (e.g., “box”, “basket”, “John”) across layers to reveal which components are most responsible for suppressing conflicting beliefs, we can formalize the behavior.
+
+The suppression effect of token *j* on token *i* at a specific attention head *h* in layer *l* is:
+
+$$
+S_{ij}^{(l, h)} = \frac{Q_i^{(l, h)} \cdot K_j^{(l, h)}}{\sqrt{d_k}}
+$$
+
+$S_{ij}^{(l, h)}$ < 0: Token *j* suppresses token *i*.
+
+$S_{ij}^{(l, h)}$ > 0: Token *j* suppresses token *i*.
+
+The suppression magnitude for token *i* is defined as the total contribution of all suppressing tokens:
+
+$$
+\text{Suppression Magnitude}_i^{(l, h)} = \sum_{j : S_{ij}^{(l, h)} < 0} \left| S_{ij}^{(l, h)} \right|
+$$
+
+After softmax, the suppression effect becomes:
+
+$$
+W_{ij}^{(l, h)} = \frac{e^{S_{ij}^{(l, h)}}}{\sum_k e^{S_{ik}^{(l, h)}}}
+$$
+
+$W_{ij}^{(l, h)}$ ≈ 0: Token *j*'s contribution to token *i* is suppressed. 
+
+The contribution of token *j* to the final output vector token *i* is:
+
+$$
+C_{ij}^{(l, h)} = W_{ij}^{(l, h)} \cdot V_j^{(l, h)}
+$$
+
+The aggregated output:
+
+$$
+\text{Output}_i^{(l)} = \sum_h \sum_j C_{ij}^{(l, h)}
+$$
+
+And the cumulative suppression of token *i* across layers is:
+
+$$
+\text{Total Suppression}_i = \sum_l \sum_h \text{Suppression Magnitude}_i^{(l, h)}
+$$
+
+I think the activation patching and ablation studies justify this a little bit. In this framework, a large negative Q<sub>*i*</sub> · K<sub>*j*</sub> implies that token *j* is actively suppressed when predicting token *i*. In practice, if the “box” token is negatively aligned from the perspective of the “basket” token (or vice versa), it gets a near-zero attention weight—thus effectively erasing its contribution in the final output. When specific heads are zeroed out (through ablation) or patched (replacing corrupted activations with clean ones), you often see a marked swing in whether “box” or “basket” dominates the final logits. This direct cause-and-effect relationship is exactly what the formal model of suppression predicts:
+
+- If a head’s negative alignment toward “basket” is disabled, the model is less likely to suppress it and more likely to predict it at the end.
+- Conversely, if a head that had suppressed “box” is removed, you might suddenly see “box” reappear in the final answer.
+
+Thus, the presence or absence of certain negative alignments—now made visible and manipulable by patching—validates the notion that negative dot products can strongly shape which tokens persist or vanish by the output layer.
+
+Suppression magnitude is defined as \(\sum \lvert S_{ij}^{(l,h)} \rvert\) and quantifies how much each token is suppressed across layers or heads. The bigger this magnitude, the more we expect the model to “forget” or “down-weight” that token in future computations. When patching in the “clean” activations for a heavily suppressed token (e.g., “basket” when the corrupted run incorrectly focuses on “box”), the negative alignment is effectively undone. The result is that “basket” reasserts itself in the final prediction, often flipping the model to the correct answer. The corresponding heatmaps reveal how heads that show large negative influences—manifest in strong negative activations or big negative deltas—translate directly into a more likely “box” in the output. When these are removed or overridden these negative signals—the logit for “basket”—goes up. So a high suppression magnitude in certain heads/layers matches large negative shifts in the final basket vs. box logits—providing evidence that this theoretical suppression measure correlates with real changes in predictions.
+
+All prior QKVO breakdowns show that a single attention head’s dot products can strongly affect the aggregated output vector for each token. If we can identify which heads produce large negative (or positive) attention scores, we know exactly where suppression is happening. When ablating or patching entire heads, some heads exert major control over whether the model ends up believing “box” or “basket”, strongly suggesting that head-level interpretability is a practical abstraction for verifying how suppression is realized in the model during inference.
+
+But there are tons of caveats here. In practice, a negative QK dot product alone does not always guarantee the model will focus positively on the “next best option.” Other tokens might also have low or modest QK alignment, so the end result depends on relative alignment scores across all tokens. Because each attention sublayer’s output is added back to the residual stream. Even if a token is suppressed in a single attention head, sometimes the residual from earlier layers can reintroduce features of that token. So, a more rigorous account of copy suppression might also track how the suppressed signals are or aren’t re-amplified in subsequent MLP sublayers (and whether subsequent heads focus on them anyway).
+
+Consider an induction head that's tracking the belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts `basket` as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
 
 Essentially, while some heads focus on specific tasks—like predicting the next word based on the context of previous next word predictors—other heads monitor the earlier predictions and adjust them, ensuring the model doesn't over-rely on copying tokens that aren't contextually appropriate. The degree of copy suppression is influenced by how much attention the model pays to the tokens it's considering copying. This aligns with the iterative nature of LLMs. They refine their predictions layer by layer, with each layer building upon the representations from the previous ones as information flows toward the final layers. 
 
 This is purely speculative, but I suspect the model might have the capability to represent second-order false beliefs—essentially, understanding that one person can hold a false belief about another person’s belief. This could emerge from its ability to juggle parallel representations of both true and false information, potentially through mechanisms like copy suppression.
 
-There's a lot more we do not know about these heads and they probably have more complex circuitry that describes when it is good to surpress information and when it is bad. 
+There's a lot more we do not know about these heads and they probably have more complex things going on that describe when it is good to surpress information and when it is bad. 
 
 <br>
 
@@ -1000,21 +1087,21 @@ This suggests that these heads are working together in a highly interdependent w
 ## So What?
 <sub>[↑](#top)</sub>
 
-There are key interactions and patterns that we can see backed by quantitative and qualitative evidence. 
+There are key interactions that we can see backed by quantitative and qualitative evidence. 
 
-Circuit components have complementary timing in the way they activate across the sequence. The action-location state activates strongly in middle and later layers, components complement each other during belief processing, subject states and inhibition head clusters show complementary patterns; they tracks beliefs, and the other tracks what's not believed. Components are processed sequentially. Previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at the end.
+Circuit components have complementary timing in the way they activate across the sequence. Components are processed sequentially, the action-location state activates strongly in middle and later layers, components complement each other during belief processing, subject states and suppression head clusters show complementary patterns, previous token heads provide steady baseline processing, induction heads build up activations over the sequence, and copy suppression prevents simple copying at the end.
 
-Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated, and a significant decrease in model performance when they are ablated. This is not an isolated result. In a separate study, element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">21</a>]</sub>. In both cases showing modularity and a parallel to the human brain.
+Out of 175 total attention heads in Gemma-2-2B's attention mechanism, there are 28 that display a significant increase in ToM performance when isolated, and a significant decrease in model performance when they are ablated. This is not an isolated result. In a separate study, element-wise analysis of LLM neurons have been found to show increased firing rates for isolated sets of neurons when performing ToM tasks when compared to isolated human neurons that show consistent fire rates across similar false-belief tasks<sub>[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">21</a>]</sub>. In both cases showing how modular organization allows both systems to achieve efficient and focused reasoning for complex tasks.
 
-Copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (belief), and this could have several implications for AI alignment. Because the model has learned to maintain multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and possibly even lying. Investigating inhibition and suppression mechanisms might be crucial for understanding how models might deceive, but these same capabilities could be useful for alignment research. For example, they could help with:
+Copy suppression helps the model maintain separate representations between what is actually true (reality) and what is believed to be true (belief), and this could have several implications for AI alignment. Because the model has learned to maintain multiple potentially conflicting “versions of reality” this highlights the capability for nuanced reasoning—understanding different perspectives, and possibly even lying. Investigating suppression mechanisms could be crucial for understanding how models might deceive. These capabilities could also be useful for alignment research and help with:
 
 - Value learning: Separating “is” from “ought” to reason about values.
 - Goal preservation: Keeping different types of goals or beliefs separate and coherent.
 - Corrigibility: Distinguishing human beliefs from reality, and recognizing the gap between “what is” and “what should be”.
 - Moral uncertainty: Predicting the consequences of their actions from multiple points of view
-- Auditing how a model handles contradictory beliefs or goals.
+- Or simply auditing how a model handles contradictory beliefs or goals across tasks.
 
-Could copy suppression be useful to improve alignment techniques and safeguard against belief corruption? How reliable would this mechanism be for alignment? Does it scale to more complex belief systems? What are the failure modes, especially in edge cases?
+Could this be useful to safeguard against belief corruption? How reliable would this mechanism be for alignment? Does it scale to more complex belief systems? What are the failure modes, especially in edge cases?
 
 <br>
 
@@ -1025,22 +1112,22 @@ A common critique of LLMs is that they rely purely on formal linguistic competen
 
 One plausible hypothesis is that while induction heads primarily track formal patterns, semantic meaning embedded in those patterns gets absorbed through training. For example, repeated references to “the cat being on the basket” provide a robust contextual anchor. Although induction heads focus on sequence-level correlations, they often align with real-world semantics present in the training data. When a model predicts that `the cat is in the basket`, it might be leveraging a weakly implicit form of semantic understanding encoded in its layers.
 
-This idea is particularly relevant in tasks requiring predictions about mental states or perspectives. Even if the model initially exploits distributional patterns, these patterns can align with semantic reasoning, implicatures, presuppositions, and other pragmatic cues. The model may not have a meta‐understanding of Grice, but it does learn that certain implicatures typically follow specific contexts (e.g., “John thinks…” followed by actions that reveal mismatches between his belief and reality). For example, deeper layers—say, layer 22—don’t just pass through raw pattern data from earlier layers. Instead, they integrate information representing a mix of formal linguistic structure and contextual cues. By this stage, the model might be blending formal relationships with the functional relationships encoded in the data because they've internalized the relevant linguistic forms.
+This idea is particularly relevant in tasks requiring predictions about mental states or perspectives. Even if the model initially exploits distributional patterns, these patterns can align with semantic reasoning, implicatures, presuppositions, and other pragmatic cues. The model may not have a meta‐understanding of Grice, but it does learn that certain implicatures typically follow specific contexts (e.g., “John thinks…” followed by actions that reveal mismatches between his belief and reality). 
 
-This raises another question: When the model predicts John’s perspective in the ToM task, is it actually reasoning about John’s mental state (functional competence)? Or is it just leveraging high-level linguistic correlations (formal competence) that happen to align with correct answers? I think there’s a blurry line here—if meaning can emerge from form when structured, implicit grounding exists in the data.
+For example, deeper layers—say, layer 22—don’t just pass through raw pattern data from earlier layers without running operations of that data. Instead, they integrate information representing a mix of formal linguistic structure and contextual cues. Hypothetically, the model is blending formal relationships with the functional relationships encoded in the data because they've internalized the relevant linguistic forms. This raises another question: When the model predicts John’s perspective in the ToM task, is it actually reasoning about John’s mental state (functional competence)? Or is it just leveraging high-level linguistic correlations (formal competence) that happen to align with correct answers? I think there’s a blurry line here—if meaning can emerge from form when structured, implicit grounding exists in the data.
 
 Induction heads, while not explicitly designed to handle grounded semantics, may approximate grounding by exploiting consistent statistical patterns present in the training data. For example, if the model frequently encounters phrases like “John thinks the cat is in the basket” followed by predictable narrative outcomes, it could learn to associate these patterns with semantic relationships. By layer 22, earlier layers have already processed and encoded contextual cues such as entity roles, temporal and spatial relationships, enabling deeper layers to recombine these representations into contextually appropriate predictions. This process reflects how large language models can appear to reason about meaning despite lacking explicit semantic grounding.
 
 Even without explicit grounding, models trained on structured datasets can still encode weak semantic signals. Benchmarks like MMLU, ARC-C or Winogrande embed linguistic patterns that implicitly carry semantic entailments. Models like Gemma-2-2B seem to capture these relationships effectively, even if they’re operating formally. Tasks like Winogrande make this particularly clear: While solving these tasks seems to require semantic reasoning, models often succeed by exploiting subtle textual cues embedded in the data. This suggests that while the induction heads found in this analysis might not directly access labeled semantic relationships, they capitalize on implicit signals encoded in the training data. For example, co-occurrences of specific token patterns might encode semantic entailments without the model ever “knowing” what those entailments mean explicitly.
 
-In large models like Gemma-2-2B, emergent semantic inference seems plausible due to the interplay between the architecture and the training data. Benchmarks like BoolQ and TriviaQA provide structured patterns that tie linguistic forms to functional outputs, creating a complex statistical scaffolding that weakly approximates grounded understanding. While induction heads and specific layers remain pattern-driven, the broader training process imbues the model with enough implicit grounding to perform tasks requiring nuanced semantic judgements. This bridges the gap between form and meaning, allowing the model to have some grounding—even if it never reaches full semantic understanding.
+In large models, emergent semantic inference seems plausible due to the interplay between the architecture and the training data. Benchmarks like BoolQ and TriviaQA provide structured patterns that tie linguistic forms to functional outputs, creating a complex statistical scaffolding that weakly approximates grounded understanding. While induction heads and specific layers remain pattern-driven, the broader training process imbues the model with enough implicit grounding to perform tasks requiring nuanced semantic judgements. This bridges the gap between form and meaning, allowing the model to have some grounding—even if it never reaches full semantic understanding.
 
 <br>
 
 # Conclusion <a id="conclusion"></a>
 <sub>[↑](#top)</sub>
 
-By bridging high-level behavioral analogues (tracking and updating belief states of entities) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of my work here and future work is to validate or invalidate that certain circuits are causally implicated in tasks that map onto ToM-like reasoning.
+By bridging high-level behavioral analogues (belief states) with low-level computational mechanisms (transformer attention heads, MLPs and residual streams), the hope of this work, and future work is to validate or invalidate that certain circuits are causally implicated in tasks that map onto ToM-like reasoning.
 
 The proposed ToM circuit:
 
@@ -1138,6 +1225,8 @@ Bills, *Language models can explain neurons in language models* OpenAI. 2023.[<a
 Li, *The Geometry of Concepts: Sparse Autoencoder Feature Structure* MIT. 2024.[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">19</a>]
 
 McDougall, *Copy Suppression: Comphrehensively Understanding an Attention Head.* Independent, University of Texas, Google Deepmind. 2023.[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]
+
+Dimitrov, *Inhibitory Attentional Control in Patients with Frontal Lobe Damage.* Science Direct, Brain & Cognition. 2003.[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0278262603000800?via%3Dihub" title="Dimitrov" rel="nofollow">20</a>]
 
 Jamali, *Unveiling theory of mind in large language models: A parallel to single neurons in the human brain.* Massachusetts General Hospital, Harvard Medical School, MIT. 2023.[<a href="https://arxiv.org/pdf/2309.01660" title="Jamali" rel="nofollow">21</a>]
 
