@@ -700,7 +700,7 @@ These capabilities allow it to handle false belief tasks by unifying “attentio
 
 **Localized circuit for belief tracking:** It’s worth noting how interventions and ablation experiments reinforce the idea that these capabilities are localized (e.g. heads exhibiting induction behavior show significant performance drops when ablated).
 
-Thinking about how the model generalizes the task given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. <a href="https://github.com/christianThardy/christianThardy.github.io/blob/master/tom-circuit-path.md" title="ToM circuit paths" rel="nofollow">A more in-depth qualitative analysis can be found here</a>. Thinking about the circuit from a high level:
+Thinking about how the model generalizes the task given the data from analyzing the queries, keys, values, outputs, and the head effects via path pactching, we can start to build a bigger picture of what is happening and start thinking about a circuit. <a href="/pages/tom-circuit-path.html" title="ToM circuit paths" rel="nofollow">A more in-depth qualitative analysis can be found here</a>. Thinking about the circuit from a high level:
 
 **Previous Token → Duplicate Token:**
 The outputs from early previous token heads are fed as queries, keys, and values into the duplicate token head (8.1). By capturing the same tokens from multiple angles, 8.1 maintains parallel, multi-perspective state representations—one for each subject or belief context—enabling the model to track what each subject knows or *believes*.
@@ -1203,9 +1203,6 @@ Valle, *Theory of Mind Development in Adolescence and Early Adulthood: The Growi
 Davies, *Grice’s Cooperative Principle: Getting The Meaning Across.* University of Leeds. 2015.[<a href="https://www.latl.leeds.ac.uk/wp-content/uploads/sites/49/2019/05/Davies_2000.pdf" title="Davies" rel="nofollow">10</a>] 
 
 Wang, *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small.* Redwood Research, UC Berkley. 2022.[<a href="https://arxiv.org/pdf/2211.00593" title="Wang" rel="nofollow">11</a>] 
-
-<a href="/pages/tom-circuit-path.html" title="ToM circuit paths" rel="nofollow">ToM Circuit Paths</a>
-
 
 Park, *The Linear Representation Hypothesis and the Geometry of Large Language Models.* 2024.[<a href="https://arxiv.org/pdf/2311.03658" title="Park" rel="nofollow">12</a>] 
 
