@@ -964,6 +964,25 @@ The circuit also shows a high degree of modularity: heads are highly specialized
 
 <br>
 
+### Ablation studies <a id="ablation-studies"></a>
+<sub>[↑](#top)</sub>
+
+Ablation studies are widely used in neuroscience and they are super useful for neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
+
+When we mean-ablate the entire ToM circuit, performance drops by about 80.66%, showing a massive reduction in the believed-actual difference of the model's inference accuracy—the model's confidence of the `basket` token as the correct prediction.
+
+```markdown
+Full Circuit Mean Ablation Results:
+Number of heads ablated: 28
+Original believed-actual diff: 0.836511
+Ablated believed-actual diff: 0.162061
+Total circuit effect: 0.674451
+```
+
+This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Component-wise, the early and mid suppression heads had the most significant effect on the decrease in performance when ablated, which reduced performance by ~22.50% and ~45.14% respectively, highlighting the importance of copy suppression for this task.
+
+<br>
+
 #### Copy supressions role in the ToM circuit
 
 In neuroscience, it is widely known that if it weren't for inhibition coming from the frontal lobe, humans would be more prone to negative social actions. This inhibition is also *a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli*<sub>[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0278262603000800?via%3Dihub" title="Dimitrov" rel="nofollow">20</a>]</sub>. Copy supression<sub>[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">20</a>]</sub> in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjusts the final output prediction negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits to suppress information before the final prediction is made.
@@ -1062,25 +1081,6 @@ Essentially, while some heads focus on specific tasks—like predicting the next
 This is purely speculative, but I suspect the model might have the capability to represent second-order false beliefs—essentially, understanding that one person can hold a false belief about another person’s belief. This could emerge from its ability to juggle parallel representations of both true and false information, potentially through mechanisms like copy suppression.
 
 There's a lot more we do not know about these heads and they probably have more complex things going on that describe when it is good to surpress information and when it is bad. 
-
-<br>
-
-### Ablation studies <a id="ablation-studies"></a>
-<sub>[↑](#top)</sub>
-
-Ablation studies are widely used in neuroscience and they are super useful for neural networks as well. The idea is to systematically “remove” (or ablate) specific mechanisms—like neurons, layers, or attention heads—within the model to assess their contribution and see how much they really matter to overall performance. 
-
-When we mean-ablate the entire ToM circuit, performance drops by about 80.66%, showing a massive reduction in the believed-actual difference of the model's inference accuracy—the model's confidence of the `basket` token as the correct prediction.
-
-```markdown
-Full Circuit Mean Ablation Results:
-Number of heads ablated: 28
-Original believed-actual diff: 0.836511
-Ablated believed-actual diff: 0.162061
-Total circuit effect: 0.674451
-```
-
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Component-wise, the early and mid suppression heads had the most significant effect on the decrease in performance when ablated, which reduced performance by ~22.50% and ~45.14% respectively, highlighting the importance of copy suppression for this task.
 
 <br>
 
