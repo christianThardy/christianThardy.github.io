@@ -2,6 +2,9 @@ theme: jekyll-theme-minimal
 title: artifacts
 description: thoughts and things I've learned along the way 👋
 show_downloads: False
+include:
+  - tom-circuit-path.html
+
 navigation:
   - title: home
     url: /
