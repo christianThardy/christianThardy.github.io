@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T0RK9VGYTJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T0RK9VGYTJ');
+</script>
 </head>
 <body>
     <header>
@@ -55,12 +65,12 @@
 **Early Previous Token Head Processing (L2-6)**
 - **Primary Function:** Initial semantic feature extraction
   - **QKVO Flow:**
-    - 2.3 and 2.5's queries encode subject-object locations (John cat, Mark cat, basket, box) 
-      - 2.3 keys add transition information to these encodings, reinforcing location (John and cat, Mark and cat, cat and basket, room and John, room and Mark)
+    - 2.3 and 2.5's queries encode subject-object locations (\`John cat\`, \`Mark cat\`, \`basket\`, \`box\`) 
+      - 2.3 keys add transition information to these encodings, reinforcing location (\`John and cat\`, \`Mark and cat\`, \`cat and basket\`, \`room and John\`, \`room and Mark\`)
         - 2.3 values project location/transition information forward to 2.5
-    - 2.5 outputs encode subject-verb agreement with objects (John takes cat, Mark puts cat, Mark leaves room, John comes back)
-    - 5.4 queries against 2.5's value patterns while integrating temporal context (John away, when away, Mark leaves room, Mark goes work)
-      - 5.2 and 6.2 keys attend to more subject-action-location bindings (John thinks, John takes, Mark takes, John room school, Mark room work, John leaves room, John puts cat)
+    - 2.5 outputs encode subject-verb agreement with objects (\`John takes cat\`, \`Mark puts cat\`, \`Mark leaves room\`, \`John comes back\`)
+    - 5.4 queries against 2.5's value patterns while integrating temporal context (\`John away\`, \`when away\`, \`Mark leaves room\`, \`Mark goes work\`)
+      - 5.2 and 6.2 keys attend to more subject-action-location bindings (\`John thinks\`, \`John takes\`, \`Mark takes\`, \`John room school\`, \`Mark room work\`, \`John leaves room\`, \`John puts cat\`)
         - Values project refined semantic patterns forward
 
 <br/>
