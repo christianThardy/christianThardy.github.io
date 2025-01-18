@@ -352,7 +352,7 @@ Attention heads are valuable to study because we can directly analyze their atte
 
 One common mistake when interpreting attention patterns is to assume that the heads are paying attention to the token itself—maybe trying to account for its meaning or context. But really, all we know for sure is that attention heads move information from the residual stream at the position of that token. Especially in later layers, the residual stream might hold information that has nothing to do with the literal token at that position! For example, the period at the end of a sentence might store summary information for the entire sentence up to that point. So when a head attends to it, it’s possibly moving that summary information, not caring that its just punctuation. This can make it hard to asses what the attention heads are doing when tokens are being attended to. 
 
-But at the same time, I think when an attention head is attending to a token, it is accessing abstract information stored at that position.
+But at the same time, I think when an attention head is attending to a token, it is accessing abstract, causal information stored at that position.
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/31f89a77-fca5-49e1-8b52-a845ad5b2c11" width="280"/>
@@ -396,9 +396,7 @@ The model is using the residual stream to achieve compositionality between diffe
 
 So, what’s happening here is the model builds up hierarchical representations of language—words within phrases, phrases within sentences, sentences within paragraphs—and tracks sequences of events, which is particularly important for tasks like ToM, where understanding the the order of events, actor actions and possibly even directional or spatial information is key. 
 
-In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring abstract concepts like *"the last place John saw the cat"*, which are encoded in the residual stream.
-
-In any case, it’s easy to get tricked if you think an attention head is just focusing on a literal token. We should be looking at this information alongside the information stored in the residual stream at that position—which often contains more abstract concepts.
+In this framework, attention heads work like routers, directing specific pieces of information to the right places to solve the task. They aren’t just focusing on literal tokens but transferring entire concepts like *"the last place John saw the cat"*, which are encoded in the residual stream. In any case, we should be looking at token-level information alongside information stored in the residual stream at that position.
 
 <br>
 
