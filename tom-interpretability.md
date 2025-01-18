@@ -851,8 +851,7 @@ As a rough analogue to how neural fMRI scans capture distributed activations, at
 
 If we zoom out from any single head, we can define specific groups of attention heads across layers as circuit components. From there, we can start mapping out how these components *fire* across the ToM passage, visualizing how attention heads interact with each other to solve the task. The methodology aligns closely with an approach where SAE concepts are seen as functionally coherent clusters<sub>[<a href="https://arxiv.org/html/2410.19750v1" title="Li" rel="nofollow">20</a>]</sub>. Tests were run on a small dataset that uses different templates to construct false belief passages that structurally resemble the original ToM narrative.
 
-The results show distinct ToM subcircuits—sets of attention heads that tend to cluster together and activate at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. This makes it possible to see which components have groups of heads that activate together across different contexts, and allows us to see how information flows through the model as its making its predictions. For example, within the action-location state, certain heads may consistently activate with suppression heads, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. So its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components. Think of it like t-SNE but for attention circuits.
-
+The results show distinct ToM subcircuits—sets of attention heads that tend to cluster together and activate at key points during the task. These components act as cohesive units, each one relative to others, activating or staying dormant at different sequence positions. This makes it possible to see which components have groups of heads that activate together across different contexts, and allows us to see how information flows through the model as its making its predictions. For example, within the action-location state, certain heads may consistently activate with suppression heads, particularly when managing changes in the scene and beliefs about the scene in the penultimate state. So its possible to see which specific heads within each component interact most frequently, giving insight into sub-patterns within the larger components.
 <br>
 
 <p align="center">
@@ -867,15 +866,13 @@ The circuit forming the ToM pipeline is not strictly linear. Certain heads come 
 
 Starting with the co-occurrence matrix, all of the heads selected from the causal analysis are firing in relation to each other on a sliding scale, suggesting they work together to maintain and update state information about subjects' throughout the sequence at different co-occurence rates. 
 
-The late suppresion heads show particularly weaker co-occurrence to other components relative to the suppression mechanisms, and is weakest wrt to the action-location state (duplicate token) heads. Suggesting that duplicate token heads are sending information to recevier heads in later layers, the late suppression heads often follow up to prune or reconcile repeated references, ensuring only the final, non-contradictory perspective remains.
+The late suppresion heads show particularly weaker co-occurrence to other components relative to the suppression mechanisms, and is weakest wrt to the action-location state (duplicate token) heads. Suggesting that duplicate token heads are sending information to recevier heads in later layers, and the late suppression heads often follow up to prune repeated references.
 
-While late suppression heads show weak co-occurrence with duplicate token heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—helping to maintain the “false belief” by specifically suppressing the true location information while preserving the subject's initial state understanding.
+While late suppression heads show weak co-occurrence with duplicate token heads, they have relatively neutral co-occurrence with initial subject state heads, suggesting that late suppression isn't blanketly suppressing all prior information, but rather selectively targeting action-location information—helping to maintain the “false belief” by specifically suppressing the cat's true location information while preserving the subject's initial state understanding.
 
-There's a clear hierarchical structure in the suppression heads (early, mid, and late), with strong co-activation between early and mid suppression heads, but detracting activation patterns for late suppression heads. This highlights early suppression during initial state filtering, mid suppresion during pattern refinement by the induction heads and late suppression applying the final arbitration before prediction.
+There's a clear hierarchical structure in the suppression heads (early, mid, and late), with strong co-activation between early and mid suppression heads, but detracting activation patterns for late suppression heads. This highlights early suppression during initial state filtering, mid suppresion during pattern refinement by the induction heads and late suppression applying the final arbitration before prediction. In the temporal activation plots, cluster 2 (action-location state) shows the strongest activation during the intermediate state, its presumably doing more complex bridging: integrating earlier scene states (`cat on basket`) with the next set of events (`Mark moves the cat while John is gone`), or maintaining parallel beliefs.
 
-In the temporal activation plots, cluster 2 (action-location state) shows the strongest activation during the intermediate state, its presumably doing more complex bridging: integrating earlier scene states (`cat on basket`) with the next set of events (`Mark moves the cat while John is gone`), or maintain parallel beliefs.
-
-The suppression heads (clusters 0, 4, and 5) show interesting temporal patterns where early suppression heads show the most activation in the initial state and the least in the final state, mid suppression heads maintain relatively consistent activation levels and show the most activation in the final state, and late suppression heads ramp up to be the most active in the penultimate state. This pattern suggests that early suppressin heads is the only one needed for the raw parsing in the beginning, and the mid/late heads become crucial at the end (e.g., final “state filtering” or ensuring the model’s ultimate output aligns with `John does not know the cat moved`).
+The suppression heads (clusters 0, 4, and 5) show interesting temporal patterns where early suppression heads show the most activation in the initial state and the least in the final state, mid suppression heads maintain relatively consistent activation levels and show the most activation in the final state, and late suppression heads ramp up to be the most active in the penultimate state. This pattern suggests that early suppression heads are only one needed for the raw parsing in the beginning, and the mid/late heads become crucial at the end (e.g., final “state filtering” or ensuring the model’s ultimate output aligns with `John does not know the cat moved`).
 
 The intermediate subject state (induction heads, Cluster 6) shows selective activation during the initial and final states, suggesting they may be crucial for maintaining and updating the model's representation of subject knowledge that it learned during the beginning of the passage, when the model needs to recall and apply patterns from earlier in the sequence to recall the initial state to predict John's belief. Information is then transferred to the final state to co-activate with the previous/duplicate token heads and suppression to predict the correct location. So it's important for connecting earlier events back to later states.
 
@@ -883,7 +880,7 @@ The final subject state heads (Cluster 1) show subtle, increasing activation fro
 
 Looking at the distribution of activation strengths across clusters in the second temporal plot, it's noteworthy that the action-location state shows the most extreme activation values. This suggests that tracking the parallel states of each subject's physical state/location in relation to the believed location of the cat, and integrating those semantic features in context might serve as a kind of “ground truth” against which subject states need to be compared.
 
-Everything here aligns with the QKV patterns seen from the ablation studies and interventions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
+Everything here aligns with the QKV patterns seen from the interventions. The temporal activation patterns provide additional evidence that previous token heads serve as foundational sequential processors, and induction heads act more like specialized pattern recognition and recall mechanisms that are particularly important for handling long-range dependencies in the false belief task.
 
 This again is confirming that the model maintains multiple representations of reality (actual locations) and beliefs (subject states) through coordinated activation of different head clusters.
 
@@ -904,7 +901,7 @@ The full circuit reveals a nuanced algorithm in its attention:
 - **initial subj state (previous token heads)** identify early occurrences of the same tokens that immediately precede the current one that represent locations, subject actions, objects and positions in relation to John and Mark.
     - e.g., cat in room, box in room, basket in room, John in room, Mark in room
       
-- **action-location state (duplicate token heads)** captures all prior local dependencies, primarily focusing on locations of subjects and objects with equal weight, to repeated tokens, placing them in the context of the ongoing scene to keep subject states parallel.
+- **action-location state (duplicate token heads)** captures all prior local dependencies, primarily focusing on locations of subjects and objects with equal weight to repeated tokens, placing them in the context of the ongoing scene to keep subject states parallel.
     - e.g., John puts cat on basket then leaves room, Mark puts cat on box then leaves room, John returns to room, John goes to school, Mark goes to work
       
 - **intermediate subj state (induction heads)** captures long range dependencies from duplicate/previous token output, maintains the state of subjects' in the scene by detecting patterns, copying and propagating tokens forward from previous positions in the sequence.
@@ -956,7 +953,7 @@ Breaking it down, the ToM circuit shows concentrated importance in certain heads
 
 Meanwhile, the duplicate token heads have smaller but non-negligible contributions, acting more as a supporting context provider, likely reflecting that they already did their job earlier in the sequence (e.g., building parallel states/bridging temporal transitions).
 
-The circuit also shows a high degree of modularity: heads are highly specialized, with relevant computations neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, showing a clean and compartmentalized structure.
+The circuit also shows a high degree of modularity: heads are highly specialized, neatly contained within each component. This limits interdependence with other network parts outside the defined circuit, showing a compartmentalized structure.
 
 <br>
 
@@ -975,7 +972,7 @@ Ablated believed-actual diff: 0.162061
 Total circuit effect: 0.674451
 ```
 
-This suggests that these heads are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks, as expected. Component-wise, the early and mid suppression heads had the most significant effect on the decrease in performance when ablated, which reduced performance by ~22.50% and ~45.14% respectively, highlighting the importance of copy suppression for this task.
+This suggests that the heads found in the circuit are working together in a highly interdependent way. The remaining performance (~16.20%) implies that outside the ToM circuit, there’s not much capacity left for correct prediction of ToM tasks. Component-wise, the early and mid suppression heads had the most significant effect on the decrease in performance when ablated, which reduced performance by ~22.50% and ~45.14% respectively, highlighting the importance of copy suppression for this task.
 
 <br>
 
