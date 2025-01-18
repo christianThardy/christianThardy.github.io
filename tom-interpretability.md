@@ -298,7 +298,7 @@ Interestingly, while there is positive activity that contributes to the predicti
 
 There are a couple of big meta-level takeaways here. First, even though our model has 7 attention heads in every layer, we can localize the behavior of the model to just a handful of key heads. This strongly supports the argument that attention heads are the right level of abstraction for understanding the model's behavior.
 
-Second, the presence of negative heads is really surprising—like head 7 at layer 23, which makes the incorrect logit seven times more likely. I don’t fully understand what’s happening there yet, but it's definitely worth digging into more.
+Second, the presence of negative heads is really surprising—like head 7 at layer 23, which makes the incorrect logit severeal times more likely. I don’t fully understand what’s happening there yet, but it's definitely worth digging into more.
 
 <br>
 
@@ -324,7 +324,7 @@ In the residual stream pre, there is clustering of scene elements and actors, an
 - `basket` and initial state
 - `box` and current state
 
-The clustering remains clear as the attention and MLP layer outputs are added back to the residual stream with updated relationships. The separation of "knowledge states" (e.g. what John knows vs. doesn’t know, what Mark knows) appears linear. This makes sense because if tokens did not cluster within residual stream space, linear transformations across layers would be less informative and they wouldn't be meaningful.
+The clustering remains clear as the attention and MLP layer outputs are added back to the residual stream with updated relationships. The separation of "knowledge states" (e.g. what John knows vs. doesn’t know, what Mark knows) appears linear. This makes sense because if then tokens did not cluster within residual stream space, linear transformations across layers would be less informative and they wouldn't be meaningful.
 
 <br>
 
@@ -334,7 +334,7 @@ The clustering remains clear as the attention and MLP layer outputs are added ba
 
 <br>
 
-Its clear that the model is keeping two separate but parallel "tracks":
+Its clear that the model is keeping two separate but parallel "tracks". To illustrate the point:
 
 - Reality track (blue): represents actual events from Mark's perspective
 - Belief track (red): represents John's perspective
