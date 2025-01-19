@@ -10,7 +10,7 @@ leans on the cognitive behavioral therapy side of psychology (information based 
 
 The majority of participants did not respond well to the deductive and analytical responses and expressed they would appreciate a mix of reasoning and understanding. Which makes sense, sometimes the point of seeking help is about remembering and reminding ourselves about the little things we already know. Things we give advice about all the time but sometimes forget to do for ourselves.
 
-I present Emobot. Simply, the role of Emobot is to not be purely deductive. 
+So I put together a little “wrapper” on top of ChatGPT called Emobot. Simply, the role of Emobot is to not be purely deductive. 
 
 Users appreciated when Emobot could prioritize asking engaging, thoughtful, context driven questions that could help them express themselves and draw their own conclusions. When Emobot queried them back thoughtfully, many reported that its response felt more natural and helped them be more introspective.
 
