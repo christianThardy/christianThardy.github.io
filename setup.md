@@ -2,6 +2,8 @@
 
 ##### Originally posted: 12/06/20
 
+<br>
+
 Deep learning is thought of as the ability of a class of algorithms to learn a hierarchical set of representations from lots of data, which means it can learn low, mid and high level features. You specify the input/output and your networks optimization algorithm updates the weights that determine how each input feature will affect the output prediction. 
 
 <p align="center">
