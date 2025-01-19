@@ -16,9 +16,9 @@ navigation:
     url: llms-mental-health
   - title: deep learning can solve non-trivial problems in nlp
     url: setup
-  - title: finding similarities between friends using shallow & deep nlp
-    url: finding-similarities-between-friends
   - title: visualizations & machine learning
     url: visualization-ml
+  - title: finding similarities between friends using shallow & deep nlp
+    url: finding-similarities-between-friends
   - title: millennial noir
     url: millennial-noir
