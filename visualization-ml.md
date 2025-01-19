@@ -1,5 +1,9 @@
 # Two realities
 
+##### Originally posted: 12/06/20
+
+<br>
+
 Paradoxically, mathematical reality exists independently of us and it is our role to uncover and observe it.
 
 I will use the noun intuition to denote the ability to understand an idea without the need for conscious reasoning.
