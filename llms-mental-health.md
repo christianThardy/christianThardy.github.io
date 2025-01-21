@@ -92,7 +92,7 @@ So for example in this dataset, we can see that `authenticity` on average is low
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/b5361b86-c886-4b8a-92fc-119398c58a32" width="350" height="200">
 </p>
 
-After relabeling the high level emotion labels based on the predictions from the lexicon, and training a complement naive bayes classifier on 2 levels of emotion features, the baseline emotion model reached an F1 score of about 88% on our data. With varying degrees in precision and recall across each class.
+After relabeling the high level emotion labels based on the predictions from the lexicon, and training a complement naive bayes classifier on 2 levels of emotion features, the baseline emotion model reached an F1 score of about 88% on the data. With varying degrees in precision and recall across each class.
 
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/fde5e77b-35ba-4765-a1c6-ae0367084763" width="600" height="">
@@ -110,7 +110,7 @@ Given the nature of the dataset, temporal patterns are significant. When sorting
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/3067b800-2eba-4a89-86db-7d83343ae217">
 </p>
 
-Similar patterns follow for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a slight decrease in text that would be labeled `is_fine`, but still stay on the positive side of the y-axis. The “is_fine” group’s sentiment is fairly positive and doesn’t collapse into negativity. This could reflect users who vent small frustrations but, on the whole, maintain a positive tone.
+Similar patterns follow for the `is_fine` label. Where we can see a hump beginning to form around 0.7, indicating a slight decrease in text that would be labeled `is_fine`, but still stay on the positive side of the y-axis. The `is_fine` group’s sentiment is fairly positive and doesn’t collapse into negativity. This could reflect users who vent small frustrations but, on the whole, maintain a positive tone.
 
 <p align="center">
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/06020dc8-23a1-4e86-aef7-277a324f9c61">
@@ -122,11 +122,11 @@ The sentiment on the `assess_further` label start out somewhat positive or neutr
 <img src="https://github.com/christianThardy/Logistic-Regression/assets/29679899/d2dfd994-e49c-4742-bece-59ca134e875c">
 </p>
 
-Besides looking at function words to determine levels of emotionality, content words and how they would be classified at a high level are also of interest. A few function words leaked in this plot, but when looking at users individually, lots of words associated to negative emotions are properly picking up the `seek_help` label in the context that words are being used, interestingly there is overlap with the `is_fine` label. Both categories seem to show a general trend of decreasing frequency towards the right end of the plot, where words at the far right are less frequently used (under both labels), so we could assume the words on the left appear more frequently in the dataset and may carry stronger emotional or context signals relevant to each label.
+Besides looking at function words to determine levels of emotionality, content words and how they would be classified at a high level are also of interest. A few function words leaked in this plot, but when looking at users individually, lots of words associated to negative emotions are properly picking up the `seek_help` label in the context of those words being used, interestingly there is overlap with the `is_fine` label. Both categories seem to show a general trend of decreasing frequency towards the right end of the plot, where words at the far right are less frequently used (under both labels), so we could assume the words on the left appear more frequently in the dataset and may carry stronger emotional or context signals relevant to each label.
 
 Overall, there's a broad split in word usage between the `seek_help` group and the `is_fine` group, along with some overlap and a general frequency decay. Reflecting that certain negative or intense terms are strongly tied to the `seek_help` label, and friendlier or more casual expressions show up more in `is_fine`, but ultimately the overall context is crucial in distinguishing how a word is being used.
 
-After analyzing the emotional journey of users across time, hightened patterns of emotional escalation or stability were sampled, then mitigated with class imbalance strategies to train a better classifier. After creating and validating the small model to suit emotion preferences, I needed to probe and learn more about ChatGPT before using it or a similar model to determine if they would be suitable generative models.
+After analyzing the emotional journey of users across time, the pattern of heightened emotional escalation or stability were sampled, then mitigated with class imbalance strategies to train a better classifier. After creating and validating the small model to suit emotion preferences, I needed to probe and learn more about ChatGPT before using it or a similar model to determine if they would be suitable generative models.
 
 <br>
 
