@@ -237,6 +237,7 @@ secret_token = " "
 
 # Tfidf complement naive bayes classifier
 prompt_model = joblib.load('prompt_model.pkl')
+
 with open("prompt_model_vectorizer.pkl", "rb") as f:
     prompt_model_vectorizer = pickle.load(f)
     
@@ -245,16 +246,21 @@ def transcribe(audio):
     # load audio and pad/trim it to fit 30 seconds
     audio = whisper.load_audio(audio)
     audio = whisper.pad_or_trim(audio)
+
     # make log-Mel spectrogram and move to the same device as the model
     mel = whisper.log_mel_spectrogram(audio).to(model.device)
+
     # detect the spoken language
     _, probs = model.detect_language(mel)
+
     # decode the audio
     options = whisper.DecodingOptions(fp16 = False)
     result = whisper.decode(model, mel, options)
     result_text = result.text
+
     # Vectorize the transcription
     transcription = prompt_model_vectorizer.transform([result_text])
+
     # Predict the transcription label
     classification_output = prompt_model.predict(transcription)
     
