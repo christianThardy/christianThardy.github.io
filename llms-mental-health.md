@@ -316,7 +316,7 @@ gr.Interface(
 
 1. A user speaks to the app, OpenAIs Whisper model transcribes their speech to text.
 
-2. Loosely using concepts from the DiVeRSe and programmatic prompt engineering methods—a classifier is used as a verifier to distinguish good answers from bad answers—to improve prompt design, context, personalization and the reliability of ChatGPTs responses by passing the transcription to a tf-idf weighted complement naive bayes classifier where the Whisper model transcription is labeled as `'is_fine'`, `'seek_help'`, or `'assess_further'`.
+2. Loosely using concepts from the DiVeRSe and programmatic prompt engineering methods—a classifier is used as a verifier to distinguish user response types—to improve prompt design, context, personalization and the reliability of ChatGPTs responses by passing the transcription to a tf-idf weighted complement naive bayes classifier where the Whisper model transcription is labeled as `'is_fine'`, `'seek_help'`, or `'assess_further'`.
 
 4. The prompt and the classifiers output is passed to ChatGPT, which makes an ad hoc generation based on the transcription and sentiment label to display to the user.
 
