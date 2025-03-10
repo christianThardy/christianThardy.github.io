@@ -105,5 +105,3 @@
     loadingMessage.textContent = 'Error loading PDF: ' + error.message;
   });
 </script>
-
-<!-- Add additional content or discussion below the PDF viewer if desired -->
