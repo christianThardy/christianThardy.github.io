@@ -5,6 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Identifying the Underlining Drivers behind Theory of Mind in LLMs</title>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- PDF.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    /* PDF viewer styling */
+    #pdf-container {
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    #pdf-controls {
+      background-color: #f8f8f8;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    #pdf-controls button {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 8px 15px;
+      margin: 0 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    
+    #pdf-controls button:hover {
+      background-color: #f0f0f0;
+    }
+    
+    #pdf-viewer {
+      padding: 20px;
+      overflow: auto;
+    }
+    
+    #pdf-page {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    
+    #page-info {
+      margin: 0 15px;
+      font-size: 14px;
+    }
+    
+    #loading-message {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -13,11 +72,159 @@
       <a href="https://xtian.ai/tom-interpretability">Back to Blog</a>
     </nav>
   </header>
+  
   <main>
-    <iframe src="document.pdf" width="100%" height="800px" frameborder="0"></iframe>
+    <div id="pdf-container">
+      <div id="pdf-controls">
+        <div>
+          <button id="prev-page">Previous</button>
+          <button id="next-page">Next</button>
+          <span id="page-info">Page <span id="page-num"></span> of <span id="page-count"></span></span>
+        </div>
+        <div>
+          <button id="zoom-out">Zoom Out</button>
+          <button id="zoom-in">Zoom In</button>
+        </div>
+      </div>
+      <div id="pdf-viewer">
+        <div id="loading-message">Loading PDF...</div>
+        <canvas id="pdf-page"></canvas>
+      </div>
+    </div>
   </main>
+  
   <footer>
     <p>&copy; 2025 xtian.ai</p>
   </footer>
+
+  <script>
+    // Configure PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    
+    // PDF file path
+    const pdfUrl = 'document.pdf';
+    
+    // Variables to store the current state
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.5; // Initial zoom level
+    
+    // Get page elements
+    const canvas = document.getElementById('pdf-page');
+    const ctx = canvas.getContext('2d');
+    const prevButton = document.getElementById('prev-page');
+    const nextButton = document.getElementById('next-page');
+    const zoomInButton = document.getElementById('zoom-in');
+    const zoomOutButton = document.getElementById('zoom-out');
+    const pageNumSpan = document.getElementById('page-num');
+    const pageCountSpan = document.getElementById('page-count');
+    const loadingMessage = document.getElementById('loading-message');
+    
+    // Render the page
+    function renderPage(num) {
+      pageRendering = true;
+      
+      // Show loading message while rendering
+      loadingMessage.style.display = 'block';
+      
+      // Get the page
+      pdfDoc.getPage(num).then(function(page) {
+        // Calculate the viewport based on the canvas size and scale
+        const viewport = page.getViewport({ scale: scale });
+        
+        // Set canvas dimensions to match the viewport
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        // Render PDF page into canvas context
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        
+        const renderTask = page.render(renderContext);
+        
+        // Wait for rendering to finish
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          loadingMessage.style.display = 'none';
+          
+          // If another page rendering is pending, render that page
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+      
+      // Update page counters
+      pageNumSpan.textContent = num;
+    }
+    
+    // Go to previous/next page
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+    
+    function showPrevPage() {
+      if (pageNum <= 1) {
+        return;
+      }
+      pageNum--;
+      queueRenderPage(pageNum);
+    }
+    
+    function showNextPage() {
+      if (pageNum >= pdfDoc.numPages) {
+        return;
+      }
+      pageNum++;
+      queueRenderPage(pageNum);
+    }
+    
+    // Zoom functionality
+    function zoomIn() {
+      scale += 0.25;
+      queueRenderPage(pageNum);
+    }
+    
+    function zoomOut() {
+      if (scale <= 0.5) return; // Prevent zooming out too much
+      scale -= 0.25;
+      queueRenderPage(pageNum);
+    }
+    
+    // Add event listeners
+    prevButton.addEventListener('click', showPrevPage);
+    nextButton.addEventListener('click', showNextPage);
+    zoomInButton.addEventListener('click', zoomIn);
+    zoomOutButton.addEventListener('click', zoomOut);
+    
+    // Handle keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        showPrevPage();
+      } else if (e.key === 'ArrowRight') {
+        showNextPage();
+      }
+    });
+    
+    // Load the PDF
+    pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+      pdfDoc = pdf;
+      pageCountSpan.textContent = pdf.numPages;
+      
+      // Initial render
+      renderPage(pageNum);
+    }).catch(function(error) {
+      loadingMessage.textContent = 'Error loading PDF: ' + error.message;
+    });
+  </script>
 </body>
 </html>
