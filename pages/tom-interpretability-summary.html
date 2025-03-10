@@ -18,12 +18,12 @@
     }
     
     #pdf-controls {
-      background-color: #f8f8f8;
+      background-color: white;
       padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid #f0f0f0;
     }
     
     #pdf-controls button {
@@ -44,15 +44,21 @@
     #pdf-viewer {
       padding: 20px;
       overflow: auto;
+      max-height: 800px;
     }
     
-    #pdf-page {
-      display: block;
-      margin: 0 auto;
+    .pdf-page-container {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    canvas.pdf-page {
       max-width: 100%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     
-    #page-info {
+    #page-count-info {
       margin: 0 15px;
       font-size: 14px;
     }
@@ -77,9 +83,7 @@
     <div id="pdf-container">
       <div id="pdf-controls">
         <div>
-          <button id="prev-page">Previous</button>
-          <button id="next-page">Next</button>
-          <span id="page-info">Page <span id="page-num"></span> of <span id="page-count"></span></span>
+          <span id="page-count-info">Total pages: <span id="page-count">...</span></span>
         </div>
         <div>
           <button id="zoom-out">Zoom Out</button>
@@ -88,7 +92,7 @@
       </div>
       <div id="pdf-viewer">
         <div id="loading-message">Loading PDF...</div>
-        <canvas id="pdf-page"></canvas>
+        <div id="pages-container"></div>
       </div>
     </div>
   </main>
@@ -106,122 +110,78 @@
     
     // Variables to store the current state
     let pdfDoc = null;
-    let pageNum = 1;
-    let pageRendering = false;
-    let pageNumPending = null;
     let scale = 1.2; // Initial zoom level
+    let currentPages = [];
     
     // Get page elements
-    const canvas = document.getElementById('pdf-page');
-    const ctx = canvas.getContext('2d');
-    const prevButton = document.getElementById('prev-page');
-    const nextButton = document.getElementById('next-page');
+    const pagesContainer = document.getElementById('pages-container');
     const zoomInButton = document.getElementById('zoom-in');
     const zoomOutButton = document.getElementById('zoom-out');
-    const pageNumSpan = document.getElementById('page-num');
     const pageCountSpan = document.getElementById('page-count');
     const loadingMessage = document.getElementById('loading-message');
     
-    // Render the page
-    function renderPage(num) {
-      pageRendering = true;
+    // Render all PDF pages
+    async function renderAllPages() {
+      // Clear existing pages
+      pagesContainer.innerHTML = '';
+      currentPages = [];
       
-      // Show loading message while rendering
+      // Show loading message
       loadingMessage.style.display = 'block';
       
-      // Get the page
-      pdfDoc.getPage(num).then(function(page) {
-        // Calculate the viewport based on the canvas size and scale
+      // Render each page
+      for (let i = 1; i <= pdfDoc.numPages; i++) {
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'pdf-page-container';
+        
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page';
+        pageDiv.appendChild(canvas);
+        pagesContainer.appendChild(pageDiv);
+        
+        // Get and render the page
+        const page = await pdfDoc.getPage(i);
         const viewport = page.getViewport({ scale: scale });
         
-        // Set canvas dimensions to match the viewport
         canvas.height = viewport.height;
         canvas.width = viewport.width;
         
-        // Render PDF page into canvas context
-        const renderContext = {
+        const ctx = canvas.getContext('2d');
+        await page.render({
           canvasContext: ctx,
           viewport: viewport
-        };
+        }).promise;
         
-        const renderTask = page.render(renderContext);
-        
-        // Wait for rendering to finish
-        renderTask.promise.then(function() {
-          pageRendering = false;
-          loadingMessage.style.display = 'none';
-          
-          // If another page rendering is pending, render that page
-          if (pageNumPending !== null) {
-            renderPage(pageNumPending);
-            pageNumPending = null;
-          }
-        });
-      });
+        currentPages.push({ pageDiv, canvas, page });
+      }
       
-      // Update page counters
-      pageNumSpan.textContent = num;
+      // Hide loading message
+      loadingMessage.style.display = 'none';
     }
     
-    // Go to previous/next page
-    function queueRenderPage(num) {
-      if (pageRendering) {
-        pageNumPending = num;
-      } else {
-        renderPage(num);
-      }
-    }
-    
-    function showPrevPage() {
-      if (pageNum <= 1) {
-        return;
-      }
-      pageNum--;
-      queueRenderPage(pageNum);
-    }
-    
-    function showNextPage() {
-      if (pageNum >= pdfDoc.numPages) {
-        return;
-      }
-      pageNum++;
-      queueRenderPage(pageNum);
-    }
-    
-    // Zoom functionality
-    function zoomIn() {
+    // Zoom functionality - rerender all pages at new scale
+    async function zoomIn() {
       scale += 0.25;
-      queueRenderPage(pageNum);
+      await renderAllPages();
     }
     
-    function zoomOut() {
+    async function zoomOut() {
       if (scale <= 0.5) return; // Prevent zooming out too much
       scale -= 0.25;
-      queueRenderPage(pageNum);
+      await renderAllPages();
     }
     
     // Add event listeners
-    prevButton.addEventListener('click', showPrevPage);
-    nextButton.addEventListener('click', showNextPage);
     zoomInButton.addEventListener('click', zoomIn);
     zoomOutButton.addEventListener('click', zoomOut);
-    
-    // Handle keyboard navigation
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'ArrowLeft') {
-        showPrevPage();
-      } else if (e.key === 'ArrowRight') {
-        showNextPage();
-      }
-    });
     
     // Load the PDF
     pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
       pdfDoc = pdf;
       pageCountSpan.textContent = pdf.numPages;
       
-      // Initial render
-      renderPage(pageNum);
+      // Render all pages
+      renderAllPages();
     }).catch(function(error) {
       loadingMessage.textContent = 'Error loading PDF: ' + error.message;
     });
