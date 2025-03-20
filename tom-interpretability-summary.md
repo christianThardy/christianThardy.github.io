@@ -1,4 +1,4 @@
-# A Sparse ToM Circuit in Gemma 2-2B
+# Deconstructing Theory of Mind in Large Language Models
 
 <div id="pdf-container" style="background-color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px 0; border-radius: 4px; overflow: hidden;">
   <div id="pdf-controls" style="background-color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0;">
