@@ -1,7 +1,5 @@
 # The ability to filter information is fundamental to reasoning
 
-Investigating large language model reasoning through amplification and suppression
-
 <br> 
 
 **Suppression and inhibition are key to emergent behavior, but to what degree**
