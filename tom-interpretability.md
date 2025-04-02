@@ -16,6 +16,7 @@
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
     - [Ablation Studies](#ablation-studies)
+    - [Copy supressions role in the ToM circuit](#copy-supressions-role)
 - [Broader Implications](#broader-implications)
  - [Conclusion](#conclusion)
  - [References](#references)
@@ -946,13 +947,15 @@ This suggests that the heads found in the circuit are working together in a high
 
 <br>
 
-### Copy supressions role in the ToM circuit
+### Copy supressions role in the ToM circuit <a id="copy-supressions-role"></a>
+<sub>[↑](#top)</sub>
 
 In neuroscience, it is widely known that inhibition is *a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli*<sub>[<a href="https://www.sciencedirect.com/science/article/abs/pii/S0278262603000800?via%3Dihub" title="Dimitrov" rel="nofollow">20</a>]</sub>. Copy supression<sub>[<a href="https://arxiv.org/pdf/2310.04625" title="McDougall" rel="nofollow">21</a>]</sub> in the ToM circuit are heads in the model that respond to predictions made by prior heads and adjusts the prediction logits negatively. These heads have the advantage of seeing all preceding context and intermediate predictions generated so far. By leveraging this, they can calibrate the model's confidence in predicting the next token, effectively fine-tuning the logits to suppress information before the final prediction is made.
 
 Consider an induction head that's tracking a belief state. Suppose the model processes the sentence: `John put the cat on the basket`, and the current token is `the`. The induction head predicts `basket` as the next token based on the context. This prediction is written to the residual stream and will be mapped to the logits for the final output. However, before the model commits to this prediction, the copy suppression mechanism kicks in. It performs post-processing on the logits by suppressing any outputs that have been previously seen but aren't relevant to the current context established by the induction head. 
 
-It could be nothing but back-of-the-envelope math, but I think this suppression is happening at each step of the attention mechanism, specifically emerging from the mechanism's dot product, softmax, and aggregation steps.
+It could be nothing but back-of-the-envelope math, but I think there is a multi-level suppression architecture happening at each step of the attention mechanism, specifically emerging from the mechanism's dot product, softmax, and aggregation steps, where QK determines which tokens to suppress and OV determines how representations get transformed.
+
 
 If attention scores are computed as:
 
