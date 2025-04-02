@@ -1,10 +1,8 @@
-# The ability to filter information is fundamental to reasoning
+# The ability to filter information is fundamental to reasoning, but to what degree?
 
 ##### Originally posted: 04/02/25
 
 <br> 
-
-**Suppression is key to emergent behavior, but to what degree?**
 
 In cognitive neuroscience, it is widely known that inhibition is a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli<sub>[<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1751480/" title="Dimitrov" rel="nofollow">1</a>]</sub>.
 
