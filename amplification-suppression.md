@@ -33,8 +33,11 @@ While artificial networks use simple activation functions, biological neural cir
 Before we continue, I use the term **suppression** across a few related, but distinct computational contexts, which requires clarification. There are four manifestations of suppression I'm interested in:
 
 - Inhibitory weights in neural pathways, kind of an abstract concept in the context I'm using it in, borrowed from neuroscience and refers to parameters that dampen signal propagation.
+  
 - Negative diagonal values in OV circuits, which represent token-specific inhibition, where a head attending to token **X** actively suppresses the probability of that same token appearing in the output.
+  
 - Negative eigenvalues in OV matrices, which represent directions in the representation space where information is actively flipped or suppressed. While related to negative diagonals, they capture a broader phenomenon where negative diagonals primarily affect self-suppression, while the full spectrum of negative eigenvalues influences how entire subspaces of information are transformed.
+  
 - Negative eigenvalues in the Hessian, which operate at the meta-level of optimization, representing directions in parameter space where the loss landscape curves downward. These are conceptually distinct from OV eigenvalues but may influence how suppression mechanisms develop during training.
 
 Exluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
