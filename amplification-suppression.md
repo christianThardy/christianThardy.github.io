@@ -6,7 +6,7 @@
 
 In cognitive neuroscience, it is widely known that inhibition is a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli<sub>[<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1751480/" title="Dimitrov" rel="nofollow">1</a>]</sub>.
 
-Loosely compared to human inhibition, my hypothesis is that mechanisms that replicate this function in transformer models can be described as the bedrock for certain types of reasoning that require maintaining separate representational states.
+Similar to human inhibition, I think that suppression mechanisms in transformer models constitute a foundational element of reasoning capabilities.
 
 Gradient descent when performed by backpropagation can produce parameter adjustment deltas that are either positive or negative. Positive values or excitatory weights, decrease the weakening of the parameters signal path, which increases the signal strength, and negative values or inhibitory weights increase the weakening of that path, suppressing signal strength through the connection. Thinking about these weights at the attention mechanism, they help determine whether an attention head will become active, not active or suppressed based on the weighted sum of its inputs and threshold depending on the context of the input.
 
