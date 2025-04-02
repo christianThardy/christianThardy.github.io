@@ -1,5 +1,7 @@
 # The ability to filter information is fundamental to reasoning
 
+##### Originally posted: 04/02/25
+
 <br> 
 
 **Suppression and inhibition are key to emergent behavior, but to what degree**
