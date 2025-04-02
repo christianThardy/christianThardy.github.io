@@ -10,8 +10,8 @@ navigation:
     url: /
   - title: about
     url: about
-  #- title: investigating large language model reasoning through amplification and suppression
-  #  url: amplification-suppression
+  - title: investigating large language model reasoning via amplification and suppression
+   url: amplification-suppression
   - title: deconstructing theory of mind in large language models
     url: tom-interpretability
   - title: towards better mental health detection
