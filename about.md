@@ -4,4 +4,4 @@ I’m a data scientist focused on applied natural language processing. My profes
 
 My expertise in machine learning, and NLP lie at the convergence of my interest in neuroscience and psychology. I'm currently interested in understanding how transformers develop internal models of theory of mind.
 
-Outside of my work, I'm probably traveling, making music, playing sports, or occasionally tossing around yo-yos.
+Outside of my work, I'm probably traveling, making music or occasionally tossing around yo-yos.
