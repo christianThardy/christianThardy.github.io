@@ -19,7 +19,7 @@ I recognize I'm anthropromorphizing, and it may not help for general understandi
 <p align="center">
 <img src="https://github.com/user-attachments/assets/aae42bfd-b5b8-4abf-bc9c-801e1e16960d" width="400"/>
 <br>
-<small style="font-size: 12px;">Human brain & shoggoth ouroboros courtesy of GPT-4o.</a></small>
+<small style="font-size: 12px;">Human brain & shoggoth ouroboros courtesy of GPT-4o.</small>
 </p>
 
 <br>
@@ -61,7 +61,7 @@ We can see further connections between model expressivity and optimization acros
 <p align="center">
 <img src="https://github.com/user-attachments/assets/da2a160b-ac6f-43c5-8d7e-59ec9a616d57" width="550"/>
 <br>
-<small style="font-size: 12px;">Figure 2d. "The subspace defined by the negative eigenvalues is less stable than the one defined by the positive ones"<sub>[<a href="https://arxiv.org/pdf/1902.02366" title="Alain" rel="nofollow">3</a>]</sub>.</a></small>
+<small style="font-size: 12px;">Figure 2d. "The subspace defined by the negative eigenvalues is less stable than the one defined by the positive ones"<sub>[<a href="https://arxiv.org/pdf/1902.02366" title="Alain" rel="nofollow">3</a>]</sub>.</small>
 </p>
 
 <br>
@@ -79,7 +79,7 @@ The Llama family of models in my analysis, 3B, 8B and 70B, showed consistency in
 <p align="center">
 <img src="https://github.com/user-attachments/assets/69865b11-614d-40bc-b971-017166333166" width="850"/>
 <br>
-<small style="font-size: 12px;">Figure 5. "We also do not have α*_i ≈ 1/|λ_i| but rather the optimal stepsize seems to be decorrelated from the eigenvalue"</a></small>
+<small style="font-size: 12px;">Figure 5. "We also do not have α*_i ≈ 1/|λ_i| but rather the optimal stepsize seems to be decorrelated from the eigenvalue"</small>
 </p>
 
 <br>
@@ -95,7 +95,7 @@ This would also explain my observation in the ToM analysis that *the model doesn
 <p align="center">
 <img src="https://github.com/user-attachments/assets/71cb09ac-2898-4a29-ab7d-b8587f8840b1" width="850"/>
 <br>
-<small style="font-size: 12px;">Figure 6. "Shows that the most improvement is obtained when optimizing in the directions of negative curvature"</a></small>
+<small style="font-size: 12px;">Figure 6. "Shows that the most improvement is obtained when optimizing in the directions of negative curvature"</small>
 </p>
 
 <br>
