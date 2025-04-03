@@ -4,6 +4,12 @@
 
 <br> 
 
+##### tl;dr: 
+
+*Just like your brain filters out irrelevant stuff to focus on, language models use similar "suppression mechanisms" to reason effectively. Analyzing various models (1.3B to 70B parameters), I discovered they all maintain about 50% negative eigenvalues in key attention components, basically meaning half their processing power is dedicated to filtering information rather than amplifying it. This suppression seems crucial for handling complex reasoning tasks like theory of mind (ToM), situational awareness etc., where models need to track multiple perspectives or concepts simultaneously. Different models implement the same mechanism in diverse ways, but the underlying principle appears universal. The ability to selectively suppress information is just as important to reasoning as the ability to highlight it.*
+
+<br>
+
 In cognitive neuroscience, it is widely known that inhibition is a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli<sub>[<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1751480/" title="Dimitrov" rel="nofollow">1</a>]</sub>.
 
 Similar to human inhibition, I think that suppression mechanisms in transformer models constitute a foundational element of reasoning capabilities.
@@ -40,7 +46,7 @@ Before we continue, I use the term **suppression** across a few related, but dis
 
 Exluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
 
-Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> by mechanistically studying theory of mind (ToM), analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B, revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. Despite architectural differences, all models consistently maintained ~50% negative eigenvalue ratios of the OV matrices (how much suppression is occuring across the observed attention heads), showing a clear progression from concentrated to distributed dimensional processing that scaled with model size, suggesting suppression as a universal computational structure across models. 
+Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> by mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B, revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. Despite architectural differences, all models consistently maintained ~50% negative eigenvalue ratios of the OV matrices (how much suppression is occuring across the observed attention heads), showing a clear progression from concentrated to distributed dimensional processing that scaled with model size, suggesting suppression as a universal computational structure across models. 
 
 Trying to refrain from dubious overgeneralization, its possible the consistent ~50% negative eigenvalue ratio observed in the models studied may manifest differently in larger models. The core principle that likely generalizes is the need for some form of information filtering or suppression mechanism. For instance, recurrent architectures without attention will implement suppression through different mechanisms than the attention-based suppression observed in transformers.
 
