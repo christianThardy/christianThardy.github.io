@@ -63,7 +63,7 @@ Despite architectural differences, all models consistently exhibited ~50% negati
 <img src="https://github.com/user-attachments/assets/a5c96990-f30d-4104-a7e6-8cce31092f1a" width="900"/>
 <br>
 <small style="font-size: 12px;">Looking at this another way, the "negative ratio" (suppression) fluctuates but consistently returns to approximately 0.5 for significant portions of processing in specific attention heads.</small>
-<small style="font-size: 10px;">Effective dimension: how many active dimension are being used, Participation Ratio: how evenly info is distributed across dimensions, Top Eigen: magnitude of largest eigen, dominance of the principal dimension.</small>
+<small style="font-size: 10px;">Effective dimension: how many active dimension are being used, Participation Ratio: how evenly info is distributed across dimensions, Top Eigen: magnitude of largest eigen; dominance of the principal dimension.</small>
 </p>
 
 <br>
