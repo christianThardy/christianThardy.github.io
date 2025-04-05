@@ -44,11 +44,35 @@ Before we continue, I use the term **suppression** across a few related, but dis
 
 Exluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
 
-Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> by mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B, revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. Despite architectural differences, all models consistently maintained ~50% negative eigenvalue ratios of the OV matrices (how much suppression is occuring across the observed attention heads), showing a clear progression from concentrated to distributed dimensional processing that scaled with model size, suggesting suppression as a universal computational structure across models. 
+Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> by mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B, revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. 
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/1629a187-ec2d-49aa-96bb-bfd4113d1d3d" width="700"/>
+<br>
+</p>
+
+<br>
+
+Despite architectural differences, all models consistently exhibited ~50% negative eigenvalue ratios in their OV matrices, indicating that suppression is occuring roughly half of the time during processing.
+
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/a5c96990-f30d-4104-a7e6-8cce31092f1a" width="900"/>
+<br>
+<small style="font-size: 12px;">Looking at this another way, the "negative ratio" (suppression) fluctuates but consistently returns to approximately 0.5 for significant portions of processing in specific attention heads.</small>
+<small style="font-size: 10px;">Effective dimension: how many active dimension are being used, Participation Ratio: how evenly info is distributed across dimensions, Top Eigen: magnitude of largest eigen, dominance of the principal dimension.</small>
+</p>
+
+<br>
+
+Furthermore, in some transitions across all scenarios, changes in negative ratio and dimensionality appear inversely related (one increases, the other decreases), in others, they change in parallel (both increasing or both decreasing), suggesting that suppression isn't simply the opposite of dimensional expansion, but that they serve complementary roles in information processing. These patterns are consistent across model size, suggesting that suppression functions as a universal computational mechanism across model architectures.
 
 Trying to refrain from dubious overgeneralization, its possible the consistent negative eigenvalue ratio observed in the models studied may manifest differently in larger models. The core principle that likely generalizes is the need for some form of information filtering or suppression mechanism. For instance, recurrent architectures without attention will implement suppression through different mechanisms than the attention-based suppression observed in transformers.
 
-These heads exhibited significantly different suppression patterns across reasoning contexts (93-96%) compared to factual contexts (~65%). Showing a near universal amount of suppression being applied across diverse reasoning modalities ranging from ToM to counterfactual reasoning, goal representation and situational awareness, where each shares key principles:
+The heads in question exhibited significantly different suppression patterns across reasoning contexts (93-96%) compared to factual contexts (~65%). Showing a near universal amount of suppression being applied across diverse reasoning modalities ranging from ToM to counterfactual reasoning, goal representation and situational awareness, where each shares key principles:
 
 - Information separation: keeping distinct tracks of information
 - Contextual filtering: selective attention to relevant information
@@ -70,13 +94,24 @@ We can see further connections between model expressivity and optimization acros
 
 <br>
 
-Comparing my results to the analysis of Alain et al., they demonstrate that the top eigenspace (positive curvature) of the Hessian remains relatively stable during training, while the bottom eigenspace (negative curvature) is far less stable, which mirrors my finding that different models implement consistent suppression mechanisms but with varying implementations.
+Comparing my results to the analysis of Alain et al., they demonstrate that the top eigenspace (positive curvature) of the Hessian remains relatively stable during training, while the bottom eigenspace (negative curvature) is far less stable.
 
-This could roughly explain why I observed diverse suppression strategies across models (Gemma 2-2B's persistent high suppression vs. the Llama family's calibrated moderate suppression vs. Pythia 1.4B's phase-shifted suppression). The varying implementations of suppression could be a direct result of the instability of negative eigenspaces during training, which is maybe why architectures develop different suppression mechanisms that operate the same on similar tasks. 
+<br>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/18a746af-d1fc-41f9-afc7-26d0621a1d7d" width="700"/>
+<br>
+</p>
+
+<br>
+
+Which mirrors my finding that models consistently come up with suppression mechanisms with varying implementations that have significantly unstable negative eigenvalues. Despite my analysis focusing on OV matrices rather than Hessians, the eigenvalue trajectories are consistently positive, with some that have frequent sign changes into negative regions.
+
+This could roughly explain the diverse suppression strategies I observed across models (Gemma 2-2B's persistent high suppression vs. the Llama family's broad calibrated suppression vs. Pythia 1.4B's phase-shifted suppression). The varying implementations of suppression could be a direct result of the instability of negative eigenspaces during training, which is maybe why architectures develop different suppression mechanisms that operate the same on similar tasks. 
 
 It's plausible that the instability contributes to *discovered* behaviors, so the network discovers viable suppression strategies through stochastic gradient interactions or phase changes during training rather than converging to a single canonical implementation.
 
-In my analysis, the Llama family of models 3B, 8B and 70B, showed consistency in their "suppression signatures" despite model size, suggesting that architectural inductive biases create basins of attraction for specific suppression strategies despite the instability of negative eigenspaces. I'm pretty bullish on training dynamics determining which specific strategies emerge within architectural constraints based on the training data and the interaction between architecture and training creating characteristic suppression signatures.
+In my analysis, the Llama family of models 3B, 8B and 70B (which included Mistral and Qwen), showed consistency in their "suppression signatures" despite model size, suggesting that architectural inductive biases create basins of attraction for specific suppression strategies despite the instability of negative eigenspaces. I'm pretty bullish on training dynamics determining which specific strategies emerge within architectural constraints based on the training data and the interaction between architecture and training creating characteristic suppression signatures.
 
 <br>
 
@@ -106,7 +141,7 @@ This would also explain my observation in the ToM analysis that *the model doesn
 
 The paper demonstrates that directions of negative curvature often contain significant potential for loss improvement. Seems pretty obvious, but supports my hypothesis that suppression mechanisms play a crucial role in enabling reasoning capabilities. In optimization terms, moving along directions of negative curvature can produce larger decreases in the loss function during training than moving along directions of positive curvature because positive curvature directions saturate. So a simple explanation would be that models actively develop suppression mechanisms because they significantly reduce loss in reasoning tasks that require maintaining multiple representational states like ToM or counterfactual reasoning. This is why selective attention is so crucial.
 
-My next steps are to establish causality beyond correlation, so I'll need comphrehensive interventional studies. After that I can see interesting aignment relevant investigations coming from this work in the form of behavioral detection, mechanism steering, novel loss functions or advanced low-rank updates to mechanisms.
+My next steps are to establish causality beyond correlation, so I'll need comphrehensive interventional studies. After that I can imagine interesting aignment relevant investigations coming from this work in the form of behavioral detection, mechanism steering, ReFT training on counterfactual suppression interventions, novel loss functions or low-rank updates to mechanisms.
 
 But an important limitation of my analysis is the gap between Hessian negative eigenvalues, which operate at the level of the entire loss landscape, and negative diagonal eigenvalues of the OV circuit, which function at the level of attention mechanisms. While both involve negative eigenvalues associated with suppression, they operate at different levels of abstraction. The Hessian eigenvalues influence how parameters update during training, potentially shaping how OV circuits develop their suppression characteristics. While this relationship is plausible, it remains largely theoretical to me, but I can't wait to test it. 
 
