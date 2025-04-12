@@ -16,7 +16,7 @@
     - [Dictionary Learning, Sparse Autoencoders and Superposition](#dictionary-learning-sparse-autoencoders-and-superposition)
     - [ToM Circuit](#tom-circuit)
     - [Ablation Studies](#ablation-studies)
-    - [Copy supressions role in the ToM circuit](#copy-supressions-role)
+    - [Copy Supressions Role in the ToM Circuit](#copy-supressions-role)
 - [Broader Implications](#broader-implications)
  - [Conclusion](#conclusion)
  - [References](#references)
