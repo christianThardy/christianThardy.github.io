@@ -62,7 +62,7 @@ Despite architectural differences, all models consistently exhibited ~50% negati
 <p align="center">
 <img src="https://github.com/user-attachments/assets/a5c96990-f30d-4104-a7e6-8cce31092f1a" width="900"/>
 <br>
-<small style="font-size: 12px;">Pythia 1.4B. Looking at the eigenvalues another way, the "negative ratio" (suppression) dynamically fluctuates but consistently returns to approximately 0.5 for significant portions of processing in specific attention heads. It's worth noting that these flows can vary significantly between model size.</small>
+<small style="font-size: 12px;">Pythia 1.4B. Looking at the eigenvalues another way, the "negative ratio" (suppression) dynamically fluctuates but consistently returns to approximately 0.5 for significant portions of processing in specific attention heads. It's worth noting that these flows can vary significantly between model size, but are more consistent within model families.</small>
 <br>
 <small style="font-size: 10px;">Effective dimension: how many active dimensions are being used, Participation Ratio: how evenly info is distributed across dimensions, Top Eigen: magnitude of largest eigen; dominance of the principal dimension.</small>
 </p>
@@ -71,7 +71,7 @@ Despite architectural differences, all models consistently exhibited ~50% negati
 
 Furthermore, in some transitions across all scenarios, changes in negative ratio and dimensionality appear inversely related (one increases, the other decreases), in others, they change in parallel (both increasing or both decreasing), suggesting that suppression isn't simply the opposite of dimensional expansion, but that they serve complementary roles in information processing. These patterns are consistent across model size, suggesting that suppression functions as a universal computational mechanism across model architectures.
 
-Trying to refrain from dubious overgeneralization, its possible the consistent negative eigenvalue ratio observed in the models studied may manifest differently in larger models. The core principle that likely generalizes is the need for some form of information filtering or suppression mechanism. For instance, recurrent architectures without attention will implement suppression through different mechanisms than the attention-based suppression observed in transformers.
+Trying to refrain from dubious overgeneralization, its possible the consistent negative eigenvalue ratio observed in the models studied may manifest differently in larger models, and the idea of universality applies more strongly to the average ~0.5 ratio than to the specific dynamic implementation. The core principle that likely generalizes is the need for some form of information filtering or suppression mechanism. For instance, recurrent architectures without attention will implement suppression through different mechanisms than the attention-based suppression observed in transformers.
 
 The heads in question exhibited significantly different suppression patterns across reasoning contexts (93-96%) compared to factual contexts (~65%). Showing a near universal amount of suppression being applied across diverse reasoning modalities ranging from ToM to counterfactual reasoning, goal representation and situational awareness, where each shares key principles:
 
