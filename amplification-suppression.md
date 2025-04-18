@@ -44,7 +44,7 @@ Before we continue, I use the term **suppression** across a few related, but dis
 
 Exluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
 
-Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> by mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. 
+Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> of mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions. 
 
 <br>
 
