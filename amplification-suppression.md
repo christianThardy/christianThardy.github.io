@@ -55,7 +55,7 @@ Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-
 
 <br>
 
-Despite architectural differences, all models consistently exhibited ~50% negative eigenvalue ratios in their OV matrices, indicating that suppression is occuring roughly half of the time during processing. It's important to note that this structural property is a common mode of operation, but not every instance of negative eigenvalues is doing important work for a given task. The 3% heads are the ones where this capability is critical and contextually triggered to achieve the task goal.
+Despite architectural differences, all models consistently exhibited ~50% negative eigenvalue ratios in their OV matrices, indicating that suppression is occuring roughly half of the time during processing. So there's a widespread *potential* for suppression to exist. It's important to note that this structural property is a common mode of operation, but not every instance of negative eigenvalues is doing important work for a given task. The 3% heads are the ones where this capability is critical and contextually triggered to achieve the task goal.
 
 <br>
 
