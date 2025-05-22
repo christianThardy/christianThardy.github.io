@@ -1,5 +1,9 @@
 # Things I wish I knew about aws glue, spark and distributed systems
 
+Originally posted: 08/20/20
+
+<br>
+
 From November 2019 to July 2020 I was working with a subscription based e-learning platform. With our subscription metrics on the rise, we needed new internal processes to keep up with the wealth of information we had on hand and were accumulating every day. This translated to reporting options that would allow management to have more autonomy in mining the data to support their initiatives so that our engineering team could focus on collecting cleaner data, and the principles, processes and techniques required to change the fundamental structure of our data driven initiatives. 
 
 After putting together a statement of work, holding interviews with stakeholders, and transforming that qualitative information into quantitative information, my team designed the logical schema for my divisions data marts and data warehouse. Then we stood up a dc2.large Redshift cluster and the warehouses' physical schema, and we were ready to implement the data pipeline that would transfer our production data into an environment optimized for advanced analytics and interactive dashboards.
