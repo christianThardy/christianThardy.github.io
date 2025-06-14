@@ -4,7 +4,7 @@
 
 ##### tl;dr: 
 
-*Just like your brain filters out irrelevant stuff to focus on, language models use "suppression mechanisms" to reason effectively. Analyzing various models (1.3B to 70B parameters), they all maintain about 50% negative eigenvalues in key attention components, basically meaning half their processing power is dedicated to filtering information rather than amplifying it. Rather than strictly noise reduction, this suppression seems to be an active computational strategy integral for handling complex reasoning tasks like theory of mind (ToM), situational awareness etc., where models need to track multiple perspectives or concepts simultaneously. Different models implement the same mechanism in diverse ways, but the underlying principle appears universal. The ability to selectively suppress information is just as important to reasoning as the ability to highlight it.*
+*Just like your brain filters out irrelevant stuff to focus on, language models use "suppression mechanisms" to reason effectively. Analyzing various models (1.3B to 70B parameters), they all maintain about 50% negative eigenvalues in key attention components, basically meaning half their processing power is dedicated to filtering information rather than amplifying it. Rather than strictly noise reduction, this suppression seems to be an active computational strategy integral for handling complex reasoning tasks like theory of mind (ToM), situational awareness etc., where models need to track multiple perspectives or concepts simultaneously. Different models implement the same mechanism in diverse ways, but the underlying principle appears universal. The ability to selectively suppress information is just as important to reasoning as the ability to promote it.*
 
 <br>
 
