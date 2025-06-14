@@ -112,7 +112,7 @@ This could roughly explain the diverse suppression strategies I observed across 
 
 It's plausible that the instability contributes to *discovered* behaviors, so the network discovers viable suppression strategies through stochastic gradient interactions or phase changes during training rather than converging to a single canonical implementation.
 
-In my analysis, the Llama family of models 3B, 8B and 70B (which included Mistral and Qwen), showed consistency in their "suppression signatures" despite model size, suggesting that architectural inductive biases create basins of attraction for specific suppression strategies despite the instability of negative eigenspaces. I'm pretty bullish on training dynamics determining which specific strategies emerge within architectural constraints based on the training data and the interaction between architecture and training creating characteristic suppression signatures.
+In my analysis, the Llama family of models 3B, 8B and 70B (which included Mistral and Qwen), showed consistency in their "suppression signatures" despite model size, suggesting that architectural inductive biases create basins of attraction for specific suppression strategies despite the instability of negative eigenspaces. I'm pretty bullish on training dynamics determining which specific strategies emerge within architectural constraints based on the training data, and the interaction between architecture → training creating characteristic suppression signatures.
 
 <br>
 
