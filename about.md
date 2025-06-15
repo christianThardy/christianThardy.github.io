@@ -1,6 +1,6 @@
 # Hi, I'm Christian
 
-I’m a data scientist focused on applied natural language processing. My professional background covers a wide range of projects, from one-off analyses and applied research to building AI driven software.
+I am an ai engineer focused on building ai agents, agentic ai, conversational ai and evals. Formerly a data scientist focused on applied natural language processing, where my professional background has covered a wide range of projects, from one-off analyses and applied research to building AI driven software.
 
 My work in machine learning, and NLP lie at the convergence of my interest in neuroscience and psychology. I'm currently interested in understanding how transformers develop internal models of theory of mind.
 
