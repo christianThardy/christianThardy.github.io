@@ -113,7 +113,7 @@ This illustration of gradient descent is important to us because of the parallel
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="500px">
 <br>
-  <small style="font-size: 12px;">The loss landscape is actually <a href="https://youtu.be/aq3oA6jSGro?si=-4-LIs1iJM_6wBNW" title="YouTube" rel="nofollow">more complex</a> than this, and represents many "canyons" and "valleys".</small>
+  <small style="font-size: 12px;">The geometry of the loss landscape is actually <a href="https://youtu.be/aq3oA6jSGro?si=-4-LIs1iJM_6wBNW" title="YouTube" rel="nofollow">more complex</a> than this, and represents many "canyons" and "valleys".</small>
 </p>
 
 <br/>
