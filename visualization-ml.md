@@ -113,12 +113,12 @@ This illustration of gradient descent is important to us because of the parallel
 <p align="center">
   <img src = "https://user-images.githubusercontent.com/29679899/101287297-6e12bb00-37bd-11eb-88c9-da076b596e4c.gif" width="500px">
 <br>
-  <small style="font-size: 12px;">The loss landscape is actually <a href="https://youtu.be/aq3oA6jSGro?si=-4-LIs1iJM_6wBNW" title="YouTube" rel="nofollow">more complex</a> than this, and represents many *canyons* and *valleys*.</small>
+  <small style="font-size: 12px;">The loss landscape is actually <a href="https://youtu.be/aq3oA6jSGro?si=-4-LIs1iJM_6wBNW" title="YouTube" rel="nofollow">more complex</a> than this, and represents many "canyons" and "valleys".</small>
 </p>
 
 <br/>
 
-These philosophical implications even ring true for the hairy ball theorem[<a href="https://youtu.be/B4UGZEjG02s" title="The hairy ball theorem" rel="nofollow">'</a>].
+These philosophical implications even ring true for the <a href="https://youtu.be/B4UGZEjG02s" title="YouTube" rel="nofollow">hairy ball theorem.</a>
 
 As I try to organize some of my high level thoughts on the role that  visualization plays in understanding how computers learn, one thing is certain. The rich connection between distilling data into something useful and trying to understand the abstractions of learning machines is something that will continually spark my enthusiasm for artificial intelligence. 
 
