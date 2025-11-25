@@ -351,17 +351,23 @@ Think of this as the command center. You tell it what dataset to use, which fail
 
 The key command-line options:
 ```bash
-# Run both code + judges on dev split
-python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --viz --open
+# Calibrate programmatic evaluators
+python runners/programmatic_calibration.py --modes B2 --split dev --dev-size 100 --output test_12321 --workers 24
+--eval-mode generative --override --batch-size 10
 
-# Programmatic only (fast iteration)
-python run_eval.py --dataset dynamodb --modes B1 --no-judge
+# Calibrate judges
+python runners/judge_calibration.py --judge C3_judge --dev-size 100 --test-size 100 --test --skip-train --output runs/judge_test
+--bootstrap-workers 24 --verbose --override --eval-mode generative --parallel --workers 8 --batched-loading
 
-# Judge only (semantic deep dive)  
-python run_eval.py --dataset dynamodb --modes C3_judge --judge-only
+# Find logs for programmatics/judges that denote human/label disagreement during calibration
+python analyze_disagreements.py --run test_2 --calibration-type programmatic --splits dev --verbose
 
-# Parallel execution with custom worker count
-python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --parallel --workers 16
+# Run the eval
+python runners/run_eval.py --dataset dynamodb --suite recall_production_all --modes B1 B2 --open --eval-mode generative
+--output runs/runs/b1_b2_eval_run_0 --split test --sample 100 --sampling-strategy stratified --parallel --workers 24
+--calibration-dir runs/test_1 --no-judge
+
+# Look at logs
 ```
 
 Parallel execution is built in. With `--parallel --workers 16`, it processes multiple conversations simultaneously using a thread pool. There's also a nested pool for running programmatic + judge evaluators concurrently on each conversation.
