@@ -14,11 +14,11 @@
    2.2. [The Calibration Story (The Secret Sauce)](#the-calibration-story-the-secret-sauce)
 
 3. [Auxiliary: Module Deep Dives](#auxiliary-module-deep-dives)  
-   3.1. [`run_evalpy` — The Main Orchestrator](#runevalpy---the-main-orchestrator)  
-   3.2. [`programmaticpy` — Rule-Based Evaluators](#programmaticpy---rule-based-evaluators)  
+   3.1. [`programmaticpy` — Rule-Based Evaluators](#programmaticpy---rule-based-evaluators)  
       - [B2 (Tentative Language) Evaluator Workflow](#how-a-programmatic-evaluator-works-b2-tentative-language)  
       - [C5 (Tone/Style) Evaluator Workflow](#how-another-one-works-c5-tonestyle)  
-   3.3. [`judgespy` — LLM Tribunal Architecture](#judgespy---llm-tribunal-architecture)  
+   3.2. [`judgespy` — LLM Tribunal Architecture](#judgespy---llm-tribunal-architecture)
+   3.3. [`run_evalpy` — The Main Orchestrator](#runevalpy---the-main-orchestrator)  
    3.4. [`programmatic_calibrationpy` — Measuring Evaluator Accuracy](#programmatic_calibrationpy---measuring-evaluator-accuracy)  
    3.5. [`judge_calibrationpy` — Measuring Judge Accuracy](#judge_calibrationpy---measuring-judge-accuracy)  
    3.6. [`datasetpy` — The Data Foundation](#datasetpy---the-data-foundation)  
@@ -147,40 +147,6 @@ Rogan-Gladen math corrects for this, giving us a more accurate *true* failure ra
 ---
 
 # Auxiliary: Module Deep Dives
-
-## `run_eval.py` - The Main Orchestrator
-
-Think of this as the command center. You tell it what dataset to use, which failure modes to check, and it coordinates everything.
-
-**What happens when you run it:**
-
-1. **Load the data** - Either from DynamoDB (live) or a JSONL snapshot
-2. **Set up the evaluators** - Load programmatic evaluators + LLM judges based on your config
-3. **Process each conversation** - For each item:
-   - Run the programmatic evaluator (fast)
-   - Run the judge (if enabled)
-   - Both must agree for a pass
-4. **Aggregate results** - Compute per-mode metrics, apply calibration corrections
-5. **Generate report** - HTML dashboard with charts and tables
-
-The key command-line options:
-```bash
-# Run both code + judges on dev split
-python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --viz --open
-
-# Programmatic only (fast iteration)
-python run_eval.py --dataset dynamodb --modes B1 --no-judge
-
-# Judge only (semantic deep dive)  
-python run_eval.py --dataset dynamodb --modes C3_judge --judge-only
-
-# Parallel execution with custom worker count
-python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --parallel --workers 16
-```
-
-Parallel execution is built in. With `--parallel --workers 16`, it processes multiple conversations simultaneously using a thread pool. There's also a nested pool for running programmatic + judge evaluators concurrently on each conversation.
-
----
 
 ## `programmatic.py` - Rule-Based Evaluators
 
@@ -365,6 +331,40 @@ handling meets business standards. Provide structured verdict.
 - Estimated cost (~$0.03-0.05 per conversation)
 
 This gets logged so you know exactly what the evaluation budget is.
+
+---
+
+## `run_eval.py` - The Main Orchestrator
+
+Think of this as the command center. You tell it what dataset to use, which failure modes to check, and it coordinates everything.
+
+**What happens when you run it:**
+
+1. **Load the data** - Either from DynamoDB (live) or a JSONL snapshot
+2. **Set up the evaluators** - Load programmatic evaluators + LLM judges based on your config
+3. **Process each conversation** - For each item:
+   - Run the programmatic evaluator (fast)
+   - Run the judge (if enabled)
+   - Both must agree for a pass
+4. **Aggregate results** - Compute per-mode metrics, apply calibration corrections
+5. **Generate report** - HTML dashboard with charts and tables
+
+The key command-line options:
+```bash
+# Run both code + judges on dev split
+python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --viz --open
+
+# Programmatic only (fast iteration)
+python run_eval.py --dataset dynamodb --modes B1 --no-judge
+
+# Judge only (semantic deep dive)  
+python run_eval.py --dataset dynamodb --modes C3_judge --judge-only
+
+# Parallel execution with custom worker count
+python run_eval.py --dataset dynamodb --modes B1 B2 B3 --split dev --parallel --workers 16
+```
+
+Parallel execution is built in. With `--parallel --workers 16`, it processes multiple conversations simultaneously using a thread pool. There's also a nested pool for running programmatic + judge evaluators concurrently on each conversation.
 
 ---
 
