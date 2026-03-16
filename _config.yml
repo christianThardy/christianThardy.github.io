@@ -1,15 +1,15 @@
 theme: jekyll-theme-minimal
 title: artifacts
-description: Christian Hardy
+description: research, engineering, and things along the way 👋
 show_downloads: False
 include:
   - tom-circuit-path.html
 
 navigation:
-  - title: home
-    url: /
   - title: about
     url: about
+  - title: home
+    url: /
   - title: investigating large language model reasoning via excitation and suppression
     url: excitation-suppression
   - title: deconstructing theory of mind in large language models
