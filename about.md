@@ -1,7 +1,7 @@
 # Hi, I'm Christian
 
-I'm an AI engineer and alignment researcher focused on building agents, LLM pipelines, evaluations, and researching strategic deception. Previously, I was a data scientist in applied natural language processing and machine learning, spanning projects from one-off analyses and applied research to production AI systems.
+I'm an AI engineer focused on building agents, LLM pipelines, and evaluations. I'm also an alignment researcher working on strategic deception and dynamic subspace regulation in LLMs. I'm interested in how internal transformer components actively amplify, suppress, reroute, and hide directions to balance competing behavioral objectives. 
 
-My research sits at the intersection of how transformer algorithms reason, and how internal reasoning structures and dynamics emerge within LLMs. I also explore how attention mechanisms mediate input faithfulness as contextual signal quality degrades.
+Previously, I was a data scientist in applied NLP and machine learning, spanning projects from one-off analyses and applied research to production AI systems.
 
 Outside of my work, I'm probably traveling, making music or occasionally tossing around yo-yos.
