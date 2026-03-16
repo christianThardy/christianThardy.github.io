@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
 title: artifacts
-description: thoughts and things I've learned along the way 👋
+description:
 show_downloads: False
 include:
   - tom-circuit-path.html
