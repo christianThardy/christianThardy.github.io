@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
 title: artifacts
-description:
+description: Christian Hardy
 show_downloads: False
 include:
   - tom-circuit-path.html
