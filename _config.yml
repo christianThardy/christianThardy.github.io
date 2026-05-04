@@ -4,7 +4,6 @@ description: research, engineering, and things along the way 👋
 show_downloads: False
 include:
   - tom-circuit-path.html
-  - L27H11_truth_activation_full_matrix.html
 
 navigation:
   - title: about
