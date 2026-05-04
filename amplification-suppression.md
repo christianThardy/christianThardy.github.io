@@ -157,3 +157,5 @@ Dimitrov, *Inhibitory attentional control in patients with frontal lobe damage.*
 Grazzi, *Unlocking State-Tracking In Linear Rnns Through Negative Eigenvalues.* CSML, Istituto Italiano di Tecnologia, University of Freiburg, ELLIS Institute Tubingen, AI Centre, University College London. 2025.[<a href="https://arxiv.org/pdf/2411.12537" title="Grazzi" rel="nofollow">2</a>]
 
 Alain, *Negative eigenvalues of the Hessian in deep neural networks* Mila, University of Montreal, Google Brain. 2019.[<a href="https://arxiv.org/pdf/1902.02366" title="Mahowald" rel="nofollow">3</a>]
+
+<a href="L27H11_truth_activation_full_matrix.html" title="SD" rel="nofollow">temporary html</a>
