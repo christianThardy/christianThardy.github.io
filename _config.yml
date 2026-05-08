@@ -1,6 +1,6 @@
 theme: jekyll-theme-minimal
 title: artifacts
-description: research, engineering, and things along the way 👋
+description: research, engineering, and technical notes
 show_downloads: False
 include:
   - tom-circuit-path.html
