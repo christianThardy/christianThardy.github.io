@@ -26,7 +26,7 @@ layout: default
 [2.2]: http://i.imgur.com/MBpTmib.png (github icon without padding) 
 [3.2]: http://i.imgur.com/gPtDT24.png (twitter icon without padding)  
 [4.2]: https://i.imgur.com/cT1Hor3.png (giphy icon without padding)
-[5.2]: /assets/img/email.png (email icon without padding)
+[5.2]: assets/img/email.png (email icon without padding)
 
 
 <!-- links to social media accounts -->
