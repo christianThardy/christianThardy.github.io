@@ -6,6 +6,8 @@
 
 *Just like your brain filters out irrelevant stuff to focus on, language models use "suppression mechanisms" to reason effectively. Analyzing various models (1.3B to 70B parameters), they all maintain about 50% negative eigenvalues in key attention components, basically meaning half their processing power is dedicated to filtering information rather than positive amplification. Rather than strictly noise reduction, this suppression seems to be an active computational strategy, complementing amplification, and integral for handling complex reasoning tasks like theory of mind (ToM), situational awareness etc., where models need to track multiple perspectives or concepts simultaneously. Different models implement the same mechanism in diverse ways, but the underlying principle appears universal. The ability to selectively suppress information is just as important to reasoning as the ability to amplify it.*
 
+###### Code: [GabaLab](https://github.com/christianThardy/GabaLab): toolkit built on transformer-lens for the eigenvalue and OV-circuit analyses.
+
 <br>
 
 In cognitive neuroscience, it is widely known that inhibition is a component of the process of selective attention and is manifested in the suppression of goal irrelevant stimuli<sub>[<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1751480/" title="Dimitrov" rel="nofollow">1</a>]</sub>.
@@ -157,5 +159,3 @@ Dimitrov, *Inhibitory attentional control in patients with frontal lobe damage.*
 Grazzi, *Unlocking State-Tracking In Linear Rnns Through Negative Eigenvalues.* CSML, Istituto Italiano di Tecnologia, University of Freiburg, ELLIS Institute Tubingen, AI Centre, University College London. 2025.[<a href="https://arxiv.org/pdf/2411.12537" title="Grazzi" rel="nofollow">2</a>]
 
 Alain, *Negative eigenvalues of the Hessian in deep neural networks* Mila, University of Montreal, Google Brain. 2019.[<a href="https://arxiv.org/pdf/1902.02366" title="Mahowald" rel="nofollow">3</a>]
-
-##### Code: [GabaLab](https://github.com/christianThardy/GabaLab): toolkit built on transformer-lens for the eigenvalue and OV-circuit analyses.
