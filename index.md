@@ -6,8 +6,10 @@ layout: default
 
 [![alt text][1.2]][1]
 [![alt text][2.2]][2]
+<!-- TODO: restore twitter & giphy buttons - refs still defined below as [3.2]/[4.2]/[3]/[4]
 [![alt text][3.2]][3]
 [![alt text][4.2]][4]
+-->
 
 
 <!-- links to social media icons -->
