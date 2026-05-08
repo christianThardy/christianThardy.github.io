@@ -27,5 +27,5 @@ navigation:
         url: visualization-ml
   - title: visual notes
     items:
-      - title: "millennial noir: pi, data, and obsession"
+      - title: "millennial noir: data, and obsession"
         url: millennial-noir
