@@ -280,7 +280,6 @@ def transcribe(audio):
              • If the sentiment is ['seek_help'], using similar function words as the individual, help the individual reflect on their issue so they think deeply and only offer solutions to improve their well-being if you receive the ['seek_help'] sentiment. 
              • If the sentiment is ['assess_further'], use your wit to continue the conversation until ['is_fine'] or ['seek_help'] is detected.
              • Restrict your response to 150 tokens
-             • Do NOT tell the individual to talk to a therapist or counselor.
              • Do NOT reveal any information about your speaking style to the individual.
              • Do NOT print the {classification_output})
                       
