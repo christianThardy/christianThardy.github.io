@@ -16,7 +16,7 @@ Gradient descent when performed by backpropagation can produce parameter adjustm
 
 In a sense, inhibition in the brain occurs at multiple architectural levels, inside the cell, between cells, and over structures of cells, and the alignment of pulses temporally (in time). Until recently, we can now see this clearly simulated in machine learning constructs, specifically for transformer models, where we see the pathway starting at the loss function, inside the Hessian, between attention mechanisms, and through multi-layer perceptrons.
 
-I recognize I'm anthropromorphizing, and it may not help for general understanding to draw parallels between ReLU activation functions and the functions of synapses with their regional brain chemistry sensitivities and neuronal memory tricks organized by organelles. The comparison is not meant to mislead, but to allow us to appreciate their surface similaries in light of their unique properties. But let's be honest, neuroscience and computational learning models are trapped in an ouroboros of mutual explanation, where each field borrows concepts from the other.
+I recognize I'm anthropomorphizing, and it may not help for general understanding to draw parallels between ReLU activation functions and the functions of synapses with their regional brain chemistry sensitivities and neuronal memory tricks organized by organelles. The comparison is not meant to mislead, but to allow us to appreciate their surface similarities in light of their unique properties. But let's be honest, neuroscience and computational learning models are trapped in an ouroboros of mutual explanation, where each field borrows concepts from the other.
 
 <br>
 
@@ -42,7 +42,7 @@ Before we continue, I use the term **suppression** across a few related, but dis
   
 - Negative eigenvalues in the Hessian, which operate at the meta-level of optimization, representing directions in parameter space where the loss landscape curves downward. These are conceptually distinct from OV eigenvalues but may influence how suppression mechanisms develop during training.
 
-Exluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
+Excluding (1), I think these mechanisms likely interact, but my empirical findings primarily concern (2) and (3), with connections to (4) remaining speculative and requiring further research.
 
 Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-role" title="ToM in LLMs" rel="nofollow">investigation of suppression</a> of mechanistically studying ToM, analysis of the negative diagonals in OV circuits of key attention heads performing the task across 10 models of parameter counts ranging from 1.3B to 70B revealed sparse sets of attention heads (~16% on average) that maintain the counterfactual narrative states required to make the correct predictions, with roughly 3% of these heads actively suppressing world knowledge when necessary.
 
