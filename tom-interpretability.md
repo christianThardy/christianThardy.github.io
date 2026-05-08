@@ -27,6 +27,13 @@
 
 *This post explores how transformer-based large language models (LLMs) perform Theory of Mind (ToM) tasks, particularly focusing on false belief scenarios. The analysis bridges high-level behavioral analogues, such as tracking and updating belief states of entities with low-level computational mechanisms within the model that facilitate next token prediction, to propose an algorithm that models learn to perform this task. A circuit of 28 attention heads account for 16% of total heads in Gemma-2-2B and recover full ToM task performance. I'll assume you're comfortable with some basics, but I'll also cover a lot of theory, beginner-level explainers, personal musings and specific technical details along the way. Feel free to hop around using the contents. If you're already familiar with most parts, you can jump straight to the high-level summary<sub>[<a href="https://xtian.ai/tom-interpretability-summary" title="ToM Executive Summary" rel="nofollow">1</a>]</sub> or the conclusion<sub>[<a href="#conclusion" title="Go to section" rel="nofollow">2</a>]</sub>.*
 
+---
+
+- **Model & task:** Gemma-2-2B on a false-belief Theory of Mind task (the cat/basket/box passage).
+- **Method:** PCA → logit-lens → attention-head analysis → causal tracing (activation + path patching) → sparse autoencoders (Gemma Scope / Neuronpedia) → ablation.
+- **Finding:** A 28-head circuit (~16% of total heads) recovers full ToM task performance; mean-ablating it drops the believed-vs-actual logit difference by ~80.66%. The circuit decomposes as **duplicate-token → induction → copy-suppression → late previous-token** heads, with copy suppression carrying the heaviest load — ablating mid-layer suppression heads alone drops performance by ~45%.
+- **Resources:** [Executive summary (PDF viewer)](/tom-interpretability-summary) · [Interactive circuit walkthrough](/pages/tom-circuit-path.html).
+
 <br>
 
 # Introduction
