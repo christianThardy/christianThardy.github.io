@@ -57,7 +57,7 @@ Expanding on my <a href="https://xtian.ai/tom-interpretability#copy-supressions-
 
 <br>
 
-Despite architectural differences, all models consistently exhibited ~50% negative eigenvalue ratios in their OV matrices, indicating that suppression is occuring roughly half of the time during processing. So there's a widespread *potential* for suppression to exist. It's important to note that this structural property is a common mode of operation, but not every instance of negative eigenvalues is doing important work for a given task. The 3% heads are the ones where this capability is critical and contextually triggered to achieve the task goal.
+Despite architectural differences, all models consistently exhibited ~50% negative eigenvalue ratios in their OV matrices, indicating that suppression is occurring roughly half of the time during processing. So there's a widespread *potential* for suppression to exist. It's important to note that this structural property is a common mode of operation, but not every instance of negative eigenvalues is doing important work for a given task. The 3% heads are the ones where this capability is critical and contextually triggered to achieve the task goal.
 
 <br>
 
@@ -110,7 +110,7 @@ Comparing my results to the analysis of Alain et al., they demonstrate that the 
 
 Which mirrors my finding that models consistently come up with suppression mechanisms of varying implementations that have significantly unstable negative eigenvalues. Despite my analysis focusing on OV matrices rather than Hessians, the eigenvalue trajectories are consistently positive, with some that have frequent sign changes into negative regions.
 
-This could roughly explain the diverse suppression strategies I observed across models (Gemma 2-2B's persistent high suppression vs. the Llama family's broad calibrated suppression vs. Pythia 1.4B's phase-shifted suppression). The varying implementations of suppression could be a direct result of the instability of negative eigenspaces during training, which is may be why architectures develop different suppression mechanisms that operate the same on similar tasks. 
+This could roughly explain the diverse suppression strategies I observed across models (Gemma 2-2B's persistent high suppression vs. the Llama family's broad calibrated suppression vs. Pythia 1.4B's phase-shifted suppression). The varying implementations of suppression could be a direct result of the instability of negative eigenspaces during training, which is maybe why architectures develop different suppression mechanisms that operate the same on similar tasks. 
 
 It's plausible that the instability contributes to *discovered* behaviors, so the network discovers viable suppression strategies through stochastic gradient interactions or phase changes during training rather than converging to a single canonical implementation.
 
@@ -144,7 +144,7 @@ This would also explain my observation in the ToM analysis that *the model doesn
 
 The paper demonstrates that directions of negative curvature often contain significant potential for loss improvement. Seems pretty obvious. In optimization terms, moving along directions of negative curvature can produce larger decreases in the loss function during training than moving along directions of positive curvature because positive curvature directions saturate. So a simple explanation would be that models actively develop suppression mechanisms because they significantly reduce loss in reasoning tasks that require maintaining multiple representational states like in ToM or counterfactual reasoning. This is why selective attention is so crucial.
 
-My next steps are to establish causality beyond correlation, so I'll need comphrehensive interventional studies. After that I can imagine interesting alignment relevant investigations coming from this work in the form of behavioral detection, PeFT or ReFT training on counterfactual suppression interventions for mechanism steering, novel loss functions or low-rank updates to mechanisms.
+My next steps are to establish causality beyond correlation, so I'll need comprehensive interventional studies. After that I can imagine interesting alignment relevant investigations coming from this work in the form of behavioral detection, PeFT or ReFT training on counterfactual suppression interventions for mechanism steering, novel loss functions or low-rank updates to mechanisms.
 
 But an important limitation of my analysis is the gap between Hessian negative eigenvalues, which operate at the level of the entire loss landscape, and negative diagonal eigenvalues of the OV circuit, which function at the level of attention mechanisms. While both involve negative eigenvalues associated with suppression, they operate at different levels of abstraction. The Hessian eigenvalues influence how parameters update during training, potentially shaping how OV circuits develop their suppression characteristics. While this relationship is plausible, it remains largely theoretical to me, but I can't wait to test it. 
 
