@@ -40,16 +40,22 @@
       <header>
         <h1>{{ site.title | default: site.github.repository_name }}</h1>
         <p>{{ site.description | default: site.github.project_tagline }}</p>       
-        <table>
-          {% for nav in site.navigation %}
-            {% if nav.url contains "://" %}
-              <tr><th><a href="{{ nav.url }}">{{ nav.title }}</a></th></tr>
-            {% else %}
-              <tr><th><a href="{{ nav.url | relative_url }}">{{ nav.title }}</a></th></tr>
+        <nav class="site-nav">
+          {% for group in site.navigation %}
+            {% if group.title %}
+              <h3 class="nav-group">{{ group.title }}</h3>
             {% endif %}
+            <table>
+              {% for item in group.items %}
+                {% if item.url contains "://" %}
+                  <tr><th><a href="{{ item.url }}">{{ item.title }}</a></th></tr>
+                {% else %}
+                  <tr><th><a href="{{ item.url | relative_url }}">{{ item.title }}</a></th></tr>
+                {% endif %}
+              {% endfor %}
+            </table>
           {% endfor %}
-    
-        </table>
+        </nav>
 
         {% if site.show_downloads %}
           <ul>
