@@ -6,6 +6,7 @@ layout: default
 
 [![alt text][1.2]][1]
 [![alt text][2.2]][2]
+[![alt text][5.2]][5]
 <!-- TODO: restore twitter & giphy buttons - refs still defined below as [3.2]/[4.2]/[3]/[4]
 [![alt text][3.2]][3]
 [![alt text][4.2]][4]
@@ -25,6 +26,7 @@ layout: default
 [2.2]: http://i.imgur.com/MBpTmib.png (github icon without padding) 
 [3.2]: http://i.imgur.com/gPtDT24.png (twitter icon without padding)  
 [4.2]: https://i.imgur.com/cT1Hor3.png (giphy icon without padding)
+[5.2]: https://cdn.jsdelivr.net/gh/dmhendricks/signature-social-icons/icons/round-flat-filled/50px/mail.png (email icon without padding)
 
 
 <!-- links to social media accounts -->
@@ -33,3 +35,4 @@ layout: default
 [2]: http://www.github.com/christianThardy
 [3]: http://www.twitter.com/hollyhval
 [4]: https://giphy.com/channel/christian_hardy
+[5]: mailto:christianth.to@gmail.com
