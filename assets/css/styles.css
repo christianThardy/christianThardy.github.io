@@ -287,3 +287,11 @@ header .nav-group {
 header nav.site-nav table {
   margin-bottom: 8px;
 }
+
+header p.byline {
+  font-size: 12px;
+  font-style: italic;
+  color: #888;
+  line-height: 1.35;
+  margin: -14px 0 18px;
+}
