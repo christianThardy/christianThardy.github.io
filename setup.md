@@ -1,4 +1,4 @@
-# Deep learning can solve non-trival problems in nlp
+# Deep learning can solve non-trivial problems in nlp
 
 ##### Originally posted: 12/06/20
 
