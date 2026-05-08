@@ -6,7 +6,14 @@
 
 *Just like your brain filters out irrelevant stuff to focus on, language models use "suppression mechanisms" to reason effectively. Analyzing various models (1.3B to 70B parameters), they all maintain about 50% negative eigenvalues in key attention components, basically meaning half their processing power is dedicated to filtering information rather than positive amplification. Rather than strictly noise reduction, this suppression seems to be an active computational strategy, complementing amplification, and integral for handling complex reasoning tasks like theory of mind (ToM), situational awareness etc., where models need to track multiple perspectives or concepts simultaneously. Different models implement the same mechanism in diverse ways, but the underlying principle appears universal. The ability to selectively suppress information is just as important to reasoning as the ability to amplify it.*
 
-###### Code: [GabaLab](https://github.com/christianThardy/GabaLab): toolkit built on transformer-lens for the eigenvalue and OV-circuit analyses.
+---
+
+##### At a glance
+
+- **Models:** 10 transformer models, 1.3B – 70B parameters (Pythia, GPT-Neo, Gemma 2, Llama 3, Mistral, Qwen 2.5).
+- **Method:** Eigenvalue spectrum analysis of OV circuits + Jacobian-based token-level sensitivity + cross-model comparison across reasoning and factual contexts.
+- **Finding:** All models exhibit ~50% negative-eigenvalue ratios in OV matrices. Sparse sets of heads (~16%) maintain counterfactual narrative states; ~3% actively suppress world knowledge. Suppression is far stronger in reasoning contexts (93–96%) than factual ones (~65%).
+- **Code:** [GabaLab](https://github.com/christianThardy/GabaLab) — toolkit built on transformer-lens for OV-circuit, eigenvalue, and cross-model analyses.
 
 <br>
 
