@@ -6,19 +6,26 @@ include:
   - tom-circuit-path.html
 
 navigation:
-  - title: about
-    url: about
-  - title: home
-    url: /
-  - title: investigating large language model reasoning via amplification and suppression
-    url: amplification-suppression
-  - title: deconstructing theory of mind in large language models
-    url: tom-interpretability
-  - title: deep learning can solve non-trivial problems in nlp
-    url: setup
-  - title: visualizations & machine learning
-    url: visualization-ml
-  - title: things I wish I knew about distributed systems
-    url: things-I-wish-I-knew
-  - title: millennial noir
-    url: millennial-noir
+  - items:
+      - title: about
+        url: about
+      - title: home
+        url: /
+  - title: research
+    items:
+      - title: investigating LLM reasoning via amplification and suppression
+        url: amplification-suppression
+      - title: deconstructing theory of mind in large language models
+        url: tom-interpretability
+  - title: engineering / ML notes
+    items:
+      - title: things I wish I knew about distributed systems
+        url: things-I-wish-I-knew
+      - title: deep learning can solve non-trivial problems in nlp
+        url: setup
+      - title: visualizations & machine learning
+        url: visualization-ml
+  - title: other
+    items:
+      - title: millennial noir
+        url: millennial-noir
