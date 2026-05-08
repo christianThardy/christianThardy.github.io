@@ -1,7 +1,7 @@
 theme: jekyll-theme-minimal
 title: artifacts
 description: research, engineering, and technical notes
-byline: AI engineer · interpretability of suppression in LLMs
+byline: AI engineer · interpretability of internal regulation in LLMs
 url: "https://xtian.ai"
 show_downloads: False
 include:
