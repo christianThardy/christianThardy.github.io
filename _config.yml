@@ -1,6 +1,8 @@
 theme: jekyll-theme-minimal
 title: artifacts
 description: research, engineering, and technical notes
+byline: AI engineer · interpretability of suppression in LLMs
+url: "https://xtian.ai"
 show_downloads: False
 include:
   - tom-circuit-path.html
