@@ -274,3 +274,16 @@ footer {
     color:#444;
   }
 }
+
+header .nav-group {
+  margin: 18px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+}
+
+header nav.site-nav table {
+  margin-bottom: 8px;
+}
