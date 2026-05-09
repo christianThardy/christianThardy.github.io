@@ -10,10 +10,10 @@
 
 ##### At a glance
 
-- **Models:** 10 transformer models, 1.3B – 70B parameters (Pythia, GPT-Neo, Gemma 2, Llama 3, Mistral, Qwen 2.5).
+- **Models:** 10 transformer models, 1.3B-70B parameters (Pythia, GPT-Neo, Gemma 2, Llama 3, Mistral, Qwen 2.5).
 - **Method:** Eigenvalue spectrum analysis of OV circuits + Jacobian-based token-level sensitivity + cross-model comparison across reasoning and factual contexts.
-- **Finding:** All models exhibit ~50% negative-eigenvalue ratios in OV matrices. Sparse sets of heads (~16%) maintain counterfactual narrative states; ~3% actively suppress world knowledge. Suppression is far stronger in reasoning contexts (93–96%) than factual ones (~65%).
-- **Code:** [GabaLab](https://github.com/christianThardy/GabaLab) — toolkit built on transformer-lens for OV-circuit, eigenvalue, and cross-model analyses.
+- **Finding:** All models exhibit ~50% negative-eigenvalue ratios in OV matrices. Sparse sets of heads (~16%) maintain counterfactual narrative states; ~3% actively suppress world knowledge. Suppression is far stronger in reasoning contexts (93-96%) than factual ones (~65%).
+- **Code:** [GabaLab](https://github.com/christianThardy/GabaLab) - toolkit built on transformer-lens for OV-circuit, eigenvalue, and cross-model analyses.
 
 <br>
 
