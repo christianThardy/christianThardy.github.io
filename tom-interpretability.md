@@ -31,7 +31,7 @@
 
 - **Model & task:** Gemma-2-2B on a false-belief Theory of Mind task (the cat/basket/box passage).
 - **Method:** PCA → logit-lens → attention-head analysis → causal tracing (activation + path patching) → sparse autoencoders (Gemma Scope / Neuronpedia) → ablation.
-- **Finding:** A 28-head circuit (~16% of total heads) recovers full ToM task performance; mean-ablating it drops the believed-vs-actual logit difference by ~80.66%. The circuit decomposes as **duplicate-token → induction → copy-suppression → late previous-token** heads, with copy suppression carrying the heaviest load — ablating mid-layer suppression heads alone drops performance by ~45%.
+- **Finding:** A 28-head circuit (~16% of total heads) recovers full ToM task performance; mean-ablating it drops the believed-vs-actual logit difference by ~80.66%. The circuit decomposes as **duplicate-token → induction → copy-suppression → late previous-token** heads, with copy suppression carrying the heaviest load - ablating mid-layer suppression heads alone drops performance by ~45%.
 - **Resources:** [Executive summary (PDF viewer)](/tom-interpretability-summary).
 
 <br>
