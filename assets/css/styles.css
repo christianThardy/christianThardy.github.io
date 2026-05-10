@@ -113,6 +113,9 @@ header {
   width:270px;
   float:left;
   position:fixed;
+  top:50px;
+  bottom:50px;
+  overflow-y:auto;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
